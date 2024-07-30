@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ContactForm from './components/ContactForm';
 import { Mail, Phone, MapPin, ShoppingCart, Calendar, Send } from 'lucide-react';
 import emailjs from 'emailjs-com';
 
@@ -111,23 +110,23 @@ const ConcertSlider = ({ concerts }) => {
 
 const AlbumPurchase = ({ album }) => (
   <motion.div 
-    className="bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col md:flex-row items-center"
+    className="bg-gray-800 p-8 rounded-lg shadow-lg"
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
   >
-    <motion.img 
-      src={album.coverUrl} 
-      alt={album.title} 
-      className="w-full md:w-1/2 h-auto object-cover rounded mb-6 md:mb-0 md:mr-8 cursor-pointer"
-      whileHover={{ scale: 1.05 }}
-      transition={{ type: "spring", stiffness: 300 }}
-      onClick={() => window.open(album.purchaseUrl, '_blank')}
-    />
-    <div className="md:w-1/2">
+    <div className="flex flex-col items-center text-center">
+      <motion.img 
+        src={album.coverUrl} 
+        alt={album.title} 
+        className="w-full max-w-md h-auto object-cover rounded mb-6 cursor-pointer"
+        whileHover={{ scale: 1.05 }}
+        transition={{ type: "spring", stiffness: 300 }}
+        onClick={() => window.open(album.purchaseUrl, '_blank')}
+      />
       <h3 className="text-3xl font-bold mb-4 text-gray-200 font-santokki">{album.title}</h3>
       <p className="text-xl mb-4 font-wanted-sans text-gray-300">{album.price}</p>
-      <p className="text-gray-400 mb-6 font-wanted-sans">{album.description}</p>
+      <p className="text-gray-400 mb-6 font-wanted-sans max-w-2xl">{album.description}</p>
       <motion.button 
         className="bg-gray-700 text-white px-6 py-3 rounded-full font-wanted-sans hover:bg-gray-600 transition duration-300 flex items-center justify-center"
         whileHover={{ scale: 1.05 }}
@@ -160,10 +159,92 @@ const ContactInfo = ({ icon: Icon, title, content, link }) => (
   </div>
 );
 
+const ContactForm = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    emailjs.send('service_id', 'template_id', formData)
+      .then((result) => {
+          console.log(result.text);
+          alert('메시지가 성공적으로 전송되었습니다!');
+      }, (error) => {
+          console.log(error.text);
+          alert('메시지 전송에 실패했습니다. 다시 시도해주세요.');
+      });
+    setFormData({ name: '', email: '', message: '' });
+  };
+
+  return (
+    <motion.div 
+      className="bg-gray-800 p-8 rounded-lg shadow-lg"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <h3 className="text-2xl font-bold mb-6 text-gray-200 font-santokki">공연 문의</h3>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-300">이름</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-gray-200 focus:border-blue-500 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-300">이메일</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-gray-200 focus:border-blue-500 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium text-gray-300">메시지</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            value={formData.message}
+            onChange={handleChange}
+            required
+            className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-gray-200 focus:border-blue-500 focus:ring-blue-500"
+          ></textarea>
+        </div>
+        <motion.button
+          type="submit"
+          className="w-full bg-gray-700 text-white px-6 py-3 rounded-full font-wanted-sans hover:bg-gray-600 transition duration-300 flex items-center justify-center"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Send className="mr-2" size={20} />
+          보내기
+        </motion.button>
+      </form>
+    </motion.div>
+  );
+};
+
 const App = () => {
   const concerts = [
     { title: "예정 없음", date: "2024년 X월 X일", location: "미정", ticketUrl: "https://www.instagram.com/podopodopo/" },
-
   ];
 
   const album = {
@@ -256,36 +337,36 @@ const App = () => {
         </Section>
 
         <Section title="섭외 및 문의" id="섭외 및 문의">
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-    <motion.div 
-      className="bg-gray-800 p-8 rounded-lg shadow-lg"
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <h3 className="text-2xl font-bold mb-8 text-gray-200 font-santokki">연락처</h3>
-      <ContactInfo 
-        icon={Mail} 
-        title="이메일" 
-        content="hwangtab@gmail.com" 
-        link="mailto:hwangtab@gmail.com"
-      />
-      <ContactInfo 
-        icon={Phone} 
-        title="전화" 
-        content="02-764-3114" 
-        link="tel:+8227643114"
-      />
-      <ContactInfo 
-        icon={MapPin} 
-        title="주소" 
-        content="서울특별시 은평구 통일로 68길 4 302호 한국스마트협동조합" 
-        link="https://www.google.com/maps/search/?api=1&query=서울특별시+은평구+통일로+68길+4+302호+한국스마트협동조합"
-      />
-    </motion.div>
-    <ContactForm />
-  </div>
-</Section>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <motion.div 
+              className="bg-gray-800 p-8 rounded-lg shadow-lg"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h3 className="text-2xl font-bold mb-8 text-gray-200 font-santokki">연락처</h3>
+              <ContactInfo 
+                icon={Mail} 
+                title="이메일" 
+                content="hwangtab@gmail.com" 
+                link="mailto:hwangtab@gmail.com"
+              />
+              <ContactInfo 
+                icon={Phone} 
+                title="전화" 
+                content="02-764-3114" 
+                link="tel:+8227643114"
+              />
+              <ContactInfo 
+                icon={MapPin} 
+                title="주소" 
+                content="서울특별시 은평구 통일로 68길 4 302호 한국스마트협동조합" 
+                link="https://www.google.com/maps/search/?api=1&query=서울특별시+은평구+통일로+68길+4+302호+한국스마트협동조합"
+              />
+            </motion.div>
+            <ContactForm />
+          </div>
+        </Section>
       </main>
 
       <footer className="bg-gradient-to-r from-gray-900 to-gray-800 text-gray-400 p-6 mt-12">
