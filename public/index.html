@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -19,7 +19,34 @@
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hwangtab.github.io/home" />
+    <meta property="og:title" content="황경하 Official Web" />
+    <meta property="og:description" content="황경하의 공식 웹사이트입니다. 음악과 공연 정보를 확인하세요." />
+    <meta property="og:image" content="https://raw.githubusercontent.com/hwangtab/home/main/public/thumbnail.jpg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://hwangtab.github.io/home" />
+    <meta name="twitter:title" content="황경하 Official Web" />
+    <meta name="twitter:description" content="황경하의 공식 웹사이트입니다. 음악과 공연 정보를 확인하세요." />
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/hwangtab/home/main/public/thumbnail.jpg" />
+
     <title>황경하 Official Web</title>
+
+    <!-- 구조화된 데이터 -->
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "MusicGroup",
+      "name": "황경하",
+      "url": "https://hwangtab.github.io/home",
+      "image": "https://hwangtab.github.io/home/thumbnail.jpg",
+      "description": "황경하의 공식 웹사이트입니다. 음악과 공연 정보를 확인하세요."
+    }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
