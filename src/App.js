@@ -7,15 +7,19 @@ emailjs.init('E5wHxyFgSkrjQhYVG');
 
 const Header = () => (
   <motion.header 
-    className="bg-gradient-to-r from-gray-900 to-gray-800 text-white p-6"
+    className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-6 px-6"
     initial={{ opacity: 0, y: -50 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
   >
     <div className="container mx-auto flex justify-between items-center">
       <motion.h1 
-        className="text-7xl font-bold font-bombaram"
-        whileHover={{ scale: 1.1 }}
+        className="text-5xl font-bold font-bombaram"
+        whileHover={{ scale: 1.05 }}
+        style={{ 
+          lineHeight: '1',
+          transform: 'translateY(12px)'
+        }}
       >
         황경하
       </motion.h1>
@@ -137,68 +141,69 @@ const ConcertSlider = ({ concerts }) => {
   }, [concerts.length]);
 
   return (
-    <div className="relative h-64 overflow-hidden rounded-lg bg-gray-900">
+    <motion.div 
+      className="bg-gray-800 p-8 rounded-lg shadow-lg"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <AnimatePresence initial={false}>
         <motion.div
           key={currentIndex}
-          className="absolute inset-0 flex items-center justify-center p-6"
+          className="text-center"
           initial={{ opacity: 0, x: 300 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -300 }}
           transition={{ duration: 0.5 }}
         >
+          <h3 className="text-3xl font-bold mb-6 text-gray-200 font-santokki">{concerts[currentIndex].title}</h3>
+          <p className="text-xl mb-4 font-wanted-sans text-gray-300">{concerts[currentIndex].date}</p>
+          <p className="text-lg mb-8 font-wanted-sans text-gray-400">{concerts[currentIndex].location}</p>
           <motion.a
             href={concerts[currentIndex].ticketUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full h-full flex flex-col items-center justify-center text-center bg-gray-800 rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105"
+            className="inline-flex items-center bg-gray-700 text-white px-8 py-4 rounded-full font-wanted-sans hover:bg-gray-600 transition duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <h3 className="text-2xl font-bold mb-2 font-santokki text-gray-200">{concerts[currentIndex].title}</h3>
-            <p className="text-lg font-wanted-sans mb-1 text-gray-300">{concerts[currentIndex].date}</p>
-            <p className="text-md font-wanted-sans mb-4 text-gray-400">{concerts[currentIndex].location}</p>
-            <motion.span
-              className="inline-flex items-center bg-gray-700 text-white px-4 py-2 rounded-full font-wanted-sans text-sm"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <Calendar className="mr-2" size={16} />
-              공연정보
-            </motion.span>
+            <Calendar className="mr-3" size={24} />
+            공연정보
           </motion.a>
         </motion.div>
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };
 
 const AlbumPurchase = ({ album }) => (
   <motion.div 
-    className="bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col md:flex-row items-center"
+    className="bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col md:flex-row items-stretch gap-12"
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
   >
-    <motion.img 
-      src={album.coverUrl} 
-      alt={album.title} 
-      className="w-full md:w-1/2 h-auto object-cover rounded mb-6 md:mb-0 md:mr-8 cursor-pointer"
-      whileHover={{ scale: 1.05 }}
-      transition={{ type: "spring", stiffness: 300 }}
-      onClick={() => window.open(album.purchaseUrl, '_blank')}
-    />
-    <div className="md:w-1/2">
-      <h3 className="text-3xl font-bold mb-4 text-gray-200 font-santokki">{album.title}</h3>
+    <div className="md:w-1/2 flex flex-col justify-center">
+      <motion.img 
+        src={album.coverUrl} 
+        alt={album.title} 
+        className="w-full h-auto object-cover rounded cursor-pointer"
+        whileHover={{ scale: 1.05 }}
+        transition={{ type: "spring", stiffness: 300 }}
+        onClick={() => window.open(album.purchaseUrl, '_blank')}
+      />
+    </div>
+    <div className="md:w-1/2 flex flex-col justify-center">
+      <h3 className="text-3xl font-bold mb-6 text-gray-200 font-santokki leading-tight">{album.title}</h3>
       <p className="text-xl mb-4 font-wanted-sans text-gray-300">{album.price}</p>
       <p className="text-gray-400 mb-6 font-wanted-sans">{album.description}</p>
       <motion.button 
-        className="bg-gray-700 text-white px-6 py-3 rounded-full font-wanted-sans hover:bg-gray-600 transition duration-300 flex items-center justify-center"
+        className="bg-gray-700 text-white px-8 py-4 rounded-full font-wanted-sans hover:bg-gray-600 transition duration-300 flex items-center justify-center self-start"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => window.open(album.purchaseUrl, '_blank')}
       >
-        <ShoppingCart className="mr-2" size={20} />
+        <ShoppingCart className="mr-3" size={24} />
         구매하기
       </motion.button>
     </div>
@@ -316,7 +321,7 @@ const App = () => {
     title: "물고기는 물이 없으면 죽어요 (2023)",
     price: "15,000원",
     description: "쫓겨난 옛 노량진수산시장 상인들에게 연대하는 음악가들이 힘을 합쳐 만든 음반입니다.",
-    coverUrl: "https://ifh.cc/g/g0pmcp.jpg",
+    coverUrl: `${process.env.PUBLIC_URL}/images/SCR-20250706-bbyq.png`,
     purchaseUrl: "https://smartstore.naver.com/koreasmartcoop/products/7868449444"
   };
 
@@ -330,7 +335,7 @@ const App = () => {
     <div className="flex flex-col md:flex-row items-stretch gap-8">
       <div className="w-full md:w-1/3 flex flex-col justify-center">
         <motion.img
-          src="https://ifh.cc/g/oXQWJ3.jpg"
+          src={`${process.env.PUBLIC_URL}/images/profile1.png`}
           alt="황경하"
           className="w-full h-auto rounded-lg shadow-lg object-cover"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -387,13 +392,13 @@ const App = () => {
             <MusicCard 
               title="혼약의 기도 (2020)" 
               description="세민과의 결혼식을 앞두고 만들었던 곡입니다. 앞으로 함께 살아갈 인생의 방향과 세상과의 약속에 대한 메시지를 담고 있습니다."
-              coverUrl="https://ifh.cc/g/2yDdbc.jpg"
+              coverUrl="https://image.bugsm.co.kr/album/images/1000/203255/20325533.jpg"
               musicUrl="https://www.youtube.com/watch?v=EsFqpkUfxxE"
             />
             <MusicCard 
               title="눈녹듯 (2024)" 
               description="한 어머니의 사랑과 고통을 담은 음악입니다. 눈처럼 켜켜이 쌓여가는 슬픔, 그 속에서 다른 사람들은 이런 고통을 겪지않게 하고자 나아가고 있는 한 강인한 어머니의 마음을 느껴보시기 바랍니다. "
-              coverUrl="https://ifh.cc/g/wNvjFr.jpg"
+              coverUrl="https://image.bugsm.co.kr/album/images/1000/206620/20662057.jpg"
               musicUrl="https://youtu.be/cllJgXtVWmU?si=KGW6v01KH9yFY22a"
             />
           </div>
