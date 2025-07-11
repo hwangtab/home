@@ -18,6 +18,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+  
+  .archive-container {
+    min-height: 400px;
+  }
+  
+  .archive-grid-container {
+    min-height: 300px;
+    position: relative;
+  }
+}
+
 @layer base {
 body {
   font-family: 'Wanted Sans Variable', sans-serif;
