@@ -1,0 +1,46 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="writingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#047857;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="400" fill="url(#writingGradient)"/>
+  
+  <!-- Book Icon -->
+  <g transform="translate(200, 200)">
+    <!-- Book base -->
+    <rect x="-60" y="-40" width="120" height="80" rx="4" fill="white" opacity="0.9"/>
+    <rect x="-55" y="-35" width="110" height="70" rx="2" fill="url(#writingGradient)" opacity="0.3"/>
+    
+    <!-- Book spine -->
+    <rect x="-2" y="-40" width="4" height="80" fill="white" opacity="0.6"/>
+    
+    <!-- Book pages -->
+    <rect x="-50" y="-30" width="45" height="3" fill="white" opacity="0.5"/>
+    <rect x="-50" y="-20" width="45" height="3" fill="white" opacity="0.5"/>
+    <rect x="-50" y="-10" width="45" height="3" fill="white" opacity="0.5"/>
+    <rect x="-50" y="0" width="45" height="3" fill="white" opacity="0.5"/>
+    <rect x="-50" y="10" width="35" height="3" fill="white" opacity="0.5"/>
+    
+    <rect x="5" y="-30" width="45" height="3" fill="white" opacity="0.5"/>
+    <rect x="5" y="-20" width="45" height="3" fill="white" opacity="0.5"/>
+    <rect x="5" y="-10" width="45" height="3" fill="white" opacity="0.5"/>
+    <rect x="5" y="0" width="45" height="3" fill="white" opacity="0.5"/>
+    <rect x="5" y="10" width="35" height="3" fill="white" opacity="0.5"/>
+    
+    <!-- Pen -->
+    <g transform="rotate(30) translate(70, -30)">
+      <rect x="-2" y="-25" width="4" height="50" fill="white" opacity="0.9"/>
+      <rect x="-3" y="-30" width="6" height="10" fill="white" opacity="0.7"/>
+      <polygon points="-1,25 1,25 0,35" fill="white" opacity="0.9"/>
+    </g>
+  </g>
+  
+  <!-- Label -->
+  <text x="200" y="320" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="18" font-weight="bold" opacity="0.8">
+    WRITING
+  </text>
+</svg>

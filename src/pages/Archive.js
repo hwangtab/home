@@ -6,7 +6,7 @@ import SearchBar from '../components/SearchBar';
 import TimelineSlider from '../components/archive/TimelineSlider';
 import YearlyView from '../components/archive/YearlyView';
 import OverallTimeline from '../components/archive/OverallTimeline';
-import { useTimelineData } from '../hooks/useDataProcessor';
+import { useWorksData } from '../hooks/useDataProcessor';
 import { useCardActions } from '../hooks/useCardActions';
 import { BodyText } from '../components/ui/Typography';
 import { Container, Flex, Stack } from '../components/ui/Layout';
@@ -19,7 +19,7 @@ const Archive = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   
-  const { flattenedEvents, getEventsByType, searchEvents } = useTimelineData(siteData.timeline);
+  const { flattenedEvents, getEventsByType, searchEvents } = useWorksData(siteData.works, 'archive');
   const { lightbox, musicPlayer } = useCardActions({
     enableLightbox: true,
     enableMusicPlayer: true
@@ -38,17 +38,16 @@ const Archive = () => {
 
   const filterOptions = useMemo(() => [
     { value: 'all', label: '전체', count: flattenedEvents.length },
-    { value: 'album', label: '앨범', count: getEventsByType('album').length },
-    { value: 'single', label: '싱글', count: getEventsByType('single').length },
+    { value: 'music', label: '음악', count: getEventsByType('music').length },
     { value: 'visual', label: '영상/사진', count: getEventsByType('visual').length },
     { value: 'writing', label: '글쓰기', count: getEventsByType('writing').length },
     { value: 'performance', label: '공연', count: getEventsByType('performance').length }
   ], [flattenedEvents, getEventsByType]);
 
   const handleCardClick = useCallback((work) => {
-    if (work.type === 'visual' || work.images) {
+    if (work.archiveCategory === 'visual' || work.images) {
       lightbox.openLightbox(work);
-    } else if (work.type === 'album' || work.type === 'single') {
+    } else if (work.archiveCategory === 'music' || work.links) {
       // 추후 기능 추가
     }
   }, [lightbox]);

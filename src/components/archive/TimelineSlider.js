@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Flex } from '../ui/Layout';
 import Button, { IconButton } from '../ui/Button';
+import { useWorksData } from '../../hooks/useDataProcessor';
 import siteData from '../../data';
 
 const TimelineSlider = ({ selectedYear, setSelectedYear }) => {
-  const years = siteData.timeline.map(item => item.year).sort((a, b) => b - a);
+  const { flattenedEvents } = useWorksData(siteData.works, 'archive');
+  
+  const years = useMemo(() => {
+    const yearSet = new Set(flattenedEvents.map(event => event.year));
+    return Array.from(yearSet).sort((a, b) => b - a);
+  }, [flattenedEvents]);
   const currentIndex = years.indexOf(selectedYear);
 
   const goToPrevious = () => {

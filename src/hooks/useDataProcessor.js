@@ -221,25 +221,35 @@ export const useDataProcessor = (data, options = {}) => {
 };
 
 /**
- * 작품 데이터 전용 훅
- * @param {Object} siteData - 사이트 데이터
+ * 통합 작품 데이터 전용 훅 - works 섹션의 모든 카테고리를 통합 처리
+ * @param {Object} worksData - works 섹션 데이터
+ * @param {string} pageType - 페이지 타입 ('works', 'archive', 'about', 'all')
  * @returns {Object} 처리된 작품 데이터
  */
-export const useWorksData = (siteData) => {
+export const useWorksData = (worksData, pageType = 'all') => {
+  // 모든 works 카테고리를 하나로 flatten
   const allWorks = useMemo(() => {
-    if (!siteData?.works) return [];
+    if (!worksData) return [];
     
-    return [
-      ...(siteData.works.music?.albums || []),
-      ...(siteData.works.visual?.photography || []),
-      ...(siteData.works.visual?.videos || []),
-      ...(siteData.works.writing || []),
-      ...(siteData.works.performance || [])
+    const works = [
+      ...(worksData.music || []),
+      ...(worksData.visual || []),
+      ...(worksData.writing || []),
+      ...(worksData.performance || [])
     ];
-  }, [siteData]);
+    
+    // pageType별 필터링
+    if (pageType === 'all') {
+      return works;
+    }
+    
+    return works.filter(work => 
+      work.showInPages?.includes(pageType)
+    );
+  }, [worksData, pageType]);
 
   const processor = useDataProcessor(allWorks, {
-    filterKey: 'type',
+    filterKey: 'archiveCategory',
     sortKey: 'year',
     sortOrder: 'desc',
     searchKeys: ['title', 'description', 'tags'],
@@ -253,107 +263,102 @@ export const useWorksData = (siteData) => {
     if (!processor.data) return {};
     
     return {
-      music: processor.data.filter(item => item.type === 'music' || item.cover),
-      visual: processor.data.filter(item => ['photography', 'videos'].includes(item.type) || item.images),
-      writing: processor.data.filter(item => item.type === 'writing' || item.publication),
-      performance: processor.data.filter(item => item.type === 'performance' || item.setlist),
+      music: processor.data.filter(item => item.archiveCategory === 'music'),
+      visual: processor.data.filter(item => item.archiveCategory === 'visual'),
+      writing: processor.data.filter(item => item.archiveCategory === 'writing'),
+      performance: processor.data.filter(item => item.archiveCategory === 'performance'),
       all: processor.data
     };
   }, [processor.data]);
 
-  return {
-    ...processor,
-    categorizedData,
-    getWorksByCategory: (category) => categorizedData[category] || []
-  };
-};
-
-/**
- * 타임라인 데이터 전용 훅 - 통합 timeline 데이터 처리
- * @param {Array} timelineData - 타임라인 데이터
- * @returns {Object} 처리된 타임라인 데이터
- */
-export const useTimelineData = (timelineData) => {
-  const processor = useDataProcessor(timelineData, {
-    sortKey: 'year',
-    sortOrder: 'desc',
-    groupBy: 'year',
-    searchKeys: ['title', 'description'],
-    enableSearch: true,
-    enableFilter: false,
-    enableSort: true
-  });
-
-  // 이벤트들을 평면화하여 카드 렌더링에 적합한 형태로 변환
-  const flattenedEvents = useMemo(() => {
+  // 연도별 그룹화 (timeline 형태로 변환)
+  const timelineData = useMemo(() => {
     if (!processor.data) return [];
     
-    const events = [];
-    processor.data.forEach(yearData => {
-      yearData.events?.forEach(event => {
-        events.push({
-          ...event,
-          year: yearData.year, // 연도 정보 추가
-          // CardRenderer에서 기대하는 필드들 추가
-          type: event.type || 'other',
-          featured: event.featured || false
-        });
-      });
+    const yearGroups = {};
+    processor.data.forEach(work => {
+      if (!yearGroups[work.year]) {
+        yearGroups[work.year] = {
+          year: work.year,
+          events: []
+        };
+      }
+      yearGroups[work.year].events.push(work);
     });
     
-    return events.sort((a, b) => b.year - a.year); // 최신순 정렬
+    return Object.values(yearGroups).sort((a, b) => b.year - a.year);
   }, [processor.data]);
 
-  // 연도별 이벤트 통계
+  // 연도별 이벤트 가져오기
+  const getEventsByYear = useCallback((year) => {
+    return processor.data.filter(work => work.year === year);
+  }, [processor.data]);
+
+  // 타입별 이벤트 가져오기
+  const getEventsByType = useCallback((type) => {
+    if (!type || type === 'all') return processor.data;
+    return processor.data.filter(work => work.archiveCategory === type);
+  }, [processor.data]);
+
+  // 검색 함수 (기존 timeline 호환성)
+  const searchEvents = useCallback((searchTerm) => {
+    return processor.searchData(searchTerm, processor.data);
+  }, [processor]);
+
+  // 통계 데이터
   const yearlyStats = useMemo(() => {
     if (!processor.data) return {};
     
     const stats = {};
-    processor.data.forEach(yearData => {
-      stats[yearData.year] = {
-        total: yearData.events?.length || 0,
-        byType: {}
-      };
+    processor.data.forEach(work => {
+      if (!stats[work.year]) {
+        stats[work.year] = {
+          total: 0,
+          byType: {}
+        };
+      }
+      stats[work.year].total += 1;
       
-      yearData.events?.forEach(event => {
-        const type = event.type || 'unknown';
-        stats[yearData.year].byType[type] = (stats[yearData.year].byType[type] || 0) + 1;
-      });
+      const type = work.archiveCategory || 'unknown';
+      stats[work.year].byType[type] = (stats[work.year].byType[type] || 0) + 1;
     });
     
     return stats;
   }, [processor.data]);
 
-  // 타입별 필터링
-  const getEventsByType = useCallback((type) => {
-    if (!type || type === 'all') return flattenedEvents;
-    return flattenedEvents.filter(event => event.type === type);
-  }, [flattenedEvents]);
-
-  // 연도별 필터링 (기존 호환성 유지)
-  const getEventsByYear = useCallback((year) => {
-    return processor.data.find(item => item.year === year)?.events || [];
-  }, [processor.data]);
-
-  // 통합 검색 함수
-  const searchEvents = useCallback((searchTerm) => {
-    if (!searchTerm) return flattenedEvents;
-    
-    const term = searchTerm.toLowerCase();
-    return flattenedEvents.filter(event => 
-      event.title?.toLowerCase().includes(term) ||
-      event.description?.toLowerCase().includes(term) ||
-      event.tags?.some(tag => tag.toLowerCase().includes(term))
-    );
-  }, [flattenedEvents]);
-
   return {
     ...processor,
-    flattenedEvents,
+    categorizedData,
+    timelineData,
+    flattenedEvents: processor.data, // timeline 호환성을 위한 alias
     yearlyStats,
+    getWorksByCategory: (category) => categorizedData[category] || [],
     getEventsByYear,
     getEventsByType,
     searchEvents
+  };
+};
+
+/**
+ * 타임라인 데이터 전용 훅 - 호환성을 위한 래퍼 (deprecated)
+ * @param {Object} worksData - works 데이터 (새 구조)
+ * @returns {Object} 처리된 타임라인 데이터
+ * @deprecated useWorksData를 대신 사용하세요
+ */
+export const useTimelineData = (worksData) => {
+  console.warn('useTimelineData is deprecated. Use useWorksData instead.');
+  
+  // 새로운 useWorksData를 사용하되 archive 페이지용으로 설정
+  const worksProcessor = useWorksData(worksData, 'archive');
+  
+  return {
+    ...worksProcessor,
+    // 기존 API와의 호환성을 위한 aliases
+    flattenedEvents: worksProcessor.flattenedEvents,
+    yearlyStats: worksProcessor.yearlyStats,
+    getEventsByYear: worksProcessor.getEventsByYear,
+    getEventsByType: worksProcessor.getEventsByType,
+    searchEvents: worksProcessor.searchEvents
   };
 };
 

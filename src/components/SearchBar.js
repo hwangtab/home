@@ -109,34 +109,23 @@ const SearchBar = ({ data, onResultClick, placeholder = "작품, 연도, 태그�
   const inputRef = useRef(null);
   const resultsRef = useRef(null);
 
-  // Prepare search data
+  // Prepare search data from the flattened data array
   const searchData = React.useMemo(() => {
-    const items = [];
-    
-    // Add music works
-    if (data.works?.music?.albums) {
-      data.works.music.albums.forEach(item => {
-        items.push({ ...item, type: 'music' });
-      });
+    // If data is already flattened (like from archive page), use it directly
+    if (Array.isArray(data)) {
+      return data.map(item => ({
+        ...item,
+        type: item.archiveCategory || item.type || 'unknown'
+      }));
     }
     
-    // Add events
+    // Otherwise, flatten the data structure
+    const items = [];
+    
+    // Add events from concerts
     if (data.events?.concerts) {
       data.events.concerts.forEach(item => {
         items.push({ ...item, type: 'event' });
-      });
-    }
-    
-    // Add timeline events
-    if (data.timeline) {
-      data.timeline.forEach(yearData => {
-        yearData.events.forEach(event => {
-          items.push({ 
-            ...event, 
-            year: yearData.year,
-            type: 'timeline'
-          });
-        });
       });
     }
 

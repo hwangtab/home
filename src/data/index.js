@@ -13,8 +13,7 @@ export const {
   artist,
   works,
   events,
-  news,
-  timeline
+  news
 } = siteData;
 
 // 기존 load 함수들을 유지하여 호환성 보장
@@ -27,7 +26,11 @@ export const loadMusicData = () => siteData.works.music;
 
 export const loadWorksData = () => siteData.works;
 
-export const loadTimelineData = () => siteData.timeline;
+// Deprecated: Use loadWorksData instead
+export const loadTimelineData = () => {
+  console.warn('loadTimelineData is deprecated. Use loadWorksData instead.');
+  return [];
+};
 
 export const loadNewsData = () => siteData.news;
 

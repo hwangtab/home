@@ -1,12 +1,14 @@
 import React from 'react';
 import Section from '../components/Section';
 import DataRenderer, { RENDER_TYPES } from '../components/DataRenderer';
-import { ProfileSkeleton, TimelineSkeleton } from '../components/ui/SkeletonUI';
 import { Heading3, Heading4, BodyText, SmallText } from '../components/ui/Typography';
-import { Container, Grid, Stack, Card } from '../components/ui/Layout';
+import { Grid, Stack, Card } from '../components/ui/Layout';
+import { useWorksData } from '../hooks/useDataProcessor';
 import siteData from '../data';
 
 const About = () => {
+  const { timelineData } = useWorksData(siteData.works, 'about');
+
   return (
     <div>
       <Section title="소개">
@@ -51,7 +53,7 @@ const About = () => {
         <Card variant="default" padding="xl" shadow="default">
           <DataRenderer 
             type={RENDER_TYPES.TIMELINE}
-            data={siteData.timeline}
+            data={timelineData}
             reversed={true}
             renderEvent={(event, index) => (
               <Stack spacing="sm">

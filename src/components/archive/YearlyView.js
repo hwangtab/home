@@ -3,12 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import CardRenderer from '../CardRenderer';
 import { Heading2, BodyText } from '../ui/Typography';
 import { Container, Grid, Stack } from '../ui/Layout';
+import { useWorksData } from '../../hooks/useDataProcessor';
 import siteData from '../../data';
 
 const YearlyView = ({ selectedYear, onCardClick }) => {
-  const yearData = siteData.timeline.find(item => item.year === selectedYear);
+  const { getEventsByYear } = useWorksData(siteData.works, 'archive');
+  const yearEvents = getEventsByYear(selectedYear);
   
-  if (!yearData) return null;
+  if (!yearEvents || yearEvents.length === 0) return null;
 
   return (
     <Container size="default">
@@ -17,7 +19,7 @@ const YearlyView = ({ selectedYear, onCardClick }) => {
           {selectedYear}년
         </Heading2>
         <BodyText color="secondary" align="center">
-          {yearData.events.length}개의 주요 활동
+          {yearEvents.length}개의 주요 활동
         </BodyText>
       </Stack>
       
@@ -30,10 +32,10 @@ const YearlyView = ({ selectedYear, onCardClick }) => {
           transition={{ duration: 0.2 }}
         >
           <Grid cols={2} gap="lg" responsive={true}>
-            {yearData.events.map((event, index) => (
+            {yearEvents.map((event, index) => (
               <CardRenderer 
                 key={`${selectedYear}-${index}`} 
-                work={{...event, year: selectedYear}} 
+                work={event} 
                 onClick={onCardClick}
               />
             ))}

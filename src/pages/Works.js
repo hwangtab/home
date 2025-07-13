@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import Section from '../components/Section';
-import VideoGallery from '../components/VideoGallery';
 import Lightbox from '../components/Lightbox';
 import MusicPlayer from '../components/MusicPlayer';
 import CardRenderer from '../components/CardRenderer';
@@ -17,7 +16,7 @@ const Works = () => {
   const [activeFilter, setActiveFilter] = useState('all');
 
   // 통합 데이터 처리 훅 사용
-  const { categorizedData, getWorksByCategory } = useWorksData(siteData);
+  const { categorizedData, getWorksByCategory } = useWorksData(siteData.works, 'works');
   
   // 카드 액션 훅 사용
   const { lightbox, musicPlayer } = useCardActions({
@@ -62,17 +61,6 @@ const Works = () => {
           />
         </ScrollReveal>
 
-        {/* Video Gallery for Visual Filter */}
-        {activeFilter === 'visual' && (
-          <ScrollReveal direction="up" delay={0.2}>
-            <div className="mb-12">
-              <VideoGallery 
-                videos={siteData.works.visual.videos || []} 
-                title="비디오 작품"
-              />
-            </div>
-          </ScrollReveal>
-        )}
         
         <ScrollReveal direction="up" delay={0.3}>
           <WorksGrid 

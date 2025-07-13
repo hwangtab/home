@@ -1,8 +1,8 @@
 import React from 'react';
-import { UnifiedCard } from './ui/Card';
+import UnifiedWorkCard from './cards/UnifiedWorkCard';
 
 const CardRenderer = ({ work, onClick }) => {
-  return <UnifiedCard work={work} onClick={onClick} />;
+  return <UnifiedWorkCard work={work} onClick={onClick} />;
 };
 
 export default CardRenderer;
