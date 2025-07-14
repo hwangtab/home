@@ -1,5 +1,4 @@
 import React, { useState, memo, useCallback } from 'react';
-import { motion } from 'framer-motion';
 import { Calendar, ExternalLink, Play, BookOpen, Eye, Mic, Video } from 'lucide-react';
 import DefaultImageComponent from './DefaultImageComponent';
 import useLazyImage from '../../hooks/useLazyImage';
@@ -196,29 +195,8 @@ const UnifiedWorkCard = ({ work, onClick }) => {
   }, [onClick, work]);
 
   return (
-    <motion.article
-      className={`${STYLES.cardContainer} transform-gpu focus:outline-none focus:ring-a11y focus:ring-brand-primary-400 focus:ring-offset-a11y focus:ring-offset-gray-900 focus-visible:ring-a11y focus-visible:ring-brand-primary-400`}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ 
-        y: -8, 
-        scale: 1.03, 
-        rotateX: 3, 
-        rotateY: 2,
-        boxShadow: [
-          "0 20px 40px rgba(0, 0, 0, 0.3)",
-          "0 0 0 1px rgba(59, 130, 246, 0.2)",
-          "0 0 20px rgba(59, 130, 246, 0.1)"
-        ]
-      }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ 
-        type: "spring", 
-        stiffness: 400, 
-        damping: 25,
-        opacity: { duration: 0.4 },
-        y: { duration: 0.4 }
-      }}
+    <article
+      className={`${STYLES.cardContainer} transform-gpu hover:-translate-y-2 hover:scale-105 hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-a11y focus:ring-brand-primary-400 focus:ring-offset-a11y focus:ring-offset-gray-900 focus-visible:ring-a11y focus-visible:ring-brand-primary-400`}
       onClick={handleCardClick}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -281,7 +259,7 @@ const UnifiedWorkCard = ({ work, onClick }) => {
           <ActionButton action={primaryAction} category={category} />
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 };
 

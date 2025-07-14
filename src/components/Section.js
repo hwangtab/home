@@ -42,9 +42,8 @@ const Section = memo(({
     <motion.section 
       ref={enableScrollAnimation ? elementRef : null}
       className={`${spacingClasses[spacing]} ${backgroundClasses[background]} transform-gpu ${className}`}
-      initial={enableScrollAnimation ? 'hidden' : { opacity: 1 }}
-      animate={enableScrollAnimation ? controls : { opacity: 1 }}
-      variants={enableScrollAnimation ? variants : undefined}
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 1 }}
       style={enableParallax ? { y: parallaxY } : undefined}
     >
       <Container size={containerSize}>

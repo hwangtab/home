@@ -5,8 +5,7 @@ import MusicPlayer from '../components/MusicPlayer';
 import CardRenderer from '../components/CardRenderer';
 import WorksHeader from '../components/WorksHeader';
 import WorksGrid from '../components/WorksGrid';
-import { GridSkeleton } from '../components/ui/SkeletonUI';
-import { PageTransition, ScrollReveal } from '../components/ui/AnimatedComponents';
+import { ScrollReveal } from '../components/ui/AnimatedComponents';
 import { useWorksData } from '../hooks/useDataProcessor';
 import { useCardActions } from '../hooks/useCardActions';
 import MetaDataManager from '../components/SEO/MetaDataManager';
@@ -58,7 +57,7 @@ const Works = () => {
   }, [lightbox.openLightbox]);
 
   return (
-    <PageTransition>
+    <>
       <MetaDataManager {...seoData} />
       <Section title="작품">
         <ScrollReveal direction="up" delay={0.1}>
@@ -97,7 +96,7 @@ const Works = () => {
         isVisible={musicPlayer.musicPlayerVisible}
         onClose={musicPlayer.closeMusicPlayer}
       />
-    </PageTransition>
+    </>
   );
 };
 

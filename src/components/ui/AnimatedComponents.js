@@ -1,5 +1,5 @@
-import React, { memo, useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import React, { memo, useRef, useEffect, useState } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
 // 페이지 트랜지션 래퍼
 export const PageTransition = memo(({ children, className = '' }) => {
@@ -29,10 +29,28 @@ export const ScrollReveal = memo(({
   className = ''
 }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { 
-    once: true, 
-    margin: "-100px" 
-  });
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { 
+        threshold: 0.1,
+        rootMargin: '-100px'
+      }
+    );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
 
   const directions = {
     up: { y: distance },
@@ -254,7 +272,25 @@ export const AnimatedCounter = memo(({
   className = ''
 }) => {
   const nodeRef = useRef();
-  const inView = useInView(nodeRef, { once: true });
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const element = nodeRef.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <motion.span

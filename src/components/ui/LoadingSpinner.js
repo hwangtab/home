@@ -107,13 +107,20 @@ const LoadingSpinner = memo(({
 
 // 페이지 로딩 스피너
 export const PageLoadingSpinner = memo(({ message = '페이지를 불러오는 중...' }) => (
-  <div className="min-h-screen flex items-center justify-center bg-gray-900">
-    <LoadingSpinner 
-      size="large" 
-      color="primary" 
-      message={message}
-      variant="default"
-    />
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800 transform-gpu">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: [0.25, 0.25, 0, 1] }}
+      className="animate-optimized"
+    >
+      <LoadingSpinner 
+        size="large" 
+        color="primary" 
+        message={message}
+        variant="pulse"
+      />
+    </motion.div>
   </div>
 ));
 

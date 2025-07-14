@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import CardRenderer from '../CardRenderer';
 import { Heading2, BodyText } from '../ui/Typography';
 import { Container, Grid, Stack } from '../ui/Layout';
@@ -23,25 +23,22 @@ const YearlyView = ({ selectedYear, onCardClick }) => {
         </BodyText>
       </Stack>
       
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={selectedYear}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <Grid cols={2} gap="lg" responsive={true}>
-            {yearEvents.map((event, index) => (
-              <CardRenderer 
-                key={`${selectedYear}-${index}`} 
-                work={event} 
-                onClick={onCardClick}
-              />
-            ))}
-          </Grid>
-        </motion.div>
-      </AnimatePresence>
+      <motion.div
+        key={selectedYear}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
+      >
+        <Grid cols={2} gap="lg" responsive={true}>
+          {yearEvents.map((event, index) => (
+            <CardRenderer 
+              key={`${selectedYear}-${index}`} 
+              work={event} 
+              onClick={onCardClick}
+            />
+          ))}
+        </Grid>
+      </motion.div>
     </Container>
   );
 };

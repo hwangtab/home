@@ -9,69 +9,31 @@ import { useLocation } from 'react-router-dom';
 const PageTransition = memo(({ children }) => {
   const location = useLocation();
 
-  // 페이지별 커스텀 애니메이션 설정
-  const getPageAnimation = (pathname) => {
-    switch (pathname) {
-      case '/':
-        return {
-          initial: { opacity: 0, scale: 0.95, y: 20 },
-          animate: { opacity: 1, scale: 1, y: 0 },
-          exit: { opacity: 0, scale: 1.05, y: -20 }
-        };
-      case '/about':
-        return {
-          initial: { opacity: 0, x: -50 },
-          animate: { opacity: 1, x: 0 },
-          exit: { opacity: 0, x: 50 }
-        };
-      case '/works':
-        return {
-          initial: { opacity: 0, y: 30, rotateX: -5 },
-          animate: { opacity: 1, y: 0, rotateX: 0 },
-          exit: { opacity: 0, y: -30, rotateX: 5 }
-        };
-      case '/archive':
-        return {
-          initial: { opacity: 0, scale: 0.9 },
-          animate: { opacity: 1, scale: 1 },
-          exit: { opacity: 0, scale: 1.1 }
-        };
-      case '/news':
-        return {
-          initial: { opacity: 0, x: 30 },
-          animate: { opacity: 1, x: 0 },
-          exit: { opacity: 0, x: -30 }
-        };
-      case '/contact':
-        return {
-          initial: { opacity: 0, y: 50, scale: 0.95 },
-          animate: { opacity: 1, y: 0, scale: 1 },
-          exit: { opacity: 0, y: -50, scale: 1.05 }
-        };
-      default:
-        return {
-          initial: { opacity: 0, y: 20 },
-          animate: { opacity: 1, y: 0 },
-          exit: { opacity: 0, y: -20 }
-        };
-    }
+  // 통일된 애니메이션 설정 (깜빡임 최소화)
+  const getPageAnimation = () => {
+    return {
+      initial: { opacity: 0, y: 10 },
+      animate: { opacity: 1, y: 0 },
+      exit: { opacity: 0, y: -10 }
+    };
   };
 
-  const animation = getPageAnimation(location.pathname);
+  const animation = getPageAnimation();
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
+    <AnimatePresence mode="sync" initial={false}>
       <motion.div
         key={location.pathname}
         initial={animation.initial}
         animate={animation.animate}
         exit={animation.exit}
         transition={{
-          duration: 0.4,
+          duration: 0.2,
           ease: [0.25, 0.25, 0, 1], // cubic-bezier for smooth transitions
-          opacity: { duration: 0.3 }
+          opacity: { duration: 0.15 }
         }}
-        className="w-full"
+        className="w-full transform-gpu"
+        style={{ willChange: 'transform, opacity' }}
       >
         {children}
       </motion.div>

@@ -113,7 +113,7 @@ const Layout = ({ children }) => {
   useKeyboardNavigation();
 
   return (
-    <div className="bg-gradient-to-b from-gray-900 to-gray-800 min-h-screen font-wanted-sans text-gray-200 flex flex-col">
+    <div className="bg-gradient-to-b from-gray-900 to-gray-800 min-h-screen font-wanted-sans text-gray-200 flex flex-col transform-gpu">
       {/* 스킵 링크 */}
       <SkipLinks />
       
@@ -127,7 +127,7 @@ const Layout = ({ children }) => {
       
       <main 
         id="main-content"
-        className="container mx-auto mt-8 md:mt-12 p-4 md:p-6 flex-1"
+        className="container mx-auto mt-8 md:mt-12 p-4 md:p-6 flex-1 contain-layout"
         role="main"
         aria-label="메인 콘텐츠"
         tabIndex="-1"

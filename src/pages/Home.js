@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ExternalLink, ArrowRight, Instagram, Youtube, Play } from 'lucide-react';
+import { ArrowRight, Instagram, Youtube, Play } from 'lucide-react';
 import Section from '../components/Section';
 import AlbumMosaic from '../components/AlbumMosaic';
 import ArtisticOverlay from '../components/ArtisticOverlay';
 import MetaDataManager from '../components/SEO/MetaDataManager';
 import { usePageSEO } from '../hooks/useSEO';
-import { GridSkeleton, CardSkeleton } from '../components/ui/Skeleton';
+import { GridSkeleton } from '../components/ui/Skeleton';
 import siteData from '../data';
 
 const HeroSection = () => (
@@ -32,51 +31,28 @@ const HeroSection = () => (
       <div className="absolute inset-0 flex items-center justify-center z-20">
         <div className="text-center max-w-4xl px-6">
           {/* 메인 타이틀 */}
-          <motion.div
-            className="mb-6"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
+          <div className="mb-6">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold font-bombaram text-white mb-4 leading-none"> {/* 모바일 친화적 크기 */}
               황경하
             </h1>
             <div className="w-24 h-1 bg-gradient-to-r from-brand-primary-500 to-brand-solidarity-500 mx-auto rounded-full" />
-          </motion.div>
+          </div>
           
           {/* 아티스트 정체성 */}
-          <motion.p
-            className="text-lg sm:text-xl md:text-2xl text-gray-200 font-santokki mb-6 md:mb-8 leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-          >
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-200 font-santokki mb-6 md:mb-8 leading-relaxed">
             음악가 · 사운드 엔지니어 · 프로듀서 · 연대자
-          </motion.p>
+          </p>
           
           {/* 철학 메시지 */}
-          <motion.p
-            className="text-base sm:text-lg md:text-xl text-gray-300 font-wanted-sans mb-8 md:mb-10 leading-relaxed max-w-2xl mx-auto px-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-          >
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 font-wanted-sans mb-8 md:mb-10 leading-relaxed max-w-2xl mx-auto px-4">
             세상의 소외된 이들이 필요로 하는 순간<br className="hidden sm:block" />
             <span className="sm:hidden"> </span>
             예술을 통해 힘을 보태고자 합니다
-          </motion.p>
+          </p>
           
           {/* CTA 버튼들 */}
-          <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.1 }}
-          >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div>
               <Link 
                 to="/works" 
                 className="inline-flex items-center justify-center bg-gradient-to-r from-brand-primary-600 to-brand-primary-700 hover:from-brand-primary-500 hover:to-brand-primary-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-wanted-sans font-medium text-base sm:text-lg transition-all duration-300 shadow-lg hover:shadow-xl min-h-touch min-w-touch w-full sm:w-auto"
@@ -84,74 +60,49 @@ const HeroSection = () => (
                 작품 둘러보기
                 <ArrowRight className="ml-2" size={20} />
               </Link>
-            </motion.div>
+            </div>
             
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <div>
               <Link 
                 to="/about" 
                 className="inline-flex items-center justify-center bg-gradient-to-r from-brand-solidarity-600 to-brand-solidarity-700 hover:from-brand-solidarity-500 hover:to-brand-solidarity-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-wanted-sans font-medium text-base sm:text-lg transition-all duration-300 shadow-lg hover:shadow-xl min-h-touch min-w-touch w-full sm:w-auto"
               >
                 아티스트 소개
               </Link>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </div>
       
       {/* 소셜 링크 - 오른쪽 상단 */}
-      <motion.div
-        className="absolute top-8 right-8 z-30 flex space-x-3 transform-gpu"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.5 }}
-      >
-        <motion.a
+      <div className="absolute top-8 right-8 z-30 flex space-x-3 transform-gpu">
+        <a
           href="https://www.instagram.com/hwangtab"
           target="_blank"
           rel="noopener noreferrer"
           className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-brand-primary-500/20 hover:border-brand-primary-400/40 transition-all duration-300 transform-gpu"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
         >
           <Instagram className="w-6 h-6 text-white/80" />
-        </motion.a>
-        <motion.a
+        </a>
+        <a
           href="https://www.youtube.com/@hwangtab"
           target="_blank"
           rel="noopener noreferrer"
           className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-brand-solidarity-500/20 hover:border-brand-solidarity-400/40 transition-all duration-300 transform-gpu"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
         >
           <Youtube className="w-6 h-6 text-white/80" />
-        </motion.a>
-      </motion.div>
+        </a>
+      </div>
       
       {/* 강화된 그라데이션 오버레이 */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/70 z-10" />
       
       {/* 스크롤 인디케이터 */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1.5 }}
-      >
-        <motion.div
-          className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center"
-          animate={{ y: [0, 5, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <motion.div
-            className="w-1 h-3 bg-white/60 rounded-full mt-2"
-            animate={{ opacity: [0.4, 1, 0.4] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </motion.div>
-      </motion.div>
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30">
+        <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse" />
+        </div>
+      </div>
     </div>
   </Section>
 );
@@ -186,24 +137,15 @@ const FeaturedSingle = () => {
           </div>
           <div className="flex justify-center">
             {latestSingle.primaryAction && (
-              <motion.a
+              <a
                 href={latestSingle.primaryAction.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-brand-primary-600 hover:bg-brand-primary-700 text-white px-8 py-4 rounded-full font-wanted-sans transition-all duration-300 flex items-center justify-center text-lg font-medium transform-gpu"
-                whileHover={{ 
-                  scale: 1.05,
-                  boxShadow: [
-                    "0 0 20px rgba(59, 130, 246, 0.5)",
-                    "0 0 40px rgba(59, 130, 246, 0.3)"
-                  ]
-                }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.3 }}
               >
                 <Play className="mr-2" size={20} />
                 {latestSingle.primaryAction.label}
-              </motion.a>
+              </a>
             )}
           </div>
         </div>
@@ -237,39 +179,11 @@ const FeaturedWorks = () => {
       {isLoading ? (
         <GridSkeleton items={3} columns={3} />
       ) : (
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-50px" }}
-          variants={{
-            hidden: {},
-            show: {
-              transition: {
-                staggerChildren: 0.15,
-                delayChildren: 0.1
-              }
-            }
-          }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredWorks.map((work, index) => (
-          <motion.div 
+          <div 
             key={work.id}
-            className="bg-gray-800 p-6 rounded-lg shadow-lg transform-gpu"
-            variants={{
-              hidden: { opacity: 0, y: 40, scale: 0.9 },
-              show: { 
-                opacity: 1, 
-                y: 0, 
-                scale: 1,
-                transition: {
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 25
-                }
-              }
-            }}
-            whileHover={{ scale: 1.05 }}
+            className="bg-gray-800 p-6 rounded-lg shadow-lg transform-gpu hover:scale-105 transition-transform duration-300"
           >
             <Link to={`/works/music`}>
               <img 
@@ -284,19 +198,12 @@ const FeaturedWorks = () => {
                 {work.description}
               </p>
             </Link>
-          </motion.div>
+          </div>
           ))}
-        </motion.div>
+        </div>
       )}
       <div className="text-center mt-8">
-        <motion.div
-          whileHover={{ 
-            scale: 1.03,
-            boxShadow: "0 10px 30px rgba(75, 85, 99, 0.4)"
-          }}
-          whileTap={{ scale: 0.97 }}
-          transition={{ duration: 0.2 }}
-        >
+        <div className="hover:scale-105 transition-transform duration-200">
           <Link 
             to="/works"
             className="inline-flex items-center bg-gray-700 text-white px-8 py-4 rounded-full font-wanted-sans hover:bg-gray-600 transition-all duration-300 transform-gpu"
@@ -304,7 +211,7 @@ const FeaturedWorks = () => {
             전체 작품 보기
             <ArrowRight className="ml-2" size={20} />
           </Link>
-        </motion.div>
+        </div>
       </div>
     </Section>
   );
@@ -342,18 +249,9 @@ const QuickNavigation = () => {
     >
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {quickLinks.map((link, index) => (
-          <motion.div
+          <div
             key={link.name}
-            className="group bg-gray-800 hover:bg-gray-750 p-6 rounded-xl shadow-lg hover:shadow-2xl border border-gray-700 hover:border-gray-600 transition-all duration-300 relative overflow-hidden"
-            whileHover={{ 
-              scale: 1.05,
-              y: -4
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            whileInView="show"
-            viewport={{ once: true }}
+            className="group bg-gray-800 hover:bg-gray-750 p-6 rounded-xl shadow-lg hover:shadow-2xl border border-gray-700 hover:border-gray-600 transition-all duration-300 relative overflow-hidden hover:scale-105 hover:-translate-y-1"
           >
             {/* 브랜드 컬러 액센트 */}
             <div className={`absolute top-0 left-0 w-full h-1 bg-${link.color}-500`} />
@@ -372,15 +270,11 @@ const QuickNavigation = () => {
               </p>
               
               {/* 호버 시 화살표 */}
-              <motion.div
-                className="flex justify-end mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                initial={{ x: -10 }}
-                whileHover={{ x: 0 }}
-              >
+              <div className="flex justify-end mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <ArrowRight className={`w-5 h-5 text-${link.color}-400`} />
-              </motion.div>
+              </div>
             </Link>
-          </motion.div>
+          </div>
         ))}
       </div>
     </Section>

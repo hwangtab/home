@@ -11,9 +11,10 @@ import { SEOProvider } from './components/SEO/MetaDataManager';
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
 const Works = lazy(() => import('./pages/Works'));
-const Archive = lazy(() => import('./pages/Archive'));
 const News = lazy(() => import('./pages/News'));
 const Contact = lazy(() => import('./pages/Contact'));
+
+const Archive = lazy(() => import('./pages/Archive'));
 
 const App = () => {
   // GitHub Pages에서만 basename 사용, Vercel에서는 필요 없음
