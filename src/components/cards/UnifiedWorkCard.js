@@ -1,5 +1,67 @@
 import React, { useState, memo, useCallback } from 'react';
-import { Calendar, ExternalLink, Play, BookOpen, Eye, Mic, Video } from 'lucide-react';
+// CSS 기반 아이콘 컴포넌트들
+const CalendarIcon = ({ size = 16 }) => (
+  <div className="inline-flex items-center justify-center" style={{ width: size, height: size }}>
+    <div className="relative">
+      <div className="w-3 h-3 border border-current rounded-sm"></div>
+      <div className="absolute -top-0.5 left-0.5 w-0.5 h-1 bg-current"></div>
+      <div className="absolute -top-0.5 right-0.5 w-0.5 h-1 bg-current"></div>
+    </div>
+  </div>
+);
+
+const ExternalLinkIcon = ({ size = 16 }) => (
+  <div className="inline-flex items-center justify-center" style={{ width: size, height: size }}>
+    <div className="relative">
+      <div className="w-3 h-3 border border-current"></div>
+      <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 border-t border-r border-current"></div>
+    </div>
+  </div>
+);
+
+const PlayIcon = ({ size = 16, fill }) => (
+  <div className="inline-flex items-center justify-center" style={{ width: size, height: size }}>
+    <div className="w-0 h-0 border-l-2 border-t border-b border-current border-t-transparent border-b-transparent" 
+         style={{ borderLeftWidth: size * 0.5, borderTopWidth: size * 0.3, borderBottomWidth: size * 0.3 }}></div>
+  </div>
+);
+
+const BookOpenIcon = ({ size = 16 }) => (
+  <div className="inline-flex items-center justify-center" style={{ width: size, height: size }}>
+    <div className="relative">
+      <div className="w-3 h-2.5 border border-current border-b-0 rounded-t-sm"></div>
+      <div className="absolute top-1 left-0.5 w-2 h-0.5 bg-current opacity-60"></div>
+    </div>
+  </div>
+);
+
+const EyeIcon = ({ size = 16 }) => (
+  <div className="inline-flex items-center justify-center" style={{ width: size, height: size }}>
+    <div className="relative">
+      <div className="w-4 h-2 border border-current rounded-full"></div>
+      <div className="absolute top-0.5 left-1.5 w-1 h-1 bg-current rounded-full"></div>
+    </div>
+  </div>
+);
+
+const MicIcon = ({ size = 16 }) => (
+  <div className="inline-flex items-center justify-center" style={{ width: size, height: size }}>
+    <div className="relative">
+      <div className="w-1.5 h-2.5 border border-current rounded-full"></div>
+      <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2.5 h-1.5 border border-current border-t-0 rounded-b"></div>
+    </div>
+  </div>
+);
+
+const VideoIcon = ({ size = 16 }) => (
+  <div className="inline-flex items-center justify-center" style={{ width: size, height: size }}>
+    <div className="relative">
+      <div className="w-3 h-2 border border-current rounded-sm"></div>
+      <div className="absolute top-0.5 left-1 w-0 h-0 border-l border-t-transparent border-b-transparent border-current" 
+           style={{ borderLeftWidth: 4, borderTopWidth: 2, borderBottomWidth: 2 }}></div>
+    </div>
+  </div>
+);
 import DefaultImageComponent from './DefaultImageComponent';
 import useLazyImage from '../../hooks/useLazyImage';
 import { CardSkeleton } from '../ui/Skeleton';
@@ -11,18 +73,18 @@ const getAssetPath = (path) => {
 };
 
 const CATEGORY_CONFIG = {
-  music: { icon: Play, color: 'bg-brand-primary-600', defaultSvg: getAssetPath('/images/defaults/music-default.svg') },
-  writing: { icon: BookOpen, color: 'bg-brand-earth-600', defaultSvg: getAssetPath('/images/defaults/writing-default.svg') },
-  visual: { icon: Eye, color: 'bg-brand-harmony-600', defaultSvg: getAssetPath('/images/defaults/visual-default.svg') },
-  performance: { icon: Mic, color: 'bg-brand-solidarity-600', defaultSvg: getAssetPath('/images/defaults/performance-default.svg') }
+  music: { icon: PlayIcon, color: 'bg-brand-primary-600', defaultSvg: getAssetPath('/images/defaults/music-default.svg') },
+  writing: { icon: BookOpenIcon, color: 'bg-brand-earth-600', defaultSvg: getAssetPath('/images/defaults/writing-default.svg') },
+  visual: { icon: EyeIcon, color: 'bg-brand-harmony-600', defaultSvg: getAssetPath('/images/defaults/visual-default.svg') },
+  performance: { icon: MicIcon, color: 'bg-brand-solidarity-600', defaultSvg: getAssetPath('/images/defaults/performance-default.svg') }
 };
 
 const ACTION_CONFIG = {
-  play: Play,
-  read: BookOpen,
-  view: Eye,
-  watch: Video,
-  link: ExternalLink
+  play: PlayIcon,
+  read: BookOpenIcon,
+  view: EyeIcon,
+  watch: VideoIcon,
+  link: ExternalLinkIcon
 };
 
 // 스타일 상수 - 모바일 최적화된 카드 디자인
@@ -72,7 +134,7 @@ const TypeBadge = memo(({ type, category }) => {
   
   // visual 카테고리에서 video 타입 처리
   const IconComponent = (category === 'visual' && (type === 'video' || type === '다큐멘터리')) 
-    ? Video 
+    ? VideoIcon 
     : config.icon;
   
   const label = category === 'music' ? (type === 'album' ? '앨범' : '싱글')
@@ -124,8 +186,8 @@ const CardImage = memo(({ cover, title, category, type }) => {
       {isVideo && isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300">
           <div className="transform scale-75 group-hover:scale-100 transition-transform duration-300">
-            <div className="bg-white bg-opacity-90 rounded-full p-3">
-              <Play className="text-gray-900" size={24} fill="currentColor" />
+            <div className="bg-white bg-opacity-90 rounded-full p-3 text-gray-900">
+              <PlayIcon size={24} />
             </div>
           </div>
         </div>
@@ -137,7 +199,7 @@ const CardImage = memo(({ cover, title, category, type }) => {
 const ActionButton = memo(({ action, category }) => {
   if (!action) return null;
 
-  const IconComponent = ACTION_CONFIG[action.type] || ExternalLink;
+  const IconComponent = ACTION_CONFIG[action.type] || ExternalLinkIcon;
   
   // Get category-specific colors from CATEGORY_CONFIG
   const categoryConfig = CATEGORY_CONFIG[category] || CATEGORY_CONFIG.music;
@@ -217,7 +279,7 @@ const UnifiedWorkCard = ({ work, onClick }) => {
         <div className="flex items-center justify-between mb-4"> {/* 모바일에서 더 큰 마진 */}
           <TypeBadge type={type} category={category} />
           <div className="flex items-center gap-1 text-gray-400 text-base"> {/* 모바일에서 더 큰 텍스트 */}
-            <Calendar size={16} />
+            <CalendarIcon size={16} />
             <span>{year}년</span>
           </div>
         </div>
