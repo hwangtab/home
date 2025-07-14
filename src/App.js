@@ -15,8 +15,10 @@ const News = lazy(() => import('./pages/News'));
 const Contact = lazy(() => import('./pages/Contact'));
 
 const App = () => {
-  // basename은 배포 환경에서만 사용
-  const basename = process.env.NODE_ENV === 'production' ? '/home' : '';
+  // GitHub Pages에서만 basename 사용, Vercel에서는 필요 없음
+  const isGitHubPages = process.env.NODE_ENV === 'production' && 
+    window.location.hostname === 'hwangtab.github.io';
+  const basename = isGitHubPages ? '/home' : '';
   
   return (
     <LanguageProvider>

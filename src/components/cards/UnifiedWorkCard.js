@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, ExternalLink, Play, BookOpen, Eye, Mic, Video } from 'lucide-react';
 import DefaultImageComponent from './DefaultImageComponent';
+import useLazyImage from '../../hooks/useLazyImage';
 
 // 설정 객체들
+const getAssetPath = (path) => {
+  const publicUrl = process.env.PUBLIC_URL || '';
+  return `${publicUrl}${path}`;
+};
+
 const CATEGORY_CONFIG = {
-  music: { icon: Play, color: 'bg-blue-600', defaultSvg: `${process.env.PUBLIC_URL}/images/defaults/music-default.svg` },
-  writing: { icon: BookOpen, color: 'bg-green-600', defaultSvg: `${process.env.PUBLIC_URL}/images/defaults/writing-default.svg` },
-  visual: { icon: Eye, color: 'bg-purple-600', defaultSvg: `${process.env.PUBLIC_URL}/images/defaults/visual-default.svg` },
-  performance: { icon: Mic, color: 'bg-red-600', defaultSvg: `${process.env.PUBLIC_URL}/images/defaults/performance-default.svg` }
+  music: { icon: Play, color: 'bg-blue-600', defaultSvg: getAssetPath('/images/defaults/music-default.svg') },
+  writing: { icon: BookOpen, color: 'bg-green-600', defaultSvg: getAssetPath('/images/defaults/writing-default.svg') },
+  visual: { icon: Eye, color: 'bg-purple-600', defaultSvg: getAssetPath('/images/defaults/visual-default.svg') },
+  performance: { icon: Mic, color: 'bg-red-600', defaultSvg: getAssetPath('/images/defaults/performance-default.svg') }
 };
 
 const ACTION_CONFIG = {
@@ -61,7 +67,7 @@ const useImageFallback = (cover, category, title) => {
   };
 };
 
-const TypeBadge = ({ type, category }) => {
+const TypeBadge = memo(({ type, category }) => {
   const config = CATEGORY_CONFIG[category] || { icon: null, color: 'bg-gray-600' };
   
   // visual 카테고리에서 video 타입 처리
@@ -79,10 +85,11 @@ const TypeBadge = ({ type, category }) => {
       <span>{label}</span>
     </div>
   );
-};
+});
 
-const CardImage = ({ cover, title, category, type }) => {
+const CardImage = memo(({ cover, title, category, type }) => {
   const imageProps = useImageFallback(cover, category, title);
+  const { imgRef, isLoaded, shouldLoad, error } = useLazyImage(imageProps.src);
   const isVideo = type === 'video' || type === '다큐멘터리';
 
   // CSS 컴포넌트 폴백
@@ -91,17 +98,30 @@ const CardImage = ({ cover, title, category, type }) => {
   }
 
   return (
-    <div className={STYLES.imageContainer}>
-      <img
-        src={imageProps.src}
-        alt={title}
-        className={STYLES.image}
-        onError={imageProps.onError}
-      />
+    <div ref={imgRef} className={STYLES.imageContainer}>
+      {/* 스켈레톤 로딩 */}
+      {!isLoaded && shouldLoad && (
+        <div className="absolute inset-0 bg-gray-700 animate-pulse flex items-center justify-center">
+          <div className="w-12 h-12 border-4 border-gray-600 border-t-gray-400 rounded-full animate-spin" />
+        </div>
+      )}
+      
+      {/* 이미지 로드 완료 시에만 표시 */}
+      {shouldLoad && (
+        <img
+          src={imageProps.src}
+          alt={title}
+          className={`${STYLES.image} ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
+          onLoad={() => {/* 이미 useLazyImage에서 처리됨 */}}
+          onError={imageProps.onError}
+          loading="lazy"
+        />
+      )}
+      
       <div className={STYLES.gradient} />
       
       {/* Video play overlay */}
-      {isVideo && (
+      {isVideo && isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300">
           <div className="transform scale-75 group-hover:scale-100 transition-transform duration-300">
             <div className="bg-white bg-opacity-90 rounded-full p-3">
@@ -112,9 +132,9 @@ const CardImage = ({ cover, title, category, type }) => {
       )}
     </div>
   );
-};
+});
 
-const ActionButton = ({ action }) => {
+const ActionButton = memo(({ action }) => {
   if (!action) return null;
 
   const IconComponent = ACTION_CONFIG[action.type] || ExternalLink;
@@ -130,7 +150,7 @@ const ActionButton = ({ action }) => {
       <span>{action.label}</span>
     </a>
   );
-};
+});
 
 const UnifiedWorkCard = ({ work, onClick }) => {
   const {
@@ -151,11 +171,11 @@ const UnifiedWorkCard = ({ work, onClick }) => {
     ? displayDescription.substring(0, 100) + '...' 
     : displayDescription;
 
-  const handleCardClick = (e) => {
+  const handleCardClick = useCallback((e) => {
     // Don't trigger card click if clicking on action button
     if (e.target.closest('a')) return;
     if (onClick) onClick(work);
-  };
+  }, [onClick, work]);
 
   return (
     <motion.div
@@ -213,4 +233,4 @@ const UnifiedWorkCard = ({ work, onClick }) => {
   );
 };
 
-export default UnifiedWorkCard;
+export default memo(UnifiedWorkCard);
