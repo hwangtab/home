@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../i18n';
 import LanguageToggle from './LanguageToggle';
 import MobileMenu from './ui/MobileMenu';
@@ -7,6 +8,7 @@ import PageIndicator from './ui/PageIndicator';
 import SkipLinks from './accessibility/SkipLinks';
 import ScrollProgress from './ui/ScrollProgress';
 import PageTransition from './transitions/PageTransition';
+import CustomCursor from './effects/CustomCursor';
 import useSwipeNavigation from '../hooks/useSwipeNavigation';
 import useKeyboardNavigation from '../hooks/useKeyboardNavigation';
 
@@ -107,33 +109,50 @@ const Layout = ({ children }) => {
   useKeyboardNavigation();
 
   return (
-    <div className="bg-gradient-to-b from-gray-900 to-gray-800 min-h-screen font-wanted-sans text-gray-200 flex flex-col transform-gpu">
+    <motion.div 
+      className="bg-gradient-to-b from-gray-900 to-gray-800 min-h-screen font-wanted-sans text-gray-200 flex flex-col transform-gpu"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{
+        duration: 0.5,
+        ease: 'easeOut'
+      }}
+    >
       {/* 스킵 링크 */}
       <SkipLinks />
       
       {/* 스크롤 진행률 인디케이터 */}
       <ScrollProgress />
       
+      {/* 개선된 커스텀 커서 (성능 최적화) */}
+      <CustomCursor />
       
       <Header />
       
-      <main 
+      <motion.main 
         id="main-content"
         className="container mx-auto mt-8 md:mt-12 p-4 md:p-6 flex-1 contain-layout"
         role="main"
         aria-label="메인 콘텐츠"
         tabIndex="-1"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.6,
+          ease: [0.25, 0.1, 0.25, 1],
+          delay: 0.2
+        }}
       >
         <PageTransition>
           {children}
         </PageTransition>
-      </main>
+      </motion.main>
       
       <Footer />
       
       {/* 모바일 페이지 인디케이터 */}
       <PageIndicator />
-    </div>
+    </motion.div>
   );
 };
 
