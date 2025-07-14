@@ -26,11 +26,8 @@ const Header = () => {
   ];
 
   return (
-    <motion.header 
+    <header 
       className="bg-gradient-to-r from-gray-900 via-gray-850 to-gray-800 text-white py-6 px-6 sticky top-0 z-50 transform-gpu border-b border-brand-primary-500/10"
-      initial={{ opacity: 0, y: -50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
       role="banner"
       aria-label="사이트 헤더"
     >
@@ -40,16 +37,15 @@ const Header = () => {
           aria-label="황경하 홈페이지로 이동"
           className="focus:outline-none focus:ring-a11y focus:ring-brand-primary-400 focus:ring-offset-a11y focus:ring-offset-gray-900 rounded-lg focus-visible:ring-a11y focus-visible:ring-brand-primary-400"
         >
-          <motion.h1 
-            className="text-5xl font-bold font-bombaram transform-gpu"
-            animate={{ y: 12 }}
-            whileHover={{ scale: 1.05, y: 12 }}
+          <h1 
+            className="text-5xl font-bold font-bombaram transform-gpu hover:scale-105 transition-transform duration-200"
             style={{ 
-              lineHeight: '1'
+              lineHeight: '1',
+              transform: 'translateY(12px)'
             }}
           >
             황경하
-          </motion.h1>
+          </h1>
         </Link>
         
         <div className="flex items-center space-x-6">
@@ -62,10 +58,10 @@ const Header = () => {
           >
             <ul className="flex space-x-6" role="menubar">
               {navigation.map((item) => (
-                <motion.li key={item.name} whileHover={{ scale: 1.1 }} role="none">
+                <li key={item.name} role="none">
                   <Link 
                     to={item.path} 
-                    className={`hover:text-brand-primary-300 transition duration-300 font-wanted-sans text-lg relative focus:outline-none focus:ring-a11y focus:ring-brand-primary-400 focus:ring-offset-a11y focus:ring-offset-gray-900 rounded-md px-2 py-1 focus-visible:ring-a11y focus-visible:ring-brand-primary-400 ${
+                    className={`hover:text-brand-primary-300 hover:scale-110 transition-all duration-200 font-wanted-sans text-lg relative focus:outline-none focus:ring-a11y focus:ring-brand-primary-400 focus:ring-offset-a11y focus:ring-offset-gray-900 rounded-md px-2 py-1 focus-visible:ring-a11y focus-visible:ring-brand-primary-400 inline-block ${
                       location.pathname === item.path ? 'text-brand-primary-400' : ''
                     }`}
                     role="menuitem"
@@ -73,7 +69,7 @@ const Header = () => {
                   >
                     {item.name}
                   </Link>
-                </motion.li>
+                </li>
               ))}
             </ul>
           </nav>
@@ -85,7 +81,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </motion.header>
+    </header>
   );
 };
 
