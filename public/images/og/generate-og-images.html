@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OG 이미지 생성기</title>
+    <style>
+        body { 
+            font-family: 'Arial', sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: #f5f5f5; 
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        .og-canvas { 
+            width: 600px; 
+            height: 315px; 
+            border: 1px solid #ddd; 
+            margin: 20px 0; 
+            display: block; 
+        }
+        button { 
+            background: #1f2937; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            margin: 5px; 
+        }
+        button:hover { 
+            background: #374151; 
+        }
+        .preview { 
+            margin: 20px 0; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>황경하 OG 이미지 생성기</h1>
+        <p>아래 캔버스에서 생성된 이미지를 우클릭하여 저장하세요.</p>
+        
+        <div class="preview">
+            <h3>홈페이지 OG 이미지</h3>
+            <canvas id="homeCanvas" class="og-canvas"></canvas>
+            <br>
+            <button onclick="generateHomeOG()">홈 이미지 생성</button>
+            <button onclick="downloadCanvas('homeCanvas', 'home-og.jpg')">다운로드</button>
+        </div>
+
+        <div class="preview">
+            <h3>작품 페이지 OG 이미지</h3>
+            <canvas id="worksCanvas" class="og-canvas"></canvas>
+            <br>
+            <button onclick="generateWorksOG()">작품 이미지 생성</button>
+            <button onclick="downloadCanvas('worksCanvas', 'works-og.jpg')">다운로드</button>
+        </div>
+
+        <div class="preview">
+            <h3>기본 OG 이미지</h3>
+            <canvas id="defaultCanvas" class="og-canvas"></canvas>
+            <br>
+            <button onclick="generateDefaultOG()">기본 이미지 생성</button>
+            <button onclick="downloadCanvas('defaultCanvas', 'default-og.jpg')">다운로드</button>
+        </div>
+    </div>
+
+    <script>
+        function generateHomeOG() {
+            const canvas = document.getElementById('homeCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 1200;
+            canvas.height = 630;
+
+            // 배경 그라데이션
+            const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
+            gradient.addColorStop(0, '#1f2937');
+            gradient.addColorStop(0.5, '#374151');
+            gradient.addColorStop(1, '#111827');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1200, 630);
+
+            // 스포트라이트 효과
+            const spotlight = ctx.createRadialGradient(600, 250, 0, 600, 250, 400);
+            spotlight.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
+            spotlight.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = spotlight;
+            ctx.fillRect(0, 0, 1200, 630);
+
+            // 메인 텍스트
+            ctx.fillStyle = '#f9fafb';
+            ctx.font = 'bold 84px serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('황경하', 600, 240);
+
+            // 서브타이틀
+            ctx.fillStyle = '#d1d5db';
+            ctx.font = '42px sans-serif';
+            ctx.fillText('Official Web', 600, 320);
+
+            // 설명
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = '28px sans-serif';
+            ctx.fillText('현장에서 예술이 힘을 갖는 순간을 주목하는', 600, 390);
+
+            // 역할
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '24px sans-serif';
+            ctx.fillText('음악가 · 사운드 엔지니어 · 프로듀서', 600, 440);
+
+            // 키워드
+            ctx.fillStyle = '#4b5563';
+            ctx.font = '20px sans-serif';
+            ctx.fillText('연대 • 민중음악 • 젠트리피케이션 • 사회적 저항', 600, 510);
+
+            // 장식 라인
+            ctx.strokeStyle = '#4b5563';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(400, 360);
+            ctx.lineTo(800, 360);
+            ctx.stroke();
+        }
+
+        function generateWorksOG() {
+            const canvas = document.getElementById('worksCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 1200;
+            canvas.height = 630;
+
+            // 배경 그라데이션
+            const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
+            gradient.addColorStop(0, 'rgba(30, 58, 138, 0.8)');
+            gradient.addColorStop(0.5, '#1f2937');
+            gradient.addColorStop(1, '#0f172a');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1200, 630);
+
+            // 메인 타이틀
+            const textGradient = ctx.createLinearGradient(0, 0, 1200, 0);
+            textGradient.addColorStop(0, '#93c5fd');
+            textGradient.addColorStop(1, '#e0e7ff');
+            ctx.fillStyle = textGradient;
+            ctx.font = 'bold 84px serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('작품', 600, 200);
+
+            // 아티스트명
+            ctx.fillStyle = '#e2e8f0';
+            ctx.font = '48px serif';
+            ctx.fillText('황경하', 600, 280);
+
+            // 설명
+            ctx.fillStyle = '#cbd5e1';
+            ctx.font = '32px sans-serif';
+            ctx.fillText('사회적 메시지를 담은 음악과 글', 600, 360);
+
+            // 주요 작품
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '24px sans-serif';
+            ctx.fillText('젠트리피케이션 · 민중음악 선곡집 · 몸의 중심', 600, 420);
+
+            // 카테고리
+            ctx.fillStyle = '#64748b';
+            ctx.font = '20px sans-serif';
+            ctx.fillText('음악 • 글 • 사진 • 공연', 600, 480);
+
+            // 장식 요소
+            ctx.fillStyle = '#3b82f6';
+            ctx.fillRect(200, 330, 60, 2);
+            ctx.fillRect(940, 330, 60, 2);
+        }
+
+        function generateDefaultOG() {
+            const canvas = document.getElementById('defaultCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 1200;
+            canvas.height = 630;
+
+            // 배경 그라데이션
+            const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
+            gradient.addColorStop(0, '#1f2937');
+            gradient.addColorStop(0.5, '#374151');
+            gradient.addColorStop(1, '#111827');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1200, 630);
+
+            // 메인 텍스트
+            const textGradient = ctx.createLinearGradient(0, 0, 1200, 0);
+            textGradient.addColorStop(0, '#f9fafb');
+            textGradient.addColorStop(1, '#d1d5db');
+            ctx.fillStyle = textGradient;
+            ctx.font = 'bold 72px serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('황경하', 600, 280);
+
+            // 서브타이틀
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = '36px sans-serif';
+            ctx.fillText('Official Web', 600, 350);
+
+            // 설명
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '24px sans-serif';
+            ctx.fillText('음악가 · 사운드 엔지니어 · 프로듀서', 600, 420);
+
+            // 키워드
+            ctx.fillStyle = '#4b5563';
+            ctx.font = '18px sans-serif';
+            ctx.fillText('연대 · 민중음악 · 사회적 메시지', 600, 480);
+        }
+
+        function downloadCanvas(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/jpeg', 0.9);
+            link.click();
+        }
+
+        // 페이지 로드 시 모든 이미지 생성
+        window.onload = function() {
+            generateHomeOG();
+            generateWorksOG();
+            generateDefaultOG();
+        };
+    </script>
+</body>
+</html>

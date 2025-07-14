@@ -4,13 +4,24 @@ import DataRenderer, { RENDER_TYPES } from '../components/DataRenderer';
 import { Heading3, Heading4, BodyText, SmallText } from '../components/ui/Typography';
 import { Grid, Stack, Card } from '../components/ui/Layout';
 import { useWorksData } from '../hooks/useDataProcessor';
+import MetaDataManager from '../components/SEO/MetaDataManager';
+import { usePageSEO } from '../hooks/useSEO';
 import siteData from '../data';
 
 const About = () => {
   const { timelineData } = useWorksData(siteData.works, 'about');
+  
+  // SEO 메타데이터
+  const seoData = usePageSEO({
+    title: '소개 - 황경하',
+    description: '황경하는 현장에서 글, 음악, 사진 등의 예술이 힘을 갖는 순간에 주목하여 활동하는 음악가입니다. 세상의 소외된 이들과 함께합니다.',
+    keywords: ['황경하', '아티스트', '프로필', '음악가', '연대', '사회운동', '예술가'],
+    image: '/images/og/about-og.jpg'
+  });
 
   return (
     <div>
+      <MetaDataManager {...seoData} />
       <Section title="소개">
         <Card variant="default" padding="xl" shadow="default">
           <DataRenderer 

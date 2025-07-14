@@ -5,104 +5,116 @@ import { motion } from 'framer-motion';
 const TYPOGRAPHY_SCALES = {
   // 헤딩
   h1: {
-    fontSize: 'text-4xl md:text-5xl lg:text-6xl',
+    fontSize: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl', // 모바일에서 더 큰 시작 크기
     fontWeight: 'font-bold',
-    lineHeight: 'leading-tight',
+    lineHeight: 'leading-[1.1]',
     letterSpacing: 'tracking-tight',
-    fontFamily: 'font-bombaram'
+    fontFamily: 'font-bombaram',
+    marginBottom: 'mb-4 md:mb-6' // 모바일에서 더 작은 마진
   },
   h2: {
-    fontSize: 'text-3xl md:text-4xl lg:text-5xl',
+    fontSize: 'text-xl sm:text-2xl md:text-3xl lg:text-4xl', // 모바일 친화적 크기
     fontWeight: 'font-bold',
-    lineHeight: 'leading-tight',
+    lineHeight: 'leading-[1.2]',
     letterSpacing: 'tracking-tight',
-    fontFamily: 'font-santokki'
+    fontFamily: 'font-santokki',
+    marginBottom: 'mb-3 md:mb-4'
   },
   h3: {
     fontSize: 'text-2xl md:text-3xl lg:text-4xl',
     fontWeight: 'font-bold',
-    lineHeight: 'leading-snug',
+    lineHeight: 'leading-[1.2]',
     letterSpacing: 'tracking-normal',
-    fontFamily: 'font-santokki'
+    fontFamily: 'font-santokki',
+    marginBottom: 'mb-4'
   },
   h4: {
     fontSize: 'text-xl md:text-2xl lg:text-3xl',
     fontWeight: 'font-bold',
-    lineHeight: 'leading-snug',
+    lineHeight: 'leading-[1.25]',
     letterSpacing: 'tracking-normal',
-    fontFamily: 'font-santokki'
+    fontFamily: 'font-santokki',
+    marginBottom: 'mb-3'
   },
   h5: {
     fontSize: 'text-lg md:text-xl lg:text-2xl',
     fontWeight: 'font-semibold',
-    lineHeight: 'leading-normal',
+    lineHeight: 'leading-[1.3]',
     letterSpacing: 'tracking-normal',
-    fontFamily: 'font-wanted-sans'
+    fontFamily: 'font-wanted-sans',
+    marginBottom: 'mb-3'
   },
   h6: {
     fontSize: 'text-base md:text-lg lg:text-xl',
     fontWeight: 'font-semibold',
-    lineHeight: 'leading-normal',
+    lineHeight: 'leading-[1.35]',
     letterSpacing: 'tracking-normal',
-    fontFamily: 'font-wanted-sans'
+    fontFamily: 'font-wanted-sans',
+    marginBottom: 'mb-2'
   },
   
   // 본문
   body1: {
     fontSize: 'text-base md:text-lg',
     fontWeight: 'font-normal',
-    lineHeight: 'leading-relaxed',
-    letterSpacing: 'tracking-normal',
-    fontFamily: 'font-wanted-sans'
+    lineHeight: 'leading-[1.65]',
+    letterSpacing: 'tracking-[0.01em]',
+    fontFamily: 'font-wanted-sans',
+    marginBottom: 'mb-4'
   },
   body2: {
     fontSize: 'text-sm md:text-base',
     fontWeight: 'font-normal',
-    lineHeight: 'leading-relaxed',
-    letterSpacing: 'tracking-normal',
-    fontFamily: 'font-wanted-sans'
+    lineHeight: 'leading-[1.6]',
+    letterSpacing: 'tracking-[0.01em]',
+    fontFamily: 'font-wanted-sans',
+    marginBottom: 'mb-3'
   },
   
   // 캡션
   caption: {
     fontSize: 'text-xs md:text-sm',
     fontWeight: 'font-normal',
-    lineHeight: 'leading-normal',
+    lineHeight: 'leading-[1.4]',
     letterSpacing: 'tracking-wide',
-    fontFamily: 'font-wanted-sans'
+    fontFamily: 'font-wanted-sans',
+    marginBottom: 'mb-2'
   },
   
   // 오버라인
   overline: {
     fontSize: 'text-xs',
     fontWeight: 'font-medium',
-    lineHeight: 'leading-none',
+    lineHeight: 'leading-[1.2]',
     letterSpacing: 'tracking-widest',
     fontFamily: 'font-wanted-sans',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    marginBottom: 'mb-1'
   },
   
   // 버튼 텍스트
   button: {
     fontSize: 'text-sm md:text-base',
     fontWeight: 'font-medium',
-    lineHeight: 'leading-none',
-    letterSpacing: 'tracking-wide',
+    lineHeight: 'leading-[1.2]',
+    letterSpacing: 'tracking-[0.02em]',
     fontFamily: 'font-wanted-sans'
   }
 };
 
-// 색상 변형
+// 색상 변형 - contrast 개선
 const COLOR_VARIANTS = {
-  primary: 'text-gray-100',
-  secondary: 'text-gray-300',
+  primary: 'text-gray-50',
+  secondary: 'text-gray-200',
   muted: 'text-gray-400',
   accent: 'text-blue-400',
+  'accent-hover': 'text-blue-300',
   success: 'text-green-400',
   warning: 'text-yellow-400',
   error: 'text-red-400',
   white: 'text-white',
-  disabled: 'text-gray-500'
+  disabled: 'text-gray-500',
+  subtitle: 'text-gray-300'
 };
 
 // 정렬 옵션
@@ -135,6 +147,7 @@ const Typography = memo(forwardRef(({
     scale.letterSpacing,
     scale.fontFamily,
     scale.textTransform,
+    scale.marginBottom,
     colorClass,
     alignClass,
     className

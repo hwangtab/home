@@ -70,10 +70,14 @@ export const Grid = memo(forwardRef(({
 
   const gapClasses = {
     none: 'gap-0',
+    xs: 'gap-1',
     sm: 'gap-2',
     default: 'gap-4',
-    lg: 'gap-6',
-    xl: 'gap-8'
+    md: 'gap-6',
+    lg: 'gap-8',
+    xl: 'gap-12',
+    '2xl': 'gap-16',
+    '3xl': 'gap-20'
   };
 
   const classes = [
@@ -127,10 +131,14 @@ export const Flex = memo(forwardRef(({
 
   const gapClasses = {
     none: 'gap-0',
+    xs: 'gap-1',
     sm: 'gap-2',
     default: 'gap-4',
-    lg: 'gap-6',
-    xl: 'gap-8'
+    md: 'gap-6',
+    lg: 'gap-8',
+    xl: 'gap-12',
+    '2xl': 'gap-16',
+    '3xl': 'gap-20'
   };
 
   const classes = [
@@ -160,11 +168,14 @@ export const Stack = memo(forwardRef(({
 }, ref) => {
   const spacingClasses = {
     none: 'space-y-0',
+    xs: 'space-y-1',
     sm: 'space-y-2',
     default: 'space-y-4',
-    lg: 'space-y-6',
-    xl: 'space-y-8',
-    '2xl': 'space-y-12'
+    md: 'space-y-6',
+    lg: 'space-y-8',
+    xl: 'space-y-12',
+    '2xl': 'space-y-16',
+    '3xl': 'space-y-20'
   };
 
   const alignClasses = {

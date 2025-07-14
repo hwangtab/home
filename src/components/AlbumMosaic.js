@@ -218,6 +218,7 @@ const AlbumMosaic = memo(({
               rotate: tile.rotation + 3,
               zIndex: 10,
               filter: 'blur(0px) brightness(1.1) saturate(1.3)',
+              boxShadow: '0 0 20px rgba(59, 130, 246, 0.4)',
               transition: { duration: 0.2 }
             } : {}}
             onClick={() => handleTileClick(tile)}
@@ -237,19 +238,24 @@ const AlbumMosaic = memo(({
                 e.target.style.display = 'none';
               }}
             />
-            {/* 호버 시 정보 표시 */}
+            {/* 호버 시 정보 표시 - 개선된 디자인 */}
             {enableHover && (
               <motion.div
-                className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center opacity-0"
+                className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent flex items-end justify-center opacity-0"
                 whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.3 }}
               >
-                <div className="text-center text-white p-2">
+                <div className="text-center text-white p-2 w-full">
+                  <div className="mb-1">
+                    <div className="w-6 h-6 mx-auto mb-1 bg-brand-primary-500/20 rounded-full flex items-center justify-center border border-brand-primary-400/40">
+                      <div className="w-0 h-0 border-l-[6px] border-r-0 border-t-[3px] border-b-[3px] border-l-white border-t-transparent border-b-transparent ml-0.5" />
+                    </div>
+                  </div>
                   <p className="font-wanted-sans text-xs font-bold truncate">
                     {tile.title}
                   </p>
                   <p className="font-wanted-sans text-xs opacity-75">
-                    {tile.year}
+                    {tile.year} · {tile.type === 'album' ? '앨범' : '싱글'}
                   </p>
                 </div>
               </motion.div>

@@ -9,11 +9,21 @@ import { GridSkeleton } from '../components/ui/SkeletonUI';
 import { PageTransition, ScrollReveal } from '../components/ui/AnimatedComponents';
 import { useWorksData } from '../hooks/useDataProcessor';
 import { useCardActions } from '../hooks/useCardActions';
+import MetaDataManager from '../components/SEO/MetaDataManager';
+import { usePageSEO } from '../hooks/useSEO';
 import siteData from '../data';
 
 
 const Works = () => {
   const [activeFilter, setActiveFilter] = useState('all');
+
+  // SEO 메타데이터
+  const seoData = usePageSEO({
+    title: '작품 - 황경하',
+    description: '황경하의 음악 작품들을 만나보세요. 젠트리피케이션, 민중음악 선곡집, 몸의 중심 등 사회적 메시지를 담은 음반과 글들을 소개합니다.',
+    keywords: ['황경하', '음반', '앨범', '민중음악', '연대', '작품', '젠트리피케이션', '몸의중심'],
+    image: '/images/og/works-og.jpg'
+  });
 
   // 통합 데이터 처리 훅 사용
   const { categorizedData, getWorksByCategory } = useWorksData(siteData.works, 'works');
@@ -49,6 +59,7 @@ const Works = () => {
 
   return (
     <PageTransition>
+      <MetaDataManager {...seoData} />
       <Section title="작품">
         <ScrollReveal direction="up" delay={0.1}>
           <WorksHeader 

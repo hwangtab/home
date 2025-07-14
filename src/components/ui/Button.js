@@ -2,42 +2,57 @@ import React, { memo, forwardRef } from 'react';
 import { motion } from 'framer-motion';
 import { ButtonLoadingSpinner } from './LoadingSpinner';
 
-// 버튼 변형 스타일 정의
+// 버튼 변형 스타일 정의 - 브랜드 컬러 시스템 적용
 const BUTTON_VARIANTS = {
   primary: {
-    base: 'bg-blue-600 hover:bg-blue-700 text-white',
-    disabled: 'bg-gray-600 text-gray-300 cursor-not-allowed',
-    loading: 'bg-blue-600 text-white cursor-wait'
+    base: 'bg-gradient-to-r from-brand-primary-600 to-brand-primary-700 hover:from-brand-primary-500 hover:to-brand-primary-600 text-white shadow-lg hover:shadow-xl border border-brand-primary-500/20 hover:border-brand-primary-400/30',
+    disabled: 'bg-gray-600 text-gray-300 cursor-not-allowed opacity-50',
+    loading: 'bg-gradient-to-r from-brand-primary-600 to-brand-primary-700 text-white cursor-wait'
+  },
+  solidarity: {
+    base: 'bg-gradient-to-r from-brand-solidarity-600 to-brand-solidarity-700 hover:from-brand-solidarity-500 hover:to-brand-solidarity-600 text-white shadow-lg hover:shadow-xl border border-brand-solidarity-500/20 hover:border-brand-solidarity-400/30',
+    disabled: 'bg-gray-600 text-gray-300 cursor-not-allowed opacity-50',
+    loading: 'bg-gradient-to-r from-brand-solidarity-600 to-brand-solidarity-700 text-white cursor-wait'
+  },
+  earth: {
+    base: 'bg-gradient-to-r from-brand-earth-600 to-brand-earth-700 hover:from-brand-earth-500 hover:to-brand-earth-600 text-white shadow-lg hover:shadow-xl border border-brand-earth-500/20 hover:border-brand-earth-400/30',
+    disabled: 'bg-gray-600 text-gray-300 cursor-not-allowed opacity-50',
+    loading: 'bg-gradient-to-r from-brand-earth-600 to-brand-earth-700 text-white cursor-wait'
+  },
+  harmony: {
+    base: 'bg-gradient-to-r from-brand-harmony-600 to-brand-harmony-700 hover:from-brand-harmony-500 hover:to-brand-harmony-600 text-white shadow-lg hover:shadow-xl border border-brand-harmony-500/20 hover:border-brand-harmony-400/30',
+    disabled: 'bg-gray-600 text-gray-300 cursor-not-allowed opacity-50',
+    loading: 'bg-gradient-to-r from-brand-harmony-600 to-brand-harmony-700 text-white cursor-wait'
   },
   secondary: {
-    base: 'bg-gray-600 hover:bg-gray-700 text-white',
-    disabled: 'bg-gray-700 text-gray-400 cursor-not-allowed',
-    loading: 'bg-gray-600 text-white cursor-wait'
+    base: 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600 text-white shadow-md hover:shadow-lg border border-gray-500/20 hover:border-gray-400/30',
+    disabled: 'bg-gray-700 text-gray-400 cursor-not-allowed opacity-50',
+    loading: 'bg-gradient-to-r from-gray-600 to-gray-700 text-white cursor-wait'
   },
   accent: {
-    base: 'bg-purple-600 hover:bg-purple-700 text-white',
-    disabled: 'bg-gray-600 text-gray-300 cursor-not-allowed',
-    loading: 'bg-purple-600 text-white cursor-wait'
+    base: 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white shadow-md hover:shadow-lg border border-purple-500/20 hover:border-purple-400/30',
+    disabled: 'bg-gray-600 text-gray-300 cursor-not-allowed opacity-50',
+    loading: 'bg-gradient-to-r from-purple-600 to-purple-700 text-white cursor-wait'
   },
   outline: {
-    base: 'border-2 border-gray-400 hover:border-gray-300 bg-transparent text-gray-300 hover:text-white hover:bg-gray-800',
-    disabled: 'border-gray-600 text-gray-500 cursor-not-allowed',
+    base: 'border-2 border-gray-400 hover:border-blue-400 bg-transparent text-gray-300 hover:text-blue-300 hover:bg-blue-500/10 backdrop-blur-sm transition-all duration-300',
+    disabled: 'border-gray-600 text-gray-500 cursor-not-allowed opacity-50',
     loading: 'border-gray-400 text-gray-300 cursor-wait'
   },
   ghost: {
-    base: 'bg-transparent hover:bg-gray-800 text-gray-300 hover:text-white',
-    disabled: 'text-gray-500 cursor-not-allowed',
+    base: 'bg-transparent hover:bg-gradient-to-r hover:from-gray-800/50 hover:to-gray-700/50 text-gray-300 hover:text-white backdrop-blur-sm border border-transparent hover:border-gray-600/30',
+    disabled: 'text-gray-500 cursor-not-allowed opacity-50',
     loading: 'text-gray-300 cursor-wait'
   },
   danger: {
-    base: 'bg-red-600 hover:bg-red-700 text-white',
-    disabled: 'bg-gray-600 text-gray-300 cursor-not-allowed',
-    loading: 'bg-red-600 text-white cursor-wait'
+    base: 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white shadow-md hover:shadow-lg border border-red-500/20 hover:border-red-400/30',
+    disabled: 'bg-gray-600 text-gray-300 cursor-not-allowed opacity-50',
+    loading: 'bg-gradient-to-r from-red-600 to-red-700 text-white cursor-wait'
   },
   success: {
-    base: 'bg-green-600 hover:bg-green-700 text-white',
-    disabled: 'bg-gray-600 text-gray-300 cursor-not-allowed',
-    loading: 'bg-green-600 text-white cursor-wait'
+    base: 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-white shadow-md hover:shadow-lg border border-green-500/20 hover:border-green-400/30',
+    disabled: 'bg-gray-600 text-gray-300 cursor-not-allowed opacity-50',
+    loading: 'bg-gradient-to-r from-green-600 to-green-700 text-white cursor-wait'
   }
 };
 
@@ -50,26 +65,52 @@ const BUTTON_SIZES = {
   xl: 'px-8 py-4 text-lg'
 };
 
-// 애니메이션 변형
+// 애니메이션 변형 - 향상된 마이크로 인터랙션
 const buttonAnimations = {
   default: {
-    whileHover: { scale: 1.02 },
-    whileTap: { scale: 0.98 },
-    transition: { duration: 0.1 }
+    whileHover: { scale: 1.03, y: -1 },
+    whileTap: { scale: 0.97, y: 0 },
+    transition: { duration: 0.15, ease: "easeOut" }
   },
   bounce: {
-    whileHover: { scale: 1.05, y: -2 },
+    whileHover: { scale: 1.05, y: -3 },
     whileTap: { scale: 0.95, y: 0 },
-    transition: { type: "spring", stiffness: 400, damping: 10 }
+    transition: { type: "spring", stiffness: 400, damping: 12 }
   },
   slide: {
-    whileHover: { x: 4 },
-    whileTap: { x: 0 },
-    transition: { duration: 0.2 }
+    whileHover: { x: 4, scale: 1.02 },
+    whileTap: { x: 0, scale: 0.98 },
+    transition: { duration: 0.2, ease: "easeOut" }
   },
   pulse: {
     whileHover: { scale: [1, 1.05, 1] },
-    transition: { duration: 0.3, repeat: Infinity }
+    transition: { duration: 0.6, repeat: Infinity, ease: "easeInOut" }
+  },
+  subtle: {
+    whileHover: { scale: 1.01, brightness: 1.1 },
+    whileTap: { scale: 0.99 },
+    transition: { duration: 0.2 }
+  },
+  magnetic: {
+    whileHover: { 
+      scale: 1.05, 
+      y: -2,
+      boxShadow: "0 10px 30px rgba(59, 130, 246, 0.3)"
+    },
+    whileTap: { scale: 0.95 },
+    transition: { type: "spring", stiffness: 400, damping: 15 }
+  },
+  glow: {
+    whileHover: { 
+      scale: 1.02,
+      boxShadow: [
+        "0 0 20px rgba(59, 130, 246, 0.5)",
+        "0 0 40px rgba(59, 130, 246, 0.3)",
+        "0 0 60px rgba(59, 130, 246, 0.1)"
+      ]
+    },
+    whileTap: { scale: 0.98 },
+    transition: { duration: 0.3 }
   }
 };
 
@@ -78,7 +119,7 @@ const Button = memo(forwardRef(({
   children,
   variant = 'primary',
   size = 'md',
-  animation = 'default',
+  animation = 'magnetic',
   loading = false,
   disabled = false,
   fullWidth = false,
@@ -106,9 +147,14 @@ const Button = memo(forwardRef(({
     'inline-flex items-center justify-center',
     'font-wanted-sans font-medium',
     'rounded-lg',
-    'transition-all duration-200',
-    'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900',
-    'focus:ring-blue-500',
+    'transition-all duration-300 ease-out',
+    'focus:outline-none focus:ring-a11y focus:ring-offset-a11y focus:ring-offset-gray-900',
+    'focus:ring-brand-primary-400 focus:ring-opacity-80',
+    'transform-gpu',
+    'backdrop-blur-sm',
+    // 접근성 개선
+    'focus-visible:ring-a11y focus-visible:ring-brand-primary-400',
+    'focus-visible:ring-offset-a11y focus-visible:ring-offset-gray-900',
     sizeStyles,
     getStateStyles(),
     fullWidth ? 'w-full' : '',
@@ -201,8 +247,10 @@ export const IconButton = memo(forwardRef(({
     'inline-flex items-center justify-center',
     'rounded-full',
     'transition-all duration-200',
-    'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900',
-    'focus:ring-blue-500',
+    'focus:outline-none focus:ring-a11y focus:ring-offset-a11y focus:ring-offset-gray-900',
+    'focus:ring-brand-primary-400 focus:ring-opacity-80',
+    'focus-visible:ring-a11y focus-visible:ring-brand-primary-400',
+    'focus-visible:ring-offset-a11y focus-visible:ring-offset-gray-900',
     sizeMap[size],
     getStateStyles(),
     className

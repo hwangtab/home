@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>파비콘 생성기</title>
+    <style>
+        body { 
+            font-family: 'Arial', sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: #f5f5f5; 
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        .favicon-preview { 
+            display: inline-block; 
+            margin: 10px; 
+            text-align: center; 
+            border: 1px solid #ddd; 
+            padding: 10px; 
+            border-radius: 4px; 
+        }
+        .favicon-canvas { 
+            border: 1px solid #ccc; 
+            display: block; 
+            margin: 10px auto; 
+        }
+        button { 
+            background: #1f2937; 
+            color: white; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            margin: 5px; 
+            font-size: 12px; 
+        }
+        button:hover { 
+            background: #374151; 
+        }
+        .size-label { 
+            font-weight: bold; 
+            margin-bottom: 5px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>황경하 파비콘 생성기</h1>
+        <p>다양한 크기의 파비콘을 생성합니다. 각 캔버스를 우클릭하여 저장하세요.</p>
+        
+        <div id="faviconContainer"></div>
+        
+        <button onclick="generateAllFavicons()" style="font-size: 16px; padding: 12px 24px;">모든 파비콘 생성</button>
+    </div>
+
+    <script>
+        const sizes = [
+            { size: 16, name: 'favicon-16x16.png' },
+            { size: 32, name: 'favicon-32x32.png' },
+            { size: 48, name: 'favicon-48x48.png' },
+            { size: 64, name: 'favicon-64x64.png' },
+            { size: 128, name: 'favicon-128x128.png' },
+            { size: 180, name: 'apple-touch-icon.png' },
+            { size: 192, name: 'android-chrome-192x192.png' },
+            { size: 512, name: 'android-chrome-512x512.png' }
+        ];
+
+        function createFaviconPreview(size, name) {
+            const container = document.getElementById('faviconContainer');
+            
+            const preview = document.createElement('div');
+            preview.className = 'favicon-preview';
+            
+            const label = document.createElement('div');
+            label.className = 'size-label';
+            label.textContent = `${size}x${size}px`;
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            canvas.className = 'favicon-canvas';
+            canvas.id = `favicon-${size}`;
+            
+            const button = document.createElement('button');
+            button.textContent = '다운로드';
+            button.onclick = () => downloadCanvas(`favicon-${size}`, name);
+            
+            preview.appendChild(label);
+            preview.appendChild(canvas);
+            preview.appendChild(button);
+            container.appendChild(preview);
+            
+            return canvas;
+        }
+
+        function generateFavicon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            const radius = size / 2 - 1;
+            const center = size / 2;
+            
+            // 배경 원 그라데이션
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#3b82f6');
+            gradient.addColorStop(1, '#1e40af');
+            
+            // 배경 원
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(center, center, radius, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // 테두리
+            ctx.strokeStyle = '#1f2937';
+            ctx.lineWidth = Math.max(1, size / 16);
+            ctx.stroke();
+            
+            // 한글 "ㅎ" 디자인 (크기에 따라 조정)
+            const scale = size / 32;
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = 'none';
+            
+            // 상단 가로선
+            const lineHeight = Math.max(1, 2 * scale);
+            ctx.fillRect(8 * scale, 10 * scale, 16 * scale, lineHeight);
+            
+            // 왼쪽 세로선
+            ctx.fillRect(10 * scale, 8 * scale, lineHeight, 8 * scale);
+            
+            // 오른쪽 세로선
+            ctx.fillRect(20 * scale, 8 * scale, lineHeight, 8 * scale);
+            
+            // 하단 가로 연결선
+            ctx.fillRect(10 * scale, 16 * scale, 12 * scale, lineHeight);
+            
+            // 하단 중앙 세로선
+            ctx.fillRect(15 * scale, 18 * scale, lineHeight, 6 * scale);
+            
+            // 작은 음표 액센트 (큰 사이즈에서만)
+            if (size >= 32) {
+                ctx.globalAlpha = 0.6;
+                ctx.beginPath();
+                ctx.arc(22 * scale, 22 * scale, 1.5 * scale, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                if (size >= 64) {
+                    ctx.fillRect(23.5 * scale, 19 * scale, 0.5 * scale, 3 * scale);
+                }
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        function generateAllFavicons() {
+            sizes.forEach(({ size, name }) => {
+                const canvas = document.getElementById(`favicon-${size}`) || createFaviconPreview(size, name);
+                generateFavicon(canvas, size);
+            });
+        }
+
+        function downloadCanvas(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // 페이지 로드 시 모든 프리뷰 생성
+        window.onload = function() {
+            sizes.forEach(({ size, name }) => {
+                createFaviconPreview(size, name);
+            });
+            generateAllFavicons();
+        };
+    </script>
+</body>
+</html>
