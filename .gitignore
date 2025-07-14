@@ -23,6 +23,9 @@ build/
 # 환경 변수
 .env
 
+# MCP 설정 (로컬 전용)
+.mcp.json
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
