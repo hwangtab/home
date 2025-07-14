@@ -24,8 +24,8 @@ export const ScrollReveal = memo(({
   children, 
   direction = 'up',
   delay = 0,
-  duration = 0.6,
-  distance = 50,
+  duration = 0.4, // 0.6 -> 0.4로 단축
+  distance = 30, // 50px -> 30px로 단축
   className = ''
 }) => {
   const ref = useRef(null);
@@ -43,7 +43,7 @@ export const ScrollReveal = memo(({
       },
       { 
         threshold: 0.1,
-        rootMargin: '-100px'
+        rootMargin: '-50px' // -100px -> -50px로 단축 (더 빠른 트리거)
       }
     );
 
@@ -62,7 +62,7 @@ export const ScrollReveal = memo(({
   return (
     <motion.div
       ref={ref}
-      className={className}
+      className={`transform-gpu ${className}`} // GPU 가속 추가
       initial={{ 
         opacity: 0, 
         ...directions[direction] 
@@ -75,7 +75,11 @@ export const ScrollReveal = memo(({
       transition={{
         duration,
         delay,
-        ease: [0.25, 0.25, 0, 1]
+        ease: [0.25, 0.1, 0.25, 1] // 더 빠른 easing
+      }}
+      style={{
+        willChange: 'transform, opacity', // 브라우저 최적화 힌트
+        backfaceVisibility: 'hidden' // 깜빡임 방지
       }}
     >
       {children}
@@ -115,16 +119,16 @@ export const StaggerItem = memo(({
   className = ''
 }) => {
   const directions = {
-    up: { y: 20 },
-    down: { y: -20 },
-    left: { x: 20 },
-    right: { x: -20 },
-    scale: { scale: 0.8 }
+    up: { y: 15 }, // 20px -> 15px로 단축
+    down: { y: -15 },
+    left: { x: 15 },
+    right: { x: -15 },
+    scale: { scale: 0.9 } // 0.8 -> 0.9로 단축
   };
 
   return (
     <motion.div
-      className={className}
+      className={`transform-gpu ${className}`} // GPU 가속 추가
       variants={{
         hidden: { 
           opacity: 0, 
@@ -136,10 +140,14 @@ export const StaggerItem = memo(({
           y: 0, 
           scale: 1,
           transition: {
-            duration: 0.5,
-            ease: [0.25, 0.25, 0, 1]
+            duration: 0.3, // 0.5 -> 0.3으로 단축
+            ease: [0.25, 0.1, 0.25, 1] // 더 빠른 easing
           }
         }
+      }}
+      style={{
+        willChange: 'transform, opacity', // 브라우저 최적화 힌트
+        backfaceVisibility: 'hidden' // 깜빡임 방지
       }}
     >
       {children}

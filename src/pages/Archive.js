@@ -60,7 +60,6 @@ const Archive = () => {
     <div>
       <Section 
         title="아카이브"
-        subtitle="2004년부터 현재까지, 20년간의 예술 활동을 기록합니다."
         titleAlign="center"
       >
         <Flex justify="center" gap="default" className="mb-8">

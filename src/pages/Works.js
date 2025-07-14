@@ -60,7 +60,7 @@ const Works = () => {
     <>
       <MetaDataManager {...seoData} />
       <Section title="작품">
-        <ScrollReveal direction="up" delay={0.1}>
+        <ScrollReveal direction="up" delay={0.05}>
           <WorksHeader 
             activeFilter={activeFilter}
             setActiveFilter={setActiveFilter}
@@ -72,7 +72,7 @@ const Works = () => {
         </ScrollReveal>
 
         
-        <ScrollReveal direction="up" delay={0.3}>
+        <ScrollReveal direction="up" delay={0.1}>
           <WorksGrid 
             filteredWorks={filteredWorks}
             activeFilter={activeFilter}

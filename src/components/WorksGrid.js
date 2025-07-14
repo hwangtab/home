@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GridSkeleton } from './ui/SkeletonUI';
 import { StaggerContainer, StaggerItem } from './ui/AnimatedComponents';
@@ -11,6 +11,24 @@ const WorksGrid = memo(({
   isLoading = false,
   skeletonCount = 6
 }) => {
+  // 점진적 로딩을 위한 상태
+  const [visibleCount, setVisibleCount] = useState(6); // 첫 6개만 즉시 표시
+  const [showAll, setShowAll] = useState(false);
+  
+  // 필터 변경 시 초기화
+  useEffect(() => {
+    setVisibleCount(6);
+    setShowAll(false);
+    
+    // 0.2초 후 모든 카드 표시
+    const timer = setTimeout(() => {
+      setShowAll(true);
+      setVisibleCount(filteredWorks.length);
+    }, 200);
+    
+    return () => clearTimeout(timer);
+  }, [activeFilter, filteredWorks.length]);
+  
   // 로딩 상태
   if (isLoading) {
     return (
@@ -21,6 +39,7 @@ const WorksGrid = memo(({
       />
     );
   }
+  
   if (filteredWorks.length === 0) {
     return (
       <div className="text-center py-12">
@@ -31,14 +50,17 @@ const WorksGrid = memo(({
     );
   }
 
+  // 표시할 작품들 (점진적 로딩)
+  const worksToShow = showAll ? filteredWorks : filteredWorks.slice(0, visibleCount);
+
   return (
     <AnimatePresence mode="wait">
       <StaggerContainer 
         key={activeFilter}
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch"
-        staggerDelay={0.08}
+        staggerDelay={0.03}
       >
-        {filteredWorks.map((work, index) => (
+        {worksToShow.map((work, index) => (
           <StaggerItem
             key={work.id || `${work.type}-${index}`}
             direction="up"
@@ -47,6 +69,21 @@ const WorksGrid = memo(({
           </StaggerItem>
         ))}
       </StaggerContainer>
+      
+      {/* 나머지 카드들 점진적 로딩 */}
+      {!showAll && filteredWorks.length > visibleCount && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-center mt-8"
+        >
+          <div className="inline-flex items-center gap-2 text-gray-400 font-wanted-sans">
+            <div className="w-2 h-2 bg-brand-primary-400 rounded-full animate-pulse"></div>
+            <span>더 많은 작품 로딩 중...</span>
+          </div>
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 });

@@ -27,7 +27,7 @@ const useLazyImage = (src, options = {}) => {
       },
       {
         threshold: 0.1, // 10%만 보여도 로드 시작
-        rootMargin: '50px', // 50px 미리 로드
+        rootMargin: '20px', // 20px 미리 로드 (성능 최적화)
         ...options
       }
     );
@@ -44,15 +44,24 @@ const useLazyImage = (src, options = {}) => {
   useEffect(() => {
     if (!isInView || !src) return;
 
-    // 이미지 프리로드
+    // 이미지 프리로드 (성능 최적화)
     const img = new Image();
     
+    // 즉시 로딩 상태 표시로 체감 성능 향상
+    const loadingTimer = setTimeout(() => {
+      if (!isLoaded && !error) {
+        setIsLoaded(true); // 일단 로딩 상태 해제
+      }
+    }, 100); // 100ms 후 강제 로딩 완료
+    
     img.onload = () => {
+      clearTimeout(loadingTimer);
       setIsLoaded(true);
       setError(false);
     };
     
     img.onerror = () => {
+      clearTimeout(loadingTimer);
       setError(true);
       setIsLoaded(false);
     };
@@ -60,10 +69,11 @@ const useLazyImage = (src, options = {}) => {
     img.src = src;
 
     return () => {
+      clearTimeout(loadingTimer);
       img.onload = null;
       img.onerror = null;
     };
-  }, [isInView, src]);
+  }, [isInView, src, isLoaded, error]);
 
   return {
     imgRef,

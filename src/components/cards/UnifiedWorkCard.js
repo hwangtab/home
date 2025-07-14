@@ -67,7 +67,7 @@ const useImageFallback = (cover, category, title) => {
   };
 };
 
-const TypeBadge = memo(({ type, category }) => {
+const TypeBadge = ({ type, category }) => {
   const config = CATEGORY_CONFIG[category] || { icon: null, color: 'bg-gray-600' };
   
   // visual 카테고리에서 video 타입 처리
@@ -85,9 +85,9 @@ const TypeBadge = memo(({ type, category }) => {
       <span>{label}</span>
     </div>
   );
-});
+};
 
-const CardImage = memo(({ cover, title, category, type }) => {
+const CardImage = ({ cover, title, category, type }) => {
   const imageProps = useImageFallback(cover, category, title);
   const { imgRef, isLoaded, shouldLoad, error } = useLazyImage(imageProps.src);
   const isVideo = type === 'video' || type === '다큐멘터리';
@@ -132,9 +132,9 @@ const CardImage = memo(({ cover, title, category, type }) => {
       )}
     </div>
   );
-});
+};
 
-const ActionButton = memo(({ action, category }) => {
+const ActionButton = ({ action, category }) => {
   if (!action) return null;
 
   const IconComponent = ACTION_CONFIG[action.type] || ExternalLink;
@@ -167,7 +167,7 @@ const ActionButton = memo(({ action, category }) => {
       <span>{action.label}</span>
     </a>
   );
-});
+};
 
 const UnifiedWorkCard = ({ work, onClick }) => {
   const {

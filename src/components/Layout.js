@@ -8,7 +8,6 @@ import PageIndicator from './ui/PageIndicator';
 import SkipLinks from './accessibility/SkipLinks';
 import ScrollProgress from './ui/ScrollProgress';
 import PageTransition from './transitions/PageTransition';
-import CustomCursor from './effects/CustomCursor';
 import useSwipeNavigation from '../hooks/useSwipeNavigation';
 import useKeyboardNavigation from '../hooks/useKeyboardNavigation';
 
@@ -124,8 +123,6 @@ const Layout = ({ children }) => {
       {/* 스크롤 진행률 인디케이터 */}
       <ScrollProgress />
       
-      {/* 개선된 커스텀 커서 (성능 최적화) */}
-      <CustomCursor />
       
       <Header />
       

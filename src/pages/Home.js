@@ -257,15 +257,15 @@ const QuickNavigation = () => {
             <div className={`absolute top-0 left-0 w-full h-1 bg-${link.color}-500`} />
             
             <Link to={link.path} className="block">
-              <div className="flex items-center mb-4">
-                <div className={`w-12 h-12 bg-${link.color}-500/10 rounded-lg flex items-center justify-center mr-4 group-hover:bg-${link.color}-500/20 transition-colors duration-300`}>
+              <div className="flex flex-col items-center mb-4">
+                <div className={`w-12 h-12 bg-${link.color}-500/10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-${link.color}-500/20 transition-colors duration-300`}>
                   <span className="text-2xl">{link.icon}</span>
                 </div>
-                <h3 className={`text-xl font-bold text-gray-200 group-hover:text-${link.color}-300 font-santokki transition-colors duration-300`}>
+                <h3 className={`text-xl font-bold text-gray-200 group-hover:text-${link.color}-300 font-santokki transition-colors duration-300 text-center`}>
                   {link.name}
                 </h3>
               </div>
-              <p className="text-gray-400 group-hover:text-gray-300 font-wanted-sans transition-colors duration-300">
+              <p className="text-gray-400 group-hover:text-gray-300 font-wanted-sans transition-colors duration-300 text-center">
                 {link.description}
               </p>
               
