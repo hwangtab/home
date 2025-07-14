@@ -1,12 +1,5 @@
 import React, { useState, memo, useCallback } from 'react';
-// 선별적 import로 번들 크기 최적화
-import { Calendar } from 'lucide-react/dist/esm/icons/calendar';
-import { ExternalLink } from 'lucide-react/dist/esm/icons/external-link';
-import { Play } from 'lucide-react/dist/esm/icons/play';
-import { BookOpen } from 'lucide-react/dist/esm/icons/book-open';
-import { Eye } from 'lucide-react/dist/esm/icons/eye';
-import { Mic } from 'lucide-react/dist/esm/icons/mic';
-import { Video } from 'lucide-react/dist/esm/icons/video';
+import { Calendar, ExternalLink, Play, BookOpen, Eye, Mic, Video } from 'lucide-react';
 import DefaultImageComponent from './DefaultImageComponent';
 import useLazyImage from '../../hooks/useLazyImage';
 import { CardSkeleton } from '../ui/Skeleton';

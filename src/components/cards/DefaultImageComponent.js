@@ -1,9 +1,5 @@
 import React from 'react';
-// 선별적 import로 번들 크기 최적화
-import { Music } from 'lucide-react/dist/esm/icons/music';
-import { BookOpen } from 'lucide-react/dist/esm/icons/book-open';
-import { Camera } from 'lucide-react/dist/esm/icons/camera';
-import { Mic } from 'lucide-react/dist/esm/icons/mic';
+import { Music, BookOpen, Camera, Mic } from 'lucide-react';
 
 const DefaultImageComponent = ({ category, title }) => {
   const getIconAndColor = () => {
