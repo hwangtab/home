@@ -11,14 +11,25 @@ const SimpleLoadingFallback = () => (
   <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800" />
 );
 
-// 코드 스플리팅을 위한 lazy loading
-const Home = lazy(() => import('./pages/Home'));
-const About = lazy(() => import('./pages/About'));
-const Works = lazy(() => import('./pages/Works'));
-const News = lazy(() => import('./pages/News'));
-const Contact = lazy(() => import('./pages/Contact'));
-
-const Archive = lazy(() => import('./pages/Archive'));
+// 코드 스플리팅을 위한 최적화된 lazy loading
+const Home = lazy(() => 
+  import('./pages/Home').catch(() => ({ default: () => <div>Loading...</div> }))
+);
+const About = lazy(() => 
+  import('./pages/About').catch(() => ({ default: () => <div>Loading...</div> }))
+);
+const Works = lazy(() => 
+  import('./pages/Works').catch(() => ({ default: () => <div>Loading...</div> }))
+);
+const News = lazy(() => 
+  import('./pages/News').catch(() => ({ default: () => <div>Loading...</div> }))
+);
+const Contact = lazy(() => 
+  import('./pages/Contact').catch(() => ({ default: () => <div>Loading...</div> }))
+);
+const Archive = lazy(() => 
+  import('./pages/Archive').catch(() => ({ default: () => <div>Loading...</div> }))
+);
 
 const App = () => {
   // GitHub Pages에서만 basename 사용, Vercel에서는 필요 없음
