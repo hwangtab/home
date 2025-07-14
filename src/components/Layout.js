@@ -6,7 +6,6 @@ import MobileMenu from './ui/MobileMenu';
 import PageIndicator from './ui/PageIndicator';
 import SkipLinks from './accessibility/SkipLinks';
 import ScrollProgress from './ui/ScrollProgress';
-import CustomCursor from './effects/CustomCursor';
 import PageTransition from './transitions/PageTransition';
 import useSwipeNavigation from '../hooks/useSwipeNavigation';
 import useKeyboardNavigation from '../hooks/useKeyboardNavigation';
@@ -115,8 +114,6 @@ const Layout = ({ children }) => {
       {/* 스크롤 진행률 인디케이터 */}
       <ScrollProgress />
       
-      {/* 커스텀 커서 */}
-      <CustomCursor />
       
       <Header />
       
