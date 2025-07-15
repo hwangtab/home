@@ -117,6 +117,15 @@ module.exports = {
         'scale-in': 'scaleIn 0.3s ease-out',
         'pulse-soft': 'pulseSoft 2s infinite',
       },
+      boxShadow: {
+        '3xl': '0 35px 60px -12px rgba(0, 0, 0, 0.25)',
+      },
+      scale: {
+        '102': '1.02',
+      },
+      perspective: {
+        '1000': '1000px',
+      },
       // 모바일 터치 최적화
       minHeight: {
         'touch': '44px',  // 최소 터치 영역 44px
@@ -132,6 +141,10 @@ module.exports = {
       },
       ringOffsetWidth: {
         'a11y': '2px',  // 접근성 권장 오프셋
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       keyframes: {
         fadeIn: {

@@ -42,7 +42,7 @@ const ArtisticOverlay = ({ className = '' }) => {
     <div className={`absolute inset-0 pointer-events-none ${className}`}>
       {/* 그라디언트 노이즈 오버레이 */}
       <div 
-        className="absolute inset-0 opacity-20 mix-blend-overlay"
+        className="absolute inset-0 opacity-15 mix-blend-overlay"
         style={{
           background: `
             radial-gradient(circle at ${mousePosition.x * 100}% ${mousePosition.y * 100}%, 
@@ -61,7 +61,7 @@ const ArtisticOverlay = ({ className = '' }) => {
 
       {/* 필름 그레인 효과 */}
       <div 
-        className="absolute inset-0 opacity-15 mix-blend-multiply animate-pulse"
+        className="absolute inset-0 opacity-10 mix-blend-multiply animate-pulse"
         style={{
           backgroundImage: `
             radial-gradient(circle, transparent 1px, rgba(255,255,255,0.1) 1px),
@@ -74,7 +74,7 @@ const ArtisticOverlay = ({ className = '' }) => {
 
       {/* 동적 색상 스플래시 */}
       <motion.div
-        className="absolute inset-0 mix-blend-color-dodge opacity-10"
+        className="absolute inset-0 mix-blend-color-dodge opacity-8"
         animate={{
           background: [
             'radial-gradient(ellipse at 20% 80%, rgba(120,119,198,0.3) 0%, transparent 70%)',
@@ -118,7 +118,7 @@ const ArtisticOverlay = ({ className = '' }) => {
 
       {/* 빈티지 비네팅 */}
       <div 
-        className="absolute inset-0 opacity-40"
+        className="absolute inset-0 opacity-30"
         style={{
           background: `
             radial-gradient(ellipse at center, 
@@ -130,34 +130,11 @@ const ArtisticOverlay = ({ className = '' }) => {
         }}
       />
 
-      {/* 아날로그 스캔라인 */}
-      <motion.div
-        className="absolute inset-0 opacity-10 mix-blend-overlay"
-        animate={{
-          backgroundPosition: ['0% 0%', '0% 100%']
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-        style={{
-          background: `
-            repeating-linear-gradient(
-              0deg,
-              transparent,
-              transparent 2px,
-              rgba(255,255,255,0.05) 2px,
-              rgba(255,255,255,0.05) 4px
-            )
-          `,
-          backgroundSize: '100% 200%'
-        }}
-      />
+      {/* 아날로그 스캔라인 - 비활성화 (잔상 방지) */}
 
       {/* 인터랙티브 라이트 */}
       <motion.div
-        className="absolute w-96 h-96 opacity-20 mix-blend-screen rounded-full blur-3xl"
+        className="absolute w-96 h-96 opacity-15 mix-blend-screen rounded-full blur-3xl"
         style={{
           background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)',
           left: `${mousePosition.x * 100}%`,
