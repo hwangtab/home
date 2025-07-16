@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
-import { motion } from 'framer-motion';
 
-// 기본 스켈레톤 컴포넌트
+// 기본 스켈레톤 컴포넌트 - 경량화된 CSS 애니메이션
 export const Skeleton = memo(({ 
   width = 'w-full', 
   height = 'h-4', 
@@ -17,27 +16,13 @@ export const Skeleton = memo(({
 
   const skeletonClasses = [
     'bg-gray-700',
-    'animate-pulse',
+    animate ? 'animate-pulse' : '',
     variants[variant],
     width,
     height,
+    'skeleton-optimized', // 성능 최적화를 위한 클래스
     className
   ].filter(Boolean).join(' ');
-
-  if (animate) {
-    return (
-      <motion.div
-        className={skeletonClasses}
-        initial={{ opacity: 0.6 }}
-        animate={{ opacity: [0.6, 1, 0.6] }}
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-    );
-  }
 
   return <div className={skeletonClasses} />;
 });

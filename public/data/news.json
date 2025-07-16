@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "lastUpdated": "2025-07-13",
+    "version": "3.1.0"
+  },
+  "news": [
+    {
+      "id": "new-single-2024",
+      "title": "새 싱글 '눈녹듯' 발매",
+      "date": "2024-07-05",
+      "content": "자식을 잃은 어머니의 가슴 저미는 아픔을 담은 새 싱글 '눈녹듯'을 발매했습니다.",
+      "featured": true
+    }
+  ],
+  "events": {
+    "concerts": [
+      {
+        "id": "upcoming-tbd",
+        "title": "예정 없음",
+        "date": "2024년 모월 모일",
+        "location": "미정",
+        "ticketUrl": "https://www.instagram.com/podopodopo/",
+        "status": "upcoming"
+      }
+    ]
+  }
+}

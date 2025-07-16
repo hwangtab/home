@@ -30,7 +30,7 @@ const CardGridRenderer = memo(({
   }
 
   return (
-    <div className={`grid ${columns} gap-6 items-stretch`}>
+    <div className={`grid ${columns} gap-2 sm:gap-4 md:gap-6 items-stretch`}>
       {data.map((item, index) => (
         <motion.div
           key={item[itemKey] || `item-${index}`}
@@ -61,15 +61,15 @@ const TimelineRenderer = memo(({
     <div className="space-y-8">
       {sortedData.map((yearData) => (
         <div key={yearData[yearKey]} className="relative">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-2 sm:mb-4">
             <div className="bg-gray-600 rounded-full w-4 h-4 mr-4"></div>
             <h4 className="text-xl font-bold text-gray-200 font-santokki">
               {yearData[yearKey]}
             </h4>
           </div>
-          <div className="ml-8 space-y-3">
+          <div className="ml-2 sm:ml-4 md:ml-8 space-y-2 sm:space-y-3">
             {yearData[eventsKey].map((event, index) => (
-              <div key={index} className="bg-gray-700 p-4 rounded-lg">
+              <div key={index} className="bg-gray-700 p-2 sm:p-4 rounded-lg">
                 {renderEvent ? renderEvent(event, index) : (
                   <div>
                     <h5 className="font-bold text-gray-200 font-wanted-sans mb-1">
@@ -121,8 +121,8 @@ const EventCardRenderer = memo(({
   };
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg h-full flex flex-col">
-      <div className="flex items-start space-x-4 flex-1">
+    <div className="bg-gray-800 p-3 sm:p-6 rounded-lg shadow-lg h-full flex flex-col">
+      <div className="flex items-start space-x-2 sm:space-x-4 flex-1">
         {showIcon && (
           <div className={`p-3 rounded-full ${getEventColor ? getEventColor(event.type) : defaultGetColor(event.type)} flex-shrink-0`}>
             {getEventIcon ? getEventIcon(event.type) : defaultGetIcon(event.type)}
@@ -151,26 +151,26 @@ const ProfileRenderer = memo(({
   const isHorizontal = layout === 'horizontal';
 
   return (
-    <div className={`flex ${isHorizontal ? 'flex-col md:flex-row' : 'flex-col'} items-stretch gap-8`}>
-      <div className={`${isHorizontal ? 'w-full md:w-1/3' : 'w-full'} flex flex-col justify-center`}>
+    <div className={`flex ${isHorizontal ? 'flex-col lg:flex-row' : 'flex-col'} items-start gap-2 sm:gap-4 lg:gap-8`}>
+      <div className={`${isHorizontal ? 'w-full lg:max-w-xs lg:flex-shrink-0' : 'w-full'} flex flex-col justify-center`}>
         <motion.img
           src={imageSrc}
           alt={imageAlt}
-          className="w-full h-auto rounded-lg shadow-lg object-cover"
+          className="w-full h-auto max-w-xs mx-auto lg:mx-0 rounded-lg shadow-lg object-cover"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         />
       </div>
-      <div className={`${isHorizontal ? 'w-full md:w-2/3' : 'w-full'} flex flex-col justify-center`}>
+      <div className={`${isHorizontal ? 'w-full lg:flex-1 min-w-0' : 'w-full'} flex flex-col justify-center`}>
         {Array.isArray(profile) ? (
           profile.map((paragraph, index) => (
-            <p key={index} className="text-lg text-gray-300 leading-relaxed mb-4">
+            <p key={index} className="text-sm sm:text-base lg:text-lg text-gray-300 leading-relaxed mb-2 sm:mb-4 lg:mb-6 font-wanted-sans break-words">
               {paragraph}
             </p>
           ))
         ) : (
-          <p className="text-lg text-gray-300 leading-relaxed mb-4">
+          <p className="text-sm sm:text-base lg:text-lg text-gray-300 leading-relaxed mb-2 sm:mb-4 lg:mb-6 font-wanted-sans break-words">
             {profile}
           </p>
         )}
@@ -191,7 +191,7 @@ const SimpleListRenderer = memo(({
       {data.map((item, index) => (
         <div key={item[itemKey] || `item-${index}`}>
           {renderItem ? renderItem(item, index) : (
-            <div className="bg-gray-700 p-4 rounded-lg">
+            <div className="bg-gray-700 p-2 sm:p-4 rounded-lg">
               <h4 className="font-bold text-gray-200 font-wanted-sans">
                 {item.title || item.name}
               </h4>

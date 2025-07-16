@@ -1,0 +1,305 @@
+{
+  "metadata": {
+    "lastUpdated": "2025-07-13",
+    "version": "3.1.0"
+  },
+  "works": {
+    "music": [
+      {
+        "id": "gentrification-2016",
+        "title": "젠트리피케이션",
+        "year": 2016,
+        "type": "album",
+        "featured": true,
+        "cover": "https://koreanmusicawards.com/wp-content/uploads/2021/01/2017_gentrification.jpg",
+        "description": "옥바라지골목, 요기가갤러리, 통영생선구이, 뽀빠이화원, 나무그늘, 경의선공유지, 테이크아웃드로잉 등 강제로 쫓겨나 사라질 위기에 처한 소중한 공간들과 마주하여 음악가들과 그 곳의 이야기를 담아 음악을 연주하고 기록했습니다.",
+        "shortDescription": "젠트리피케이션으로 사라져가는 소중한 공간들의 이야기를 담은 음반",
+        "primaryAction": {
+          "type": "play",
+          "url": "https://www.melon.com/album/music.htm?albumId=10003221",
+          "label": "음악 듣기"
+        },
+        "tags": [
+          "gentrification",
+          "solidarity",
+          "urban"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "music",
+        "sortPriority": 1
+      },
+      {
+        "id": "new-minjung-vol3-2017",
+        "title": "새 민중음악 선곡집 vol.3",
+        "year": 2017,
+        "type": "album",
+        "featured": true,
+        "cover": "http://archivenew.vop.co.kr/images/05670d4ecb375286541262cf7e14b0aa/2018-01/24032527_8.jpg",
+        "description": "3번째 새 민중음악 선곡집은 최근 무리한 강제집행으로 인해 가게주인이 손가락을 부분절단 당한 서촌의 가게 궁중족발을 위해 만들어졌습니다. 우리는 이 음반을 통해 고통받는 사람들을 위로하고 시대의 야만을 기록하기를 바랍니다.",
+        "shortDescription": "고통받는 사람들을 위로하고 시대의 야만을 기록하는 새 민중음악 선곡집",
+        "primaryAction": {
+          "type": "play",
+          "url": "https://www.melon.com/album/music.htm?albumId=10129121",
+          "label": "음악 듣기"
+        },
+        "tags": [
+          "minjung",
+          "solidarity",
+          "resistance"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "music",
+        "sortPriority": 2
+      },
+      {
+        "id": "behold-2018",
+        "title": "볼찌어다 내가 세상 끝날까지 너희와 항상 함께 있으리라",
+        "year": 2018,
+        "type": "album",
+        "featured": true,
+        "cover": "https://poclanos.com/drmvsn/wp-content/uploads/2018/10/1011-12-02.jpg",
+        "description": "재개발 철거피해자 조한정 씨가 폭력적인 강제집행에 저항해 높은 교회 철탑에 매달려 계시는 아래에는 [볼찌어다 내가 세상 끝날까지 너희와 항상 함께 있으리라]가 적힌 현판이 붙어 있었습니다.",
+        "shortDescription": "재개발 철거에 저항하는 이들과 함께하는 연대와 희망의 음반",
+        "primaryAction": {
+          "type": "play",
+          "url": "https://www.melon.com/album/detail.htm?albumId=10210636",
+          "label": "음악 듣기"
+        },
+        "tags": [
+          "solidarity",
+          "resistance",
+          "faith"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "music",
+        "sortPriority": 3
+      },
+      {
+        "id": "body-center-2019",
+        "title": "몸의 중심",
+        "year": 2019,
+        "type": "album",
+        "featured": true,
+        "cover": "https://image.bugsm.co.kr/album/images/1000/202450/20245051.jpg",
+        "description": "이 젊은 비정규직 노동자의 죽음이 잊혀지지 않도록, 많은 이들이 오래도록 기억하고 추모하여 결국에는 세상을 위해 움직일 수 있도록 예술가들이 힘을 합쳤습니다. 모든 힘을 다해서 이러한 일을 막을 것입니다.",
+        "shortDescription": "비정규직 노동자의 죽음을 추모하며 세상의 변화를 꿈꾸는 음반",
+        "primaryAction": {
+          "type": "play",
+          "url": "https://www.melon.com/album/detail.htm?albumId=10272293",
+          "label": "음악 듣기"
+        },
+        "tags": [
+          "labor",
+          "solidarity",
+          "memorial"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "music",
+        "sortPriority": 4
+      },
+      {
+        "id": "marriage-prayer-2020",
+        "title": "혼약의 기도",
+        "year": 2020,
+        "type": "single",
+        "featured": false,
+        "cover": "https://image.bugsm.co.kr/album/images/1000/203255/20325533.jpg",
+        "description": "세민과의 결혼식을 앞두고 만들었던 곡입니다. 앞으로 함께 살아갈 인생의 방향과 세상과의 약속에 대한 메시지를 담고 있습니다.",
+        "shortDescription": "결혼을 앞두고 만든 인생의 방향과 세상과의 약속에 관한 곡",
+        "primaryAction": {
+          "type": "play",
+          "url": "https://www.youtube.com/watch?v=EsFqpkUfxxE",
+          "label": "YouTube"
+        },
+        "tags": [
+          "personal",
+          "marriage",
+          "promise"
+        ],
+        "showInPages": [
+          "archive"
+        ],
+        "archiveCategory": "music",
+        "sortPriority": 5
+      },
+      {
+        "id": "fish-without-water-2023",
+        "title": "물고기는 물이 없으면 죽어요",
+        "year": 2023,
+        "type": "album",
+        "featured": true,
+        "cover": "images/SCR-20250706-bbyq.png",
+        "description": "쫓겨난 옛 노량진수산시장 상인들에게 연대하는 음악가들이 힘을 합쳐 만든 음반입니다.",
+        "shortDescription": "노량진수산시장 상인들과 연대하는 음악가들의 합작 음반",
+        "primaryAction": {
+          "type": "link",
+          "url": "https://smartstore.naver.com/koreasmartcoop/products/7868449444",
+          "label": "구매하기"
+        },
+        "tags": [
+          "solidarity",
+          "fish market",
+          "displacement"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "music",
+        "sortPriority": 6
+      },
+      {
+        "id": "melting-snow-2024",
+        "title": "눈녹듯",
+        "year": 2024,
+        "type": "single",
+        "featured": true,
+        "cover": "https://image.bugsm.co.kr/album/images/1000/206620/20662057.jpg",
+        "description": "한 어머니의 사랑과 고통을 담은 음악입니다. 눈처럼 켜켜이 쌓여가는 슬픔, 그 속에서 다른 사람들은 이런 고통을 겪지않게 하고자 나아가고 있는 한 강인한 어머니의 마음을 느껴보시기 바랍니다.",
+        "shortDescription": "자식을 잃은 어머니의 사랑과 고통을 담은 간절한 음악",
+        "primaryAction": {
+          "type": "play",
+          "url": "https://www.melon.com/album/detail.htm?albumId=11558423",
+          "label": "음악 듣기"
+        },
+        "tags": [
+          "mother",
+          "grief",
+          "solidarity",
+          "latest"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "music",
+        "sortPriority": 7
+      }
+    ],
+    "visual": [
+      {
+        "id": "test-photo",
+        "title": "테스트 사진",
+        "year": 2024,
+        "type": "사진집",
+        "cover": "/images/defaults/visual-default.svg",
+        "description": "기본 이미지 테스트용 사진",
+        "shortDescription": "Visual 기본 이미지 테스트",
+        "tags": [
+          "test"
+        ],
+        "primaryAction": {
+          "type": "view",
+          "url": "#",
+          "label": "사진 보기"
+        },
+        "showInPages": [
+          "works",
+          "archive"
+        ],
+        "archiveCategory": "visual",
+        "sortPriority": 1
+      }
+    ],
+    "writing": [
+      {
+        "id": "hope-2025",
+        "title": "어디에서 희망을 찾을 것인가",
+        "year": 2025,
+        "type": "칼럼",
+        "cover": "/images/defaults/writing-default.svg",
+        "publication": "황해문화 2025년 봄호",
+        "description": "계엄과 탄핵, 그 이후의 저항에 대해 논하는 글",
+        "shortDescription": "계엄과 탄핵 이후의 저항과 희망에 대한 성찰",
+        "excerpt": "진정한 예술은 시대의 아픔에 공감하고, 약자와 연대하며, 세상의 부조리에 저항하는 데에서 나온다...",
+        "tags": [
+          "essay",
+          "art theory",
+          "resistance",
+          "social responsibility"
+        ],
+        "primaryAction": {
+          "type": "read",
+          "url": "https://product.kyobobook.co.kr/detail/S000215985312",
+          "label": "원문 보기"
+        },
+        "showInPages": [
+          "works",
+          "archive"
+        ],
+        "archiveCategory": "writing",
+        "sortPriority": 1
+      },
+      {
+        "id": "pocha",
+        "title": "아현포차 요리책",
+        "year": 2017,
+        "type": "르포",
+        "cover": "/images/defaults/writing-default.svg",
+        "publication": "식소사번",
+        "description": "쫓겨난 아현포차 노점상 할머니들의 삶과 요리에 대한 철학을 담은 글",
+        "shortDescription": "아현포차 할머니들의 삶과 요리 철학을 담은 르포",
+        "excerpt": "할머니들의 먹는 이들에 대한 사랑과 긍정, 요리에 대한 자부심들이 자본주의가 설계한 강력한 계산식을 무력화시키는 순간들을 만날 수 있다.",
+        "tags": [
+          "column",
+          "gentrification",
+          "urban development"
+        ],
+        "primaryAction": {
+          "type": "read",
+          "url": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=118798544&srsltid=AfmBOoqjySBx9sS1oCA9jNohKrVOvHC7xqZPWVjq6jiUDUygYY8jn-NP",
+          "label": "도서 보기"
+        },
+        "showInPages": [
+          "works",
+          "archive"
+        ],
+        "archiveCategory": "writing",
+        "sortPriority": 2
+      }
+    ],
+    "performance": [
+      {
+        "id": "test-performance",
+        "title": "테스트 공연",
+        "year": 2024,
+        "type": "콘서트",
+        "cover": "/images/defaults/performance-default.svg",
+        "description": "기본 이미지 테스트용 공연",
+        "shortDescription": "Performance 기본 이미지 테스트",
+        "tags": [
+          "test"
+        ],
+        "primaryAction": {
+          "type": "view",
+          "url": "#",
+          "label": "공연 정보"
+        },
+        "showInPages": [
+          "works",
+          "archive"
+        ],
+        "archiveCategory": "performance",
+        "sortPriority": 1
+      }
+    ]
+  }
+}

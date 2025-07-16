@@ -6,30 +6,52 @@ import ErrorBoundary from './components/ErrorBoundary'; // ErrorBoundary 임포�
 import { ToastProvider } from './components/ui/Toast';
 import { SEOProvider } from './components/SEO/MetaDataManager';
 
-// 단순한 로딩 화면 컴포넌트 (애니메이션 없음)
-const SimpleLoadingFallback = () => (
-  <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800" />
+// 성능 최적화된 로딩 화면 컴포넌트
+const OptimizedLoadingFallback = ({ page = '페이지' }) => (
+  <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex items-center justify-center">
+    <div className="text-center">
+      <div className="w-12 h-12 border-4 border-gray-600 border-t-brand-primary-500 rounded-full animate-spin mx-auto mb-4"></div>
+      <p className="text-gray-300 font-wanted-sans">{page} 로딩 중...</p>
+    </div>
+  </div>
 );
 
-// 코드 스플리팅을 위한 최적화된 lazy loading
-const Home = lazy(() => 
-  import('./pages/Home').catch(() => ({ default: () => <div>Loading...</div> }))
-);
-const About = lazy(() => 
-  import('./pages/About').catch(() => ({ default: () => <div>Loading...</div> }))
-);
-const Works = lazy(() => 
-  import('./pages/Works').catch(() => ({ default: () => <div>Loading...</div> }))
-);
-const News = lazy(() => 
-  import('./pages/News').catch(() => ({ default: () => <div>Loading...</div> }))
-);
-const Contact = lazy(() => 
-  import('./pages/Contact').catch(() => ({ default: () => <div>Loading...</div> }))
-);
-const Archive = lazy(() => 
-  import('./pages/Archive').catch(() => ({ default: () => <div>Loading...</div> }))
-);
+// 고급 에러 처리가 포함된 lazy loading 유틸리티
+const createLazyComponent = (importFn, componentName) => {
+  return lazy(() => 
+    importFn()
+      .then(module => ({
+        default: React.memo(module.default) // 메모화로 성능 향상
+      }))
+      .catch(error => {
+        console.error(`Failed to load ${componentName}:`, error);
+        return {
+          default: () => (
+            <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+              <div className="text-center text-white">
+                <h2 className="text-2xl font-bold mb-4">페이지를 불러올 수 없습니다</h2>
+                <p className="text-gray-400 mb-4">{componentName} 로딩 중 오류가 발생했습니다.</p>
+                <button 
+                  onClick={() => window.location.reload()} 
+                  className="px-6 py-2 bg-brand-primary-600 text-white rounded-lg hover:bg-brand-primary-700"
+                >
+                  다시 시도
+                </button>
+              </div>
+            </div>
+          )
+        };
+      })
+  );
+};
+
+// 최적화된 코드 스플리팅
+const Home = createLazyComponent(() => import('./pages/Home'), 'Home');
+const About = createLazyComponent(() => import('./pages/About'), 'About');
+const Works = createLazyComponent(() => import('./pages/Works'), 'Works');
+const News = createLazyComponent(() => import('./pages/News'), 'News');
+const Contact = createLazyComponent(() => import('./pages/Contact'), 'Contact');
+const Archive = createLazyComponent(() => import('./pages/Archive'), 'Archive');
 
 const App = () => {
   // GitHub Pages에서만 basename 사용, Vercel에서는 필요 없음
@@ -44,7 +66,7 @@ const App = () => {
           <Router basename={basename}>
             <Layout>
               <ErrorBoundary> {/* ErrorBoundary로 감싸기 */}
-                <Suspense fallback={<SimpleLoadingFallback />}>
+                <Suspense fallback={<OptimizedLoadingFallback />}>
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />

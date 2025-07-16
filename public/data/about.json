@@ -1,0 +1,186 @@
+{
+  "metadata": {
+    "lastUpdated": "2025-07-13",
+    "version": "3.1.0"
+  },
+  "artist": {
+    "name": "황경하",
+    "bio": "황경하는 한국의 음악가, 사운드 엔지니어, 프로듀서, 그리고 연대자입니다.",
+    "philosophy": "현장에서 글, 음악, 사진 등의 예술이 힘을 갖는 순간에 주목하여 여러 분야에서 오랫 동안 활동해왔습니다. 세상의 소외된 이들이 필요로 하는 순간 예술을 통해 힘을 보태고자 합니다.",
+    "contact": {
+      "email": "contact@alf.seoul.kr",
+      "phone": "0507-1384-3144",
+      "address": "서울특별시 은평구 대조동 84-3 3층 스튜디오 놀"
+    }
+  },
+  "works": {
+    "music": [
+      {
+        "id": "gentrification-2016",
+        "title": "젠트리피케이션",
+        "year": 2016,
+        "type": "album",
+        "featured": true,
+        "cover": "https://koreanmusicawards.com/wp-content/uploads/2021/01/2017_gentrification.jpg",
+        "description": "옥바라지골목, 요기가갤러리, 통영생선구이, 뽀빠이화원, 나무그늘, 경의선공유지, 테이크아웃드로잉 등 강제로 쫓겨나 사라질 위기에 처한 소중한 공간들과 마주하여 음악가들과 그 곳의 이야기를 담아 음악을 연주하고 기록했습니다.",
+        "shortDescription": "젠트리피케이션으로 사라져가는 소중한 공간들의 이야기를 담은 음반",
+        "primaryAction": {
+          "type": "play",
+          "url": "https://www.melon.com/album/music.htm?albumId=10003221",
+          "label": "음악 듣기"
+        },
+        "tags": [
+          "gentrification",
+          "solidarity",
+          "urban"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "music",
+        "sortPriority": 1
+      },
+      {
+        "id": "new-minjung-vol3-2017",
+        "title": "새 민중음악 선곡집 vol.3",
+        "year": 2017,
+        "type": "album",
+        "featured": true,
+        "cover": "http://archivenew.vop.co.kr/images/05670d4ecb375286541262cf7e14b0aa/2018-01/24032527_8.jpg",
+        "description": "3번째 새 민중음악 선곡집은 최근 무리한 강제집행으로 인해 가게주인이 손가락을 부분절단 당한 서촌의 가게 궁중족발을 위해 만들어졌습니다. 우리는 이 음반을 통해 고통받는 사람들을 위로하고 시대의 야만을 기록하기를 바랍니다.",
+        "shortDescription": "고통받는 사람들을 위로하고 시대의 야만을 기록하는 새 민중음악 선곡집",
+        "primaryAction": {
+          "type": "play",
+          "url": "https://www.melon.com/album/music.htm?albumId=10129121",
+          "label": "음악 듣기"
+        },
+        "tags": [
+          "minjung",
+          "solidarity",
+          "resistance"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "music",
+        "sortPriority": 2
+      },
+      {
+        "id": "behold-2018",
+        "title": "볼찌어다 내가 세상 끝날까지 너희와 항상 함께 있으리라",
+        "year": 2018,
+        "type": "album",
+        "featured": true,
+        "cover": "https://poclanos.com/drmvsn/wp-content/uploads/2018/10/1011-12-02.jpg",
+        "description": "재개발 철거피해자 조한정 씨가 폭력적인 강제집행에 저항해 높은 교회 철탑에 매달려 계시는 아래에는 [볼찌어다 내가 세상 끝날까지 너희와 항상 함께 있으리라]가 적힌 현판이 붙어 있었습니다.",
+        "shortDescription": "재개발 철거에 저항하는 이들과 함께하는 연대와 희망의 음반",
+        "primaryAction": {
+          "type": "play",
+          "url": "https://www.melon.com/album/detail.htm?albumId=10210636",
+          "label": "음악 듣기"
+        },
+        "tags": [
+          "solidarity",
+          "resistance",
+          "faith"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "music",
+        "sortPriority": 3
+      },
+      {
+        "id": "body-center-2019",
+        "title": "몸의 중심",
+        "year": 2019,
+        "type": "album",
+        "featured": true,
+        "cover": "https://image.bugsm.co.kr/album/images/1000/202450/20245051.jpg",
+        "description": "이 젊은 비정규직 노동자의 죽음이 잊혀지지 않도록, 많은 이들이 오래도록 기억하고 추모하여 결국에는 세상을 위해 움직일 수 있도록 예술가들이 힘을 합쳤습니다. 모든 힘을 다해서 이러한 일을 막을 것입니다.",
+        "shortDescription": "비정규직 노동자의 죽음을 추모하며 세상의 변화를 꿈꾸는 음반",
+        "primaryAction": {
+          "type": "play",
+          "url": "https://www.melon.com/album/detail.htm?albumId=10272293",
+          "label": "음악 듣기"
+        },
+        "tags": [
+          "labor",
+          "solidarity",
+          "memorial"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "music",
+        "sortPriority": 4
+      },
+      {
+        "id": "fish-without-water-2023",
+        "title": "물고기는 물이 없으면 죽어요",
+        "year": 2023,
+        "type": "album",
+        "featured": true,
+        "cover": "images/SCR-20250706-bbyq.png",
+        "description": "쫓겨난 옛 노량진수산시장 상인들에게 연대하는 음악가들이 힘을 합쳐 만든 음반입니다.",
+        "shortDescription": "노량진수산시장 상인들과 연대하는 음악가들의 합작 음반",
+        "primaryAction": {
+          "type": "link",
+          "url": "https://smartstore.naver.com/koreasmartcoop/products/7868449444",
+          "label": "구매하기"
+        },
+        "tags": [
+          "solidarity",
+          "fish market",
+          "displacement"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "music",
+        "sortPriority": 6
+      },
+      {
+        "id": "melting-snow-2024",
+        "title": "눈녹듯",
+        "year": 2024,
+        "type": "single",
+        "featured": true,
+        "cover": "https://image.bugsm.co.kr/album/images/1000/206620/20662057.jpg",
+        "description": "한 어머니의 사랑과 고통을 담은 음악입니다. 눈처럼 켜켜이 쌓여가는 슬픔, 그 속에서 다른 사람들은 이런 고통을 겪지않게 하고자 나아가고 있는 한 강인한 어머니의 마음을 느껴보시기 바랍니다.",
+        "shortDescription": "자식을 잃은 어머니의 사랑과 고통을 담은 간절한 음악",
+        "primaryAction": {
+          "type": "play",
+          "url": "https://www.melon.com/album/detail.htm?albumId=11558423",
+          "label": "음악 듣기"
+        },
+        "tags": [
+          "mother",
+          "grief",
+          "solidarity",
+          "latest"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "music",
+        "sortPriority": 7
+      }
+    ],
+    "visual": [],
+    "writing": [],
+    "performance": []
+  }
+}

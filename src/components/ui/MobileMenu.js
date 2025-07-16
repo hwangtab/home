@@ -31,7 +31,7 @@ const MobileMenuOverlay = memo(({ isOpen, onClose, children }) => (
         
         {/* 메뉴 패널 */}
         <motion.div
-          className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-gradient-to-b from-gray-900 to-gray-800 shadow-2xl z-50 border-l border-brand-primary-500/20"
+          className="fixed top-0 right-0 h-full w-64 max-w-[70vw] bg-gradient-to-b from-gray-900 to-gray-800 shadow-2xl z-50 border-l border-brand-primary-500/20"
           initial={{ x: '100%' }}
           animate={{ x: 0 }}
           exit={{ x: '100%' }}
@@ -109,7 +109,7 @@ const MobileMenu = memo(() => {
       <MobileMenuOverlay isOpen={isOpen} onClose={closeMenu}>
         <div className="flex flex-col h-full">
           {/* 헤더 */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
+          <div className="flex items-center justify-between p-3 sm:p-6 border-b border-gray-700/50">
             <div>
               <h2 className="text-2xl font-bold font-bombaram text-white">황경하</h2>
               <p className="text-sm text-gray-400 font-wanted-sans">Official Web</p>
@@ -124,7 +124,7 @@ const MobileMenu = memo(() => {
           </div>
 
           {/* 네비게이션 */}
-          <nav className="flex-1 px-4 py-6">
+          <nav className="flex-1 px-2 sm:px-4 py-3 sm:py-6">
             <ul className="space-y-2">
               {navigation.map((item, index) => {
                 const IconComponent = NAV_ICONS[item.path] || Home;
@@ -139,21 +139,21 @@ const MobileMenu = memo(() => {
                   >
                     <Link
                       to={item.path}
-                      className={`flex items-center p-4 rounded-xl font-wanted-sans transition-all duration-300 group ${
+                      className={`flex items-center p-2 sm:p-4 rounded-xl font-wanted-sans transition-all duration-300 group ${
                         isActive
                           ? 'bg-brand-primary-500/20 text-brand-primary-300 border border-brand-primary-500/30'
                           : 'hover:bg-gray-700/50 text-gray-300 hover:text-white'
                       }`}
                     >
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center mr-4 transition-colors duration-300 ${
+                      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center mr-2 sm:mr-4 transition-colors duration-300 ${
                         isActive
                           ? 'bg-brand-primary-500/30'
                           : 'bg-gray-700/30 group-hover:bg-brand-primary-500/20'
                       }`}>
-                        <IconComponent className="w-5 h-5" />
+                        <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                       </div>
                       <div className="flex-1">
-                        <div className="font-medium text-lg">{item.name}</div>
+                        <div className="font-medium text-base sm:text-lg">{item.name}</div>
                         <div className="text-sm text-gray-400 group-hover:text-gray-300">
                           {item.description}
                         </div>
@@ -173,7 +173,7 @@ const MobileMenu = memo(() => {
           </nav>
 
           {/* 하단 정보 */}
-          <div className="p-6 border-t border-gray-700/50">
+          <div className="p-3 sm:p-6 border-t border-gray-700/50">
             <div className="text-center">
               <p className="text-sm text-gray-400 font-wanted-sans mb-2">
                 음악가 · 사운드 엔지니어 · 프로듀서

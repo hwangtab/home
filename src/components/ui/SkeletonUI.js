@@ -226,7 +226,7 @@ export const TimelineSkeleton = memo(({
             variant="lighter"
           />
         </div>
-        <div className="ml-8 space-y-3">
+        <div className="ml-4 md:ml-8 space-y-3">
           {[1, 2, 3].map((i) => (
             <div key={i} className="bg-gray-700 p-4 rounded-lg">
               <Skeleton 

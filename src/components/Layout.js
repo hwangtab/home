@@ -26,7 +26,7 @@ const Header = () => {
 
   return (
     <header 
-      className="bg-gradient-to-r from-gray-900 via-gray-850 to-gray-800 text-white py-6 px-6 sticky top-0 z-50 transform-gpu border-b border-brand-primary-500/10"
+      className="bg-gradient-to-r from-gray-900 via-gray-850 to-gray-800 text-white py-4 sm:py-6 px-2 sm:px-4 md:px-6 sticky top-0 z-50 transform-gpu border-b border-brand-primary-500/10"
       role="banner"
       aria-label="사이트 헤더"
     >
@@ -37,7 +37,7 @@ const Header = () => {
           className="focus:outline-none focus:ring-a11y focus:ring-brand-primary-400 focus:ring-offset-a11y focus:ring-offset-gray-900 rounded-lg focus-visible:ring-a11y focus-visible:ring-brand-primary-400"
         >
           <h1 
-            className="text-5xl font-bold font-bombaram transform-gpu hover:scale-105 transition-transform duration-200"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold font-bombaram transform-gpu hover:scale-105 transition-transform duration-200"
             style={{ 
               lineHeight: '1',
               transform: 'translateY(12px)'
@@ -47,7 +47,7 @@ const Header = () => {
           </h1>
         </Link>
         
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-2 sm:space-x-4 md:space-x-6">
           {/* 데스크톱 네비게이션 */}
           <nav 
             className="hidden md:block" 
@@ -55,12 +55,12 @@ const Header = () => {
             role="navigation" 
             aria-label="주 네비게이션"
           >
-            <ul className="flex space-x-6" role="menubar">
+            <ul className="flex space-x-3 lg:space-x-6" role="menubar">
               {navigation.map((item) => (
                 <li key={item.name} role="none">
                   <Link 
                     to={item.path} 
-                    className={`hover:text-brand-primary-300 hover:scale-110 transition-all duration-200 font-wanted-sans text-lg relative focus:outline-none focus:ring-a11y focus:ring-brand-primary-400 focus:ring-offset-a11y focus:ring-offset-gray-900 rounded-md px-2 py-1 focus-visible:ring-a11y focus-visible:ring-brand-primary-400 inline-block ${
+                    className={`hover:text-brand-primary-300 hover:scale-110 transition-all duration-200 font-wanted-sans text-sm lg:text-lg relative focus:outline-none focus:ring-a11y focus:ring-brand-primary-400 focus:ring-offset-a11y focus:ring-offset-gray-900 rounded-md px-1 lg:px-2 py-1 focus-visible:ring-a11y focus-visible:ring-brand-primary-400 inline-block ${
                       location.pathname === item.path ? 'text-brand-primary-400' : ''
                     }`}
                     role="menuitem"
@@ -73,7 +73,7 @@ const Header = () => {
             </ul>
           </nav>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <LanguageToggle />
             {/* 모바일 메뉴 */}
             <MobileMenu />
@@ -89,7 +89,7 @@ const Footer = () => {
   
   return (
     <footer 
-      className="bg-gradient-to-r from-gray-900 to-gray-800 text-gray-400 p-6 mt-12"
+      className="bg-gradient-to-r from-gray-900 to-gray-800 text-gray-400 p-3 sm:p-6 mt-8 sm:mt-12"
       id="footer"
       role="contentinfo"
       aria-label="사이트 푸터"
@@ -128,7 +128,7 @@ const Layout = ({ children }) => {
       
       <motion.main 
         id="main-content"
-        className="container mx-auto mt-8 md:mt-12 p-4 md:p-6 flex-1 contain-layout"
+        className="container mx-auto mt-4 sm:mt-8 md:mt-12 p-2 sm:p-4 md:p-6 flex-1 contain-layout"
         role="main"
         aria-label="메인 콘텐츠"
         tabIndex="-1"

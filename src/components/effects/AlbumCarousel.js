@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Play, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
  */
 const AlbumCarousel = ({ albums, className = '' }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
   const navigate = useNavigate();
 
   // 자동 회전 효과
@@ -17,7 +15,6 @@ const AlbumCarousel = ({ albums, className = '' }) => {
     if (albums.length <= 1) return;
     
     const interval = setInterval(() => {
-      setDirection(1);
       setCurrentIndex(prev => (prev + 1) % albums.length);
     }, 5000);
 
@@ -25,12 +22,10 @@ const AlbumCarousel = ({ albums, className = '' }) => {
   }, [albums.length]);
 
   const handlePrevious = () => {
-    setDirection(-1);
     setCurrentIndex(prev => (prev - 1 + albums.length) % albums.length);
   };
 
   const handleNext = () => {
-    setDirection(1);
     setCurrentIndex(prev => (prev + 1) % albums.length);
   };
 
@@ -45,8 +40,6 @@ const AlbumCarousel = ({ albums, className = '' }) => {
   };
 
   if (!albums || albums.length === 0) return null;
-
-  const currentAlbum = albums[currentIndex];
 
   // 앨범별 테마 색상 팔레트
   const getAlbumTheme = (album) => {
@@ -74,66 +67,34 @@ const AlbumCarousel = ({ albums, className = '' }) => {
     return themes[album.id] || themes['melting-snow-2024'];
   };
 
-  const theme = getAlbumTheme(currentAlbum);
-
-  const slideVariants = {
-    enter: (direction) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0,
-      rotateY: direction > 0 ? 45 : -45,
-      scale: 0.8
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-      rotateY: 0,
-      scale: 1
-    },
-    exit: (direction) => ({
-      zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0,
-      rotateY: direction < 0 ? 45 : -45,
-      scale: 0.8
-    })
-  };
+  const theme = getAlbumTheme(albums[currentIndex]);
 
   return (
-    <div className={`relative w-full max-w-4xl mx-auto ${className}`}>
+    <div className={`relative w-full max-w-3xl mx-auto ${className}`}>
       {/* 동적 배경 그라데이션 */}
       <div className={`absolute inset-0 bg-gradient-to-br ${theme.secondary} rounded-3xl blur-3xl scale-110 opacity-60`} />
       
       {/* 메인 앨범 커버 */}
-      <div className="relative h-64 sm:h-80 lg:h-96 flex items-center justify-center perspective-1000">
-        <AnimatePresence initial={false} custom={direction}>
-          <motion.div
-            key={currentIndex}
-            custom={direction}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{
-              x: { type: "spring", stiffness: 300, damping: 30 },
-              opacity: { duration: 0.4 },
-              rotateY: { type: "spring", stiffness: 300, damping: 30 },
-              scale: { duration: 0.4 }
-            }}
-            className="absolute inset-0 flex items-center justify-center cursor-pointer"
-            onClick={() => handleAlbumClick(currentAlbum)}
+      <div className="relative h-64 sm:h-80 lg:h-96 flex items-center justify-center">
+        {albums.map((album, index) => (
+          <div
+            key={album.id}
+            className={`absolute inset-0 flex items-center justify-center cursor-pointer transition-opacity duration-300 ease-in-out ${
+              index === currentIndex ? 'opacity-100' : 'opacity-0'
+            }`}
+            onClick={() => handleAlbumClick(album)}
           >
             {/* 3D 앨범 커버 */}
             <div className="relative group">
               {/* 앨범 커버 그림자 */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${theme.primary} rounded-2xl blur-2xl opacity-50 group-hover:opacity-80 transition-all duration-500 transform rotate-3 scale-105`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${getAlbumTheme(album).primary} rounded-2xl blur-2xl opacity-50 group-hover:opacity-80 transition-all duration-500 transform rotate-3 scale-105`} />
               
               {/* 메인 앨범 커버 */}
               <div className="relative transform-gpu group-hover:scale-110 group-hover:-rotate-2 group-active:scale-95 transition-all duration-500">
                 <div className="w-48 h-48 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-2xl overflow-hidden border-4 border-white/20 shadow-2xl">
                   <img
-                    src={currentAlbum.cover}
-                    alt={currentAlbum.title}
+                    src={album.cover}
+                    alt={album.title}
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       e.target.style.display = 'none';
@@ -152,39 +113,39 @@ const AlbumCarousel = ({ albums, className = '' }) => {
                 </div>
               </div>
             </div>
-          </motion.div>
-        </AnimatePresence>
+          </div>
+        ))}
       </div>
 
       {/* 앨범 정보 */}
       <div className="mt-6 mb-8 text-center">
-        <div className="h-32 sm:h-28 flex items-center justify-center">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="absolute space-y-3 bg-black/20 backdrop-blur-md rounded-2xl px-6 py-4 w-full max-w-xl max-h-24 overflow-hidden"
+        <div className="h-40 flex items-center justify-center relative">
+          {albums.map((album, index) => (
+            <div
+              key={album.id}
+              className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out ${
+                index === currentIndex ? 'opacity-100' : 'opacity-0'
+              }`}
             >
-            {/* 앨범 제목 */}
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold font-santokki text-white">
-              {currentAlbum.title}
-            </h2>
-            
-            {/* 연도 */}
-            <div className="flex items-center justify-center gap-2 text-gray-300">
-              <Calendar className="w-4 h-4" />
-              <span className="font-wanted-sans">{currentAlbum.year}년</span>
+              <div className="relative space-y-3 bg-black/50 rounded-2xl px-3 sm:px-4 md:px-6 py-5 w-full max-w-full min-h-28 shadow-xl border border-white/20">
+                {/* 앨범 제목 */}
+                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold font-santokki text-white mb-2">
+                  {album.title}
+                </h2>
+                
+                {/* 연도 */}
+                <div className="flex items-center justify-center gap-2 text-gray-400 mb-3">
+                  <Calendar className="w-4 h-4" />
+                  <span className="font-wanted-sans text-sm sm:text-base">{album.year}년</span>
+                </div>
+                
+                {/* 짧은 설명 */}
+                <p className="text-sm sm:text-base text-gray-300 font-wanted-sans max-w-full mx-auto leading-relaxed line-clamp-4 sm:line-clamp-3">
+                  {album.shortDescription || album.description}
+                </p>
+              </div>
             </div>
-            
-            {/* 짧은 설명 */}
-            <p className="text-sm sm:text-base text-gray-400 font-wanted-sans max-w-xl mx-auto leading-relaxed px-4 line-clamp-2">
-              {currentAlbum.shortDescription || currentAlbum.description}
-            </p>
-            </motion.div>
-          </AnimatePresence>
+          ))}
         </div>
       </div>
 
@@ -213,10 +174,7 @@ const AlbumCarousel = ({ albums, className = '' }) => {
           {albums.map((_, index) => (
             <button
               key={index}
-              onClick={() => {
-                setDirection(index > currentIndex ? 1 : -1);
-                setCurrentIndex(index);
-              }}
+              onClick={() => setCurrentIndex(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
                 index === currentIndex 
                   ? `bg-white ${theme.glow}` 

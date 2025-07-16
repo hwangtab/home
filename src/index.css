@@ -81,6 +81,55 @@
   }
 }
 
+/* 425px 이하 초소형 화면 대응 - 정확한 타겟팅 */
+@media (max-width: 425px) {
+  /* 기본 레이아웃 설정 */
+  body {
+    overflow-x: hidden;
+    font-size: 14px;
+  }
+  
+  html {
+    overflow-x: hidden;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  /* Container 패딩 줄이기 - 이것이 핵심 해결책 */
+  .container {
+    padding-left: 0.75rem !important;  /* 12px - 기존 16px에서 축소 */
+    padding-right: 0.75rem !important;
+  }
+}
+
+/* 375px 이하 매우 작은 화면 */
+@media (max-width: 375px) {
+  .container {
+    padding-left: 0.5rem !important;   /* 8px - 더 축소 */
+    padding-right: 0.5rem !important;
+  }
+}
+
+/* 320px 이하 극소형 화면 */
+@media (max-width: 320px) {
+  .container {
+    padding-left: 0.25rem !important;  /* 4px - 최소 패딩 */
+    padding-right: 0.25rem !important;
+  }
+}
+
+/* 전역 overflow 처리 */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 @layer utilities {
   .line-clamp-2 {
     overflow: hidden;
@@ -94,6 +143,13 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+  }
+  
+  .line-clamp-4 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
   }
   
   .archive-container {
@@ -143,6 +199,20 @@
 
   .contain-strict {
     contain: strict;
+  }
+
+  /* 스켈레톤 최적화 */
+  .skeleton-optimized {
+    will-change: opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* 모바일 최적화된 애니메이션 */
+  @media (max-width: 768px) {
+    .animate-pulse {
+      animation-duration: 2s; /* 모바일에서 더 느린 애니메이션 */
+    }
   }
 }
 

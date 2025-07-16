@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Instagram, Youtube, Play, Music, ExternalLink, Mail } from 'lucide-react';
+import { ArrowRight, Instagram, Youtube, Music, Mail } from 'lucide-react';
 import Section from '../components/Section';
 import DynamicBackground from '../components/effects/DynamicBackground';
 import InteractiveElements from '../components/effects/InteractiveElements';
@@ -9,31 +9,34 @@ import AlbumCarousel from '../components/effects/AlbumCarousel';
 import MetaDataManager from '../components/SEO/MetaDataManager';
 import { usePageSEO } from '../hooks/useSEO';
 import { GridSkeleton } from '../components/ui/Skeleton';
-import siteData from '../data';
+import { useCachedPageData } from '../hooks/usePageData';
 
-const HeroSection = () => (
-  <Section className="mb-0">
-    <div 
-      className="relative min-h-[100vh] sm:min-h-[90vh] md:min-h-[80vh] bg-black flex items-center justify-center py-8 sm:py-12 overflow-hidden"
-      data-hero-section
-    >
-      {/* 동적 배경 효과 */}
-      <DynamicBackground />
-      
-      {/* 인터랙티브 요소 */}
-      <InteractiveElements />
-      
-      {/* 아티스틱 오버레이 효과 */}
-      <ArtisticOverlay />
-      
-      {/* 중앙 콘텐츠 - 아티스트 메시지 */}
-      <div className="relative z-20 px-4 sm:px-6 w-full">
-        <div className="text-center max-w-4xl w-full mx-auto">
-          {/* 메인 앨범 카루셀 */}
-          <AlbumCarousel 
-            albums={siteData.works.music.filter(item => item.featured)}
-            className="mb-8 sm:mb-10"
-          />
+const HeroSection = ({ siteData }) => {
+  if (!siteData) return null;
+  
+  return (
+    <Section className="mb-0">
+      <div 
+        className="relative min-h-[100dvh] sm:min-h-[90vh] md:min-h-[80vh] bg-black flex items-center justify-center py-6 sm:py-8 md:py-12 overflow-hidden"
+        data-hero-section
+      >
+        {/* 동적 배경 효과 */}
+        <DynamicBackground />
+        
+        {/* 인터랙티브 요소 */}
+        <InteractiveElements />
+        
+        {/* 아티스틱 오버레이 효과 */}
+        <ArtisticOverlay />
+        
+        {/* 중앙 콘텐츠 - 아티스트 메시지 */}
+        <div className="relative z-20 px-4 sm:px-6 w-full">
+          <div className="text-center max-w-4xl w-full mx-auto">
+            {/* 메인 앨범 카루셀 */}
+            <AlbumCarousel 
+              albums={siteData.works.music.filter(item => item.featured)}
+              className="mb-8 sm:mb-10"
+            />
           
           {/* CTA 버튼들 - 앨범 중심으로 수정 */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center items-stretch sm:items-center max-w-md sm:max-w-none mx-auto">
@@ -97,36 +100,33 @@ const HeroSection = () => (
         </a>
       </div>
       
-      {/* 섹션 구분선 */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
-    </div>
-  </Section>
-);
+        {/* 섹션 구분선 */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
+      </div>
+    </Section>
+  );
+};
 
 
-const FeaturedWorks = () => {
-  const [isLoading, setIsLoading] = useState(true);
+const FeaturedWorks = ({ siteData }) => {
   const [featuredWorks, setFeaturedWorks] = useState([]);
 
   useEffect(() => {
-    // 시뮬레이션: 데이터 로딩
-    const timer = setTimeout(() => {
-      const works = siteData.works.music.filter(item => 
-        item.featured && item.id !== 'melting-snow-2024'
-      ).slice(0, 3);
-      setFeaturedWorks(works);
-      setIsLoading(false);
-    }, 800); // 0.8초 로딩 시뮬레이션
-
-    return () => clearTimeout(timer);
-  }, []);
+    if (!siteData) return;
+    
+    // 즉시 데이터 처리 - 로딩 시뮬레이션 제거
+    const works = siteData.works.music.filter(item => 
+      item.featured && item.id !== 'melting-snow-2024'
+    ).slice(0, 3);
+    setFeaturedWorks(works);
+  }, [siteData]);
 
   return (
     <Section 
       title="주요 작품" 
       enableScrollAnimation={true}
     >
-      {isLoading ? (
+      {!siteData || featuredWorks.length === 0 ? (
         <GridSkeleton items={3} columns={3} />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
@@ -231,6 +231,8 @@ const QuickNavigation = () => {
 };
 
 const Home = () => {
+  const { data: siteData, loading, error } = useCachedPageData('home');
+  
   const seoData = usePageSEO({
     title: '황경하 Official Web',
     description: '음악가이자 사운드 엔지니어, 프로듀서인 황경하의 공식 웹사이트입니다. 사회적 메시지를 담은 음악과 예술 활동을 만나보세요.',
@@ -238,11 +240,41 @@ const Home = () => {
     image: '/images/og/home-og.jpg'
   });
 
+  if (loading) {
+    return (
+      <div>
+        <MetaDataManager {...seoData} />
+        <div className="min-h-screen bg-black contain-layout">
+          {/* 로딩 중에도 안정적인 레이아웃 보장 */}
+          <div className="relative min-h-[100dvh] sm:min-h-[90vh] md:min-h-[80vh] bg-black flex items-center justify-center py-6 sm:py-8 md:py-12">
+            <GridSkeleton items={3} columns={1} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <MetaDataManager {...seoData} />
+        <div className="min-h-screen bg-black contain-layout">
+          <div className="relative min-h-[100dvh] sm:min-h-[90vh] md:min-h-[80vh] bg-black flex items-center justify-center py-6 sm:py-8 md:py-12">
+            <div className="text-white text-center container mx-auto px-4">
+              <h2 className="text-2xl font-bold mb-4">데이터를 불러오는 중 오류가 발생했습니다</h2>
+              <p className="text-gray-400">잠시 후 다시 시도해주세요.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div>
+    <div className="contain-layout">
       <MetaDataManager {...seoData} />
-      <HeroSection />
-      <FeaturedWorks />
+      <HeroSection siteData={siteData} />
+      <FeaturedWorks siteData={siteData} />
       <QuickNavigation />
     </div>
   );

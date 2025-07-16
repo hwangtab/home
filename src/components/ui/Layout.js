@@ -19,9 +19,9 @@ export const Container = memo(forwardRef(({
 
   const paddingClasses = {
     none: '',
-    sm: 'px-4',
-    default: 'px-4 md:px-6 lg:px-8',
-    lg: 'px-6 md:px-8 lg:px-12'
+    sm: 'px-2 sm:px-4',
+    default: 'px-2 sm:px-4 md:px-6 lg:px-8',
+    lg: 'px-3 sm:px-6 md:px-8 lg:px-12'
   };
 
   const classes = [
@@ -56,11 +56,11 @@ export const Grid = memo(forwardRef(({
     if (responsive) {
       const responsiveCols = {
         1: 'grid-cols-1',
-        2: 'grid-cols-1 md:grid-cols-2',
-        3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-        4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
-        5: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
-        6: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6'
+        2: 'grid-cols-1 lg:grid-cols-2',
+        3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+        4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+        5: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
+        6: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6'
       };
       return responsiveCols[cols] || `grid-cols-${cols}`;
     }
@@ -289,10 +289,10 @@ export const Card = memo(forwardRef(({
 
   const paddingClasses = {
     none: 'p-0',
-    sm: 'p-3',
-    default: 'p-6',
-    lg: 'p-8',
-    xl: 'p-10'
+    sm: 'p-1 sm:p-2 md:p-3',
+    default: 'p-2 sm:p-4 md:p-6',
+    lg: 'p-3 sm:p-6 md:p-8',
+    xl: 'p-4 sm:p-8 md:p-10'
   };
 
   const shadowClasses = {
