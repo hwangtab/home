@@ -10,11 +10,13 @@ import { useWorksData } from '../hooks/useDataProcessor';
 import { useCardActions } from '../hooks/useCardActions';
 import MetaDataManager from '../components/SEO/MetaDataManager';
 import { usePageSEO } from '../hooks/useSEO';
-import siteData from '../data';
+import { useCachedPageData } from '../hooks/usePageData';
+import { GridSkeleton } from '../components/ui/Skeleton';
 
 
 const Works = () => {
   const [activeFilter, setActiveFilter] = useState('all');
+  const { data: siteData, loading, error } = useCachedPageData('works');
 
   // SEO 메타데이터
   const seoData = usePageSEO({
@@ -24,20 +26,16 @@ const Works = () => {
     image: '/images/og/works-og.jpg'
   });
 
-  // 통합 데이터 처리 훅 사용
-  const { categorizedData, getWorksByCategory } = useWorksData(siteData.works, 'works');
+  // hooks를 최상위에서 호출 - siteData가 null일 때 빈 객체 전달
+  const { categorizedData, getWorksByCategory } = useWorksData(siteData?.works || {}, 'works');
   
   // 카드 액션 훅 사용
   const { lightbox, musicPlayer } = useCardActions({
     enableLightbox: true,
     enableMusicPlayer: true
   });
-  
-  // 필터링된 작품 목록
-  const filteredWorks = getWorksByCategory(activeFilter);
-  const musicWorks = categorizedData.music || [];
 
-  // 콜백 함수들 메모이제이션
+  // 콜백 함수들 메모이제이션 - 모든 hooks를 최상위에서 호출
   const handleSearchResult = useCallback((result) => {
     // Navigate to the specific work based on search result
     if (result.item.type === 'music') {
@@ -55,6 +53,32 @@ const Works = () => {
   const renderWork = useCallback((work, index) => {
     return <CardRenderer work={work} onClick={lightbox.openLightbox} />;
   }, [lightbox.openLightbox]);
+
+  if (loading) {
+    return (
+      <div>
+        <MetaDataManager {...seoData} />
+        <div className="container mx-auto py-8">
+          <GridSkeleton count={6} columns="grid-cols-1 md:grid-cols-2 lg:grid-cols-3" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !siteData) {
+    return (
+      <div>
+        <MetaDataManager {...seoData} />
+        <div className="container mx-auto py-8 text-center">
+          <p className="text-gray-300">데이터를 불러오는 중 오류가 발생했습니다.</p>
+        </div>
+      </div>
+    );
+  }
+  
+  // 필터링된 작품 목록
+  const filteredWorks = getWorksByCategory(activeFilter);
+  const musicWorks = categorizedData.music || [];
 
   return (
     <>
@@ -100,4 +124,4 @@ const Works = () => {
   );
 };
 
-export default Works;
+export default React.memo(Works);

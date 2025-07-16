@@ -6,10 +6,11 @@ import { Grid, Stack, Card } from '../components/ui/Layout';
 import { useWorksData } from '../hooks/useDataProcessor';
 import MetaDataManager from '../components/SEO/MetaDataManager';
 import { usePageSEO } from '../hooks/useSEO';
-import siteData from '../data';
+import { useCachedPageData } from '../hooks/usePageData';
+import { GridSkeleton } from '../components/ui/Skeleton';
 
 const About = () => {
-  const { timelineData } = useWorksData(siteData.works, 'about');
+  const { data: siteData, loading, error } = useCachedPageData('about');
   
   // SEO 메타데이터
   const seoData = usePageSEO({
@@ -19,6 +20,31 @@ const About = () => {
     image: '/images/og/about-og.jpg'
   });
 
+  // hooks를 최상위에서 호출 - siteData가 null일 때 빈 객체 전달
+  const { timelineData } = useWorksData(siteData?.works || {}, 'about');
+
+  if (loading) {
+    return (
+      <div>
+        <MetaDataManager {...seoData} />
+        <div className="container mx-auto py-8">
+          <GridSkeleton count={3} columns="grid-cols-1 md:grid-cols-2" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !siteData) {
+    return (
+      <div>
+        <MetaDataManager {...seoData} />
+        <div className="container mx-auto py-8 text-center">
+          <p className="text-gray-300">데이터를 불러오는 중 오류가 발생했습니다.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <MetaDataManager {...seoData} />
@@ -27,8 +53,8 @@ const About = () => {
           <DataRenderer 
             type={RENDER_TYPES.PROFILE}
             data={[
-              siteData.artist.bio,
-              siteData.artist.philosophy,
+              siteData.artist?.bio || '',
+              siteData.artist?.philosophy || '',
               "그의 작업은 사회에 대한 날카로운 시선과 따뜻한 연대의 메시지를 담고 있습니다. 음악 활동 외에도 황경하는 다양한 투쟁에 참여하며, 음악을 통한 사회 변화를 추구하고 있습니다.",
               "명성과 부를 좇기보다 시대의 아픔에 공감하고 약자와 연대하는 예술, 세상의 부조리에 저항하고 변화의 메시지를 전하는 예술의 길을 개척하고 있습니다. 비록 험난한 여정이겠지만 노래하는 자의 가녀린 어깨가 세상을 변화시키리라 믿습니다."
             ]}
@@ -83,4 +109,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default React.memo(About);

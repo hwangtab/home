@@ -3,7 +3,10 @@ import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import Section from '../components/Section';
 import ContactForm from '../components/ContactForm';
-import siteData from '../data';
+import { useCachedPageData } from '../hooks/usePageData';
+import { GridSkeleton } from '../components/ui/Skeleton';
+import MetaDataManager from '../components/SEO/MetaDataManager';
+import { usePageSEO } from '../hooks/useSEO';
 
 const ContactInfo = ({ icon: Icon, title, content, link }) => (
   <div className="flex items-center mb-8">
@@ -26,10 +29,43 @@ const ContactInfo = ({ icon: Icon, title, content, link }) => (
 
 
 const Contact = () => {
-  const contactInfo = siteData.artist.contact;
+  const { data: siteData, loading, error } = useCachedPageData('contact');
+
+  // SEO 메타데이터
+  const seoData = usePageSEO({
+    title: '연락처 - 황경하',
+    description: '황경하에게 연락하거나 문의사항이 있으시면 언제든지 연락해주세요. 이메일, 전화, 소셜미디어를 통해 소통할 수 있습니다.',
+    keywords: ['황경하', '연락처', '문의', '이메일', '전화번호', '소통'],
+    image: '/images/og/contact-og.jpg'
+  });
+
+  if (loading) {
+    return (
+      <div>
+        <MetaDataManager {...seoData} />
+        <div className="container mx-auto py-8">
+          <GridSkeleton count={2} columns="grid-cols-1 md:grid-cols-2" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !siteData) {
+    return (
+      <div>
+        <MetaDataManager {...seoData} />
+        <div className="container mx-auto py-8 text-center">
+          <p className="text-gray-300">데이터를 불러오는 중 오류가 발생했습니다.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const contactInfo = siteData.artist?.contact || {};
 
   return (
     <div>
+      <MetaDataManager {...seoData} />
       <Section title="연락처">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <motion.div 
@@ -91,4 +127,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default React.memo(Contact);

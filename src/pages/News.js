@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, ExternalLink, ShoppingCart } from 'lucide-react';
 import Section from '../components/Section';
-import siteData from '../data';
+import { useCachedPageData } from '../hooks/usePageData';
+import { GridSkeleton } from '../components/ui/Skeleton';
+import MetaDataManager from '../components/SEO/MetaDataManager';
+import { usePageSEO } from '../hooks/useSEO';
 
 const ConcertSlider = ({ concerts }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -122,13 +125,46 @@ const NewsCard = ({ news }) => (
 );
 
 const News = () => {
-  const concerts = siteData.events.concerts;
+  const { data: siteData, loading, error } = useCachedPageData('news');
+
+  // SEO 메타데이터
+  const seoData = usePageSEO({
+    title: '소식 - 황경하',
+    description: '황경하의 최신 소식, 공연 일정, 새로운 앨범 정보 등을 확인하세요. 콘서트와 음반 구매 정보도 제공합니다.',
+    keywords: ['황경하', '소식', '공연', '콘서트', '음반', '뉴스', '일정'],
+    image: '/images/og/news-og.jpg'
+  });
+
+  if (loading) {
+    return (
+      <div>
+        <MetaDataManager {...seoData} />
+        <div className="container mx-auto py-8">
+          <GridSkeleton count={3} columns="grid-cols-1" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !siteData) {
+    return (
+      <div>
+        <MetaDataManager {...seoData} />
+        <div className="container mx-auto py-8 text-center">
+          <p className="text-gray-300">데이터를 불러오는 중 오류가 발생했습니다.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const concerts = siteData.events?.concerts || [];
   // 데이터 구조 변경에 따라 'fish-album'을 works.music 배열에서 찾도록 수정
-  const album = siteData.works.music.find(item => item.id === 'fish-without-water-2023');
-  const news = siteData.news;
+  const album = siteData.works?.music?.find(item => item.id === 'fish-without-water-2023');
+  const news = siteData.news || [];
 
   return (
     <div>
+      <MetaDataManager {...seoData} />
       <Section title="최신 소식">
         <div className="grid grid-cols-1 gap-6 mb-8">
           {news.map((item) => (
@@ -150,4 +186,4 @@ const News = () => {
   );
 };
 
-export default News;
+export default React.memo(News);

@@ -11,7 +11,10 @@ import { useCardActions } from '../hooks/useCardActions';
 import { BodyText } from '../components/ui/Typography';
 import { Container, Flex, Stack } from '../components/ui/Layout';
 import Button, { ButtonGroup } from '../components/ui/Button';
-import siteData from '../data';
+import { useCachedPageData } from '../hooks/usePageData';
+import { GridSkeleton } from '../components/ui/Skeleton';
+import MetaDataManager from '../components/SEO/MetaDataManager';
+import { usePageSEO } from '../hooks/useSEO';
 
 const Archive = () => {
   const [selectedYear, setSelectedYear] = useState(2024);
@@ -19,13 +22,28 @@ const Archive = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   
-  const { flattenedEvents, getEventsByType, searchEvents } = useWorksData(siteData.works, 'archive');
+  const { data: siteData, loading, error } = useCachedPageData('archive');
+
+  // SEO 메타데이터
+  const seoData = usePageSEO({
+    title: '아카이브 - 황경하',
+    description: '황경하의 20년간의 활동 기록을 시간순으로 정리한 아카이브입니다. 음악, 글, 사진, 공연 등 다양한 작업들을 한눈에 볼 수 있습니다.',
+    keywords: ['황경하', '아카이브', '타임라인', '활동기록', '연표', '20년간'],
+    image: '/images/og/archive-og.jpg'
+  });
+
+  // hooks를 최상위에서 호출 - siteData가 null일 때 빈 객체 전달
+  const { flattenedEvents, getEventsByType, searchEvents } = useWorksData(siteData?.works || {}, 'archive');
   const { lightbox, musicPlayer } = useCardActions({
     enableLightbox: true,
     enableMusicPlayer: true
   });
 
+  // 모든 hooks를 최상위에서 호출 - 의존성이 null일 때 안전하게 처리
   const filteredEvents = useMemo(() => {
+    if (!flattenedEvents || !getEventsByType || !searchEvents) {
+      return [];
+    }
     let events = flattenedEvents;
     if (activeFilter !== 'all') {
       events = getEventsByType(activeFilter);
@@ -36,13 +54,24 @@ const Archive = () => {
     return events;
   }, [flattenedEvents, activeFilter, searchTerm, getEventsByType, searchEvents]);
 
-  const filterOptions = useMemo(() => [
-    { value: 'all', label: '전체', count: flattenedEvents.length },
-    { value: 'music', label: '음악', count: getEventsByType('music').length },
-    { value: 'visual', label: '영상/사진', count: getEventsByType('visual').length },
-    { value: 'writing', label: '글쓰기', count: getEventsByType('writing').length },
-    { value: 'performance', label: '공연', count: getEventsByType('performance').length }
-  ], [flattenedEvents, getEventsByType]);
+  const filterOptions = useMemo(() => {
+    if (!flattenedEvents || !getEventsByType) {
+      return [
+        { value: 'all', label: '전체', count: 0 },
+        { value: 'music', label: '음악', count: 0 },
+        { value: 'visual', label: '영상/사진', count: 0 },
+        { value: 'writing', label: '글쓰기', count: 0 },
+        { value: 'performance', label: '공연', count: 0 }
+      ];
+    }
+    return [
+      { value: 'all', label: '전체', count: flattenedEvents.length },
+      { value: 'music', label: '음악', count: getEventsByType('music').length },
+      { value: 'visual', label: '영상/사진', count: getEventsByType('visual').length },
+      { value: 'writing', label: '글쓰기', count: getEventsByType('writing').length },
+      { value: 'performance', label: '공연', count: getEventsByType('performance').length }
+    ];
+  }, [flattenedEvents, getEventsByType]);
 
   const handleCardClick = useCallback((work) => {
     if (work.archiveCategory === 'visual' || work.images) {
@@ -56,8 +85,31 @@ const Archive = () => {
     setSearchTerm(result.item.title);
   }, []);
 
+  if (loading) {
+    return (
+      <div>
+        <MetaDataManager {...seoData} />
+        <div className="container mx-auto py-8">
+          <GridSkeleton count={4} columns="grid-cols-1 md:grid-cols-2" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !siteData) {
+    return (
+      <div>
+        <MetaDataManager {...seoData} />
+        <div className="container mx-auto py-8 text-center">
+          <p className="text-gray-300">데이터를 불러오는 중 오류가 발생했습니다.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
+      <MetaDataManager {...seoData} />
       <Section 
         title="아카이브"
         titleAlign="center"
@@ -142,4 +194,4 @@ const Archive = () => {
   );
 };
 
-export default Archive;
+export default React.memo(Archive);

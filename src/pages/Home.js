@@ -34,7 +34,7 @@ const HeroSection = ({ siteData }) => {
           <div className="text-center max-w-4xl w-full mx-auto">
             {/* 메인 앨범 카루셀 */}
             <AlbumCarousel 
-              albums={siteData.works.music.filter(item => item.featured)}
+              albums={siteData.works?.music?.filter(item => item.featured) || []}
               className="mb-8 sm:mb-10"
             />
           
@@ -115,9 +115,9 @@ const FeaturedWorks = ({ siteData }) => {
     if (!siteData) return;
     
     // 즉시 데이터 처리 - 로딩 시뮬레이션 제거
-    const works = siteData.works.music.filter(item => 
+    const works = siteData.works?.music?.filter(item => 
       item.featured && item.id !== 'melting-snow-2024'
-    ).slice(0, 3);
+    ).slice(0, 3) || [];
     setFeaturedWorks(works);
   }, [siteData]);
 
@@ -133,7 +133,7 @@ const FeaturedWorks = ({ siteData }) => {
           {featuredWorks.map((work, index) => (
           <div 
             key={work.id}
-            className="w-full bg-gray-800 p-6 rounded-lg shadow-lg transform-gpu hover:scale-105 transition-transform duration-300"
+            className="w-full bg-gray-750 p-6 rounded-lg shadow-lg transform-gpu hover:scale-105 transition-transform duration-300"
           >
             <Link to={`/works/music`}>
               <img 
@@ -141,10 +141,10 @@ const FeaturedWorks = ({ siteData }) => {
                 alt={work.title} 
                 className="w-full h-48 object-cover mb-4 rounded" 
               />
-              <h3 className="text-2xl font-bold mb-3 text-gray-200 font-santokki">
+              <h3 className="text-2xl font-bold mb-3 text-gray-100 font-santokki">
                 {work.title} ({work.year})
               </h3>
-              <p className="text-gray-400 font-wanted-sans text-sm line-clamp-3">
+              <p className="text-gray-300 font-wanted-sans text-sm line-clamp-3">
                 {work.description}
               </p>
             </Link>
@@ -156,7 +156,7 @@ const FeaturedWorks = ({ siteData }) => {
         <div className="hover:scale-105 transition-transform duration-200">
           <Link 
             to="/works"
-            className="inline-flex items-center bg-gray-700 text-white px-8 py-4 rounded-full font-wanted-sans hover:bg-gray-600 transition-all duration-300 transform-gpu"
+            className="inline-flex items-center bg-gray-750 text-white px-8 py-4 rounded-full font-wanted-sans hover:bg-gray-600 transition-all duration-300 transform-gpu"
           >
             전체 작품 보기
           </Link>
@@ -200,7 +200,7 @@ const QuickNavigation = () => {
         {quickLinks.map((link, index) => (
           <div
             key={link.name}
-            className="w-full group bg-gray-800 hover:bg-gray-750 p-6 rounded-xl shadow-lg hover:shadow-2xl border border-gray-700 hover:border-gray-600 transition-all duration-300 relative overflow-hidden hover:scale-105 hover:-translate-y-1"
+            className="w-full group bg-gray-750 hover:bg-gray-700 p-6 rounded-xl shadow-lg hover:shadow-2xl border border-gray-700 hover:border-gray-600 transition-all duration-300 relative overflow-hidden hover:scale-105 hover:-translate-y-1"
           >
             {/* 브랜드 컬러 액센트 */}
             <div className={`absolute top-0 left-0 w-full h-1 bg-${link.color}-500`} />
@@ -210,11 +210,11 @@ const QuickNavigation = () => {
                 <div className={`w-12 h-12 bg-${link.color}-500/10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-${link.color}-500/20 transition-colors duration-300`}>
                   <span className="text-2xl">{link.icon}</span>
                 </div>
-                <h3 className={`text-xl font-bold text-gray-200 group-hover:text-${link.color}-300 font-santokki transition-colors duration-300 text-center`}>
+                <h3 className={`text-xl font-bold text-gray-100 group-hover:text-${link.color}-300 font-santokki transition-colors duration-300 text-center`}>
                   {link.name}
                 </h3>
               </div>
-              <p className="text-gray-400 group-hover:text-gray-300 font-wanted-sans transition-colors duration-300 text-center">
+              <p className="text-gray-300 group-hover:text-gray-200 font-wanted-sans transition-colors duration-300 text-center">
                 {link.description}
               </p>
               
@@ -280,4 +280,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default React.memo(Home);

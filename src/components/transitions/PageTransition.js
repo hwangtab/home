@@ -45,7 +45,7 @@ const PageTransition = memo(({ children, variant = 'default' }) => {
         y: -20,
         scale: 0.98,
         transition: {
-          duration: 0.3,
+          duration: 0.25,
           ease: [0.25, 0.1, 0.25, 1]
         }
       }
@@ -61,9 +61,9 @@ const PageTransition = memo(({ children, variant = 'default' }) => {
         scale: 1,
         rotateY: 0,
         transition: {
-          duration: 0.8,
+          duration: 0.6,
           ease: [0.165, 0.84, 0.44, 1],
-          staggerChildren: 0.15
+          staggerChildren: 0.1
         }
       },
       exit: { 
@@ -71,7 +71,7 @@ const PageTransition = memo(({ children, variant = 'default' }) => {
         scale: 0.95,
         rotateY: -10,
         transition: {
-          duration: 0.4,
+          duration: 0.25,
           ease: [0.25, 0.1, 0.25, 1]
         }
       }
@@ -87,7 +87,7 @@ const PageTransition = memo(({ children, variant = 'default' }) => {
         x: 0,
         scale: 1,
         transition: {
-          duration: 0.7,
+          duration: 0.6,
           ease: [0.23, 1, 0.32, 1],
           staggerChildren: 0.1
         }
@@ -97,7 +97,7 @@ const PageTransition = memo(({ children, variant = 'default' }) => {
         x: -50,
         scale: 0.98,
         transition: {
-          duration: 0.3,
+          duration: 0.25,
           ease: [0.25, 0.1, 0.25, 1]
         }
       }
@@ -113,7 +113,7 @@ const PageTransition = memo(({ children, variant = 'default' }) => {
         x: 0,
         scale: 1,
         transition: {
-          duration: 0.7,
+          duration: 0.6,
           ease: [0.23, 1, 0.32, 1],
           staggerChildren: 0.1
         }
@@ -123,7 +123,7 @@ const PageTransition = memo(({ children, variant = 'default' }) => {
         x: 50,
         scale: 0.98,
         transition: {
-          duration: 0.3,
+          duration: 0.25,
           ease: [0.25, 0.1, 0.25, 1]
         }
       }
@@ -139,9 +139,9 @@ const PageTransition = memo(({ children, variant = 'default' }) => {
         y: 0,
         filter: 'blur(0px)',
         transition: {
-          duration: 0.8,
+          duration: 0.6,
           ease: [0.165, 0.84, 0.44, 1],
-          staggerChildren: 0.12
+          staggerChildren: 0.1
         }
       },
       exit: { 
@@ -149,7 +149,7 @@ const PageTransition = memo(({ children, variant = 'default' }) => {
         y: -30,
         filter: 'blur(2px)',
         transition: {
-          duration: 0.4,
+          duration: 0.25,
           ease: [0.25, 0.1, 0.25, 1]
         }
       }
@@ -165,7 +165,7 @@ const PageTransition = memo(({ children, variant = 'default' }) => {
         scale: 1,
         rotateX: 0,
         transition: {
-          duration: 0.8,
+          duration: 0.6,
           ease: [0.25, 0.46, 0.45, 0.94],
           staggerChildren: 0.1
         }
@@ -175,7 +175,7 @@ const PageTransition = memo(({ children, variant = 'default' }) => {
         scale: 0.95,
         rotateX: -5,
         transition: {
-          duration: 0.3,
+          duration: 0.25,
           ease: [0.25, 0.1, 0.25, 1]
         }
       }
@@ -191,9 +191,9 @@ const PageTransition = memo(({ children, variant = 'default' }) => {
         scale: 1,
         filter: 'blur(0px)',
         transition: {
-          duration: 0.9,
+          duration: 0.6,
           ease: [0.25, 0.1, 0.25, 1],
-          staggerChildren: 0.08
+          staggerChildren: 0.1
         }
       },
       exit: { 
@@ -201,7 +201,7 @@ const PageTransition = memo(({ children, variant = 'default' }) => {
         scale: 1.02,
         filter: 'blur(4px)',
         transition: {
-          duration: 0.4,
+          duration: 0.25,
           ease: [0.25, 0.1, 0.25, 1]
         }
       }

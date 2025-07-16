@@ -26,7 +26,7 @@ const Header = () => {
 
   return (
     <header 
-      className="bg-gradient-to-r from-gray-900 via-gray-850 to-gray-800 text-white py-4 sm:py-6 px-2 sm:px-4 md:px-6 sticky top-0 z-50 transform-gpu border-b border-brand-primary-500/10"
+      className="bg-gradient-to-r from-gray-950 via-gray-900 to-gray-850 text-white py-4 sm:py-6 px-2 sm:px-4 md:px-6 sticky top-0 z-50 transform-gpu border-b border-brand-primary-500/10"
       role="banner"
       aria-label="사이트 헤더"
     >
@@ -89,7 +89,7 @@ const Footer = () => {
   
   return (
     <footer 
-      className="bg-gradient-to-r from-gray-900 to-gray-800 text-gray-400 p-3 sm:p-6 mt-8 sm:mt-12"
+      className="bg-gradient-to-r from-gray-950 to-gray-900 text-gray-400 p-3 sm:p-6 mt-8 sm:mt-12"
       id="footer"
       role="contentinfo"
       aria-label="사이트 푸터"
@@ -109,7 +109,7 @@ const Layout = ({ children }) => {
 
   return (
     <motion.div 
-      className="bg-gradient-to-b from-gray-900 to-gray-800 min-h-screen font-wanted-sans text-gray-200 flex flex-col transform-gpu"
+      className="bg-gradient-to-b from-gray-950 to-gray-900 min-h-screen font-wanted-sans text-gray-100 flex flex-col transform-gpu"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{
@@ -126,24 +126,17 @@ const Layout = ({ children }) => {
       
       <Header />
       
-      <motion.main 
+      <main 
         id="main-content"
         className="container mx-auto mt-4 sm:mt-8 md:mt-12 p-2 sm:p-4 md:p-6 flex-1 contain-layout"
         role="main"
         aria-label="메인 콘텐츠"
         tabIndex="-1"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: 0.6,
-          ease: [0.25, 0.1, 0.25, 1],
-          delay: 0.2
-        }}
       >
         <PageTransition>
           {children}
         </PageTransition>
-      </motion.main>
+      </main>
       
       <Footer />
       
@@ -153,4 +146,4 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout;
+export default React.memo(Layout);
