@@ -1,0 +1,211 @@
+import React, { createContext, useContext, useState, useCallback, useRef } from 'react';
+
+// 애니메이션 상태 관리 컨텍스트
+const AnimationContext = createContext();
+
+// 애니메이션 상태 타입
+export const ANIMATION_STATES = {
+  IDLE: 'idle',
+  PAGE_TRANSITION: 'page_transition',
+  INTERACTIVE: 'interactive',
+  BACKGROUND: 'background'
+};
+
+// 애니메이션 우선순위 (높을수록 우선순위 높음)
+export const ANIMATION_PRIORITY = {
+  PAGE_TRANSITION: 10,
+  INTERACTIVE: 5,
+  BACKGROUND: 1
+};
+
+export const AnimationProvider = ({ children }) => {
+  const [currentState, setCurrentState] = useState(ANIMATION_STATES.IDLE);
+  const [runningAnimations, setRunningAnimations] = useState(new Set());
+  const animationTimeouts = useRef(new Map());
+
+  // 페이지 전환 시작
+  const startPageTransition = useCallback(() => {
+    setCurrentState(ANIMATION_STATES.PAGE_TRANSITION);
+    
+    // 다른 애니메이션들 일시 정지
+    const pauseEvent = new CustomEvent('pauseAnimations');
+    document.dispatchEvent(pauseEvent);
+    
+    // 750ms 후 자동으로 상태 해제 (페이지 전환 완료 0.5s + 여유 0.25s)
+    const timeoutId = setTimeout(() => {
+      setCurrentState(ANIMATION_STATES.IDLE);
+      
+      // 다른 애니메이션들 재개
+      const resumeEvent = new CustomEvent('resumeAnimations');
+      document.dispatchEvent(resumeEvent);
+    }, 750);
+    
+    animationTimeouts.current.set('pageTransition', timeoutId);
+  }, []);
+
+  // 페이지 전환 완료
+  const endPageTransition = useCallback(() => {
+    const timeoutId = animationTimeouts.current.get('pageTransition');
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      animationTimeouts.current.delete('pageTransition');
+    }
+    
+    setCurrentState(ANIMATION_STATES.IDLE);
+    
+    // 다른 애니메이션들 재개
+    const resumeEvent = new CustomEvent('resumeAnimations');
+    document.dispatchEvent(resumeEvent);
+  }, []);
+
+  // 애니메이션 등록
+  const registerAnimation = useCallback((id, priority = ANIMATION_PRIORITY.BACKGROUND) => {
+    // 페이지 전환 중에는 낮은 우선순위 애니메이션 차단
+    if (currentState === ANIMATION_STATES.PAGE_TRANSITION && 
+        priority < ANIMATION_PRIORITY.PAGE_TRANSITION) {
+      return false;
+    }
+    
+    setRunningAnimations(prev => new Set([...prev, id]));
+    return true;
+  }, [currentState]);
+
+  // 애니메이션 해제
+  const unregisterAnimation = useCallback((id) => {
+    setRunningAnimations(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(id);
+      return newSet;
+    });
+  }, []);
+
+  // 애니메이션 허용 여부 확인
+  const isAnimationAllowed = useCallback((priority = ANIMATION_PRIORITY.BACKGROUND) => {
+    if (currentState === ANIMATION_STATES.PAGE_TRANSITION) {
+      return priority >= ANIMATION_PRIORITY.PAGE_TRANSITION;
+    }
+    return true;
+  }, [currentState]);
+
+  // 성능 최적화를 위한 애니메이션 제한
+  const shouldReduceAnimations = useCallback(() => {
+    // 많은 애니메이션이 동시에 실행 중인 경우 제한
+    if (runningAnimations.size > 3) {
+      return true;
+    }
+    
+    // 모바일 환경에서는 더 제한적
+    if (window.innerWidth < 768 && runningAnimations.size > 2) {
+      return true;
+    }
+    
+    return false;
+  }, [runningAnimations.size]);
+
+  // 정리 함수 강화
+  const cleanup = useCallback(() => {
+    // 모든 타이머 정리
+    animationTimeouts.current.forEach(timeoutId => {
+      clearTimeout(timeoutId);
+    });
+    animationTimeouts.current.clear();
+    
+    // 애니메이션 상태 초기화
+    setRunningAnimations(new Set());
+    setCurrentState(ANIMATION_STATES.IDLE);
+    
+    // 전역 이벤트 정리
+    const cleanupEvent = new CustomEvent('cleanupAnimations');
+    document.dispatchEvent(cleanupEvent);
+    
+    // body 스타일 정리
+    document.body.style.willChange = 'auto';
+  }, []);
+
+  // 컴포넌트 언마운트 시 정리
+  React.useEffect(() => {
+    return () => {
+      cleanup();
+    };
+  }, [cleanup]);
+
+  const value = {
+    currentState,
+    runningAnimations,
+    startPageTransition,
+    endPageTransition,
+    registerAnimation,
+    unregisterAnimation,
+    isAnimationAllowed,
+    shouldReduceAnimations,
+    cleanup
+  };
+
+  return (
+    <AnimationContext.Provider value={value}>
+      {children}
+    </AnimationContext.Provider>
+  );
+};
+
+// 커스텀 훅
+export const useAnimation = () => {
+  const context = useContext(AnimationContext);
+  if (!context) {
+    throw new Error('useAnimation must be used within an AnimationProvider');
+  }
+  return context;
+};
+
+// 애니메이션 컴포넌트 래퍼
+export const AnimationWrapper = ({ 
+  children, 
+  id, 
+  priority = ANIMATION_PRIORITY.BACKGROUND,
+  onPause,
+  onResume 
+}) => {
+  const { registerAnimation, unregisterAnimation, isAnimationAllowed } = useAnimation();
+  const [isActive, setIsActive] = useState(true);
+
+  React.useEffect(() => {
+    const canRun = registerAnimation(id, priority);
+    if (!canRun) {
+      setIsActive(false);
+    }
+
+    // 애니메이션 일시 정지/재개 이벤트 리스너
+    const handlePause = () => {
+      if (priority < ANIMATION_PRIORITY.PAGE_TRANSITION) {
+        setIsActive(false);
+        onPause?.();
+      }
+    };
+
+    const handleResume = () => {
+      if (isAnimationAllowed(priority)) {
+        setIsActive(true);
+        onResume?.();
+      }
+    };
+
+    document.addEventListener('pauseAnimations', handlePause);
+    document.addEventListener('resumeAnimations', handleResume);
+
+    return () => {
+      unregisterAnimation(id);
+      document.removeEventListener('pauseAnimations', handlePause);
+      document.removeEventListener('resumeAnimations', handleResume);
+    };
+  }, [id, priority, registerAnimation, unregisterAnimation, isAnimationAllowed, onPause, onResume]);
+
+  // 애니메이션이 비활성화된 경우 정적 버전 렌더링
+  if (!isActive) {
+    return React.cloneElement(children, { 
+      animate: false, 
+      transition: { duration: 0 } 
+    });
+  }
+
+  return children;
+};

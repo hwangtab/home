@@ -1,6 +1,218 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
+import { useAnimation, ANIMATION_PRIORITY } from '../../context/AnimationContext';
+
+// 애니메이션 easing 함수 통일
+const EASING = {
+  standard: [0.4, 0, 0.2, 1],
+  exit: [0.4, 0, 1, 1]
+};
+
+// 애니메이션 지속시간 통일
+const DURATION = {
+  enter: 0.5,
+  exit: 0.25
+};
+
+// 페이지별 전환 효과 설정 - 메모화로 성능 최적화
+const getTransitionVariant = (pathname) => {
+  switch (pathname) {
+    case '/': return 'home';
+    case '/about': return 'slideLeft';
+    case '/works': return 'scale';
+    case '/archive': return 'slideUp';
+    case '/news': return 'fade';
+    case '/contact': return 'slideRight';
+    default: return 'default';
+  }
+};
+
+// variants 객체를 컴포넌트 외부로 이동하여 재생성 방지
+const variants = {
+    default: {
+      initial: { 
+        opacity: 0, 
+        y: 20,
+        scale: 0.99
+      },
+      animate: { 
+        opacity: 1, 
+        y: 0,
+        scale: 1,
+        transition: {
+          duration: DURATION.enter,
+          ease: EASING.standard,
+          staggerChildren: 0.05
+        }
+      },
+      exit: { 
+        opacity: 0, 
+        y: -10,
+        scale: 0.99,
+        transition: {
+          duration: DURATION.exit,
+          ease: EASING.exit
+        }
+      }
+    },
+    home: {
+      initial: { 
+        opacity: 0, 
+        scale: 0.98,
+        rotateY: 4
+      },
+      animate: { 
+        opacity: 1, 
+        scale: 1,
+        rotateY: 0,
+        transition: {
+          duration: DURATION.enter,
+          ease: [0.4, 0, 0.2, 1],
+          staggerChildren: 0.08
+        }
+      },
+      exit: { 
+        opacity: 0, 
+        scale: 0.99,
+        rotateY: -2,
+        transition: {
+          duration: DURATION.exit,
+          ease: EASING.exit
+        }
+      }
+    },
+    slideLeft: {
+      initial: { 
+        opacity: 0, 
+        x: 40,
+        scale: 0.98
+      },
+      animate: { 
+        opacity: 1, 
+        x: 0,
+        scale: 1,
+        transition: {
+          duration: DURATION.enter,
+          ease: [0.4, 0, 0.2, 1],
+          staggerChildren: 0.08
+        }
+      },
+      exit: { 
+        opacity: 0, 
+        x: -30,
+        scale: 0.99,
+        transition: {
+          duration: DURATION.exit,
+          ease: EASING.exit
+        }
+      }
+    },
+    slideRight: {
+      initial: { 
+        opacity: 0, 
+        x: -40,
+        scale: 0.98
+      },
+      animate: { 
+        opacity: 1, 
+        x: 0,
+        scale: 1,
+        transition: {
+          duration: DURATION.enter,
+          ease: [0.4, 0, 0.2, 1],
+          staggerChildren: 0.08
+        }
+      },
+      exit: { 
+        opacity: 0, 
+        x: 30,
+        scale: 0.99,
+        transition: {
+          duration: DURATION.exit,
+          ease: EASING.exit
+        }
+      }
+    },
+    slideUp: {
+      initial: { 
+        opacity: 0, 
+        y: 30,
+        filter: 'blur(2px)'
+      },
+      animate: { 
+        opacity: 1, 
+        y: 0,
+        filter: 'blur(0px)',
+        transition: {
+          duration: DURATION.enter,
+          ease: [0.4, 0, 0.2, 1],
+          staggerChildren: 0.08
+        }
+      },
+      exit: { 
+        opacity: 0, 
+        y: -20,
+        filter: 'blur(1px)',
+        transition: {
+          duration: DURATION.exit,
+          ease: EASING.exit
+        }
+      }
+    },
+    scale: {
+      initial: { 
+        opacity: 0, 
+        scale: 0.9,
+        rotateX: 8
+      },
+      animate: { 
+        opacity: 1, 
+        scale: 1,
+        rotateX: 0,
+        transition: {
+          duration: DURATION.enter,
+          ease: EASING.standard,
+          staggerChildren: 0.08
+        }
+      },
+      exit: { 
+        opacity: 0, 
+        scale: 0.99,
+        rotateX: -3,
+        transition: {
+          duration: DURATION.exit,
+          ease: EASING.exit
+        }
+      }
+    },
+    fade: {
+      initial: { 
+        opacity: 0,
+        scale: 0.99,
+        filter: 'blur(3px)'
+      },
+      animate: { 
+        opacity: 1,
+        scale: 1,
+        filter: 'blur(0px)',
+        transition: {
+          duration: DURATION.enter,
+          ease: EASING.standard,
+          staggerChildren: 0.05
+        }
+      },
+      exit: { 
+        opacity: 0,
+        scale: 1.01,
+        filter: 'blur(2px)',
+        transition: {
+          duration: DURATION.exit,
+          ease: EASING.exit
+        }
+      }
+    }
+};
 
 /**
  * 고품질 페이지 전환 컴포넌트
@@ -8,205 +220,18 @@ import { useLocation } from 'react-router-dom';
  */
 const PageTransition = memo(({ children, variant = 'default' }) => {
   const location = useLocation();
-
-  // 페이지별 전환 효과 설정
-  const getTransitionVariant = (pathname) => {
-    if (pathname === '/') return 'home';
-    if (pathname === '/about') return 'slideLeft';
-    if (pathname === '/works') return 'scale';
-    if (pathname === '/archive') return 'slideUp';
-    if (pathname === '/news') return 'fade';
-    if (pathname === '/contact') return 'slideRight';
-    return 'default';
-  };
+  const { startPageTransition, endPageTransition } = useAnimation();
 
   const currentVariant = variant === 'default' ? getTransitionVariant(location.pathname) : variant;
 
-  // 전환 효과 변형들
-  const variants = {
-    default: {
-      initial: { 
-        opacity: 0, 
-        y: 30,
-        scale: 0.95
-      },
-      animate: { 
-        opacity: 1, 
-        y: 0,
-        scale: 1,
-        transition: {
-          duration: 0.6,
-          ease: [0.25, 0.1, 0.25, 1],
-          staggerChildren: 0.1
-        }
-      },
-      exit: { 
-        opacity: 0, 
-        y: -20,
-        scale: 0.98,
-        transition: {
-          duration: 0.25,
-          ease: [0.25, 0.1, 0.25, 1]
-        }
-      }
-    },
-    home: {
-      initial: { 
-        opacity: 0, 
-        scale: 0.9,
-        rotateY: 15
-      },
-      animate: { 
-        opacity: 1, 
-        scale: 1,
-        rotateY: 0,
-        transition: {
-          duration: 0.6,
-          ease: [0.165, 0.84, 0.44, 1],
-          staggerChildren: 0.1
-        }
-      },
-      exit: { 
-        opacity: 0, 
-        scale: 0.95,
-        rotateY: -10,
-        transition: {
-          duration: 0.25,
-          ease: [0.25, 0.1, 0.25, 1]
-        }
-      }
-    },
-    slideLeft: {
-      initial: { 
-        opacity: 0, 
-        x: 100,
-        scale: 0.95
-      },
-      animate: { 
-        opacity: 1, 
-        x: 0,
-        scale: 1,
-        transition: {
-          duration: 0.6,
-          ease: [0.23, 1, 0.32, 1],
-          staggerChildren: 0.1
-        }
-      },
-      exit: { 
-        opacity: 0, 
-        x: -50,
-        scale: 0.98,
-        transition: {
-          duration: 0.25,
-          ease: [0.25, 0.1, 0.25, 1]
-        }
-      }
-    },
-    slideRight: {
-      initial: { 
-        opacity: 0, 
-        x: -100,
-        scale: 0.95
-      },
-      animate: { 
-        opacity: 1, 
-        x: 0,
-        scale: 1,
-        transition: {
-          duration: 0.6,
-          ease: [0.23, 1, 0.32, 1],
-          staggerChildren: 0.1
-        }
-      },
-      exit: { 
-        opacity: 0, 
-        x: 50,
-        scale: 0.98,
-        transition: {
-          duration: 0.25,
-          ease: [0.25, 0.1, 0.25, 1]
-        }
-      }
-    },
-    slideUp: {
-      initial: { 
-        opacity: 0, 
-        y: 80,
-        filter: 'blur(4px)'
-      },
-      animate: { 
-        opacity: 1, 
-        y: 0,
-        filter: 'blur(0px)',
-        transition: {
-          duration: 0.6,
-          ease: [0.165, 0.84, 0.44, 1],
-          staggerChildren: 0.1
-        }
-      },
-      exit: { 
-        opacity: 0, 
-        y: -30,
-        filter: 'blur(2px)',
-        transition: {
-          duration: 0.25,
-          ease: [0.25, 0.1, 0.25, 1]
-        }
-      }
-    },
-    scale: {
-      initial: { 
-        opacity: 0, 
-        scale: 0.8,
-        rotateX: 15
-      },
-      animate: { 
-        opacity: 1, 
-        scale: 1,
-        rotateX: 0,
-        transition: {
-          duration: 0.6,
-          ease: [0.25, 0.46, 0.45, 0.94],
-          staggerChildren: 0.1
-        }
-      },
-      exit: { 
-        opacity: 0, 
-        scale: 0.95,
-        rotateX: -5,
-        transition: {
-          duration: 0.25,
-          ease: [0.25, 0.1, 0.25, 1]
-        }
-      }
-    },
-    fade: {
-      initial: { 
-        opacity: 0,
-        scale: 0.98,
-        filter: 'blur(8px)'
-      },
-      animate: { 
-        opacity: 1,
-        scale: 1,
-        filter: 'blur(0px)',
-        transition: {
-          duration: 0.6,
-          ease: [0.25, 0.1, 0.25, 1],
-          staggerChildren: 0.1
-        }
-      },
-      exit: { 
-        opacity: 0,
-        scale: 1.02,
-        filter: 'blur(4px)',
-        transition: {
-          duration: 0.25,
-          ease: [0.25, 0.1, 0.25, 1]
-        }
-      }
-    }
-  };
+  // 애니메이션 콜백 최적화
+  const handleAnimationStart = useCallback(() => {
+    startPageTransition();
+  }, [startPageTransition]);
+
+  const handleAnimationComplete = useCallback(() => {
+    endPageTransition();
+  }, [endPageTransition]);
 
   return (
     <AnimatePresence mode="wait" initial={false}>
@@ -216,12 +241,18 @@ const PageTransition = memo(({ children, variant = 'default' }) => {
         animate="animate"
         exit="exit"
         variants={variants[currentVariant]}
-        className="w-full transform-gpu"
+        className="w-full"
         style={{ 
-          willChange: 'transform, opacity, filter',
           backfaceVisibility: 'hidden',
-          perspective: 1000
+          WebkitBackfaceVisibility: 'hidden',
+          transform: 'translateZ(0)',
+          WebkitTransform: 'translateZ(0)',
+          contain: 'layout style paint',
+          isolation: 'isolate',
+          willChange: 'transform, opacity'
         }}
+        onAnimationStart={handleAnimationStart}
+        onAnimationComplete={handleAnimationComplete}
       >
         {children}
       </motion.div>

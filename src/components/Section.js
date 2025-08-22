@@ -144,8 +144,8 @@ const Section = memo(({
 
   const backgroundClasses = {
     transparent: '',
-    default: 'bg-gray-900',
-    accent: 'bg-gray-800',
+    default: 'bg-gray-950',
+    accent: 'bg-gray-900',
     muted: 'bg-gray-850'
   };
 
@@ -213,7 +213,7 @@ const Section = memo(({
               <>
                 <Spacer size="md" />
                 <motion.p 
-                  className="text-lg text-gray-200 font-wanted-sans leading-relaxed max-w-2xl mx-auto"
+                  className="text-lg text-gray-100 font-wanted-sans leading-relaxed max-w-2xl mx-auto"
                   variants={{
                     hidden: { opacity: 0, y: 20 },
                     visible: { 

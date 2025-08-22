@@ -260,4 +260,4 @@ const MusicPlayer = ({ playlist = [], isVisible = false, onClose }) => {
   );
 };
 
-export default MusicPlayer;
+export default React.memo(MusicPlayer);

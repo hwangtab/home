@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useAnimation } from 'framer-motion';
+import { useAnimation as useAnimationContext } from '../context/AnimationContext';
 
 /**
  * 스크롤 기반 애니메이션 훅
@@ -19,19 +20,44 @@ const useScrollAnimation = (options = {}) => {
   const [elementTop, setElementTop] = useState(0);
   const elementRef = useRef(null);
   const controls = useAnimation();
+  const observerRef = useRef(null);
+  const animationFrameId = useRef(null);
+  const { isAnimationAllowed, registerAnimation, unregisterAnimation } = useAnimationContext();
+  const animationId = useRef(`scroll-animation-${Date.now()}`);
 
-  // 스크롤 위치 업데이트
+  // 스크롤 위치 업데이트 - 성능 최적화
   const updateScrollY = useCallback(() => {
-    setScrollY(window.scrollY);
-  }, []);
+    // 페이지 전환 중에는 스크롤 애니메이션 비활성화
+    if (!isAnimationAllowed()) {
+      return;
+    }
+    
+    // 이전 애니메이션 프레임 취소
+    if (animationFrameId.current) {
+      cancelAnimationFrame(animationFrameId.current);
+    }
+    
+    animationFrameId.current = requestAnimationFrame(() => {
+      setScrollY(window.scrollY);
+      animationFrameId.current = null;
+    });
+  }, [isAnimationAllowed]);
 
-  // Intersection Observer로 요소 가시성 감지
+  // Intersection Observer로 요소 가시성 감지 - 메모리 누수 방지
   useEffect(() => {
     const element = elementRef.current;
     if (!element) return;
 
+    // 애니메이션 등록
+    registerAnimation(animationId.current);
+
     const observer = new IntersectionObserver(
       ([entry]) => {
+        // 페이지 전환 중에는 애니메이션 비활성화
+        if (!isAnimationAllowed()) {
+          return;
+        }
+        
         const isIntersecting = entry.isIntersecting;
         
         if (isIntersecting && (!isVisible || !triggerOnce)) {
@@ -49,20 +75,47 @@ const useScrollAnimation = (options = {}) => {
     );
 
     observer.observe(element);
+    observerRef.current = observer;
 
     // 초기 요소 위치 저장
     const rect = element.getBoundingClientRect();
     setElementTop(rect.top + window.scrollY);
 
-    return () => observer.disconnect();
-  }, [threshold, offset, triggerOnce, isVisible, controls]);
+    // 정리 함수
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
+      }
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+        animationFrameId.current = null;
+      }
+      unregisterAnimation(animationId.current);
+    };
+  }, [threshold, offset, triggerOnce, isVisible, controls, isAnimationAllowed, registerAnimation, unregisterAnimation]);
 
-  // 패럴랙스 효과를 위한 스크롤 이벤트
+  // 패럴랙스 효과를 위한 스크롤 이벤트 - 메모리 누수 방지
   useEffect(() => {
     if (!enableParallax) return;
 
     window.addEventListener('scroll', updateScrollY, { passive: true });
-    return () => window.removeEventListener('scroll', updateScrollY);
+    
+    // 정리 이벤트 리스너
+    const handleCleanup = () => {
+      window.removeEventListener('scroll', updateScrollY);
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+        animationFrameId.current = null;
+      }
+    };
+    
+    document.addEventListener('cleanupAnimations', handleCleanup);
+    
+    return () => {
+      handleCleanup();
+      document.removeEventListener('cleanupAnimations', handleCleanup);
+    };
   }, [enableParallax, updateScrollY]);
 
   // 패럴랙스 변환값 계산
@@ -130,51 +183,120 @@ const useScrollAnimation = (options = {}) => {
 };
 
 /**
- * 스크롤 진행률 훅
+ * 스크롤 진행률 훅 - 메모리 누수 방지
  * 페이지 스크롤 진행률을 0-1 사이 값으로 제공
  */
 export const useScrollProgress = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const animationFrameId = useRef(null);
+  const { isAnimationAllowed, registerAnimation, unregisterAnimation } = useAnimationContext();
+  const animationId = useRef(`scroll-progress-${Date.now()}`);
 
   useEffect(() => {
+    // 애니메이션 등록
+    registerAnimation(animationId.current);
+    
     const updateScrollProgress = () => {
-      const scrollPx = document.documentElement.scrollTop;
-      const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = scrollPx / winHeightPx;
+      // 페이지 전환 중에는 스크롤 애니메이션 비활성화
+      if (!isAnimationAllowed()) {
+        return;
+      }
       
-      setScrollProgress(Math.min(Math.max(scrolled, 0), 1));
+      // 이전 애니메이션 프레임 취소
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+      
+      animationFrameId.current = requestAnimationFrame(() => {
+        const scrollPx = document.documentElement.scrollTop;
+        const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = scrollPx / winHeightPx;
+        
+        setScrollProgress(Math.min(Math.max(scrolled, 0), 1));
+        animationFrameId.current = null;
+      });
     };
 
     window.addEventListener('scroll', updateScrollProgress, { passive: true });
     updateScrollProgress(); // 초기값 설정
+    
+    // 정리 이벤트 리스너
+    const handleCleanup = () => {
+      window.removeEventListener('scroll', updateScrollProgress);
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+        animationFrameId.current = null;
+      }
+    };
+    
+    document.addEventListener('cleanupAnimations', handleCleanup);
 
-    return () => window.removeEventListener('scroll', updateScrollProgress);
-  }, []);
+    return () => {
+      handleCleanup();
+      document.removeEventListener('cleanupAnimations', handleCleanup);
+      unregisterAnimation(animationId.current);
+    };
+  }, [isAnimationAllowed, registerAnimation, unregisterAnimation]);
 
   return scrollProgress;
 };
 
 /**
- * 스크롤 방향 감지 훅
+ * 스크롤 방향 감지 훅 - 메모리 누수 방지
  */
 export const useScrollDirection = (threshold = 10) => {
   const [scrollDirection, setScrollDirection] = useState('up');
   const [lastScrollY, setLastScrollY] = useState(0);
+  const animationFrameId = useRef(null);
+  const { isAnimationAllowed, registerAnimation, unregisterAnimation } = useAnimationContext();
+  const animationId = useRef(`scroll-direction-${Date.now()}`);
 
   useEffect(() => {
+    // 애니메이션 등록
+    registerAnimation(animationId.current);
+    
     const updateScrollDirection = () => {
-      const scrollY = window.scrollY;
-      const direction = scrollY > lastScrollY ? 'down' : 'up';
-      
-      if (Math.abs(scrollY - lastScrollY) > threshold) {
-        setScrollDirection(direction);
-        setLastScrollY(scrollY);
+      // 페이지 전환 중에는 스크롤 애니메이션 비활성화
+      if (!isAnimationAllowed()) {
+        return;
       }
+      
+      // 이전 애니메이션 프레임 취소
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+      
+      animationFrameId.current = requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        const direction = scrollY > lastScrollY ? 'down' : 'up';
+        
+        if (Math.abs(scrollY - lastScrollY) > threshold) {
+          setScrollDirection(direction);
+          setLastScrollY(scrollY);
+        }
+        animationFrameId.current = null;
+      });
     };
 
     window.addEventListener('scroll', updateScrollDirection, { passive: true });
-    return () => window.removeEventListener('scroll', updateScrollDirection);
-  }, [lastScrollY, threshold]);
+    
+    // 정리 이벤트 리스너
+    const handleCleanup = () => {
+      window.removeEventListener('scroll', updateScrollDirection);
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+        animationFrameId.current = null;
+      }
+    };
+    
+    document.addEventListener('cleanupAnimations', handleCleanup);
+    
+    return () => {
+      handleCleanup();
+      document.removeEventListener('cleanupAnimations', handleCleanup);
+      unregisterAnimation(animationId.current);
+    };
+  }, [lastScrollY, threshold, isAnimationAllowed, registerAnimation, unregisterAnimation]);
 
   return scrollDirection;
 };

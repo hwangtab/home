@@ -291,4 +291,4 @@ const Lightbox = ({ images = [], currentIndex = 0, isOpen = false, onClose, onIm
   );
 };
 
-export default Lightbox;
+export default React.memo(Lightbox);

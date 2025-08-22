@@ -20,6 +20,11 @@ This is a React portfolio website for Korean musician and producer 황경하 (Hw
 - `npm run analyze` - Build and serve locally for analysis
 - `npm run build:analyze` - Build and analyze bundle size with webpack-bundle-analyzer
 
+### Development Environment
+- **Node.js**: Project uses React 18.2.0 and Node.js ecosystem
+- **No linting/typecheck commands**: This project doesn't have eslint or typescript setup
+- **Testing**: Uses React Testing Library with Jest (run `npm test` for interactive mode)
+
 ## Technology Stack
 
 - **Framework**: React 18.2.0 with Create React App
@@ -65,6 +70,12 @@ The application has evolved from a single-page to a multi-page React application
 - Multiple card components for different content types (Music, Visual, Writing, Performance)
 - Specialized components: MusicPlayer, Lightbox, VideoGallery, SearchBar
 
+**Animation Architecture**:
+- `AnimationContext.js` - Centralized animation state management with priority system
+- Animation states: IDLE, PAGE_TRANSITION, INTERACTIVE, BACKGROUND
+- Performance optimization with animation limiting and mobile-specific constraints
+- Global animation pause/resume system for page transitions
+
 ### Styling System
 - Uses Tailwind CSS with custom Korean fonts:
   - `font-bombaram`: HSBombaram3_Regular for headers
@@ -96,6 +107,7 @@ The application has evolved from a single-page to a multi-page React application
 ### Deployment Architecture
 - **Development**: Runs on `http://localhost:3000` (no basename)
 - **Production**: Deployed to `https://hwangtab.github.io/home` (with `/home` basename)
+- **Vercel**: Alternative deployment via `vercel.json` with SPA routing configuration
 - Router automatically adjusts basename based on NODE_ENV
 
 ### Content Structure
@@ -134,81 +146,20 @@ The codebase is in active development with plans to consolidate card components 
 - EmailJS integration is centralized in `src/config/emailjs.js`
 - Error boundaries should wrap major component sections
 - All pages should use the `Layout` component for consistent structure
+- Animation components should use `AnimationContext` for proper state management
+- Custom Tailwind theme includes Korean color philosophy (brand.solidarity, brand.earth, brand.harmony)
+
+### File Organization
+- `/src/pages/` - Page components (Home, About, Works, Archive, News, Contact)
+- `/src/components/ui/` - Reusable UI components and design system
+- `/src/components/effects/` - Animation and visual effect components
+- `/src/components/transitions/` - Page transition components
+- `/src/hooks/` - Custom React hooks for common functionality
+- `/src/context/` - React context providers (currently AnimationContext)
+- `/src/config/` - Configuration files (EmailJS, etc.)
+- `/src/constants/` - Shared constants and configuration values
 
 ### Testing
 - Run `npm test` for unit tests
 - Test email functionality requires valid EmailJS configuration
 - Check responsive design across different screen sizes
-
-# Using Gemini CLI for Large Codebase Analysis
-
-When analyzing large codebases or multiple files that might exceed context limits, use the Gemini CLI with its massive context window. Use `gemini -p` to leverage Google Gemini's large context capacity.
-
-## File and Directory Inclusion Syntax
-
-Use the `@` syntax to include files and directories in your Gemini prompts. The paths should be relative to WHERE you run the gemini command:
-
-### Examples:
-
-**Single file analysis:**
-```bash
-gemini -p "@src/main.py Explain this file's purpose and structure"
-```
-
-**Multiple files:**
-```bash
-gemini -p "@package.json @src/index.js Analyze the dependencies used in the code"
-```
-
-**Entire directory:**
-```bash
-gemini -p "@src/ Summarize the architecture of this codebase"
-```
-
-**Multiple directories:**
-```bash
-gemini -p "@src/ @tests/ Analyze test coverage for the source code"
-```
-
-**Current directory and subdirectories:**
-```bash
-gemini -p "@./ Give me an overview of this entire project"
-# Or use --all_files flag:
-gemini --all_files -p "Analyze the project structure and dependencies"
-```
-
-## Implementation Verification Examples
-
-**Check if a feature is implemented:**
-```bash
-gemini -p "@src/ @lib/ Has dark mode been implemented in this codebase? Show me the relevant files and functions"
-```
-
-**Verify authentication implementation:**
-```bash
-gemini -p "@src/ @middleware/ Is JWT authentication implemented? List all auth-related endpoints and middleware"
-```
-
-**Check for specific patterns:**
-```bash
-gemini -p "@src/ Are there any React hooks that handle WebSocket connections? List them with file paths"
-```
-
-## When to Use Gemini CLI
-
-Use `gemini -p` when:
-- Analyzing entire codebases or large directories
-- Comparing multiple large files
-- Need to understand project-wide patterns or architecture
-- Current context window is insufficient for the task
-- Working with files totaling more than 100KB
-- Verifying if specific features, patterns, or security measures are implemented
-- Checking for the presence of certain coding patterns across the entire codebase
-
-## Important Notes
-
-- Paths in @ syntax are relative to your current working directory when invoking gemini
-- The CLI will include file contents directly in the context
-- No need for --yolo flag for read-only analysis
-- Gemini's context window can handle entire codebases that would overflow Claude's context
-- When checking implementations, be specific about what you're looking for to get accurate results

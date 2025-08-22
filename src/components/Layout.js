@@ -108,13 +108,11 @@ const Layout = ({ children }) => {
   useKeyboardNavigation();
 
   return (
-    <motion.div 
-      className="bg-gradient-to-b from-gray-950 to-gray-900 min-h-screen font-wanted-sans text-gray-100 flex flex-col transform-gpu"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{
-        duration: 0.5,
-        ease: 'easeOut'
+    <div 
+      className="bg-gradient-to-b from-gray-950 to-gray-900 min-h-screen font-wanted-sans text-gray-100 flex flex-col"
+      style={{
+        backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden'
       }}
     >
       {/* 스킵 링크 */}
@@ -142,7 +140,7 @@ const Layout = ({ children }) => {
       
       {/* 모바일 페이지 인디케이터 */}
       <PageIndicator />
-    </motion.div>
+    </div>
   );
 };
 

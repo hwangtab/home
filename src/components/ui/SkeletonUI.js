@@ -9,14 +9,14 @@ const Skeleton = memo(({
   variant = 'default',
   animate = true
 }) => {
-  const baseClasses = 'bg-gray-700 rounded';
+  const baseClasses = 'bg-gray-750 rounded';
   const animationClasses = animate ? 'animate-pulse' : '';
   
   const variants = {
-    default: 'bg-gray-700',
-    lighter: 'bg-gray-600',
-    darker: 'bg-gray-800',
-    gradient: 'bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700'
+    default: 'bg-gray-750',
+    lighter: 'bg-gray-700',
+    darker: 'bg-gray-850',
+    gradient: 'bg-gradient-to-r from-gray-750 via-gray-700 to-gray-750'
   };
 
   const shimmerAnimation = {
@@ -31,7 +31,7 @@ const Skeleton = memo(({
   if (variant === 'gradient' && animate) {
     return (
       <motion.div
-        className={`${baseClasses} ${width} ${height} ${className} bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 bg-[length:200%_100%]`}
+        className={`${baseClasses} ${width} ${height} ${className} bg-gradient-to-r from-gray-750 via-gray-700 to-gray-750 bg-[length:200%_100%]`}
         animate={shimmerAnimation}
       />
     );
@@ -70,7 +70,7 @@ export const CardSkeleton = memo(({
   imageHeight = 'h-48',
   className = ''
 }) => (
-  <div className={`bg-gray-800 p-6 rounded-lg shadow-lg ${className}`}>
+  <div className={`bg-gray-850 p-6 rounded-lg shadow-lg ${className}`}>
     {showImage && (
       <Skeleton 
         width="w-full" 
@@ -148,7 +148,7 @@ export const ListSkeleton = memo(({
 }) => (
   <div className={`${spacing} ${className}`}>
     {Array.from({ length: count }).map((_, index) => (
-      <div key={index} className="flex items-start space-x-4 p-4 bg-gray-800 rounded-lg">
+      <div key={index} className="flex items-start space-x-4 p-4 bg-gray-850 rounded-lg">
         {showAvatar && (
           <Skeleton 
             width="w-12" 
@@ -180,7 +180,7 @@ export const ProfileSkeleton = memo(({
   layout = 'horizontal',
   className = ''
 }) => (
-  <div className={`bg-gray-800 p-8 rounded-lg shadow-lg ${className}`}>
+  <div className={`bg-gray-850 p-8 rounded-lg shadow-lg ${className}`}>
     <div className={`flex ${layout === 'horizontal' ? 'flex-col md:flex-row' : 'flex-col'} gap-8`}>
       {/* 이미지 */}
       <div className={layout === 'horizontal' ? 'w-full md:w-1/3' : 'w-full'}>
@@ -228,7 +228,7 @@ export const TimelineSkeleton = memo(({
         </div>
         <div className="ml-4 md:ml-8 space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-gray-700 p-4 rounded-lg">
+            <div key={i} className="bg-gray-750 p-4 rounded-lg">
               <Skeleton 
                 width="w-2/3" 
                 height="h-5" 
@@ -250,7 +250,7 @@ export const TimelineSkeleton = memo(({
 
 // 네비게이션 스켈레톤
 export const NavigationSkeleton = memo(({ className = '' }) => (
-  <div className={`flex items-center justify-between p-4 bg-gray-800 ${className}`}>
+  <div className={`flex items-center justify-between p-4 bg-gray-850 ${className}`}>
     {/* 로고 */}
     <Skeleton 
       width="w-32" 

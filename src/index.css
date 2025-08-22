@@ -161,6 +161,61 @@ html, body {
     position: relative;
   }
 
+  /* 반응형 패딩 시스템 확장 */
+  .responsive-padding-x {
+    padding-left: 1rem;    /* 16px */
+    padding-right: 1rem;
+  }
+  
+  @media (max-width: 425px) {
+    .responsive-padding-x {
+      padding-left: 0.75rem;   /* 12px */
+      padding-right: 0.75rem;
+    }
+  }
+  
+  @media (max-width: 375px) {
+    .responsive-padding-x {
+      padding-left: 0.5rem;    /* 8px */
+      padding-right: 0.5rem;
+    }
+  }
+  
+  @media (max-width: 320px) {
+    .responsive-padding-x {
+      padding-left: 0.25rem;   /* 4px */
+      padding-right: 0.25rem;
+    }
+  }
+
+  .responsive-padding-y {
+    padding-top: 1rem;       /* 16px */
+    padding-bottom: 1rem;
+  }
+  
+  @media (max-width: 425px) {
+    .responsive-padding-y {
+      padding-top: 0.75rem;    /* 12px */
+      padding-bottom: 0.75rem;
+    }
+  }
+
+  .responsive-padding {
+    padding: 1rem;           /* 16px */
+  }
+  
+  @media (max-width: 425px) {
+    .responsive-padding {
+      padding: 0.75rem;       /* 12px */
+    }
+  }
+  
+  @media (max-width: 375px) {
+    .responsive-padding {
+      padding: 0.5rem;        /* 8px */
+    }
+  }
+
   /* 성능 최적화를 위한 유틸리티 클래스 */
   .transform-gpu {
     transform: translateZ(0);
@@ -188,6 +243,7 @@ html, body {
     backface-visibility: hidden;
   }
 
+
   /* 컨테이너 격리 */
   .contain-layout {
     contain: layout;
@@ -201,6 +257,25 @@ html, body {
     contain: strict;
   }
 
+  /* 스크롤 성능 최적화 */
+  .scroll-smooth-optimized {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 번쩍거림 방지 최적화 */
+  .flicker-fix {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* 애니메이션 일시정지 클래스 */
+  .animations-paused * {
+    animation-play-state: paused !important;
+    transition-duration: 0s !important;
+  }
+
   /* 스켈레톤 최적화 */
   .skeleton-optimized {
     will-change: opacity;
@@ -212,6 +287,46 @@ html, body {
   @media (max-width: 768px) {
     .animate-pulse {
       animation-duration: 2s; /* 모바일에서 더 느린 애니메이션 */
+    }
+  }
+
+  /* 모바일 터치 타겟 최적화 */
+  .touch-target {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .touch-target-lg {
+    min-width: 48px;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .touch-target-xl {
+    min-width: 56px;
+    min-height: 56px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 모바일에서 더 큰 터치 영역 확보 */
+  @media (max-width: 768px) {
+    .touch-target-mobile {
+      min-width: 48px;
+      min-height: 48px;
+      padding: 0.5rem;
+    }
+
+    .touch-target-mobile-lg {
+      min-width: 56px;
+      min-height: 56px;
+      padding: 0.75rem;
     }
   }
 }

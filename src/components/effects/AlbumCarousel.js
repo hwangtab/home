@@ -45,16 +45,16 @@ const AlbumCarousel = ({ albums, className = '' }) => {
   const getAlbumTheme = (album) => {
     const themes = {
       'gentrification-2016': {
-        primary: 'from-red-600 to-orange-600',
-        secondary: 'from-red-500/20 to-orange-500/20',
-        accent: 'text-red-400',
-        glow: 'shadow-red-500/30'
+        primary: 'from-brand-solidarity-600 to-brand-earth-600',
+        secondary: 'from-brand-solidarity-500/20 to-brand-earth-500/20',
+        accent: 'text-brand-solidarity-400',
+        glow: 'shadow-brand-solidarity-500/30'
       },
       'new-minjung-vol3-2017': {
-        primary: 'from-blue-600 to-purple-600',
-        secondary: 'from-blue-500/20 to-purple-500/20',
-        accent: 'text-blue-400',
-        glow: 'shadow-blue-500/30'
+        primary: 'from-brand-primary-600 to-brand-harmony-600',
+        secondary: 'from-brand-primary-500/20 to-brand-harmony-500/20',
+        accent: 'text-brand-primary-400',
+        glow: 'shadow-brand-primary-500/30'
       },
       'melting-snow-2024': {
         primary: 'from-brand-primary-600 to-brand-solidarity-600',
@@ -108,7 +108,7 @@ const AlbumCarousel = ({ albums, className = '' }) => {
                 {/* 호버 시 플레이 버튼 */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/40 rounded-2xl">
                   <div className="bg-white/90 rounded-full p-4 transform scale-0 group-hover:scale-100 group-active:scale-90 transition-transform duration-300 shadow-lg hover:shadow-xl">
-                    <Play className="w-8 h-8 text-gray-900 fill-current" />
+                    <Play className="w-8 h-8 text-gray-950 fill-current" />
                   </div>
                 </div>
               </div>
@@ -134,13 +134,13 @@ const AlbumCarousel = ({ albums, className = '' }) => {
                 </h2>
                 
                 {/* 연도 */}
-                <div className="flex items-center justify-center gap-2 text-gray-400 mb-3">
+                <div className="flex items-center justify-center gap-2 text-gray-300 mb-3">
                   <Calendar className="w-4 h-4" />
                   <span className="font-wanted-sans text-sm sm:text-base">{album.year}년</span>
                 </div>
                 
                 {/* 짧은 설명 */}
-                <p className="text-sm sm:text-base text-gray-300 font-wanted-sans max-w-full mx-auto leading-relaxed line-clamp-4 sm:line-clamp-3">
+                <p className="text-sm sm:text-base text-gray-200 font-wanted-sans max-w-full mx-auto leading-relaxed line-clamp-4 sm:line-clamp-3">
                   {album.shortDescription || album.description}
                 </p>
               </div>
@@ -188,4 +188,4 @@ const AlbumCarousel = ({ albums, className = '' }) => {
   );
 };
 
-export default AlbumCarousel;
+export default React.memo(AlbumCarousel);
