@@ -29,7 +29,7 @@ const MinimalBranding = ({ onScrollHint }) => {
         transition={{ duration: 1, delay: 1.2 }}
       >
         <motion.a
-          href="https://www.instagram.com/hwangtab"
+          href="https://www.instagram.com/podopodopo/"
           target="_blank"
           rel="noopener noreferrer"
           className="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-colors"
@@ -39,7 +39,7 @@ const MinimalBranding = ({ onScrollHint }) => {
           <Instagram className="w-5 h-5 text-white/80" />
         </motion.a>
         <motion.a
-          href="https://www.youtube.com/@hwangtab"
+          href="https://www.youtube.com/@artliberationfront"
           target="_blank"
           rel="noopener noreferrer"
           className="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-colors"

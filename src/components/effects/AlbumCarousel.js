@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Play, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 /**
  * 3D 앨범 커버 카루셀 컴포넌트
@@ -9,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const AlbumCarousel = ({ albums, className = '' }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
+
 
   // 자동 회전 효과
   useEffect(() => {
@@ -36,6 +38,40 @@ const AlbumCarousel = ({ albums, className = '' }) => {
     } else {
       // primaryAction이 없는 경우 Works 페이지로 이동
       navigate('/works');
+    }
+  };
+
+  // 키보드 이벤트 핸들러
+  const handleKeyDown = (event, album) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleAlbumClick(album);
+    }
+  };
+
+  const handleArrowKeyDown = (event) => {
+    switch (event.key) {
+      case 'ArrowLeft':
+        event.preventDefault();
+        handlePrevious();
+        break;
+      case 'ArrowRight':
+        event.preventDefault();
+        handleNext();
+        break;
+    }
+  };
+
+  // 드래그 및 스와이프 핸들러
+  const handleDragEnd = (event, info) => {
+    const threshold = 50; // 드래그 임계값
+    
+    if (Math.abs(info.offset.x) > threshold) {
+      if (info.offset.x > 0) {
+        handlePrevious();
+      } else {
+        handleNext();
+      }
     }
   };
 
@@ -70,24 +106,49 @@ const AlbumCarousel = ({ albums, className = '' }) => {
   const theme = getAlbumTheme(albums[currentIndex]);
 
   return (
-    <div className={`relative w-full max-w-3xl mx-auto ${className}`}>
+    <div 
+      className={`relative w-full max-w-3xl mx-auto ${className}`}
+      role="region"
+      aria-label="주요 앨범 캐러셀"
+      aria-roledescription="carousel"
+      onKeyDown={handleArrowKeyDown}
+      tabIndex="0"
+    >
       {/* 동적 배경 그라데이션 */}
       <div className={`absolute inset-0 bg-gradient-to-br ${theme.secondary} rounded-3xl blur-3xl scale-110 opacity-60`} />
+      
+      {/* 스크린 리더용 현재 상태 안내 */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {`${albums.length}개의 앨범 중 ${currentIndex + 1}번째: ${albums[currentIndex]?.title}`}
+      </div>
       
       {/* 메인 앨범 커버 */}
       <div className="relative h-64 sm:h-80 lg:h-96 flex items-center justify-center">
         {albums.map((album, index) => (
-          <div
+          <motion.div
             key={album.id}
-            className={`absolute inset-0 flex items-center justify-center cursor-pointer transition-opacity duration-300 ease-in-out ${
+            role="button"
+            tabIndex={index === currentIndex ? 0 : -1}
+            aria-label={`${album.title} 앨범 보기. ${album.year}년 발매. ${album.shortDescription || album.description}`}
+            aria-hidden={index !== currentIndex}
+            className={`absolute inset-0 flex items-center justify-center cursor-pointer transition-opacity duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-brand-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-3xl ${
               index === currentIndex ? 'opacity-100' : 'opacity-0'
             }`}
             onClick={() => handleAlbumClick(album)}
+            onKeyDown={(e) => handleKeyDown(e, album)}
+            // 드래그 및 스와이프 속성
+            drag={index === currentIndex && albums.length > 1 ? "x" : false}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={handleDragEnd}
+            whileDrag={{ scale: 0.95 }}
           >
             {/* 3D 앨범 커버 */}
             <div className="relative group">
               {/* 앨범 커버 그림자 */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${getAlbumTheme(album).primary} rounded-2xl blur-2xl opacity-50 group-hover:opacity-80 transition-all duration-500 transform rotate-3 scale-105`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${getAlbumTheme(album).primary} rounded-2xl blur-2xl opacity-50 group-hover:opacity-80 transition-all duration-500 transform rotate-3 scale-105 ${
+                index === currentIndex && albums.length > 1 ? 'animate-pulse' : ''
+              }`} />
               
               {/* 메인 앨범 커버 */}
               <div className="relative transform-gpu group-hover:scale-110 group-hover:-rotate-2 group-active:scale-95 transition-all duration-500">
@@ -96,6 +157,9 @@ const AlbumCarousel = ({ albums, className = '' }) => {
                     src={album.cover}
                     alt={album.title}
                     className="w-full h-full object-cover"
+                    loading={index === currentIndex ? 'eager' : 'lazy'}
+                    fetchpriority={index === currentIndex ? 'high' : 'low'}
+                    decoding={index === currentIndex ? 'sync' : 'async'}
                     onError={(e) => {
                       e.target.style.display = 'none';
                     }}
@@ -106,14 +170,16 @@ const AlbumCarousel = ({ albums, className = '' }) => {
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/20 rounded-2xl" />
                 
                 {/* 호버 시 플레이 버튼 */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/40 rounded-2xl">
+                <div className={`absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/40 rounded-2xl ${
+                  index === currentIndex && albums.length > 1 ? 'group-hover:animate-none' : ''
+                }`}>
                   <div className="bg-white/90 rounded-full p-4 transform scale-0 group-hover:scale-100 group-active:scale-90 transition-transform duration-300 shadow-lg hover:shadow-xl">
                     <Play className="w-8 h-8 text-gray-950 fill-current" />
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
@@ -140,9 +206,17 @@ const AlbumCarousel = ({ albums, className = '' }) => {
                 </div>
                 
                 {/* 짧은 설명 */}
-                <p className="text-sm sm:text-base text-gray-200 font-wanted-sans max-w-full mx-auto leading-relaxed line-clamp-4 sm:line-clamp-3">
+                <p className="text-sm sm:text-base text-gray-200 font-wanted-sans max-w-full mx-auto leading-relaxed line-clamp-4 sm:line-clamp-3 mb-3">
                   {album.shortDescription || album.description}
                 </p>
+                
+                {/* 인터랙션 안내 */}
+                <div className="text-center">
+                  <span className="inline-flex items-center gap-2 text-brand-primary-400 text-sm font-semibold hover:text-brand-primary-300 transition-colors">
+                    <Play className="w-3 h-3" />
+                    {album.primaryAction?.label || '음악 듣기'}
+                  </span>
+                </div>
               </div>
             </div>
           ))}
@@ -154,14 +228,16 @@ const AlbumCarousel = ({ albums, className = '' }) => {
         <>
           <button
             onClick={handlePrevious}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all duration-300 z-10"
+            aria-label="이전 앨범 보기"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-brand-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-300 z-10"
           >
             <ChevronLeft className="w-6 h-6 text-white" />
           </button>
           
           <button
             onClick={handleNext}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all duration-300 z-10"
+            aria-label="다음 앨범 보기"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-brand-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-300 z-10"
           >
             <ChevronRight className="w-6 h-6 text-white" />
           </button>
@@ -170,12 +246,18 @@ const AlbumCarousel = ({ albums, className = '' }) => {
 
       {/* 인디케이터 */}
       {albums.length > 1 && (
-        <div className="flex justify-center mt-6 space-x-2 relative z-20">
-          {albums.map((_, index) => (
+        <div 
+          className="flex justify-center mt-6 space-x-2 relative z-20"
+          role="group"
+          aria-label="앨범 선택"
+        >
+          {albums.map((album, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              aria-label={`${index + 1}번째 앨범: ${album.title} 선택`}
+              aria-current={index === currentIndex ? 'true' : 'false'}
+              className={`w-3 h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 ${
                 index === currentIndex 
                   ? `bg-white ${theme.glow}` 
                   : 'bg-white/30 hover:bg-white/50'

@@ -180,7 +180,7 @@ const MobileMenu = memo(() => {
               </p>
               <div className="flex justify-center space-x-4">
                 <a
-                  href="https://www.instagram.com/hwangtab"
+                  href="https://www.instagram.com/podopodopo/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 bg-brand-primary-500/20 rounded-lg flex items-center justify-center hover:bg-brand-primary-500/30 transition-colors duration-300"
@@ -188,7 +188,7 @@ const MobileMenu = memo(() => {
                   <span className="text-sm">📷</span>
                 </a>
                 <a
-                  href="https://www.youtube.com/@hwangtab"
+                  href="https://www.youtube.com/@artliberationfront"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 bg-brand-solidarity-500/20 rounded-lg flex items-center justify-center hover:bg-brand-solidarity-500/30 transition-colors duration-300"

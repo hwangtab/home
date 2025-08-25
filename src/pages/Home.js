@@ -83,7 +83,7 @@ const HeroSection = ({ siteData }) => {
       {/* 소셜 링크 - 반응형 위치 */}
       <div className="absolute top-4 sm:top-6 md:top-8 right-4 sm:right-6 md:right-8 z-30 flex space-x-2 sm:space-x-3 transform-gpu">
         <a
-          href="https://www.instagram.com/hwangtab"
+          href="https://www.instagram.com/podopodopo/"
           target="_blank"
           rel="noopener noreferrer"
           className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-brand-primary-500/20 hover:border-brand-primary-400/40 transition-all duration-300 transform-gpu min-h-touch min-w-touch"
@@ -91,7 +91,7 @@ const HeroSection = ({ siteData }) => {
           <Instagram className="w-5 h-5 sm:w-6 sm:h-6 text-white/80" />
         </a>
         <a
-          href="https://www.youtube.com/@hwangtab"
+          href="https://www.youtube.com/@artliberationfront"
           target="_blank"
           rel="noopener noreferrer"
           className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-brand-solidarity-500/20 hover:border-brand-solidarity-400/40 transition-all duration-300 transform-gpu min-h-touch min-w-touch"

@@ -24,7 +24,7 @@ const MetaDataManager = ({
     domain: 'https://hwang-gyeongha.vercel.app',
     defaultImage: '/images/og/default-og.jpg',
     defaultDescription: '황경하의 공식 웹사이트입니다. 음악과 공연 정보를 확인하세요.',
-    twitterHandle: '@hwangtab'
+    twitterHandle: '@podopodopo'
   };
 
   // 현재 URL 생성
@@ -88,7 +88,7 @@ const MetaDataManager = ({
       "image": finalImage,
       "sameAs": [
         "https://www.instagram.com/podopodopo/",
-        "https://www.youtube.com/@hwanggyeongha"
+        "https://www.youtube.com/@artliberationfront"
       ],
       "jobTitle": ["음악가", "사운드 엔지니어", "프로듀서"],
       "worksFor": {

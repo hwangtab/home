@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useRef } from 'react';
+import React, { createContext, useContext, useState, useCallback, useRef, useMemo, useEffect } from 'react';
 
 // 애니메이션 상태 관리 컨텍스트
 const AnimationContext = createContext();
@@ -27,17 +27,9 @@ export const AnimationProvider = ({ children }) => {
   const startPageTransition = useCallback(() => {
     setCurrentState(ANIMATION_STATES.PAGE_TRANSITION);
     
-    // 다른 애니메이션들 일시 정지
-    const pauseEvent = new CustomEvent('pauseAnimations');
-    document.dispatchEvent(pauseEvent);
-    
     // 750ms 후 자동으로 상태 해제 (페이지 전환 완료 0.5s + 여유 0.25s)
     const timeoutId = setTimeout(() => {
       setCurrentState(ANIMATION_STATES.IDLE);
-      
-      // 다른 애니메이션들 재개
-      const resumeEvent = new CustomEvent('resumeAnimations');
-      document.dispatchEvent(resumeEvent);
     }, 750);
     
     animationTimeouts.current.set('pageTransition', timeoutId);
@@ -52,10 +44,6 @@ export const AnimationProvider = ({ children }) => {
     }
     
     setCurrentState(ANIMATION_STATES.IDLE);
-    
-    // 다른 애니메이션들 재개
-    const resumeEvent = new CustomEvent('resumeAnimations');
-    document.dispatchEvent(resumeEvent);
   }, []);
 
   // 애니메이션 등록
@@ -114,10 +102,6 @@ export const AnimationProvider = ({ children }) => {
     setRunningAnimations(new Set());
     setCurrentState(ANIMATION_STATES.IDLE);
     
-    // 전역 이벤트 정리
-    const cleanupEvent = new CustomEvent('cleanupAnimations');
-    document.dispatchEvent(cleanupEvent);
-    
     // body 스타일 정리
     document.body.style.willChange = 'auto';
   }, []);
@@ -129,7 +113,7 @@ export const AnimationProvider = ({ children }) => {
     };
   }, [cleanup]);
 
-  const value = {
+  const value = useMemo(() => ({
     currentState,
     runningAnimations,
     startPageTransition,
@@ -139,7 +123,17 @@ export const AnimationProvider = ({ children }) => {
     isAnimationAllowed,
     shouldReduceAnimations,
     cleanup
-  };
+  }), [
+    currentState, 
+    runningAnimations, 
+    startPageTransition, 
+    endPageTransition, 
+    registerAnimation, 
+    unregisterAnimation, 
+    isAnimationAllowed, 
+    shouldReduceAnimations, 
+    cleanup
+  ]);
 
   return (
     <AnimationContext.Provider value={value}>
@@ -157,7 +151,7 @@ export const useAnimation = () => {
   return context;
 };
 
-// 애니메이션 컴포넌트 래퍼
+// 애니메이션 컴포넌트 래퍼 (Context 기반 리팩토링)
 export const AnimationWrapper = ({ 
   children, 
   id, 
@@ -166,38 +160,40 @@ export const AnimationWrapper = ({
   onResume 
 }) => {
   const { registerAnimation, unregisterAnimation, isAnimationAllowed } = useAnimation();
-  const [isActive, setIsActive] = useState(true);
+  const [isRegistered, setIsRegistered] = useState(false);
 
-  React.useEffect(() => {
-    const canRun = registerAnimation(id, priority);
-    if (!canRun) {
-      setIsActive(false);
+  // isAnimationAllowed를 기반으로 활성 상태 결정
+  const isActive = isAnimationAllowed(priority);
+
+  // 애니메이션 등록 관리
+  useEffect(() => {
+    if (!isRegistered) {
+      const canRun = registerAnimation(id, priority);
+      setIsRegistered(true);
+      
+      if (!canRun && onPause) {
+        onPause();
+      }
     }
 
-    // 애니메이션 일시 정지/재개 이벤트 리스너
-    const handlePause = () => {
-      if (priority < ANIMATION_PRIORITY.PAGE_TRANSITION) {
-        setIsActive(false);
-        onPause?.();
+    // 컴포넌트 언마운트 시 애니메이션 해제
+    return () => {
+      if (isRegistered) {
+        unregisterAnimation(id);
       }
     };
+  }, [id, priority, registerAnimation, unregisterAnimation, isRegistered, onPause]);
 
-    const handleResume = () => {
-      if (isAnimationAllowed(priority)) {
-        setIsActive(true);
+  // isActive 상태 변화에 따른 콜백 호출
+  useEffect(() => {
+    if (isRegistered) {
+      if (!isActive) {
+        onPause?.();
+      } else {
         onResume?.();
       }
-    };
-
-    document.addEventListener('pauseAnimations', handlePause);
-    document.addEventListener('resumeAnimations', handleResume);
-
-    return () => {
-      unregisterAnimation(id);
-      document.removeEventListener('pauseAnimations', handlePause);
-      document.removeEventListener('resumeAnimations', handleResume);
-    };
-  }, [id, priority, registerAnimation, unregisterAnimation, isAnimationAllowed, onPause, onResume]);
+    }
+  }, [isActive, onPause, onResume, isRegistered]);
 
   // 애니메이션이 비활성화된 경우 정적 버전 렌더링
   if (!isActive) {
