@@ -36,12 +36,13 @@ const Header = () => {
     { name: t('nav.contact'), path: '/contact' }
   ];
 
+  const headerBaseClasses = "text-white py-4 sm:py-6 px-2 sm:px-4 md:px-6 sticky top-0 z-50 transform-gpu transition-all duration-300";
+  const headerScrolledClasses = "bg-gradient-to-r from-gray-950 via-gray-900 to-gray-850 border-b border-brand-primary-500/10 backdrop-blur-md";
+  const headerTransparentClasses = "bg-transparent border-b border-transparent";
+
   return (
     <header
-      className={`text-white py-4 sm:py-6 px-2 sm:px-4 md:px-6 sticky top-0 z-50 transform-gpu transition-all duration-300 ${isScrolled
-          ? 'bg-gradient-to-r from-gray-950 via-gray-900 to-gray-850 border-b border-brand-primary-500/10'
-          : 'bg-transparent'
-        }`}
+      className={`${headerBaseClasses} ${isScrolled ? headerScrolledClasses : headerTransparentClasses}`}
       role="banner"
       aria-label="사이트 헤더"
     >
