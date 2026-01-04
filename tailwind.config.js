@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'bombaram': ['BookkMyungjo', 'serif'],
+        'bombaram': ['HSBombaram3_Regular', 'serif'],
         'santokki': ['HSSanTokki20-Regular', 'sans-serif'],
         'wanted-sans': ['Wanted Sans Variable', 'sans-serif'],
       },

@@ -1,15 +1,9 @@
 @font-face {
-  font-family: 'BookkMyungjo';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/BookkMyungjo-Lt.woff2') format('woff2');
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'BookkMyungjo';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/BookkMyungjo-Bd.woff2') format('woff2');
-  font-weight: 700;
-  font-display: swap;
+  font-family: 'HSBombaram3_Regular';
+  src: url('https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.1/HSBombaram3_Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
 }
 
 @font-face {
@@ -393,7 +387,7 @@ body {
   }
 
   .font-bombaram {
-    font-family: 'BookkMyungjo', "Noto Serif KR", Georgia, serif !important;
+    font-family: 'HSBombaram3_Regular', "Noto Serif KR", Georgia, serif !important;
   }
 
   .font-santokki {
