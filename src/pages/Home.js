@@ -151,7 +151,7 @@ const Home = () => {
       <PageHero
         title="황경하"
         subtitle="음악가 · 사운드 엔지니어 · 프로듀서"
-        imagePath="/images/hwang/1.png"
+        imagePath="/images/hwang/11.png"
         height="100vh"
       />
       {loading ? (
