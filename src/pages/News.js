@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, ExternalLink, ShoppingCart } from 'lucide-react';
+import { Calendar, ShoppingCart } from 'lucide-react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
 import { useCachedPageData } from '../hooks/usePageData';

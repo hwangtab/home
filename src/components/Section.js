@@ -4,10 +4,10 @@ import { useAnimationTrigger } from '../hooks/useIntersectionObserver';
 import { Heading2 } from './ui/Typography';
 import { Container, Spacer } from './ui/Layout';
 
-const Section = memo(({ 
-  title, 
+const Section = memo(({
+  title,
   subtitle,
-  children, 
+  children,
   className = "",
   containerSize = 'default',
   spacing = 'default',
@@ -20,34 +20,35 @@ const Section = memo(({
 }) => {
   const [ref, shouldAnimate] = useAnimationTrigger();
   const controls = useAnimation();
-  
+
   // 다양한 애니메이션 변형
   const variants = {
     default: {
-      hidden: { 
-        opacity: 0, 
+      hidden: {
+        opacity: 0,
         y: 60,
         scale: 0.95
       },
-      visible: { 
-        opacity: 1, 
+      visible: {
+        opacity: 1,
         y: 0,
         scale: 1,
         transition: {
           duration: 0.8,
+          delay: 0.15, // Added delay to let PageTransition complete first
           ease: [0.25, 0.1, 0.25, 1],
           staggerChildren: 0.1
         }
       }
     },
     slideUp: {
-      hidden: { 
-        opacity: 0, 
+      hidden: {
+        opacity: 0,
         y: 100,
         filter: 'blur(4px)'
       },
-      visible: { 
-        opacity: 1, 
+      visible: {
+        opacity: 1,
         y: 0,
         filter: 'blur(0px)',
         transition: {
@@ -58,13 +59,13 @@ const Section = memo(({
       }
     },
     slideLeft: {
-      hidden: { 
-        opacity: 0, 
+      hidden: {
+        opacity: 0,
         x: -80,
         scale: 0.9
       },
-      visible: { 
-        opacity: 1, 
+      visible: {
+        opacity: 1,
         x: 0,
         scale: 1,
         transition: {
@@ -75,13 +76,13 @@ const Section = memo(({
       }
     },
     slideRight: {
-      hidden: { 
-        opacity: 0, 
+      hidden: {
+        opacity: 0,
         x: 80,
         scale: 0.9
       },
-      visible: { 
-        opacity: 1, 
+      visible: {
+        opacity: 1,
         x: 0,
         scale: 1,
         transition: {
@@ -92,11 +93,11 @@ const Section = memo(({
       }
     },
     fade: {
-      hidden: { 
+      hidden: {
         opacity: 0,
         scale: 0.98
       },
-      visible: { 
+      visible: {
         opacity: 1,
         scale: 1,
         transition: {
@@ -107,13 +108,13 @@ const Section = memo(({
       }
     },
     scale: {
-      hidden: { 
-        opacity: 0, 
+      hidden: {
+        opacity: 0,
         scale: 0.8,
         rotateY: -15
       },
-      visible: { 
-        opacity: 1, 
+      visible: {
+        opacity: 1,
         scale: 1,
         rotateY: 0,
         transition: {
@@ -133,7 +134,7 @@ const Section = memo(({
       controls.start('visible');
     }
   }, [shouldAnimate, controls, enableScrollAnimation]);
-  
+
   const spacingClasses = {
     none: 'mb-0',
     sm: 'mb-8',
@@ -150,7 +151,7 @@ const Section = memo(({
   };
 
   return (
-    <motion.section 
+    <motion.section
       ref={ref}
       id={id}
       className={`transform-gpu ${spacingClasses[spacing]} ${backgroundClasses[background]} ${className}`}
@@ -161,12 +162,12 @@ const Section = memo(({
     >
       <Container size={containerSize}>
         {(title || subtitle) && (
-          <motion.div 
+          <motion.div
             className={`mb-12 ${titleAlign === 'center' ? 'text-center' : ''}`}
             variants={{
               hidden: { opacity: 0, y: 30 },
-              visible: { 
-                opacity: 1, 
+              visible: {
+                opacity: 1,
                 y: 0,
                 transition: {
                   duration: 0.6,
@@ -176,12 +177,12 @@ const Section = memo(({
             }}
           >
             {title && (
-              <motion.div 
+              <motion.div
                 className="relative inline-block"
                 variants={{
                   hidden: { opacity: 0, scale: 0.95 },
-                  visible: { 
-                    opacity: 1, 
+                  visible: {
+                    opacity: 1,
                     scale: 1,
                     transition: {
                       duration: 0.5,
@@ -190,19 +191,19 @@ const Section = memo(({
                   }
                 }}
               >
-                <Heading2 
-                  color="primary" 
+                <Heading2
+                  color="primary"
                   align={titleAlign}
                   className="relative z-10"
                 >
                   {title}
                 </Heading2>
-                <motion.div 
+                <motion.div
                   className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-brand-primary-500 to-brand-solidarity-500 rounded-full"
                   initial={{ width: 0 }}
                   animate={{ width: '100%' }}
-                  transition={{ 
-                    duration: 0.8, 
+                  transition={{
+                    duration: 0.8,
                     ease: [0.25, 0.1, 0.25, 1],
                     delay: 0.3
                   }}
@@ -212,12 +213,12 @@ const Section = memo(({
             {subtitle && (
               <>
                 <Spacer size="md" />
-                <motion.p 
+                <motion.p
                   className="text-lg text-gray-100 font-wanted-sans leading-relaxed max-w-2xl mx-auto"
                   variants={{
                     hidden: { opacity: 0, y: 20 },
-                    visible: { 
-                      opacity: 1, 
+                    visible: {
+                      opacity: 1,
                       y: 0,
                       transition: {
                         duration: 0.5,
@@ -236,7 +237,7 @@ const Section = memo(({
         <motion.div
           variants={{
             hidden: { opacity: 0 },
-            visible: { 
+            visible: {
               opacity: 1,
               transition: {
                 duration: 0.5,
@@ -259,16 +260,16 @@ Section.displayName = 'Section';
 export const SubSection = memo(({ children, className = '', delay = 0, variant = 'default', ...props }) => {
   const [ref, shouldAnimate] = useAnimationTrigger();
   const controls = useAnimation();
-  
+
   const variants = {
     default: {
-      hidden: { 
-        opacity: 0, 
+      hidden: {
+        opacity: 0,
         y: 30,
         scale: 0.98
       },
-      visible: { 
-        opacity: 1, 
+      visible: {
+        opacity: 1,
         y: 0,
         scale: 1,
         transition: {
@@ -279,14 +280,14 @@ export const SubSection = memo(({ children, className = '', delay = 0, variant =
       }
     },
     card: {
-      hidden: { 
-        opacity: 0, 
+      hidden: {
+        opacity: 0,
         y: 40,
         scale: 0.95,
         rotateX: 5
       },
-      visible: { 
-        opacity: 1, 
+      visible: {
+        opacity: 1,
         y: 0,
         scale: 1,
         rotateX: 0,
@@ -304,7 +305,7 @@ export const SubSection = memo(({ children, className = '', delay = 0, variant =
       controls.start('visible');
     }
   }, [shouldAnimate, controls]);
-  
+
   return (
     <motion.div
       ref={ref}
@@ -323,16 +324,16 @@ export const SubSection = memo(({ children, className = '', delay = 0, variant =
 export const Item = memo(({ children, className = '', index = 0, variant = 'default', ...props }) => {
   const [ref, shouldAnimate] = useAnimationTrigger();
   const controls = useAnimation();
-  
+
   const variants = {
     default: {
-      hidden: { 
-        opacity: 0, 
+      hidden: {
+        opacity: 0,
         y: 25,
         scale: 0.95
       },
-      visible: { 
-        opacity: 1, 
+      visible: {
+        opacity: 1,
         y: 0,
         scale: 1,
         transition: {
@@ -343,14 +344,14 @@ export const Item = memo(({ children, className = '', index = 0, variant = 'defa
       }
     },
     grid: {
-      hidden: { 
-        opacity: 0, 
+      hidden: {
+        opacity: 0,
         y: 30,
         scale: 0.9,
         rotateY: 10
       },
-      visible: { 
-        opacity: 1, 
+      visible: {
+        opacity: 1,
         y: 0,
         scale: 1,
         rotateY: 0,
@@ -368,7 +369,7 @@ export const Item = memo(({ children, className = '', index = 0, variant = 'defa
       controls.start('visible');
     }
   }, [shouldAnimate, controls]);
-  
+
   return (
     <motion.div
       ref={ref}
@@ -394,13 +395,13 @@ export const ContactSection = (props) => <Section variant="scale" {...props} />;
 export const useScrollAnimation = () => {
   const controls = useAnimation();
   const [ref, inView] = useAnimationTrigger();
-  
+
   React.useEffect(() => {
     if (inView) {
       controls.start('visible');
     }
   }, [controls, inView]);
-  
+
   return [ref, controls];
 };
 

@@ -144,36 +144,7 @@ const Home = () => {
     image: '/images/og/home-og.jpg'
   });
 
-  if (loading) {
-    return (
-      <div>
-        <MetaDataManager {...seoData} />
-        <div className="min-h-screen bg-black contain-layout">
-          {/* 로딩 중에도 안정적인 레이아웃 보장 */}
-          <div className="relative min-h-[100dvh] sm:min-h-[90vh] md:min-h-[80vh] bg-black flex items-center justify-center py-6 sm:py-8 md:py-12">
-            <GridSkeleton items={3} columns={1} />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div>
-        <MetaDataManager {...seoData} />
-        <div className="min-h-screen bg-black contain-layout">
-          <div className="relative min-h-[100dvh] sm:min-h-[90vh] md:min-h-[80vh] bg-black flex items-center justify-center py-6 sm:py-8 md:py-12">
-            <div className="text-white text-center container mx-auto px-4">
-              <h2 className="text-2xl font-bold mb-4">데이터를 불러오는 중 오류가 발생했습니다</h2>
-              <p className="text-gray-400">잠시 후 다시 시도해주세요.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
+  // Always render PageHero to prevent double animation from layout shift
   return (
     <div className="contain-layout">
       <MetaDataManager {...seoData} />
@@ -183,8 +154,20 @@ const Home = () => {
         imagePath="/images/hwang/1.png"
         height="100vh"
       />
-      <FeaturedWorks siteData={siteData} />
-      <QuickNavigation />
+      {loading ? (
+        <Section title="주요 작품" enableScrollAnimation={false}>
+          <GridSkeleton items={3} columns={3} />
+        </Section>
+      ) : error ? (
+        <Section title="오류" enableScrollAnimation={false}>
+          <div className="text-center text-gray-400">데이터를 불러오는 중 오류가 발생했습니다.</div>
+        </Section>
+      ) : (
+        <>
+          <FeaturedWorks siteData={siteData} />
+          <QuickNavigation />
+        </>
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+
 import { useLanguage } from '../i18n';
 import LanguageToggle from './LanguageToggle';
 import MobileMenu from './ui/MobileMenu';

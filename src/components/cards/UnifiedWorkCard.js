@@ -2,7 +2,7 @@ import React, { useState, memo, useCallback } from 'react';
 import { Calendar, ExternalLink, Play, BookOpen, Eye, Mic, Video } from 'lucide-react';
 import DefaultImageComponent from './DefaultImageComponent';
 import useLazyImage from '../../hooks/useLazyImage';
-import { CardSkeleton } from '../ui/Skeleton';
+
 
 // 설정 객체들
 const getAssetPath = (path) => {
@@ -89,7 +89,7 @@ const TypeBadge = ({ type, category }) => {
 
 const CardImage = ({ cover, title, category, type }) => {
   const imageProps = useImageFallback(cover, category, title);
-  const { imgRef, isLoaded, shouldLoad, error } = useLazyImage(imageProps.src);
+  const { imgRef, isLoaded, shouldLoad } = useLazyImage(imageProps.src);
   const isVideo = type === 'video' || type === '다큐멘터리';
 
   // CSS 컴포넌트 폴백
@@ -178,7 +178,6 @@ const UnifiedWorkCard = ({ work, onClick }) => {
     cover,
     description,
     shortDescription,
-    tags = [],
     primaryAction,
     publication
   } = work;
