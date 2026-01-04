@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { useLanguage } from '../i18n';
@@ -14,6 +14,19 @@ import useKeyboardNavigation from '../hooks/useKeyboardNavigation';
 const Header = () => {
   const location = useLocation();
   const { t } = useLanguage();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Scroll detection
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Check initial position
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navigation = [
     { name: t('nav.home'), path: '/' },
@@ -25,7 +38,10 @@ const Header = () => {
 
   return (
     <header
-      className="bg-gradient-to-r from-gray-950 via-gray-900 to-gray-850 text-white py-4 sm:py-6 px-2 sm:px-4 md:px-6 sticky top-0 z-50 transform-gpu border-b border-brand-primary-500/10"
+      className={`text-white py-4 sm:py-6 px-2 sm:px-4 md:px-6 sticky top-0 z-50 transform-gpu transition-all duration-300 ${isScrolled
+          ? 'bg-gradient-to-r from-gray-950 via-gray-900 to-gray-850 border-b border-brand-primary-500/10'
+          : 'bg-transparent'
+        }`}
       role="banner"
       aria-label="사이트 헤더"
     >
