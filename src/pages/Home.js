@@ -29,6 +29,7 @@ const FeaturedWorks = ({ siteData }) => {
     <Section
       title="주요 작품"
       enableScrollAnimation={true}
+      className="mt-16"
     >
       {!siteData || featuredWorks.length === 0 ? (
         <GridSkeleton items={3} columns={3} />
