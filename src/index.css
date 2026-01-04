@@ -22,6 +22,7 @@
 
 /* 접근성 유틸리티 클래스 */
 @layer utilities {
+
   /* 스크린 리더 전용 텍스트 */
   .sr-only {
     position: absolute;
@@ -53,11 +54,11 @@
       background-color: #000000;
       border-color: #ffffff;
     }
-    
+
     .text-gray-300 {
       color: #ffffff;
     }
-    
+
     .text-gray-400 {
       color: #e5e5e5;
     }
@@ -65,6 +66,7 @@
 
   /* 움직임 줄이기 선호 사용자 지원 */
   @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -83,23 +85,25 @@
 
 /* 425px 이하 초소형 화면 대응 - 정확한 타겟팅 */
 @media (max-width: 425px) {
+
   /* 기본 레이아웃 설정 */
   body {
     overflow-x: hidden;
     font-size: 14px;
   }
-  
+
   html {
     overflow-x: hidden;
   }
-  
+
   * {
     box-sizing: border-box;
   }
-  
+
   /* Container 패딩 줄이기 - 이것이 핵심 해결책 */
   .container {
-    padding-left: 0.75rem !important;  /* 12px - 기존 16px에서 축소 */
+    padding-left: 0.75rem !important;
+    /* 12px - 기존 16px에서 축소 */
     padding-right: 0.75rem !important;
   }
 }
@@ -107,7 +111,8 @@
 /* 375px 이하 매우 작은 화면 */
 @media (max-width: 375px) {
   .container {
-    padding-left: 0.5rem !important;   /* 8px - 더 축소 */
+    padding-left: 0.5rem !important;
+    /* 8px - 더 축소 */
     padding-right: 0.5rem !important;
   }
 }
@@ -115,13 +120,15 @@
 /* 320px 이하 극소형 화면 */
 @media (max-width: 320px) {
   .container {
-    padding-left: 0.25rem !important;  /* 4px - 최소 패딩 */
+    padding-left: 0.25rem !important;
+    /* 4px - 최소 패딩 */
     padding-right: 0.25rem !important;
   }
 }
 
 /* 전역 overflow 처리 */
-html, body {
+html,
+body {
   overflow-x: hidden;
   max-width: 100vw;
 }
@@ -137,25 +144,25 @@ html, body {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
-  
+
   .line-clamp-3 {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
-  
+
   .line-clamp-4 {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
   }
-  
+
   .archive-container {
     min-height: 400px;
   }
-  
+
   .archive-grid-container {
     min-height: 300px;
     position: relative;
@@ -163,56 +170,65 @@ html, body {
 
   /* 반응형 패딩 시스템 확장 */
   .responsive-padding-x {
-    padding-left: 1rem;    /* 16px */
+    padding-left: 1rem;
+    /* 16px */
     padding-right: 1rem;
   }
-  
+
   @media (max-width: 425px) {
     .responsive-padding-x {
-      padding-left: 0.75rem;   /* 12px */
+      padding-left: 0.75rem;
+      /* 12px */
       padding-right: 0.75rem;
     }
   }
-  
+
   @media (max-width: 375px) {
     .responsive-padding-x {
-      padding-left: 0.5rem;    /* 8px */
+      padding-left: 0.5rem;
+      /* 8px */
       padding-right: 0.5rem;
     }
   }
-  
+
   @media (max-width: 320px) {
     .responsive-padding-x {
-      padding-left: 0.25rem;   /* 4px */
+      padding-left: 0.25rem;
+      /* 4px */
       padding-right: 0.25rem;
     }
   }
 
   .responsive-padding-y {
-    padding-top: 1rem;       /* 16px */
+    padding-top: 1rem;
+    /* 16px */
     padding-bottom: 1rem;
   }
-  
+
   @media (max-width: 425px) {
     .responsive-padding-y {
-      padding-top: 0.75rem;    /* 12px */
+      padding-top: 0.75rem;
+      /* 12px */
       padding-bottom: 0.75rem;
     }
   }
 
   .responsive-padding {
-    padding: 1rem;           /* 16px */
+    padding: 1rem;
+    /* 16px */
   }
-  
+
   @media (max-width: 425px) {
     .responsive-padding {
-      padding: 0.75rem;       /* 12px */
+      padding: 0.75rem;
+      /* 12px */
     }
   }
-  
+
   @media (max-width: 375px) {
     .responsive-padding {
-      padding: 0.5rem;        /* 8px */
+      padding: 0.5rem;
+      /* 8px */
     }
   }
 
@@ -286,7 +302,8 @@ html, body {
   /* 모바일 최적화된 애니메이션 */
   @media (max-width: 768px) {
     .animate-pulse {
-      animation-duration: 2s; /* 모바일에서 더 느린 애니메이션 */
+      animation-duration: 2s;
+      /* 모바일에서 더 느린 애니메이션 */
     }
   }
 
@@ -332,16 +349,52 @@ html, body {
 }
 
 @layer base {
-body {
-  font-family: 'Wanted Sans Variable', -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Malgun Gothic", sans-serif;
-}
-.font-bombaram {
-  font-family: 'HSBombaram3_Regular', "Noto Serif KR", Georgia, serif !important;
-}
-.font-santokki {
-  font-family: 'HSSanTokki20-Regular', "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif !important;
-}
-.font-wanted-sans {
-  font-family: 'Wanted Sans Variable', -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Malgun Gothic", sans-serif !important;
-}
+  body {
+    font-family: 'Wanted Sans Variable', -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  }
+
+  /* 전역 텍스트 줄바꿈 최적화 */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  a,
+  li,
+  td,
+  th,
+  label,
+  button {
+    text-wrap: balance;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  /* 제목 요소에 더 강한 줄바꿈 균형 적용 */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  /* 본문 텍스트에 Pretty 줄바꿈 적용 */
+  p,
+  li {
+    text-wrap: pretty;
+  }
+
+  .font-bombaram {
+    font-family: 'HSBombaram3_Regular', "Noto Serif KR", Georgia, serif !important;
+  }
+
+  .font-santokki {
+    font-family: 'HSSanTokki20-Regular', "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif !important;
+  }
+
+  .font-wanted-sans {
+    font-family: 'Wanted Sans Variable', -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Malgun Gothic", sans-serif !important;
+  }
 }
