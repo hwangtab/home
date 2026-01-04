@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
 /**
- * 인터랙티브 효과 컴포넌트
- * 마우스 움직임과 스크롤에 반응하는 시각적 효과
+ * 느와르 스타일 인터랙티브 효과 컴포넌트
+ * 마우스 움직임에 반응하는 은은한 필름 조명 효과
  */
 const InteractiveElements = ({ className = '' }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -12,9 +12,9 @@ const InteractiveElements = ({ className = '' }) => {
   const { scrollYProgress } = useScroll();
   
   // 스크롤 기반 변환
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 1.2]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.6]);
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 1.1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.3]);
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
   
   // 부드러운 스프링 애니메이션
   const springConfig = { stiffness: 50, damping: 20 };
@@ -55,62 +55,63 @@ const InteractiveElements = ({ className = '' }) => {
       className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`}
       style={{ scale, opacity, y }}
     >
-      {/* 마우스 따라다니는 조명 효과 */}
+      {/* 느와르 스타일 필름 조명 효과 */}
       <motion.div
-        className="absolute w-96 h-96 rounded-full pointer-events-none"
+        className="absolute w-[600px] h-[600px] rounded-full pointer-events-none"
         style={{
           left: mouseX,
           top: mouseY,
           x: '-50%',
           y: '-50%',
-          background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 40%, transparent 70%)',
-          filter: 'blur(20px)',
-          opacity: isHovered ? 1 : 0.3,
-          scale: isHovered ? 1.5 : 1
+          background: 'radial-gradient(ellipse 80% 60%, rgba(120, 110, 100, 0.05) 0%, rgba(100, 90, 80, 0.02) 40%, transparent 70%)',
+          filter: 'blur(40px)',
+          opacity: isHovered ? 0.6 : 0.2,
+          scale: isHovered ? 1.2 : 0.9
         }}
-        transition={{ type: 'spring', stiffness: 100, damping: 30 }}
+        transition={{ type: 'spring', stiffness: 60, damping: 40 }}
       />
       
-      {/* 보조 조명 효과 */}
+      {/* 보조 따뜻한 조명 효과 */}
       <motion.div
-        className="absolute w-64 h-64 rounded-full pointer-events-none"
+        className="absolute w-80 h-80 rounded-full pointer-events-none"
         style={{
           left: mouseX,
           top: mouseY,
           x: '-50%',
           y: '-50%',
-          background: 'radial-gradient(circle, rgba(72, 201, 176, 0.1) 0%, rgba(72, 201, 176, 0.03) 50%, transparent 70%)',
-          filter: 'blur(15px)',
-          opacity: isHovered ? 0.8 : 0.2,
-          scale: isHovered ? 1.2 : 0.8
+          background: 'radial-gradient(circle, rgba(90, 85, 80, 0.04) 0%, rgba(70, 65, 60, 0.015) 60%, transparent 80%)',
+          filter: 'blur(25px)',
+          opacity: isHovered ? 0.4 : 0.15,
+          scale: isHovered ? 1.1 : 0.8
         }}
-        transition={{ type: 'spring', stiffness: 150, damping: 25 }}
+        transition={{ type: 'spring', stiffness: 120, damping: 30 }}
       />
       
-      {/* 플로팅 요소들 */}
-      {[...Array(6)].map((_, i) => (
+      {/* 미니멀한 먼지 입자들 */}
+      {[...Array(3)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-2 h-2 bg-white/20 rounded-full pointer-events-none"
+          className="absolute w-1 h-1 bg-gray-400/8 rounded-full pointer-events-none"
           style={{
-            left: `${20 + i * 15}%`,
-            top: `${30 + (i % 2) * 40}%`,
+            left: `${30 + i * 20}%`,
+            top: `${40 + (i % 2) * 20}%`,
+            filter: 'blur(1px)'
           }}
           animate={{
-            y: [0, -20, 0],
-            opacity: [0.2, 0.8, 0.2],
-            scale: [1, 1.2, 1]
+            y: [0, -10, 0],
+            opacity: [0.05, 0.15, 0.05],
+            x: [0, 5, 0]
           }}
           transition={{
-            duration: 3 + i * 0.5,
+            duration: 8 + i * 2,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: i * 0.2
+            delay: i * 1.5
           }}
         />
       ))}
       
-      {/* 마우스 호버 시 파티클 효과 */}
+      {/* 호버 시 은은한 광점 효과 */}
       {isHovered && (
         <motion.div
           className="absolute pointer-events-none"
@@ -124,24 +125,25 @@ const InteractiveElements = ({ className = '' }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          {[...Array(8)].map((_, i) => (
+          {[...Array(4)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-brand-primary-400 rounded-full"
+              className="absolute w-0.5 h-0.5 bg-gray-300/12 rounded-full"
               style={{
                 left: 0,
                 top: 0,
+                filter: 'blur(1px)'
               }}
               animate={{
-                x: Math.cos(i * Math.PI / 4) * 30,
-                y: Math.sin(i * Math.PI / 4) * 30,
-                opacity: [1, 0],
-                scale: [1, 0]
+                x: Math.cos(i * Math.PI / 2) * 20,
+                y: Math.sin(i * Math.PI / 2) * 20,
+                opacity: [0.3, 0],
+                scale: [1, 0.3]
               }}
               transition={{
-                duration: 1,
+                duration: 2,
                 repeat: Infinity,
-                delay: i * 0.1
+                delay: i * 0.3
               }}
             />
           ))}

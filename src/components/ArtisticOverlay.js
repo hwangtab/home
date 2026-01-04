@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 /**
- * 아티스틱한 오버레이 효과 컴포넌트
- * 실험적이고 예술적인 시각 효과들을 제공
+ * 느와르 스타일 아티스틱 오버레이 컴포넌트
+ * 어둡고 세련된 필름 느와르 감성의 시각 효과
  */
 const ArtisticOverlay = ({ className = '' }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [glitchActive, setGlitchActive] = useState(false);
+  const [shadowIntensity, setShadowIntensity] = useState(0.6);
 
   // 마우스 위치 추적
   useEffect(() => {
@@ -26,127 +26,114 @@ const ArtisticOverlay = ({ className = '' }) => {
     }
   }, []);
 
-  // 랜덤 글리치 효과
+  // 미묘한 그림자 강도 변화
   useEffect(() => {
-    const glitchInterval = setInterval(() => {
-      if (Math.random() < 0.1) { // 10% 확률
-        setGlitchActive(true);
-        setTimeout(() => setGlitchActive(false), 150);
-      }
-    }, 3000);
+    const shadowInterval = setInterval(() => {
+      setShadowIntensity(0.6 + Math.random() * 0.2); // 0.6~0.8 사이에서 미세한 변화
+    }, 8000); // 8초마다 서서히 변화
 
-    return () => clearInterval(glitchInterval);
+    return () => clearInterval(shadowInterval);
   }, []);
 
   return (
     <div className={`absolute inset-0 pointer-events-none ${className}`}>
-      {/* 그라디언트 노이즈 오버레이 */}
+      {/* 느와르 그림자 오버레이 */}
       <div 
-        className="absolute inset-0 opacity-15 mix-blend-overlay"
+        className="absolute inset-0 opacity-40 mix-blend-multiply"
         style={{
           background: `
-            radial-gradient(circle at ${mousePosition.x * 100}% ${mousePosition.y * 100}%, 
-              rgba(255,255,255,0.1) 0%, 
-              transparent 50%),
-            repeating-linear-gradient(
-              45deg,
-              transparent,
-              transparent 2px,
-              rgba(255,255,255,0.03) 2px,
-              rgba(255,255,255,0.03) 4px
+            radial-gradient(ellipse at ${mousePosition.x * 100}% ${mousePosition.y * 100}%, 
+              transparent 20%, 
+              rgba(0,0,0,0.3) 60%,
+              rgba(0,0,0,0.7) 100%),
+            linear-gradient(
+              135deg,
+              rgba(0,0,0,0.2) 0%,
+              transparent 30%,
+              rgba(0,0,0,0.1) 100%
             )
           `
         }}
       />
 
-      {/* 필름 그레인 효과 */}
+      {/* 필름 그레인 효과 - 더 거칠고 빈티지한 */}
       <div 
-        className="absolute inset-0 opacity-10 mix-blend-multiply animate-pulse"
+        className="absolute inset-0 opacity-25 mix-blend-overlay"
         style={{
           backgroundImage: `
-            radial-gradient(circle, transparent 1px, rgba(255,255,255,0.1) 1px),
-            radial-gradient(circle, transparent 1px, rgba(0,0,0,0.1) 1px)
+            radial-gradient(circle, transparent 0.5px, rgba(0,0,0,0.2) 1px),
+            radial-gradient(circle, transparent 0.5px, rgba(255,255,255,0.03) 1px)
           `,
-          backgroundSize: '3px 3px, 7px 7px',
-          backgroundPosition: '0 0, 3px 3px'
+          backgroundSize: '2px 2px, 5px 5px',
+          backgroundPosition: '0 0, 2.5px 2.5px'
         }}
       />
 
-      {/* 동적 색상 스플래시 */}
+      {/* 느와르 색차 효과 - 어둡고 은은한 */}
       <motion.div
-        className="absolute inset-0 mix-blend-color-dodge opacity-8"
+        className="absolute inset-0 mix-blend-soft-light opacity-15"
         animate={{
           background: [
-            'radial-gradient(ellipse at 20% 80%, rgba(120,119,198,0.3) 0%, transparent 70%)',
-            'radial-gradient(ellipse at 80% 20%, rgba(255,119,48,0.3) 0%, transparent 70%)',
-            'radial-gradient(ellipse at 40% 40%, rgba(200,50,50,0.3) 0%, transparent 70%)',
+            'radial-gradient(ellipse at 30% 70%, rgba(139,69,19,0.15) 0%, transparent 80%)',
+            'radial-gradient(ellipse at 70% 30%, rgba(160,82,45,0.12) 0%, transparent 80%)',
+            'radial-gradient(ellipse at 50% 50%, rgba(101,67,33,0.18) 0%, transparent 80%)',
           ]
         }}
         transition={{
-          duration: 8,
+          duration: 15,
           repeat: Infinity,
           repeatType: "reverse",
           ease: "easeInOut"
         }}
       />
 
-      {/* 글리치 효과 */}
-      {glitchActive && (
-        <motion.div
-          className="absolute inset-0 mix-blend-difference"
-          initial={{ opacity: 0 }}
-          animate={{ 
-            opacity: [0, 0.3, 0, 0.2, 0],
-            x: [0, -2, 2, -1, 0],
-          }}
-          transition={{ duration: 0.15 }}
-          style={{
-            background: `
-              linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(255,0,0,0.1) 10%, 
-                transparent 20%,
-                rgba(0,255,0,0.1) 30%,
-                transparent 40%,
-                rgba(0,0,255,0.1) 50%,
-                transparent 60%
-              )
-            `
-          }}
-        />
-      )}
 
-      {/* 빈티지 비네팅 */}
+      {/* 강화된 느와르 비네팅 */}
       <div 
-        className="absolute inset-0 opacity-30"
+        className="absolute inset-0"
         style={{
+          opacity: shadowIntensity,
           background: `
             radial-gradient(ellipse at center, 
-              transparent 30%, 
-              rgba(0,0,0,0.1) 70%, 
-              rgba(0,0,0,0.4) 100%
+              transparent 15%, 
+              rgba(0,0,0,0.3) 60%, 
+              rgba(0,0,0,0.8) 95%
             )
           `
         }}
       />
 
-      {/* 아날로그 스캔라인 - 비활성화 (잔상 방지) */}
-
-      {/* 인터랙티브 라이트 */}
-      <motion.div
-        className="absolute w-96 h-96 opacity-15 mix-blend-screen rounded-full blur-3xl"
+      {/* 필름 오버레이 - 느와르 스타일 */}
+      <div 
+        className="absolute inset-0 opacity-20 mix-blend-overlay"
         style={{
-          background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)',
+          background: `
+            linear-gradient(
+              180deg,
+              rgba(0,0,0,0.1) 0%,
+              transparent 20%,
+              transparent 80%,
+              rgba(0,0,0,0.3) 100%
+            )
+          `
+        }}
+      />
+
+      {/* 미세한 인터랙티브 그림자 */}
+      <motion.div
+        className="absolute w-64 h-64 opacity-20 mix-blend-multiply rounded-full blur-2xl"
+        style={{
+          background: 'radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, transparent 70%)',
           left: `${mousePosition.x * 100}%`,
           top: `${mousePosition.y * 100}%`,
           transform: 'translate(-50%, -50%)'
         }}
         animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.2, 0.3, 0.2]
+          scale: [0.8, 1, 0.8],
+          opacity: [0.15, 0.25, 0.15]
         }}
         transition={{
-          duration: 4,
+          duration: 6,
           repeat: Infinity,
           ease: "easeInOut"
         }}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, ExternalLink, ShoppingCart } from 'lucide-react';
 import Section from '../components/Section';
+import PageHero from '../components/PageHero';
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
 import MetaDataManager from '../components/SEO/MetaDataManager';
@@ -18,7 +19,7 @@ const ConcertSlider = ({ concerts }) => {
   }, [concerts.length]);
 
   return (
-    <motion.div 
+    <motion.div
       className="bg-gray-800 p-8 rounded-lg shadow-lg"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -60,16 +61,16 @@ const ConcertSlider = ({ concerts }) => {
 };
 
 const AlbumPurchase = ({ album }) => (
-  <motion.div 
+  <motion.div
     className="bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col md:flex-row items-stretch gap-12"
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
   >
     <div className="md:w-1/2 flex flex-col justify-center">
-      <motion.img 
+      <motion.img
         src={`${process.env.PUBLIC_URL}/${album.coverUrl}`}
-        alt={album.title} 
+        alt={album.title}
         className="w-full h-auto object-cover rounded cursor-pointer"
         whileHover={{ scale: 1.05 }}
         transition={{ type: "spring", stiffness: 300 }}
@@ -86,7 +87,7 @@ const AlbumPurchase = ({ album }) => (
       <p className="text-gray-400 mb-6 font-wanted-sans">
         {album.description}
       </p>
-      <motion.button 
+      <motion.button
         className="bg-gray-700 text-white px-8 py-4 rounded-full font-wanted-sans hover:bg-gray-600 transition duration-300 flex items-center justify-center self-start"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -165,7 +166,13 @@ const News = () => {
   return (
     <div>
       <MetaDataManager {...seoData} />
-      <Section title="최신 소식">
+      <PageHero
+        title="소식"
+        subtitle="새로운 활동과 공지사항"
+        imagePath="/images/hwang/6.png"
+      />
+
+      <Section title="최신 소식" className="mt-8">
         <div className="grid grid-cols-1 gap-6 mb-8">
           {news.map((item) => (
             <NewsCard key={item.id} news={item} />

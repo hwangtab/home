@@ -194,31 +194,7 @@
         "sortPriority": 7
       }
     ],
-    "visual": [
-      {
-        "id": "test-photo",
-        "title": "테스트 사진",
-        "year": 2024,
-        "type": "사진집",
-        "cover": "/images/defaults/visual-default.svg",
-        "description": "기본 이미지 테스트용 사진",
-        "shortDescription": "Visual 기본 이미지 테스트",
-        "tags": [
-          "test"
-        ],
-        "primaryAction": {
-          "type": "view",
-          "url": "#",
-          "label": "사진 보기"
-        },
-        "showInPages": [
-          "works",
-          "archive"
-        ],
-        "archiveCategory": "visual",
-        "sortPriority": 1
-      }
-    ],
+    "visual": [],
     "writing": [
       {
         "id": "hope-2025",
@@ -276,30 +252,6 @@
         "sortPriority": 2
       }
     ],
-    "performance": [
-      {
-        "id": "test-performance",
-        "title": "테스트 공연",
-        "year": 2024,
-        "type": "콘서트",
-        "cover": "/images/defaults/performance-default.svg",
-        "description": "기본 이미지 테스트용 공연",
-        "shortDescription": "Performance 기본 이미지 테스트",
-        "tags": [
-          "test"
-        ],
-        "primaryAction": {
-          "type": "view",
-          "url": "#",
-          "label": "공연 정보"
-        },
-        "showInPages": [
-          "works",
-          "archive"
-        ],
-        "archiveCategory": "performance",
-        "sortPriority": 1
-      }
-    ]
+    "performance": []
   }
 }

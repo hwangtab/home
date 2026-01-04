@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Section from '../components/Section';
+import PageHero from '../components/PageHero';
 import Lightbox from '../components/Lightbox';
 import MusicPlayer from '../components/MusicPlayer';
 import CardRenderer from '../components/CardRenderer';
@@ -14,9 +15,39 @@ import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
 
 
+import { useLocation } from 'react-router-dom';
+
 const Works = () => {
   const [activeFilter, setActiveFilter] = useState('all');
+  const location = useLocation();
   const { data: siteData, loading, error } = useCachedPageData('works');
+
+  // URL 파라미터 처리 및 스크롤
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const category = params.get('category');
+    const workId = params.get('id');
+
+    if (category) {
+      setActiveFilter(category);
+    }
+
+    if (workId) {
+      // 데이터 로딩 및 애니메이션 시간을 고려하여 지연 실행
+      const timer = setTimeout(() => {
+        const element = document.getElementById(`work-${workId}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // 강조 효과 (선택적)
+          element.classList.add('ring-2', 'ring-brand-primary-400', 'ring-offset-2', 'ring-offset-gray-900', 'rounded-lg');
+          setTimeout(() => {
+            element.classList.remove('ring-2', 'ring-brand-primary-400', 'ring-offset-2', 'ring-offset-gray-900', 'rounded-lg');
+          }, 2000);
+        }
+      }, 800); // WorksGrid 애니메이션 지연 고려
+      return () => clearTimeout(timer);
+    }
+  }, [location.search, loading]);
 
   // SEO 메타데이터
   const seoData = usePageSEO({
@@ -28,7 +59,7 @@ const Works = () => {
 
   // hooks를 최상위에서 호출 - siteData가 null일 때 빈 객체 전달
   const { categorizedData, getWorksByCategory } = useWorksData(siteData?.works || {}, 'works');
-  
+
   // 카드 액션 훅 사용
   const { lightbox, musicPlayer } = useCardActions({
     enableLightbox: true,
@@ -51,7 +82,11 @@ const Works = () => {
 
   // 작품 렌더링 함수 메모이제이션
   const renderWork = useCallback((work, index) => {
-    return <CardRenderer work={work} onClick={lightbox.openLightbox} />;
+    return (
+      <div id={`work-${work.id}`} className="h-full">
+        <CardRenderer work={work} onClick={lightbox.openLightbox} />
+      </div>
+    );
   }, [lightbox.openLightbox]);
 
   if (loading) {
@@ -75,7 +110,7 @@ const Works = () => {
       </div>
     );
   }
-  
+
   // 필터링된 작품 목록
   const filteredWorks = getWorksByCategory(activeFilter);
   const musicWorks = categorizedData.music || [];
@@ -83,9 +118,15 @@ const Works = () => {
   return (
     <>
       <MetaDataManager {...seoData} />
-      <Section title="작품">
+      <PageHero
+        title="작업"
+        subtitle="황경하의 음악, 저술, 그리고 활동들"
+        imagePath="/images/hwang/4.png"
+      />
+
+      <Section containerSize="default" className="mt-8">
         <ScrollReveal direction="up" delay={0.05}>
-          <WorksHeader 
+          <WorksHeader
             activeFilter={activeFilter}
             setActiveFilter={setActiveFilter}
             siteData={siteData}
@@ -95,9 +136,9 @@ const Works = () => {
           />
         </ScrollReveal>
 
-        
+
         <ScrollReveal direction="up" delay={0.1}>
-          <WorksGrid 
+          <WorksGrid
             filteredWorks={filteredWorks}
             activeFilter={activeFilter}
             renderWork={renderWork}

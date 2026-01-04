@@ -57,7 +57,7 @@ const VideoModal = ({ video, isOpen, onClose }) => {
               <h2 className="text-2xl font-bold font-santokki mb-2">
                 {video.title}
               </h2>
-              
+
               <div className="flex flex-wrap items-center gap-4 mb-4 text-sm text-gray-300">
                 {video.year && (
                   <div className="flex items-center gap-1">
@@ -65,14 +65,14 @@ const VideoModal = ({ video, isOpen, onClose }) => {
                     <span>{video.year}</span>
                   </div>
                 )}
-                
+
                 {video.type && (
                   <div className="flex items-center gap-1">
                     <Tag size={16} />
                     <span>{video.type}</span>
                   </div>
                 )}
-                
+
                 {video.duration && (
                   <span>{video.duration}</span>
                 )}
@@ -94,19 +94,6 @@ const VideoModal = ({ video, isOpen, onClose }) => {
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
-
-              {video.tags && video.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {video.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="bg-gray-700 text-gray-300 px-2 py-1 rounded-full text-xs"
-                    >
-                      {tag}
-                    </span>
-                  ))}
                 </div>
               )}
             </div>
@@ -132,12 +119,11 @@ const VideoCard = ({ video, onClick }) => {
         <img
           src={video.thumbnail}
           alt={video.title}
-          className={`w-full h-full object-cover transition-opacity duration-300 ${
-            imageLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
+          className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
           onLoad={() => setImageLoaded(true)}
         />
-        
+
         {/* Loading placeholder */}
         {!imageLoaded && (
           <div className="absolute inset-0 bg-gray-700 animate-pulse flex items-center justify-center">
@@ -173,7 +159,7 @@ const VideoCard = ({ video, onClick }) => {
         <h3 className="text-xl font-bold text-gray-200 font-santokki mb-2 line-clamp-2">
           {video.title}
         </h3>
-        
+
         <div className="flex items-center justify-between text-sm text-gray-400 mb-2">
           <span>{video.year}</span>
           {video.views && <span>{video.views} 조회</span>}
@@ -229,9 +215,9 @@ const VideoGallery = ({ videos = [], title = "비디오 갤러리" }) => {
   const [filter, setFilter] = useState('all');
 
   const videoTypes = ['all', ...new Set(videos.map(video => video.type).filter(Boolean))];
-  
-  const filteredVideos = filter === 'all' 
-    ? videos 
+
+  const filteredVideos = filter === 'all'
+    ? videos
     : videos.filter(video => video.type === filter);
 
   const openModal = (video) => {
@@ -250,18 +236,17 @@ const VideoGallery = ({ videos = [], title = "비디오 갤러리" }) => {
         <h2 className="text-3xl font-bold text-gray-200 font-santokki">
           {title}
         </h2>
-        
+
         {videoTypes.length > 1 && (
           <div className="flex gap-2">
             {videoTypes.map((type) => (
               <button
                 key={type}
                 onClick={() => setFilter(type)}
-                className={`px-4 py-2 rounded-full text-sm font-wanted-sans transition-all ${
-                  filter === type
+                className={`px-4 py-2 rounded-full text-sm font-wanted-sans transition-all ${filter === type
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                }`}
+                  }`}
               >
                 {type === 'all' ? '전체' : type}
               </button>

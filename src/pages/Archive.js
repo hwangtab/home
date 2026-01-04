@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import Section from '../components/Section';
+import PageHero from '../components/PageHero';
 import Lightbox from '../components/Lightbox';
 import MusicPlayer from '../components/MusicPlayer';
 import SearchBar from '../components/SearchBar';
@@ -21,7 +22,7 @@ const Archive = () => {
   const [viewMode, setViewMode] = useState('yearly'); // 'yearly' or 'timeline'
   const [activeFilter, setActiveFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   const { data: siteData, loading, error } = useCachedPageData('archive');
 
   // SEO 메타데이터
@@ -110,9 +111,16 @@ const Archive = () => {
   return (
     <div>
       <MetaDataManager {...seoData} />
-      <Section 
+      <PageHero
         title="아카이브"
+        subtitle="기록된 순간들의 모음"
+        imagePath="/images/hwang/5.png"
+      />
+
+      <Section
         titleAlign="center"
+        containerSize="default"
+        className="mt-8"
       >
         <Flex justify="center" gap="default" className="mb-8">
           <ButtonGroup spacing="sm">
@@ -137,9 +145,9 @@ const Archive = () => {
 
         {viewMode === 'yearly' ? (
           <>
-            <TimelineSlider 
-              selectedYear={selectedYear} 
-              setSelectedYear={setSelectedYear} 
+            <TimelineSlider
+              selectedYear={selectedYear}
+              setSelectedYear={setSelectedYear}
             />
             <YearlyView selectedYear={selectedYear} onCardClick={handleCardClick} />
           </>
@@ -150,10 +158,10 @@ const Archive = () => {
                 data={flattenedEvents}
                 onResult={handleSearchResult}
                 placeholder="작품이나 활동을 검색하세요..."
-                searchKeys={['title', 'description', 'tags']}
+                searchKeys={['title', 'description']}
               />
             </Container>
-            
+
             <Flex justify="center" gap="sm" wrap={true}>
               {filterOptions.map((option) => (
                 <Button
@@ -167,11 +175,11 @@ const Archive = () => {
                 </Button>
               ))}
             </Flex>
-            
+
             <BodyText color="secondary" align="center">
               {searchTerm ? `"${searchTerm}" 검색 결과: ` : ''}{filteredEvents.length}개의 결과
             </BodyText>
-            
+
             <OverallTimeline flattenedEvents={filteredEvents} onCardClick={handleCardClick} />
           </Stack>
         )}

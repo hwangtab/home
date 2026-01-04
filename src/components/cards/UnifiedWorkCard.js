@@ -46,38 +46,38 @@ const useImageFallback = (cover, category, title) => {
 
   // 폴백 우선순위: cover → SVG → CSS 컴포넌트
   if (!cover || (imageError && svgError)) {
-    return { 
-      type: 'component', 
+    return {
+      type: 'component',
       component: <DefaultImageComponent category={category} title={title} />
     };
   }
 
   if (imageError && !svgError) {
-    return { 
-      type: 'svg', 
-      src: defaultSvg, 
-      onError: () => setSvgError(true) 
+    return {
+      type: 'svg',
+      src: defaultSvg,
+      onError: () => setSvgError(true)
     };
   }
 
-  return { 
-    type: 'image', 
-    src: cover, 
-    onError: () => setImageError(true) 
+  return {
+    type: 'image',
+    src: cover,
+    onError: () => setImageError(true)
   };
 };
 
 const TypeBadge = ({ type, category }) => {
   const config = CATEGORY_CONFIG[category] || { icon: null, color: 'bg-gray-600' };
-  
+
   // visual 카테고리에서 video 타입 처리
-  const IconComponent = (category === 'visual' && (type === 'video' || type === '다큐멘터리')) 
-    ? Video 
+  const IconComponent = (category === 'visual' && (type === 'video' || type === '다큐멘터리'))
+    ? Video
     : config.icon;
-  
+
   const label = category === 'music' ? (type === 'album' ? '앨범' : '싱글')
     : category === 'performance' ? '공연'
-    : type;
+      : type;
 
   return (
     <div className={`${STYLES.badge} ${config.color}`}>
@@ -105,21 +105,21 @@ const CardImage = ({ cover, title, category, type }) => {
           <div className="w-12 h-12 border-4 border-gray-600 border-t-gray-400 rounded-full animate-spin" />
         </div>
       )}
-      
+
       {/* 이미지 로드 완료 시에만 표시 */}
       {shouldLoad && (
         <img
           src={imageProps.src}
           alt={title}
           className={`${STYLES.image} ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
-          onLoad={() => {/* 이미 useLazyImage에서 처리됨 */}}
+          onLoad={() => {/* 이미 useLazyImage에서 처리됨 */ }}
           onError={imageProps.onError}
           loading="lazy"
         />
       )}
-      
+
       <div className={STYLES.gradient} />
-      
+
       {/* Video play overlay */}
       {isVideo && isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300">
@@ -138,11 +138,11 @@ const ActionButton = ({ action, category }) => {
   if (!action) return null;
 
   const IconComponent = ACTION_CONFIG[action.type] || ExternalLink;
-  
+
   // Get category-specific colors from CATEGORY_CONFIG
   const categoryConfig = CATEGORY_CONFIG[category] || CATEGORY_CONFIG.music;
   const primaryColor = categoryConfig.color;
-  
+
   // Generate hover color class based on category using brand colors
   const getHoverColor = (category) => {
     switch (category) {
@@ -184,15 +184,23 @@ const UnifiedWorkCard = ({ work, onClick }) => {
   } = work;
 
   const displayDescription = shortDescription || description || '';
-  const truncatedDescription = displayDescription.length > 100 
-    ? displayDescription.substring(0, 100) + '...' 
+  const truncatedDescription = displayDescription.length > 100
+    ? displayDescription.substring(0, 100) + '...'
     : displayDescription;
 
   const handleCardClick = useCallback((e) => {
     // Don't trigger card click if clicking on action button
     if (e.target.closest('a')) return;
+
+    // If primaryAction has a URL, navigate to it directly
+    if (primaryAction?.url) {
+      window.open(primaryAction.url, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    // Fallback to onClick handler
     if (onClick) onClick(work);
-  }, [onClick, work]);
+  }, [onClick, work, primaryAction]);
 
   return (
     <article
@@ -211,7 +219,7 @@ const UnifiedWorkCard = ({ work, onClick }) => {
       data-cursor-text="클릭하여 상세보기"
     >
       <CardImage cover={cover} title={title} category={category} type={type} />
-      
+
       <div className="p-5 flex-1 flex flex-col">
         {/* Header with badge and year */}
         <div className="flex items-center justify-between mb-4"> {/* 모바일에서 더 큰 마진 */}
@@ -223,7 +231,7 @@ const UnifiedWorkCard = ({ work, onClick }) => {
         </div>
 
         {/* Title */}
-        <h3 
+        <h3
           className="text-gray-50 group-hover:text-white font-bold text-xl mb-4 line-clamp-2 font-santokki transition-colors duration-300"
           id={`card-title-${work.id}`}
         >
@@ -241,18 +249,7 @@ const UnifiedWorkCard = ({ work, onClick }) => {
         </p>
 
         {/* Tags */}
-        {tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4"> {/* 터치 친화적인 간격 */}
-            {tags.slice(0, 3).map((tag, index) => (
-              <span key={index} className={STYLES.tag}>
-                #{tag}
-              </span>
-            ))}
-            {tags.length > 3 && (
-              <span className="text-gray-400 text-sm">+{tags.length - 3}</span>
-            )}
-          </div>
-        )}
+
 
         {/* Action Button */}
         <div className="flex justify-end mt-auto pt-2 border-t border-gray-700/50 group-hover:border-brand-primary-500/20 transition-colors duration-300">

@@ -21,19 +21,19 @@ export const useDataProcessor = (data, options = {}) => {
   // 데이터 정렬
   const sortedData = useMemo(() => {
     if (!enableSort || !data || !Array.isArray(data)) return data;
-    
+
     return [...data].sort((a, b) => {
       const aVal = a[sortKey];
       const bVal = b[sortKey];
-      
+
       if (typeof aVal === 'string' && typeof bVal === 'string') {
         return sortOrder === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
       }
-      
+
       if (typeof aVal === 'number' && typeof bVal === 'number') {
         return sortOrder === 'asc' ? aVal - bVal : bVal - aVal;
       }
-      
+
       return 0;
     });
   }, [data, sortKey, sortOrder, enableSort]);
@@ -41,7 +41,7 @@ export const useDataProcessor = (data, options = {}) => {
   // 데이터 그룹화
   const groupedData = useMemo(() => {
     if (!groupBy || !sortedData || !Array.isArray(sortedData)) return sortedData;
-    
+
     const groups = {};
     sortedData.forEach(item => {
       const key = item[groupBy];
@@ -50,7 +50,7 @@ export const useDataProcessor = (data, options = {}) => {
       }
       groups[key].push(item);
     });
-    
+
     return groups;
   }, [sortedData, groupBy]);
 
@@ -59,9 +59,9 @@ export const useDataProcessor = (data, options = {}) => {
     if (!enableFilter || !filterValue || filterValue === 'all') {
       return sortedData;
     }
-    
-    return sortedData.filter(item => 
-      item[filterKey] === filterValue || 
+
+    return sortedData.filter(item =>
+      item[filterKey] === filterValue ||
       (Array.isArray(item[filterKey]) && item[filterKey].includes(filterValue))
     );
   }, [sortedData, filterKey, enableFilter]);
@@ -69,10 +69,10 @@ export const useDataProcessor = (data, options = {}) => {
   // 검색 함수
   const searchData = useCallback((searchTerm, targetData = sortedData) => {
     if (!enableSearch || !searchTerm || !targetData) return targetData;
-    
+
     const term = searchTerm.toLowerCase();
-    return targetData.filter(item => 
-      searchKeys.some(key => 
+    return targetData.filter(item =>
+      searchKeys.some(key =>
         item[key] && item[key].toLowerCase().includes(term)
       )
     );
@@ -81,7 +81,7 @@ export const useDataProcessor = (data, options = {}) => {
   // 고유 필터 값 추출
   const uniqueFilterValues = useMemo(() => {
     if (!enableFilter || !sortedData) return [];
-    
+
     const values = new Set();
     sortedData.forEach(item => {
       const value = item[filterKey];
@@ -91,7 +91,7 @@ export const useDataProcessor = (data, options = {}) => {
         values.add(value);
       }
     });
-    
+
     return Array.from(values).sort();
   }, [sortedData, filterKey, enableFilter]);
 
@@ -142,10 +142,10 @@ export const useDataProcessor = (data, options = {}) => {
   // 페이지네이션
   const paginateData = useCallback((targetData, page = 1, itemsPerPage = 10) => {
     if (!targetData || !Array.isArray(targetData)) return [];
-    
+
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    
+
     return {
       data: targetData.slice(startIndex, endIndex),
       totalPages: Math.ceil(targetData.length / itemsPerPage),
@@ -158,12 +158,12 @@ export const useDataProcessor = (data, options = {}) => {
 
   // 복합 필터링 및 검색
   const processData = useCallback((filters = {}) => {
-    const { 
-      filterValue, 
-      searchTerm, 
+    const {
+      filterValue,
+      searchTerm,
       customFilter,
       page,
-      itemsPerPage 
+      itemsPerPage
     } = filters;
 
     let processed = sortedData;
@@ -195,17 +195,17 @@ export const useDataProcessor = (data, options = {}) => {
     // 처리된 데이터
     data: sortedData,
     groupedData,
-    
+
     // 유틸리티 함수들
     filterData,
     searchData,
     paginateData,
     processData,
-    
+
     // 메타데이터
     uniqueFilterValues,
     dataStats,
-    
+
     // 설정
     options: {
       filterKey,
@@ -230,20 +230,20 @@ export const useWorksData = (worksData, pageType = 'all') => {
   // 모든 works 카테고리를 하나로 flatten
   const allWorks = useMemo(() => {
     if (!worksData) return [];
-    
+
     const works = [
       ...(worksData.music || []),
       ...(worksData.visual || []),
       ...(worksData.writing || []),
       ...(worksData.performance || [])
     ];
-    
+
     // pageType별 필터링
     if (pageType === 'all') {
       return works;
     }
-    
-    return works.filter(work => 
+
+    return works.filter(work =>
       work.showInPages?.includes(pageType)
     );
   }, [worksData, pageType]);
@@ -252,7 +252,7 @@ export const useWorksData = (worksData, pageType = 'all') => {
     filterKey: 'archiveCategory',
     sortKey: 'year',
     sortOrder: 'desc',
-    searchKeys: ['title', 'description', 'tags'],
+    searchKeys: ['title', 'description'],
     enableSearch: true,
     enableFilter: true,
     enableSort: true
@@ -261,7 +261,7 @@ export const useWorksData = (worksData, pageType = 'all') => {
   // 카테고리별 데이터 분리
   const categorizedData = useMemo(() => {
     if (!processor.data) return {};
-    
+
     return {
       music: processor.data.filter(item => item.archiveCategory === 'music'),
       visual: processor.data.filter(item => item.archiveCategory === 'visual'),
@@ -274,7 +274,7 @@ export const useWorksData = (worksData, pageType = 'all') => {
   // 연도별 그룹화 (timeline 형태로 변환)
   const timelineData = useMemo(() => {
     if (!processor.data) return [];
-    
+
     const yearGroups = {};
     processor.data.forEach(work => {
       if (!yearGroups[work.year]) {
@@ -285,7 +285,7 @@ export const useWorksData = (worksData, pageType = 'all') => {
       }
       yearGroups[work.year].events.push(work);
     });
-    
+
     return Object.values(yearGroups).sort((a, b) => b.year - a.year);
   }, [processor.data]);
 
@@ -308,7 +308,7 @@ export const useWorksData = (worksData, pageType = 'all') => {
   // 통계 데이터
   const yearlyStats = useMemo(() => {
     if (!processor.data) return {};
-    
+
     const stats = {};
     processor.data.forEach(work => {
       if (!stats[work.year]) {
@@ -318,11 +318,11 @@ export const useWorksData = (worksData, pageType = 'all') => {
         };
       }
       stats[work.year].total += 1;
-      
+
       const type = work.archiveCategory || 'unknown';
       stats[work.year].byType[type] = (stats[work.year].byType[type] || 0) + 1;
     });
-    
+
     return stats;
   }, [processor.data]);
 
@@ -347,10 +347,10 @@ export const useWorksData = (worksData, pageType = 'all') => {
  */
 export const useTimelineData = (worksData) => {
   console.warn('useTimelineData is deprecated. Use useWorksData instead.');
-  
+
   // 새로운 useWorksData를 사용하되 archive 페이지용으로 설정
   const worksProcessor = useWorksData(worksData, 'archive');
-  
+
   return {
     ...worksProcessor,
     // 기존 API와의 호환성을 위한 aliases

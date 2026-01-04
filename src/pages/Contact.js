@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import Section from '../components/Section';
+import PageHero from '../components/PageHero';
 import ContactForm from '../components/ContactForm';
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
@@ -15,8 +16,8 @@ const ContactInfo = ({ icon: Icon, title, content, link }) => (
     </div>
     <div>
       <h4 className="font-bold text-gray-200 text-lg mb-1">{title}</h4>
-      <a 
-        href={link} 
+      <a
+        href={link}
         className="text-gray-400 hover:text-gray-200 transition-colors duration-300"
         target={title === "주소" ? "_blank" : "_self"}
         rel={title === "주소" ? "noopener noreferrer" : ""}
@@ -66,33 +67,39 @@ const Contact = () => {
   return (
     <div>
       <MetaDataManager {...seoData} />
-      <Section title="연락처">
+      <PageHero
+        title="연락처"
+        subtitle="협업 및 문의"
+        imagePath="/images/hwang/7.png"
+      />
+
+      <Section title="연락처" className="mt-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <motion.div 
+          <motion.div
             className="bg-gray-800 p-8 rounded-lg shadow-lg"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
             <h3 className="text-2xl font-bold mb-8 text-gray-200 font-santokki">연락처 정보</h3>
-            
-            <ContactInfo 
-              icon={Mail} 
-              title="이메일" 
+
+            <ContactInfo
+              icon={Mail}
+              title="이메일"
               content={contactInfo.email}
               link={`mailto:${contactInfo.email}`}
             />
-            
-            <ContactInfo 
-              icon={Phone} 
-              title="전화" 
+
+            <ContactInfo
+              icon={Phone}
+              title="전화"
               content={contactInfo.phone}
               link={`tel:${contactInfo.phone.replace(/-/g, '')}`}
             />
-            
-            <ContactInfo 
-              icon={MapPin} 
-              title="주소" 
+
+            <ContactInfo
+              icon={MapPin}
+              title="주소"
               content={contactInfo.address}
               link={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contactInfo.address)}`}
             />
@@ -104,7 +111,7 @@ const Contact = () => {
                 주말 및 공휴일 휴무
               </p>
             </div>
-            
+
             <div className="mt-4 p-4 bg-gray-700 rounded-lg">
               <h4 className="font-bold text-gray-200 mb-2 font-wanted-sans">문의 유형</h4>
               <ul className="text-gray-400 text-sm space-y-1">
@@ -116,7 +123,7 @@ const Contact = () => {
             </div>
           </motion.div>
 
-          <ContactForm 
+          <ContactForm
             theme="dark"
             includeSubject={true}
             animation={{ initial: { opacity: 0, x: 20 }, animate: { opacity: 1, x: 0 } }}
