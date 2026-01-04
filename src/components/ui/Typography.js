@@ -9,7 +9,7 @@ const TYPOGRAPHY_SCALES = {
     fontWeight: 'font-bold',
     lineHeight: 'leading-[1.1]',
     letterSpacing: 'tracking-tight',
-    fontFamily: 'font-bombaram',
+    fontFamily: '', // 클래스로 전달된 폰트 사용
     marginBottom: 'mb-4 md:mb-6' // 모바일에서 더 작은 마진
   },
   h2: {
@@ -52,7 +52,7 @@ const TYPOGRAPHY_SCALES = {
     fontFamily: 'font-wanted-sans',
     marginBottom: 'mb-2'
   },
-  
+
   // 본문
   body1: {
     fontSize: 'text-base md:text-lg',
@@ -70,7 +70,7 @@ const TYPOGRAPHY_SCALES = {
     fontFamily: 'font-wanted-sans',
     marginBottom: 'mb-3'
   },
-  
+
   // 캡션
   caption: {
     fontSize: 'text-xs md:text-sm',
@@ -80,7 +80,7 @@ const TYPOGRAPHY_SCALES = {
     fontFamily: 'font-wanted-sans',
     marginBottom: 'mb-2'
   },
-  
+
   // 오버라인
   overline: {
     fontSize: 'text-xs',
@@ -91,7 +91,7 @@ const TYPOGRAPHY_SCALES = {
     textTransform: 'uppercase',
     marginBottom: 'mb-1'
   },
-  
+
   // 버튼 텍스트
   button: {
     fontSize: 'text-sm md:text-base',
@@ -139,7 +139,7 @@ const Typography = memo(forwardRef(({
   const scale = TYPOGRAPHY_SCALES[variant] || TYPOGRAPHY_SCALES.body1;
   const colorClass = COLOR_VARIANTS[color] || COLOR_VARIANTS.primary;
   const alignClass = ALIGN_VARIANTS[align] || ALIGN_VARIANTS.left;
-  
+
   const classes = [
     scale.fontSize,
     scale.fontWeight,
@@ -295,7 +295,7 @@ export const CodeText = memo(forwardRef(({
   ...props
 }, ref) => {
   const baseClasses = 'font-mono bg-gray-800 text-gray-100 rounded';
-  const classes = inline 
+  const classes = inline
     ? `${baseClasses} px-1.5 py-0.5 text-sm ${className}`
     : `${baseClasses} p-4 text-sm block overflow-x-auto ${className}`;
 
@@ -351,7 +351,7 @@ export const List = memo(forwardRef(({
   ...props
 }, ref) => {
   const Component = ordered ? 'ol' : 'ul';
-  
+
   const variantClasses = {
     default: ordered ? 'list-decimal' : 'list-disc',
     none: 'list-none',
