@@ -15,7 +15,6 @@ const useSwipeNavigation = (threshold = 100, velocity = 0.5) => {
     '/',
     '/about',
     '/works',
-    '/archive',
     '/news',
     '/contact'
   ];
@@ -28,7 +27,7 @@ const useSwipeNavigation = (threshold = 100, velocity = 0.5) => {
 
     const handleTouchStart = (e) => {
       if (!isSwipeEnabled) return;
-      
+
       const touch = e.touches[0];
       startX = touch.clientX;
       startY = touch.clientY;
@@ -38,11 +37,11 @@ const useSwipeNavigation = (threshold = 100, velocity = 0.5) => {
 
     const handleTouchMove = (e) => {
       if (!isSwipeEnabled) return;
-      
+
       const touch = e.touches[0];
       const deltaX = Math.abs(touch.clientX - startX);
       const deltaY = Math.abs(touch.clientY - startY);
-      
+
       // 세로 스크롤이 더 크면 스와이프 무시
       if (deltaY > deltaX) {
         isScrolling = true;
@@ -51,19 +50,19 @@ const useSwipeNavigation = (threshold = 100, velocity = 0.5) => {
 
     const handleTouchEnd = (e) => {
       if (!isSwipeEnabled || isScrolling) return;
-      
+
       const touch = e.changedTouches[0];
       const endX = touch.clientX;
       const endTime = Date.now();
-      
+
       const deltaX = endX - startX;
       const deltaTime = endTime - startTime;
       const velocityX = Math.abs(deltaX) / deltaTime;
-      
+
       // 스와이프 조건 확인
       if (Math.abs(deltaX) > threshold && velocityX > velocity) {
         const currentIndex = pages.indexOf(location.pathname);
-        
+
         if (currentIndex !== -1) {
           if (deltaX > 0 && currentIndex > 0) {
             // 오른쪽 스와이프 - 이전 페이지

@@ -80,11 +80,11 @@ const QuickNavigation = () => {
       icon: '👤'
     },
     {
-      name: '아카이브',
-      path: '/archive',
-      description: '20년간의 활동 기록',
+      name: '작품',
+      path: '/works',
+      description: '음악, 글, 공연 작품 모음',
       color: 'brand-earth',
-      icon: '📚'
+      icon: '🎵'
     },
     {
       name: '연락처',

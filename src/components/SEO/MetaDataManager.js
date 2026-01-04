@@ -5,9 +5,9 @@ import { useLocation } from 'react-router-dom';
 /**
  * 동적 메타데이터 관리 컴포넌트
  */
-const MetaDataManager = ({ 
-  title, 
-  description, 
+const MetaDataManager = ({
+  title,
+  description,
   keywords = [],
   image,
   type = 'website',
@@ -17,7 +17,7 @@ const MetaDataManager = ({
   customMeta = {}
 }) => {
   const location = useLocation();
-  
+
   // 기본 사이트 정보
   const siteInfo = {
     siteName: '황경하 Official Web',
@@ -29,7 +29,7 @@ const MetaDataManager = ({
 
   // 현재 URL 생성
   const currentUrl = url || `${siteInfo.domain}${location.pathname}`;
-  
+
   // 페이지별 기본 메타데이터
   const getPageDefaults = (pathname) => {
     const pages = {
@@ -48,11 +48,6 @@ const MetaDataManager = ({
         description: '황경하의 음악 작품들을 만나보세요. 젠트리피케이션, 민중음악 선곡집 등 사회적 메시지를 담은 음반들.',
         keywords: ['황경하', '음반', '앨범', '민중음악', '연대', '작품']
       },
-      '/archive': {
-        title: '아카이브 - 황경하',
-        description: '황경하의 모든 활동과 작품을 시간순으로 정리한 아카이브입니다.',
-        keywords: ['황경하', '아카이브', '활동', '작품', '연표']
-      },
       '/news': {
         title: '소식 - 황경하',
         description: '황경하의 최신 소식과 공연 정보를 확인하세요.',
@@ -69,7 +64,7 @@ const MetaDataManager = ({
   };
 
   const pageDefaults = getPageDefaults(location.pathname);
-  
+
   // 최종 메타데이터 구성
   const finalTitle = title || pageDefaults.title;
   const finalDescription = description || pageDefaults.description;
@@ -170,7 +165,7 @@ const MetaDataManager = ({
       {/* 추가 메타 태그 */}
       <meta name="theme-color" content="#1f2937" />
       <meta name="msapplication-TileColor" content="#1f2937" />
-      
+
       {/* 커스텀 메타 태그 */}
       {Object.entries(customMeta).map(([key, value]) => (
         <meta key={key} name={key} content={value} />

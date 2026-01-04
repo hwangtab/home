@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Home, User, Briefcase, Archive, Newspaper, Phone } from 'lucide-react';
+import { Menu, X, Home, User, Briefcase, Newspaper, Phone } from 'lucide-react';
 import { useLanguage } from '../../i18n';
 
 // 네비게이션 아이템 아이콘 매핑
@@ -9,7 +9,6 @@ const NAV_ICONS = {
   '/': Home,
   '/about': User,
   '/works': Briefcase,
-  '/archive': Archive,
   '/news': Newspaper,
   '/contact': Phone
 };
@@ -28,7 +27,7 @@ const MobileMenuOverlay = memo(({ isOpen, onClose, children }) => (
           transition={{ duration: 0.3 }}
           onClick={onClose}
         />
-        
+
         {/* 메뉴 패널 */}
         <motion.div
           className="fixed top-0 right-0 h-full w-64 max-w-[70vw] bg-gradient-to-b from-gray-900 to-gray-800 shadow-2xl z-50 border-l border-brand-primary-500/20"
@@ -72,7 +71,6 @@ const MobileMenu = memo(() => {
     { name: t('nav.home'), path: '/', description: '홈페이지' },
     { name: t('nav.about'), path: '/about', description: '아티스트 소개' },
     { name: t('nav.works'), path: '/works', description: '작품 모음' },
-    { name: t('nav.archive'), path: '/archive', description: '활동 기록' },
     { name: t('nav.news'), path: '/news', description: '소식' },
     { name: t('nav.contact'), path: '/contact', description: '연락처' }
   ];
@@ -139,17 +137,15 @@ const MobileMenu = memo(() => {
                   >
                     <Link
                       to={item.path}
-                      className={`flex items-center p-2 sm:p-4 rounded-xl font-wanted-sans transition-all duration-300 group ${
-                        isActive
+                      className={`flex items-center p-2 sm:p-4 rounded-xl font-wanted-sans transition-all duration-300 group ${isActive
                           ? 'bg-brand-primary-500/20 text-brand-primary-300 border border-brand-primary-500/30'
                           : 'hover:bg-gray-700/50 text-gray-300 hover:text-white'
-                      }`}
+                        }`}
                     >
-                      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center mr-2 sm:mr-4 transition-colors duration-300 ${
-                        isActive
+                      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center mr-2 sm:mr-4 transition-colors duration-300 ${isActive
                           ? 'bg-brand-primary-500/30'
                           : 'bg-gray-700/30 group-hover:bg-brand-primary-500/20'
-                      }`}>
+                        }`}>
                         <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                       </div>
                       <div className="flex-1">

@@ -19,7 +19,7 @@ const OptimizedLoadingFallback = ({ page = '페이지' }) => (
 
 // 고급 에러 처리가 포함된 lazy loading 유틸리티
 const createLazyComponent = (importFn, componentName) => {
-  return lazy(() => 
+  return lazy(() =>
     importFn()
       .then(module => ({
         default: React.memo(module.default) // 메모화로 성능 향상
@@ -32,8 +32,8 @@ const createLazyComponent = (importFn, componentName) => {
               <div className="text-center text-white">
                 <h2 className="text-2xl font-bold mb-4">페이지를 불러올 수 없습니다</h2>
                 <p className="text-gray-300 mb-4">{componentName} 로딩 중 오류가 발생했습니다.</p>
-                <button 
-                  onClick={() => window.location.reload()} 
+                <button
+                  onClick={() => window.location.reload()}
                   className="px-6 py-2 bg-brand-primary-600 text-white rounded-lg hover:bg-brand-primary-700"
                 >
                   다시 시도
@@ -52,14 +52,14 @@ const About = createLazyComponent(() => import('./pages/About'), 'About');
 const Works = createLazyComponent(() => import('./pages/Works'), 'Works');
 const News = createLazyComponent(() => import('./pages/News'), 'News');
 const Contact = createLazyComponent(() => import('./pages/Contact'), 'Contact');
-const Archive = createLazyComponent(() => import('./pages/Archive'), 'Archive');
+
 
 const App = () => {
   // GitHub Pages에서만 basename 사용, Vercel에서는 필요 없음
-  const isGitHubPages = process.env.NODE_ENV === 'production' && 
+  const isGitHubPages = process.env.NODE_ENV === 'production' &&
     window.location.hostname === 'hwangtab.github.io';
   const basename = isGitHubPages ? '/home' : '';
-  
+
   return (
     <SEOProvider>
       <LanguageProvider>
@@ -73,7 +73,7 @@ const App = () => {
                       <Route path="/" element={<Home />} />
                       <Route path="/about" element={<About />} />
                       <Route path="/works" element={<Works />} />
-                      <Route path="/archive" element={<Archive />} />
+
                       <Route path="/news" element={<News />} />
                       <Route path="/contact" element={<Contact />} />
                     </Routes>

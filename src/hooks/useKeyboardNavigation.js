@@ -14,9 +14,8 @@ const useKeyboardNavigation = (isEnabled = true) => {
     { path: '/', key: '1' },
     { path: '/about', key: '2' },
     { path: '/works', key: '3' },
-    { path: '/archive', key: '4' },
-    { path: '/news', key: '5' },
-    { path: '/contact', key: '6' }
+    { path: '/news', key: '4' },
+    { path: '/contact', key: '5' }
   ];
 
   // 포커스 가능한 요소 찾기

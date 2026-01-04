@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
  */
 export const useSEO = (options = {}) => {
   const location = useLocation();
-  
+
   const {
     title,
     description,
@@ -78,7 +78,7 @@ export const useSEO = (options = {}) => {
   // 페이지별 기본 메타데이터
   const pageMeta = useMemo(() => {
     const pathname = location.pathname;
-    
+
     const pageConfigs = {
       '/': {
         title: '황경하 Official Web',
@@ -96,12 +96,6 @@ export const useSEO = (options = {}) => {
         title: '작품 - 황경하',
         description: '황경하의 음악 작품들을 만나보세요. 젠트리피케이션, 민중음악 선곡집, 몸의 중심 등 사회적 메시지를 담은 음반과 글들을 소개합니다.',
         keywords: ['황경하', '음반', '앨범', '민중음악', '연대', '작품', '젠트리피케이션', '몸의중심'],
-        type: 'website'
-      },
-      '/archive': {
-        title: '아카이브 - 황경하',
-        description: '황경하의 모든 활동과 작품을 시간순으로 정리한 아카이브입니다. 2016년부터 현재까지의 음악, 글, 공연 활동을 확인하세요.',
-        keywords: ['황경하', '아카이브', '활동', '작품', '연표', '타임라인'],
         type: 'website'
       },
       '/news': {

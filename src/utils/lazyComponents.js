@@ -32,7 +32,7 @@ class LazyErrorBoundary extends React.Component {
         <div className="flex items-center justify-center min-h-[200px]">
           <div className="text-center">
             <p className="text-red-400 font-wanted-sans mb-2">컴포넌트 로딩 실패</p>
-            <button 
+            <button
               onClick={() => window.location.reload()}
               className="text-blue-400 hover:text-blue-300 text-sm underline"
             >
@@ -59,40 +59,38 @@ export const withLazyLoading = (LazyComponent, loadingMessage) => {
 };
 
 // Lazy load heavy components
-export const LazyMusicPlayer = lazy(() => 
+export const LazyMusicPlayer = lazy(() =>
   import('../components/MusicPlayer').then(module => ({ default: module.default }))
 );
 
-export const LazyVideoGallery = lazy(() => 
+export const LazyVideoGallery = lazy(() =>
   import('../components/VideoGallery').then(module => ({ default: module.default }))
 );
 
-export const LazyLightbox = lazy(() => 
+export const LazyLightbox = lazy(() =>
   import('../components/Lightbox').then(module => ({ default: module.default }))
 );
 
-export const LazySearchBar = lazy(() => 
+export const LazySearchBar = lazy(() =>
   import('../components/SearchBar').then(module => ({ default: module.default }))
 );
 
 // Lazy load pages
-export const LazyAbout = lazy(() => 
+export const LazyAbout = lazy(() =>
   import('../pages/About').then(module => ({ default: module.default }))
 );
 
-export const LazyWorks = lazy(() => 
+export const LazyWorks = lazy(() =>
   import('../pages/Works').then(module => ({ default: module.default }))
 );
 
-export const LazyArchive = lazy(() => 
-  import('../pages/Archive').then(module => ({ default: module.default }))
-);
 
-export const LazyNews = lazy(() => 
+
+export const LazyNews = lazy(() =>
   import('../pages/News').then(module => ({ default: module.default }))
 );
 
-export const LazyContact = lazy(() => 
+export const LazyContact = lazy(() =>
   import('../pages/Contact').then(module => ({ default: module.default }))
 );
 
@@ -105,7 +103,7 @@ export const SearchBar = withLazyLoading(LazySearchBar, "검색 기능 로딩 �
 // Page components with lazy loading
 export const About = withLazyLoading(LazyAbout, "소개 페이지 로딩 중...");
 export const Works = withLazyLoading(LazyWorks, "작품 페이지 로딩 중...");
-export const Archive = withLazyLoading(LazyArchive, "아카이브 로딩 중...");
+
 export const News = withLazyLoading(LazyNews, "소식 페이지 로딩 중...");
 export const Contact = withLazyLoading(LazyContact, "연락처 페이지 로딩 중...");
 
@@ -137,7 +135,7 @@ export const preloadCriticalComponents = () => {
 // Route-based code splitting utility
 export const createLazyRoute = (importFn, fallback) => {
   const LazyComponent = lazy(importFn);
-  
+
   return (props) => (
     <LazyErrorBoundary>
       <Suspense fallback={fallback || <LoadingSpinner />}>

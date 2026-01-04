@@ -9,13 +9,13 @@ import useSwipeNavigation from '../../hooks/useSwipeNavigation';
  * 현재 페이지 위치와 스와이프 네비게이션 힌트 제공
  */
 const PageIndicator = memo(({ className = '' }) => {
-  const { 
-    hasPrevious, 
-    hasNext, 
-    previousPage, 
-    nextPage, 
-    currentIndex, 
-    totalPages 
+  const {
+    hasPrevious,
+    hasNext,
+    previousPage,
+    nextPage,
+    currentIndex,
+    totalPages
   } = useSwipeNavigation();
 
   // 페이지 이름 매핑
@@ -23,7 +23,6 @@ const PageIndicator = memo(({ className = '' }) => {
     '/': '홈',
     '/about': '소개',
     '/works': '작품',
-    '/archive': '아카이브',
     '/news': '소식',
     '/contact': '연락처'
   };
@@ -38,7 +37,7 @@ const PageIndicator = memo(({ className = '' }) => {
             whileTap={{ scale: 0.95 }}
           >
             {hasPrevious ? (
-              <Link 
+              <Link
                 to={previousPage}
                 className="flex items-center justify-center w-8 h-8 rounded-full bg-brand-primary-500/20 hover:bg-brand-primary-500/30 transition-colors duration-200"
                 aria-label="이전 페이지"
@@ -51,29 +50,28 @@ const PageIndicator = memo(({ className = '' }) => {
               </div>
             )}
           </motion.div>
-          
+
           {/* 페이지 도트 인디케이터 */}
           <div className="flex items-center space-x-2">
             {Array.from({ length: totalPages }).map((_, index) => (
               <motion.div
                 key={index}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentIndex 
-                    ? 'bg-brand-primary-400 w-6' 
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex
+                    ? 'bg-brand-primary-400 w-6'
                     : 'bg-gray-600'
-                }`}
+                  }`}
                 layoutId={index === currentIndex ? 'activePageDot' : undefined}
               />
             ))}
           </div>
-          
+
           {/* 다음 페이지 버튼 */}
           <motion.div
             className={`${hasNext ? 'opacity-100' : 'opacity-30'}`}
             whileTap={{ scale: 0.95 }}
           >
             {hasNext ? (
-              <Link 
+              <Link
                 to={nextPage}
                 className="flex items-center justify-center w-8 h-8 rounded-full bg-brand-primary-500/20 hover:bg-brand-primary-500/30 transition-colors duration-200"
                 aria-label="다음 페이지"
@@ -87,9 +85,9 @@ const PageIndicator = memo(({ className = '' }) => {
             )}
           </motion.div>
         </div>
-        
+
         {/* 현재 페이지 이름 */}
-        <motion.div 
+        <motion.div
           className="text-center mt-1"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -100,7 +98,7 @@ const PageIndicator = memo(({ className = '' }) => {
           </span>
         </motion.div>
       </div>
-      
+
       {/* 스와이프 힌트 (첫 방문시에만 표시) */}
       <motion.div
         className="absolute -top-12 left-1/2 transform -translate-x-1/2 text-center"
