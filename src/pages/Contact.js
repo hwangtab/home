@@ -70,7 +70,7 @@ const Contact = () => {
       <PageHero
         title="연락처"
         subtitle="협업 및 문의"
-        imagePath="/images/hwang/7.png"
+        imagePath="/images/hwang/12.png"
       />
 
       <Section title="연락처" className="mt-8">
