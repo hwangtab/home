@@ -75,6 +75,8 @@ const Works = () => {
       setActiveFilter('visual');
     } else if (result.item.type === 'writing') {
       setActiveFilter('writing');
+    } else if (result.item.type === 'struggle') {
+      setActiveFilter('struggle');
     }
   }, []);
 

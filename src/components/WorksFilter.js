@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Music, Video, FileText, Grid } from 'lucide-react';
+import { Music, Video, FileText, Grid, Flame } from 'lucide-react';
 import { ToggleButton, ButtonGroup } from './ui/Button';
 import { Flex } from './ui/Layout';
 
@@ -8,7 +8,8 @@ const WorksFilter = memo(({ activeFilter, setActiveFilter }) => {
     { id: 'all', name: '전체', icon: Grid },
     { id: 'music', name: '음악', icon: Music },
     { id: 'visual', name: '영상', icon: Video },
-    { id: 'writing', name: '글쓰기', icon: FileText }
+    { id: 'writing', name: '글쓰기', icon: FileText },
+    { id: 'struggle', name: '투쟁', icon: Flame }
   ];
 
   return (
