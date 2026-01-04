@@ -52,7 +52,7 @@ const PageHero = memo(({
             className="h-1 bg-brand-primary-500 mb-6 rounded-full"
           />
 
-          <Heading1 className="mb-4 text-white drop-shadow-lg">
+          <Heading1 className="mb-4 text-white drop-shadow-lg font-myungjo font-bold">
             {title}
           </Heading1>
 
