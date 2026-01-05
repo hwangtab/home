@@ -253,6 +253,27 @@
       }
     ],
     "performance": [],
-    "struggle": []
+    "struggle": [
+      {
+        "id": "great-exile-2015",
+        "title": "테이크아웃드로잉 <대망명>",
+        "year": 2015,
+        "type": "투쟁",
+        "cover": "https://placehold.co/600x800/333/fff?text=Great+Exile",
+        "role": "기획 및 예술연대 조직",
+        "description": "건물주 싸이(PSY)와의 명도소송 분쟁으로 강제집행 위기에 처한 복합문화공간 '테이크아웃드로잉'을 지키기 위해 예술가들이 자발적으로 모여 기획한 연대 전시 프로젝트. '대망명'은 자본의 논리에 밀려 삶의 터전에서 쫓겨나는 예술가들과 철거민들의 상황을 역설적으로 표현한 것이다.",
+        "shortDescription": "테이크아웃드로잉 강제집행 저지 및 예술가 연대 프로젝트",
+        "primaryAction": {
+          "type": "link",
+          "url": "https://www.artbava.com/exhibits/%EB%8C%80%EB%A7%9D%EB%AA%85-%E5%A4%A7%E4%BA%A1%E5%91%BD-%ED%8C%8C%EA%B2%A8%ED%83%800%EC%9E%90%EA%B7%B8%EA%B2%A84%EA%B2%A8%EB%9D%BC3%EA%B7%9C",
+          "label": "정보"
+        },
+        "tags": [
+          "struggle",
+          "gentrification",
+          "solidarity"
+        ]
+      }
+    ]
   }
 }
