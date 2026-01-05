@@ -278,6 +278,31 @@
           "gentrification",
           "solidarity"
         ]
+      },
+      {
+        "id": "ujangchangchang-2016",
+        "title": "우장창창 강제집행 저지 투쟁",
+        "year": 2016,
+        "type": "투쟁",
+        "cover": "https://images.khan.co.kr/article/2016/07/07/l_2016070702000324300073302.jpg",
+        "role": "연대 활동",
+        "showInPages": [
+          "works",
+          "archive"
+        ],
+        "archiveCategory": "struggle",
+        "description": "가로수길 곱창집 '우장창창'과 건물주 리쌍 간의 임대차 분쟁 사건. '맘편히장사하고픈상인모임(맘상모)'과 함께 강제집행을 저지하고, 불합리한 상가건물 임대차보호법의 문제점을 사회적으로 공론화하여 법 개정을 이끌어낸 상징적인 투쟁이다.",
+        "shortDescription": "리쌍 건물 강제집행 저지 및 상가법 개정 운동",
+        "primaryAction": {
+          "type": "link",
+          "url": "https://tvreport.co.kr/star/article/533545/",
+          "label": "정보"
+        },
+        "tags": [
+          "struggle",
+          "gentrification",
+          "solidarity"
+        ]
       }
     ]
   }
