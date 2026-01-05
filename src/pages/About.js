@@ -51,7 +51,7 @@ const About = () => {
       <MetaDataManager {...seoData} />
       <PageHero
         title="소개"
-        subtitle="황경하는 현장에서 글, 음악, 사진 등의 예술이 힘을 갖는 순간에 주목하여 활동하는 음악가입니다."
+        subtitle={<>황경하는 현장에서 글, 음악, 사진 등의 예술이 힘을 갖는 순간에<br className="hidden md:inline" /> 주목하여 활동하는 음악가입니다.</>}
         imagePath="/images/hwang/3.png"
       />
 
