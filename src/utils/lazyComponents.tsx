@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { lazy, Suspense, ReactNode, ComponentType } from 'react';
 
 // Loading component

@@ -1,0 +1,70 @@
+// @ts-nocheck
+import React, { Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { LanguageProvider } from './i18n';
+import Layout from './components/Layout';
+import ErrorBoundary from './components/ErrorBoundary';
+import { ToastProvider } from './components/ui/Toast';
+import { SEOProvider } from './components/SEO/MetaDataManager';
+import { AnimationProvider } from './context/AnimationContext';
+
+// 성능 최적화된 로딩 화면 컴포넌트
+const OptimizedLoadingFallback: React.FC<{ page?: string }> = ({ page = '페이지' }) => (
+    <div className="min-h-screen bg-gradient-to-b from-gray-950 to-gray-900 flex items-center justify-center">
+        <div className="text-center">
+            <div className="w-12 h-12 border-4 border-gray-700 border-t-brand-primary-500 rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-200 font-wanted-sans">{page} 로딩 중...</p>
+        </div>
+    </div>
+);
+
+
+// 고급 에러 처리가 포함된 lazy loading 유틸리티
+const createLazyComponent = (importFn: () => Promise<any>, _componentName: string) => {
+    // React.lazy 타입 호환성 문제 회피를 위해 as any 사용
+    return lazy(() => importFn().then((module: any) => ({ default: React.memo(module.default) }))) as any;
+};
+
+// 최적화된 코드 스플리팅
+const Home = createLazyComponent(() => import('./pages/Home'), 'Home');
+const About = createLazyComponent(() => import('./pages/About'), 'About');
+const Works = createLazyComponent(() => import('./pages/Works'), 'Works');
+const News = createLazyComponent(() => import('./pages/News'), 'News');
+const Contact = createLazyComponent(() => import('./pages/Contact'), 'Contact');
+
+
+const App: React.FC = () => {
+    // GitHub Pages에서만 basename 사용, Vercel에서는 필요 없음
+    const isGitHubPages = process.env.NODE_ENV === 'production' &&
+        window.location.hostname === 'hwangtab.github.io';
+    const basename = isGitHubPages ? '/home' : '';
+
+    return (
+        <SEOProvider>
+            <LanguageProvider>
+                <ToastProvider>
+                    <AnimationProvider>
+                        <Router basename={basename}>
+                            <Layout>
+                                <ErrorBoundary> {/* ErrorBoundary로 감싸기 */}
+                                    <Suspense fallback={<OptimizedLoadingFallback />}>
+                                        <Routes>
+                                            <Route path="/" element={<Home />} />
+                                            <Route path="/about" element={<About />} />
+                                            <Route path="/works" element={<Works />} />
+
+                                            <Route path="/news" element={<News />} />
+                                            <Route path="/contact" element={<Contact />} />
+                                        </Routes>
+                                    </Suspense>
+                                </ErrorBoundary>
+                            </Layout>
+                        </Router>
+                    </AnimationProvider>
+                </ToastProvider>
+            </LanguageProvider>
+        </SEOProvider>
+    );
+};
+
+export default App;

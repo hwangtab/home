@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { memo } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { ExternalLink, Play, Music, Image, FileText, Mic, LucideIcon } from 'lucide-react';

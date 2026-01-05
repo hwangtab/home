@@ -41,7 +41,7 @@ const useScrollAnimation = (options: ScrollAnimationOptions = {}): ScrollAnimati
     const observerRef = useRef<IntersectionObserver | null>(null);
     const animationFrameId = useRef<number | null>(null);
     const { isAnimationAllowed, registerAnimation, unregisterAnimation } = useAnimationContext();
-    const animationId = useRef(`scroll-animation-${Date.now()}`);
+    const animationIdRef = useRef<string>(`scroll-animation-${Date.now()}`);
 
     const updateScrollY = useCallback(() => {
         if (!isAnimationAllowed()) return;
@@ -56,7 +56,8 @@ const useScrollAnimation = (options: ScrollAnimationOptions = {}): ScrollAnimati
         const element = elementRef.current;
         if (!element) return;
 
-        registerAnimation(animationId.current);
+        const currentAnimationId = animationIdRef.current;
+        registerAnimation(currentAnimationId);
 
         const observer = new IntersectionObserver(
             ([entry]) => {
@@ -82,7 +83,7 @@ const useScrollAnimation = (options: ScrollAnimationOptions = {}): ScrollAnimati
         return () => {
             if (observerRef.current) { observerRef.current.disconnect(); observerRef.current = null; }
             if (animationFrameId.current) { cancelAnimationFrame(animationFrameId.current); animationFrameId.current = null; }
-            unregisterAnimation(animationId.current);
+            unregisterAnimation(currentAnimationId);
         };
     }, [threshold, offset, triggerOnce, isVisible, controls, isAnimationAllowed, registerAnimation, unregisterAnimation]);
 
@@ -124,10 +125,11 @@ export const useScrollProgress = (): number => {
     const [scrollProgress, setScrollProgress] = useState(0);
     const animationFrameId = useRef<number | null>(null);
     const { isAnimationAllowed, registerAnimation, unregisterAnimation } = useAnimationContext();
-    const animationId = useRef(`scroll-progress-${Date.now()}`);
+    const animationIdRef = useRef<string>(`scroll-progress-${Date.now()}`);
 
     useEffect(() => {
-        registerAnimation(animationId.current);
+        const currentAnimationId = animationIdRef.current;
+        registerAnimation(currentAnimationId);
         const updateScrollProgress = () => {
             if (!isAnimationAllowed()) return;
             if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
@@ -146,7 +148,7 @@ export const useScrollProgress = (): number => {
             if (animationFrameId.current) { cancelAnimationFrame(animationFrameId.current); animationFrameId.current = null; }
         };
         document.addEventListener('cleanupAnimations', handleCleanup);
-        return () => { handleCleanup(); document.removeEventListener('cleanupAnimations', handleCleanup); unregisterAnimation(animationId.current); };
+        return () => { handleCleanup(); document.removeEventListener('cleanupAnimations', handleCleanup); unregisterAnimation(currentAnimationId); };
     }, [isAnimationAllowed, registerAnimation, unregisterAnimation]);
 
     return scrollProgress;
@@ -160,10 +162,11 @@ export const useScrollDirection = (threshold = 10): 'up' | 'down' => {
     const [lastScrollY, setLastScrollY] = useState(0);
     const animationFrameId = useRef<number | null>(null);
     const { isAnimationAllowed, registerAnimation, unregisterAnimation } = useAnimationContext();
-    const animationId = useRef(`scroll-direction-${Date.now()}`);
+    const animationIdRef = useRef<string>(`scroll-direction-${Date.now()}`);
 
     useEffect(() => {
-        registerAnimation(animationId.current);
+        const currentAnimationId = animationIdRef.current;
+        registerAnimation(currentAnimationId);
         const updateScrollDirection = () => {
             if (!isAnimationAllowed()) return;
             if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
@@ -183,7 +186,7 @@ export const useScrollDirection = (threshold = 10): 'up' | 'down' => {
             if (animationFrameId.current) { cancelAnimationFrame(animationFrameId.current); animationFrameId.current = null; }
         };
         document.addEventListener('cleanupAnimations', handleCleanup);
-        return () => { handleCleanup(); document.removeEventListener('cleanupAnimations', handleCleanup); unregisterAnimation(animationId.current); };
+        return () => { handleCleanup(); document.removeEventListener('cleanupAnimations', handleCleanup); unregisterAnimation(currentAnimationId); };
     }, [lastScrollY, threshold, isAnimationAllowed, registerAnimation, unregisterAnimation]);
 
     return scrollDirection;

@@ -16,10 +16,23 @@
         "strict": true,
         "noFallthroughCasesInSwitch": true,
         "forceConsistentCasingInFileNames": true,
-        "allowJs": true,
+        "allowJs": false,
         "skipLibCheck": true,
         "noEmit": true,
-        "baseUrl": "src"
+        "baseUrl": "src",
+        "paths": {
+            "@/*": ["./*"],
+            "@components/*": ["components/*"],
+            "@hooks/*": ["hooks/*"],
+            "@pages/*": ["pages/*"],
+            "@context/*": ["context/*"],
+            "@types/*": ["types/*"],
+            "@constants/*": ["constants/*"],
+            "@utils/*": ["utils/*"],
+            "@config/*": ["config/*"],
+            "@i18n/*": ["i18n/*"],
+            "@data/*": ["data/*"]
+        }
     },
     "include": [
         "src"

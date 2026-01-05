@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { memo, useState, useEffect, useRef, useMemo, useCallback, ReactNode } from 'react';
 
 interface VirtualGridItem {

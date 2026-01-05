@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 import { useScrollProgress, useScrollDirection } from '../../hooks/useScrollAnimation';

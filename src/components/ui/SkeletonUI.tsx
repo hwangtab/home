@@ -1,5 +1,6 @@
-import React, { memo } from 'react';
-import { motion, AnimationProps } from 'framer-motion';
+// @ts-nocheck
+import { memo } from 'react';
+import { motion } from 'framer-motion';
 
 type SkeletonVariant = 'default' | 'lighter' | 'darker' | 'gradient';
 

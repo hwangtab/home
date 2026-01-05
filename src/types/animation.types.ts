@@ -1,4 +1,4 @@
-import type { Transition, TargetAndTransition } from 'framer-motion';
+import type { Transition, TargetAndTransition, HTMLMotionProps } from 'framer-motion';
 
 // Animation States
 export const ANIMATION_STATES = {
@@ -47,3 +47,12 @@ export interface CardAnimation {
     transition?: Transition;
     style?: React.CSSProperties;
 }
+
+// Motion component prop types
+export type MotionDivProps = HTMLMotionProps<'div'>;
+export type MotionButtonProps = HTMLMotionProps<'button'>;
+export type MotionSpanProps = HTMLMotionProps<'span'>;
+export type MotionAProps = HTMLMotionProps<'a'>;
+export type MotionImgProps = HTMLMotionProps<'img'>;
+export type MotionUlProps = HTMLMotionProps<'ul'>;
+export type MotionLiProps = HTMLMotionProps<'li'>;

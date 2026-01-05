@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 interface PageInfo {
@@ -22,13 +22,13 @@ const useKeyboardNavigation = (isEnabled = true): UseKeyboardNavigationReturn =>
     const navigate = useNavigate();
     const location = useLocation();
 
-    const pages: PageInfo[] = [
+    const pages: PageInfo[] = useMemo(() => [
         { path: '/', key: '1' },
         { path: '/about', key: '2' },
         { path: '/works', key: '3' },
         { path: '/news', key: '4' },
         { path: '/contact', key: '5' }
-    ];
+    ], []);
 
     const getFocusableElements = useCallback((): NodeListOf<HTMLElement> => {
         return document.querySelectorAll(

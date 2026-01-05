@@ -1,6 +1,7 @@
 // Work Categories
 export type WorkCategory = 'music' | 'visual' | 'writing' | 'performance' | 'struggle';
 export type MusicType = 'album' | 'single';
+export type WritingType = '칼럼' | '르포' | 'essay' | 'report';
 export type ActionType = 'play' | 'read' | 'view' | 'watch' | 'link';
 export type PageType = 'works' | 'archive' | 'about' | 'all';
 
@@ -16,7 +17,7 @@ export interface BaseWork {
     id: string;
     title: string;
     year: number;
-    type: string;
+    type?: string;
     cover?: string;
     description: string;
     shortDescription?: string;
@@ -31,11 +32,13 @@ export interface BaseWork {
 // Specialized Work Types
 export interface MusicWork extends BaseWork {
     archiveCategory: 'music';
+    type: MusicType;
     featured?: boolean;
 }
 
 export interface WritingWork extends BaseWork {
     archiveCategory: 'writing';
+    type?: WritingType | string;
     publication?: string;
     excerpt?: string;
 }

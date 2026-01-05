@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 interface UseSwipeNavigationReturn {
@@ -23,13 +23,13 @@ const useSwipeNavigation = (
     const location = useLocation();
     const [isSwipeEnabled, setIsSwipeEnabled] = useState(true);
 
-    const pages = [
+    const pages = useMemo(() => [
         '/',
         '/about',
         '/works',
         '/news',
         '/contact'
-    ];
+    ], []);
 
     useEffect(() => {
         let startX = 0;

@@ -192,7 +192,8 @@ export const createProgressiveImageLoader = (
     };
 };
 
-export default {
+// Export all functions as an object
+const imageOptimization = {
     getWebPUrl,
     getResponsiveImageSources,
     createSrcSet,
@@ -206,3 +207,5 @@ export default {
     compressImage,
     createProgressiveImageLoader
 };
+
+export default imageOptimization;

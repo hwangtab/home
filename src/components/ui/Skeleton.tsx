@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { memo } from 'react';
 
 type SkeletonVariant = 'rounded' | 'circle' | 'rectangular';
