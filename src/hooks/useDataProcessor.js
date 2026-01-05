@@ -235,7 +235,8 @@ export const useWorksData = (worksData, pageType = 'all') => {
       ...(worksData.music || []),
       ...(worksData.visual || []),
       ...(worksData.writing || []),
-      ...(worksData.performance || [])
+      ...(worksData.performance || []),
+      ...(worksData.struggle || [])
     ];
 
     // pageType별 필터링
@@ -267,6 +268,7 @@ export const useWorksData = (worksData, pageType = 'all') => {
       visual: processor.data.filter(item => item.archiveCategory === 'visual'),
       writing: processor.data.filter(item => item.archiveCategory === 'writing'),
       performance: processor.data.filter(item => item.archiveCategory === 'performance'),
+      struggle: processor.data.filter(item => item.archiveCategory === 'struggle'),
       all: processor.data
     };
   }, [processor.data]);
