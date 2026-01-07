@@ -1,19 +1,16 @@
-// @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
 import MetaDataManager from '../components/SEO/MetaDataManager';
-// @ts-ignore
 import { usePageSEO } from '../hooks/useSEO';
 import { GridSkeleton } from '../components/ui/Skeleton';
-// @ts-ignore
 import { useCachedPageData } from '../hooks/usePageData';
-import { MusicWork } from '../types/data.types';
+import { MusicWork, SiteData } from '../types/data.types';
 
 interface FeaturedWorksProps {
-    siteData: any;
+    siteData: SiteData | null;
 }
 
 const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ siteData }) => {

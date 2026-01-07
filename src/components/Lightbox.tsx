@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Download } from 'lucide-react';
@@ -11,12 +10,19 @@ interface LightboxImage {
 }
 
 interface LightboxProps {
-    images: LightboxImage[];
+    images: (string | LightboxImage)[];
     currentIndex?: number;
     isOpen: boolean;
     onClose: () => void;
     onImageChange: (index: number) => void;
 }
+
+const normalizeImage = (img: string | LightboxImage): LightboxImage => {
+    if (typeof img === 'string') {
+        return { src: img };
+    }
+    return img;
+};
 
 const Lightbox: React.FC<LightboxProps> = ({ images = [], currentIndex = 0, isOpen = false, onClose, onImageChange }) => {
     const [zoom, setZoom] = useState(1);
@@ -24,7 +30,8 @@ const Lightbox: React.FC<LightboxProps> = ({ images = [], currentIndex = 0, isOp
     const [isDragging, setIsDragging] = useState(false);
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
-    const currentImage = images[currentIndex];
+    const normalizedImages = images.map(normalizeImage);
+    const currentImage = normalizedImages[currentIndex];
 
     const goToNext = useCallback(() => {
         if (currentIndex < images.length - 1) onImageChange(currentIndex + 1);
@@ -192,7 +199,7 @@ const Lightbox: React.FC<LightboxProps> = ({ images = [], currentIndex = 0, isOp
                     {images.length > 1 && (
                         <div className="absolute bottom-0 left-0 right-0 z-60 p-4 bg-gradient-to-t from-black to-transparent">
                             <div className="flex justify-center space-x-2 overflow-x-auto max-w-full">
-                                {images.map((image, index) => (
+                                {normalizedImages.map((image, index) => (
                                     <button
                                         key={index}
                                         onClick={(e) => { e.stopPropagation(); onImageChange(index); }}

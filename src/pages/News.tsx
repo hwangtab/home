@@ -1,17 +1,13 @@
-// @ts-nocheck
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, ShoppingCart } from 'lucide-react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
-// @ts-ignore
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
 import MetaDataManager from '../components/SEO/MetaDataManager';
-// @ts-ignore
 import { usePageSEO } from '../hooks/useSEO';
-import { Concert, MusicWork, NewsItem } from '../types/data.types';
+import { Concert, MusicWork, NewsItem, SiteData } from '../types/data.types';
 
 interface ConcertSliderProps {
     concerts: Concert[];

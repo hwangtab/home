@@ -1,15 +1,12 @@
-// @ts-nocheck
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, LucideIcon } from 'lucide-react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
 import ContactForm from '../components/ContactForm';
-// @ts-ignore
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
 import MetaDataManager from '../components/SEO/MetaDataManager';
-// @ts-ignore
 import { usePageSEO } from '../hooks/useSEO';
 
 interface ContactInfoProps {

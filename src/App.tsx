@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, ComponentType } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LanguageProvider } from './i18n';
 import Layout from './components/Layout';
@@ -20,9 +19,11 @@ const OptimizedLoadingFallback: React.FC<{ page?: string }> = ({ page = '페이�
 
 
 // 고급 에러 처리가 포함된 lazy loading 유틸리티
-const createLazyComponent = (importFn: () => Promise<any>, _componentName: string) => {
-    // React.lazy 타입 호환성 문제 회피를 위해 as any 사용
-    return lazy(() => importFn().then((module: any) => ({ default: React.memo(module.default) }))) as any;
+const createLazyComponent = <T extends ComponentType<any>>(
+    importFn: () => Promise<{ default: T }>,
+    _componentName: string
+) => {
+    return lazy(() => importFn());
 };
 
 // 최적화된 코드 스플리팅

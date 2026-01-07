@@ -1,13 +1,12 @@
-// @ts-nocheck
-import React, { memo, forwardRef, ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import React, { memo, forwardRef, ReactNode, ReactElement } from 'react';
+import { motion, MotionProps } from 'framer-motion';
 import { ButtonLoadingSpinner } from './LoadingSpinner';
 
 type ButtonVariant = 'primary' | 'solidarity' | 'earth' | 'harmony' | 'secondary' | 'accent' | 'outline' | 'ghost' | 'danger' | 'success';
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 type ButtonAnimation = 'default' | 'bounce' | 'slide' | 'pulse' | 'subtle' | 'magnetic' | 'glow';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, Omit<MotionProps, "children" | "onAnimationStart" | "onDrag" | "onDragStart" | "onDragEnd" | "style"> {
     children?: ReactNode;
     variant?: ButtonVariant;
     size?: ButtonSize;
@@ -19,8 +18,6 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     rightIcon?: ReactNode;
     loadingText?: string;
     className?: string;
-    // allow additional props for motion button
-    [key: string]: any;
 }
 
 const BUTTON_VARIANTS: Record<ButtonVariant, { base: string; disabled: string; loading: string }> = {
@@ -81,12 +78,12 @@ const BUTTON_SIZES: Record<ButtonSize, string> = {
     lg: 'px-6 py-3 text-base', xl: 'px-8 py-4 text-lg'
 };
 
-const buttonAnimations: Record<ButtonAnimation, any> = {
+const buttonAnimations: Record<ButtonAnimation, MotionProps> = {
     default: { whileHover: { scale: 1.03, y: -1 }, whileTap: { scale: 0.97, y: 0 }, transition: { duration: 0.15, ease: "easeOut" } },
     bounce: { whileHover: { scale: 1.05, y: -3 }, whileTap: { scale: 0.95, y: 0 }, transition: { type: "spring", stiffness: 400, damping: 12 } },
     slide: { whileHover: { x: 4, scale: 1.02 }, whileTap: { x: 0, scale: 0.98 }, transition: { duration: 0.2, ease: "easeOut" } },
     pulse: { whileHover: { scale: [1, 1.05, 1] }, transition: { duration: 0.6, repeat: Infinity, ease: "easeInOut" } },
-    subtle: { whileHover: { scale: 1.01, brightness: 1.1 }, whileTap: { scale: 0.99 }, transition: { duration: 0.2 } },
+    subtle: { whileHover: { scale: 1.01, filter: "brightness(1.1)" }, whileTap: { scale: 0.99 }, transition: { duration: 0.2 } },
     magnetic: { whileHover: { scale: 1.05, y: -2, boxShadow: "0 10px 30px rgba(59, 130, 246, 0.3)" }, whileTap: { scale: 0.95 }, transition: { type: "spring", stiffness: 400, damping: 15 } },
     glow: { whileHover: { scale: 1.02, boxShadow: ["0 0 20px rgba(59, 130, 246, 0.5)", "0 0 40px rgba(59, 130, 246, 0.3)", "0 0 60px rgba(59, 130, 246, 0.1)"] }, whileTap: { scale: 0.98 }, transition: { duration: 0.3 } }
 };
@@ -96,8 +93,8 @@ const Button = memo(forwardRef<HTMLButtonElement, ButtonProps>(({
     fullWidth = false, leftIcon = null, rightIcon = null, loadingText = '', className = '', onClick, type = 'button', ...props
 }, ref) => {
     const isDisabled = disabled || loading;
-    const variantStyles = BUTTON_VARIANTS[variant] || BUTTON_VARIANTS.primary;
-    const sizeStyles = BUTTON_SIZES[size] || BUTTON_SIZES.md;
+    const variantStyles = BUTTON_VARIANTS[variant!] || BUTTON_VARIANTS.primary;
+    const sizeStyles = BUTTON_SIZES[size!] || BUTTON_SIZES.md;
     const getStateStyles = () => { if (loading) return variantStyles.loading; if (disabled) return variantStyles.disabled; return variantStyles.base; };
 
     const baseClasses = [
@@ -107,14 +104,14 @@ const Button = memo(forwardRef<HTMLButtonElement, ButtonProps>(({
         sizeStyles, getStateStyles(), fullWidth ? 'w-full' : '', className
     ].filter(Boolean).join(' ');
 
-    const animationProps = !isDisabled ? buttonAnimations[animation] || buttonAnimations.default : {};
+    const animationProps = !isDisabled ? buttonAnimations[animation!] || buttonAnimations.default : {};
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (!isDisabled && onClick) onClick(e);
     };
 
     return (
-        <motion.button ref={ref} type={type} className={baseClasses} onClick={handleClick} disabled={isDisabled} {...animationProps} {...props}>
+        <motion.button ref={ref} type={type} className={baseClasses} onClick={handleClick} disabled={isDisabled} {...animationProps} {...(props as any)}>
             {leftIcon && !loading && <span className="mr-2">{leftIcon}</span>}
             {loading && <ButtonLoadingSpinner size={size === 'xs' || size === 'sm' ? 'small' : 'medium'} />}
             <span>{loading && loadingText ? loadingText : children}</span>
@@ -124,7 +121,7 @@ const Button = memo(forwardRef<HTMLButtonElement, ButtonProps>(({
 }));
 
 interface IconButtonProps extends ButtonProps {
-    icon: ReactElement;
+    icon: ReactElement<{ size?: number }>;
     'aria-label'?: string;
 }
 
@@ -135,21 +132,21 @@ export const IconButton = memo(forwardRef<HTMLButtonElement, IconButtonProps>(({
     const sizeMap: Record<ButtonSize, string> = { xs: 'p-1', sm: 'p-1.5', md: 'p-2', lg: 'p-3', xl: 'p-4' };
     const iconSizeMap: Record<ButtonSize, number> = { xs: 12, sm: 14, md: 16, lg: 20, xl: 24 };
 
-    const variantStyles = BUTTON_VARIANTS[variant] || BUTTON_VARIANTS.ghost;
+    const variantStyles = BUTTON_VARIANTS[variant!] || BUTTON_VARIANTS.ghost;
     const getStateStyles = () => { if (loading) return variantStyles.loading; if (disabled) return variantStyles.disabled; return variantStyles.base; };
 
     const baseClasses = [
         'inline-flex items-center justify-center', 'rounded-full', 'transition-all duration-200',
         'focus:outline-none focus:ring-a11y focus:ring-offset-a11y focus:ring-offset-gray-900', 'focus:ring-brand-primary-400 focus:ring-opacity-80',
         'focus-visible:ring-a11y focus-visible:ring-brand-primary-400', 'focus-visible:ring-offset-a11y focus-visible:ring-offset-gray-900',
-        sizeMap[size], getStateStyles(), className
+        sizeMap[size!], getStateStyles(), className
     ].filter(Boolean).join(' ');
 
-    const animationProps = !isDisabled ? buttonAnimations[animation] || buttonAnimations.default : {};
+    const animationProps = !isDisabled ? buttonAnimations[animation!] || buttonAnimations.default : {};
 
     return (
-        <motion.button ref={ref} className={baseClasses} disabled={isDisabled} aria-label={ariaLabel} {...animationProps} {...props}>
-            {loading ? <ButtonLoadingSpinner size="small" /> : React.cloneElement(icon, { size: iconSizeMap[size] })}
+        <motion.button ref={ref} className={baseClasses} disabled={isDisabled} aria-label={ariaLabel} {...animationProps} {...(props as any)}>
+            {loading ? <ButtonLoadingSpinner size="small" /> : React.cloneElement(icon, { size: iconSizeMap[size!] })}
         </motion.button>
     );
 }));
@@ -200,6 +197,7 @@ export const FloatingActionButton = memo(forwardRef<HTMLButtonElement, FloatingA
             className={`${positionClasses[position]} z-50`}
             initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            {...({} as any)} 
         >
             <IconButton ref={ref} icon={icon} variant={variant} size={size} animation="bounce" className={`shadow-lg hover:shadow-xl ${className}`} onClick={onClick} {...props} />
         </motion.div>

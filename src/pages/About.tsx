@@ -1,20 +1,21 @@
-// @ts-nocheck
 import React from 'react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
 import DataRenderer, { RENDER_TYPES } from '../components/DataRenderer';
 import { Heading3, BodyText } from '../components/ui/Typography';
 import { Grid, Stack } from '../components/ui/Layout';
-// @ts-ignore
 import { UnifiedCard as Card } from '../components/ui/Card';
-// @ts-ignore
 import { useWorksData } from '../hooks/useDataProcessor';
 import MetaDataManager from '../components/SEO/MetaDataManager';
-// @ts-ignore
 import { usePageSEO } from '../hooks/useSEO';
-// @ts-ignore
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
+import { Work } from '../types/data.types';
+
+interface TimelineEvent {
+    title: string;
+    description: string;
+}
 
 interface AboutProps { }
 

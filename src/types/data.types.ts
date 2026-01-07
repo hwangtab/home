@@ -34,6 +34,9 @@ export interface MusicWork extends BaseWork {
     archiveCategory: 'music';
     type: MusicType;
     featured?: boolean;
+    purchaseUrl?: string;
+    price?: string;
+    coverUrl?: string;
 }
 
 export interface WritingWork extends BaseWork {

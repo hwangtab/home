@@ -1,27 +1,26 @@
-// @ts-nocheck
 import React, { useState, useCallback, useEffect } from 'react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
-// @ts-ignore
 import Lightbox from '../components/Lightbox';
-// @ts-ignore
 import MusicPlayer from '../components/MusicPlayer';
 import CardRenderer from '../components/CardRenderer';
 import WorksHeader from '../components/WorksHeader';
 import WorksGrid from '../components/WorksGrid';
 import { ScrollReveal } from '../components/ui/AnimatedComponents';
-// @ts-ignore
 import { useWorksData } from '../hooks/useDataProcessor';
-// @ts-ignore
 import { useCardActions } from '../hooks/useCardActions';
 import MetaDataManager from '../components/SEO/MetaDataManager';
-// @ts-ignore
 import { usePageSEO } from '../hooks/useSEO';
-// @ts-ignore
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
 import { useLocation } from 'react-router-dom';
-import { Work, WorkCategory } from '../types/data.types';
+import { Work, WorkCategory, MusicWork } from '../types/data.types';
+import type { FuseResult } from 'fuse.js';
+
+interface SearchResultItem {
+    type?: string;
+    archiveCategory?: string;
+}
 
 const Works: React.FC = () => {
     const [activeFilter, setActiveFilter] = useState<WorkCategory | 'all'>('all');
@@ -120,7 +119,7 @@ const Works: React.FC = () => {
     }
 
     // 필터링된 작품 목록
-    const filteredWorks = getWorksByCategory(activeFilter);
+    const filteredWorks = getWorksByCategory(activeFilter === 'all' ? 'music' : activeFilter);
     const musicWorks = categorizedData.music || [];
 
     return (
@@ -137,11 +136,11 @@ const Works: React.FC = () => {
                 <ScrollReveal direction="up" delay={0.05}>
                     <WorksHeader
                         activeFilter={activeFilter}
-                        setActiveFilter={setActiveFilter}
+                        setActiveFilter={setActiveFilter as (filter: string) => void}
                         siteData={siteData}
                         handleSearchResult={handleSearchResult}
-                        musicWorks={musicWorks}
-                        openMusicPlayer={musicPlayer.openMusicPlayer}
+                        musicWorks={musicWorks as MusicWork[]}
+                        openMusicPlayer={musicPlayer.openMusicPlayer as (tracks: MusicWork[]) => void}
                     />
                 </ScrollReveal>
 

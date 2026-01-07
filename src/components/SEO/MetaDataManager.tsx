@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { ReactNode } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
@@ -19,7 +18,7 @@ interface MetaDataManagerProps {
         title: string;
         description: string;
         year: string | number;
-        cover: string;
+        cover?: string;
     };
     customMeta?: Record<string, string>;
 }

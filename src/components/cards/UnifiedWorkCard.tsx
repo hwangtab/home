@@ -1,9 +1,8 @@
-// @ts-nocheck
 import React, { useState, memo, useCallback, ReactNode } from 'react';
 import { Calendar, ExternalLink, Play, BookOpen, Eye, Mic, Video, LucideIcon } from 'lucide-react';
 import DefaultImageComponent from './DefaultImageComponent';
 import useLazyImage from '../../hooks/useLazyImage';
-import { Work, WorkCategory, PrimaryAction } from '../../types/data.types';
+import { Work, WorkCategory, PrimaryAction, WritingWork } from '../../types/data.types';
 
 // 설정 객체들
 const getAssetPath = (path: string): string => {
@@ -103,7 +102,6 @@ const TypeBadge: React.FC<{ type: string; category?: string }> = ({ type, catego
 
 const CardImage: React.FC<{ cover?: string; title: string; category?: string; type: string }> = ({ cover, title, category, type }) => {
     const imageProps = useImageFallback(cover, category, title);
-    // @ts-ignore - useLazyImage types might need adjustment if imageProps.src is undefined, but it handles it.
     const { imgRef, isLoaded, shouldLoad } = useLazyImage(imageProps.src || '');
     const isVideo = type === 'video' || type === '다큐멘터리';
 
@@ -186,9 +184,9 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work, onClick }) => {
         description,
         shortDescription,
         primaryAction,
-        // @ts-ignore - 'publication' might not be in BaseWork but in WritingWork. We access it conditionally if needed or cast 'work'.
-        publication
     } = work;
+
+    const publication = (work.archiveCategory === 'writing') ? (work as WritingWork).publication : undefined;
 
     const displayDescription = shortDescription || description || '';
     const truncatedDescription = displayDescription.length > 100
