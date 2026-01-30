@@ -38,7 +38,7 @@ const About: React.FC<AboutProps> = () => {
             <div>
                 <MetaDataManager {...seoData} />
                 <div className="container mx-auto py-8">
-                    {/* Correction: columns={2} maps to md:grid-cols-2 */}
+                    {/* Correction: maps to md:grid-cols-2 */}
                     <GridSkeleton items={3} columns={2} />
                 </div>
             </div>

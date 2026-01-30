@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import React, { memo, forwardRef, useState, useEffect, ReactNode, ChangeEvent, InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, EyeOff, Check, X, Search } from 'lucide-react';
@@ -187,6 +187,7 @@ interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'siz
     helper?: string;
     options?: Option[];
     size?: 'sm' | 'md' | 'lg';
+    placeholder?: string;
 }
 
 export const Select = memo(forwardRef<HTMLSelectElement, SelectProps>(({ options = [], placeholder = '선택하세요', size = 'md', className = '', ...props }, ref) => {

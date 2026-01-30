@@ -1,7 +1,5 @@
-// @ts-nocheck
 import React, { memo, ReactNode } from 'react';
 import { motion, useAnimation, Variants, AnimationControls } from 'framer-motion';
-// @ts-ignore
 import { useAnimationTrigger } from '../hooks/useIntersectionObserver';
 import { Heading2 } from './ui/Typography';
 import { Container, Spacer } from './ui/Layout';

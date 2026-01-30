@@ -19,19 +19,19 @@ const OptimizedLoadingFallback: React.FC<{ page?: string }> = ({ page = '페이�
 
 
 // 고급 에러 처리가 포함된 lazy loading 유틸리티
+// 고급 에러 처리가 포함된 lazy loading 유틸리티
 const createLazyComponent = <T extends ComponentType<any>>(
-    importFn: () => Promise<{ default: T }>,
-    _componentName: string
+    importFn: () => Promise<{ default: T }>
 ) => {
     return lazy(() => importFn());
 };
 
 // 최적화된 코드 스플리팅
-const Home = createLazyComponent(() => import('./pages/Home'), 'Home');
-const About = createLazyComponent(() => import('./pages/About'), 'About');
-const Works = createLazyComponent(() => import('./pages/Works'), 'Works');
-const News = createLazyComponent(() => import('./pages/News'), 'News');
-const Contact = createLazyComponent(() => import('./pages/Contact'), 'Contact');
+const Home = createLazyComponent(() => import('./pages/Home'));
+const About = createLazyComponent(() => import('./pages/About'));
+const Works = createLazyComponent(() => import('./pages/Works'));
+const News = createLazyComponent(() => import('./pages/News'));
+const Contact = createLazyComponent(() => import('./pages/Contact'));
 
 
 const App: React.FC = () => {

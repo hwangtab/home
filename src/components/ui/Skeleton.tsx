@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import React, { memo } from 'react';
 
 type SkeletonVariant = 'rounded' | 'circle' | 'rectangular';
@@ -38,12 +38,13 @@ export const Skeleton = memo<SkeletonProps>(({
 });
 
 interface CardSkeletonProps {
+    showImage?: boolean;
     className?: string;
 }
 
-export const CardSkeleton = memo<CardSkeletonProps>(({ className = '' }) => (
+export const CardSkeleton = memo<CardSkeletonProps>(({ showImage = true, className = '' }) => (
     <div className={`bg-gray-800 rounded-lg p-5 ${className}`}>
-        <Skeleton width="w-full" height="h-48" variant="rounded" className="mb-4" />
+        {showImage && <Skeleton width="w-full" height="h-48" variant="rounded" className="mb-4" />}
         <div className="flex items-center justify-between mb-3">
             <Skeleton width="w-16" height="h-5" variant="rounded" />
             <Skeleton width="w-12" height="h-4" variant="rounded" />
@@ -145,6 +146,8 @@ type GridColumns = 1 | 2 | 3 | 4;
 interface GridSkeletonProps {
     items?: number;
     columns?: GridColumns;
+    gap?: string;
+    cardProps?: CardSkeletonProps;
     className?: string;
 }
 
@@ -155,10 +158,10 @@ const gridClasses: Record<GridColumns, string> = {
     4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'
 };
 
-export const GridSkeleton = memo<GridSkeletonProps>(({ items = 6, columns = 3, className = '' }) => (
-    <div className={`grid ${gridClasses[columns]} gap-6 ${className}`}>
+export const GridSkeleton = memo<GridSkeletonProps>(({ items = 6, columns = 3, gap = 'gap-6', cardProps = {}, className = '' }) => (
+    <div className={`grid ${gridClasses[columns]} ${gap} ${className}`}>
         {Array.from({ length: items }).map((_, index) => (
-            <CardSkeleton key={index} />
+            <CardSkeleton key={index} {...cardProps} />
         ))}
     </div>
 ));

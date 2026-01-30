@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React, { memo } from 'react';
+import React, { memo, ReactNode } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { ExternalLink, Play, Music, Image, FileText, Mic, LucideIcon } from 'lucide-react';
 import { ThumbnailImage } from '../OptimizedImage';
@@ -18,6 +17,9 @@ const cardVariants: Variants = {
 };
 
 type CardType = 'music' | 'visual' | 'writing' | 'performance' | 'default';
+type CardVariant = 'default' | 'bordered' | 'elevated';
+type CardPadding = 'none' | 'sm' | 'default' | 'lg';
+type CardShadow = 'none' | 'sm' | 'default' | 'lg';
 
 interface CardTypeConfig {
     icon: LucideIcon;
@@ -123,12 +125,71 @@ const CardFooter = memo<CardFooterProps>(({ work }) => {
     );
 });
 
+// Styling classes for Card variants
+const variantClasses: Record<CardVariant, string> = {
+    default: 'bg-gray-800',
+    bordered: 'bg-gray-800 border border-gray-700',
+    elevated: 'bg-gray-800 shadow-xl'
+};
+
+const paddingClasses: Record<CardPadding, string> = {
+    none: '',
+    sm: 'p-2',
+    default: 'p-4',
+    lg: 'p-6'
+};
+
+const shadowClasses: Record<CardShadow, string> = {
+    none: '',
+    sm: 'shadow-sm',
+    default: 'shadow-lg',
+    lg: 'shadow-xl'
+};
+
 interface UnifiedCardProps {
-    work: Work;
+    work?: Work;
     onClick?: (work: Work) => void;
+    children?: ReactNode;
+    variant?: CardVariant;
+    padding?: CardPadding;
+    shadow?: CardShadow;
+    className?: string;
 }
 
-export const UnifiedCard = memo<UnifiedCardProps>(({ work, onClick }) => {
+export const UnifiedCard = memo<UnifiedCardProps>(({
+    work,
+    onClick,
+    children,
+    variant = 'default',
+    padding = 'none',
+    shadow = 'default',
+    className = ''
+}) => {
+    // If children are provided, render as a simple container card
+    if (children) {
+        const containerClasses = [
+            'rounded-lg',
+            variantClasses[variant],
+            paddingClasses[padding],
+            shadowClasses[shadow],
+            className
+        ].filter(Boolean).join(' ');
+
+        return (
+            <motion.div
+                variants={cardVariants}
+                initial="initial"
+                animate="animate"
+                className={containerClasses}
+            >
+                {children}
+            </motion.div>
+        );
+    }
+
+    // Original work card behavior
+    if (!work) return null;
+
     const type = getCardType(work);
     const config = cardTypeConfig[type];
     const isClickable = type === 'visual';

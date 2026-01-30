@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import React, { memo } from 'react';
 
 // 색상 팔레트 정의

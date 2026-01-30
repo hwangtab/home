@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import React, { memo, useRef, useEffect, useState, ReactNode } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
@@ -190,33 +190,36 @@ export const AnimatedCounter = memo<AnimatedCounterProps>(({ from = 0, to, durat
     const nodeRef = useRef<HTMLSpanElement>(null);
     const [inView, setInView] = useState(false);
 
+    // Spring animation for smooth counting
+    const springValue = useSpring(from, { duration: duration * 1000, bounce: 0 });
+
     useEffect(() => {
         const element = nodeRef.current;
         if (!element) return;
+
         const observer = new IntersectionObserver(([entry]) => {
-            if (entry.isIntersecting) setInView(true);
+            if (entry.isIntersecting) {
+                setInView(true);
+                springValue.set(to);
+            }
         }, { threshold: 0.1 });
+
         observer.observe(element);
         return () => observer.disconnect();
-    }, []);
+    }, [to, springValue]);
+
+    useEffect(() => {
+        return springValue.on("change", (latest: number) => {
+            if (nodeRef.current) {
+                nodeRef.current.textContent = Math.round(latest).toString();
+            }
+        });
+    }, [springValue]);
 
     return (
-        <motion.span ref={nodeRef} className={className} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}>
-            <motion.span initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ duration: 0.5 }}>
-                {inView && (
-                    <motion.span initial={from} animate={to} transition={{ duration, ease: "easeOut" }}>
-                        {/* Note: In React, connecting a MotionValue to text content isn't directly supported in TS without 'any' or specific components. 
-                Using a simplified approach here or custom hook for displaying value would be better, but sticking to logic. 
-                Actually, motion components don't render numbers like this directly in TS. 
-                Let's simplify to standard text for now or keep it as is if it works in JS.
-                Wait, 'motion.span' children function is valid in Framer Motion. 
-                But TypeScript might complain about 'value'. Setting as any to bypass complex type for now.
-            */}
-                        {(value: any) => Math.round(value)}
-                    </motion.span>
-                )}
-            </motion.span>
-        </motion.span>
+        <span ref={nodeRef} className={className}>
+            {from}
+        </span>
     );
 });
 

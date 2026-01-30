@@ -1,12 +1,11 @@
-// @ts-nocheck
-import React, { memo } from 'react';
+import React, { memo, ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { Heading1 } from './ui/Typography';
 import { Container } from './ui/Layout';
 
 interface PageHeroProps {
     title: string;
-    subtitle?: string;
+    subtitle?: ReactNode;
     imagePath: string;
     height?: string;
     overlayOpacity?: number;

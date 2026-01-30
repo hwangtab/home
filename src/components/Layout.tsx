@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import React, { useState, useEffect, ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -14,7 +14,6 @@ import useKeyboardNavigation from '../hooks/useKeyboardNavigation';
 
 const Header: React.FC = () => {
     const location = useLocation();
-    // @ts-ignore - i18n context
     const { t } = useLanguage();
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -61,7 +60,7 @@ const Header: React.FC = () => {
                             transform: 'translateY(12px)'
                         }}
                     >
-                        황경하
+                        {t('common.siteTitle')}
                     </h1>
                 </Link>
 
@@ -102,7 +101,6 @@ const Header: React.FC = () => {
 };
 
 const Footer: React.FC = () => {
-    // @ts-ignore
     const { t } = useLanguage();
 
     return (
@@ -113,7 +111,7 @@ const Footer: React.FC = () => {
             aria-label="사이트 푸터"
         >
             <div className="container mx-auto text-center font-wanted-sans">
-                <p>&copy; {t('footer.copyright')}</p>
+                <p>&copy; {new Date().getFullYear()} {t('footer.copyright')}</p>
             </div>
         </footer>
     );

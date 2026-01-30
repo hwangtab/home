@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import type { Transition, TargetAndTransition, HTMLMotionProps } from 'framer-motion';
 
 // Animation States
@@ -45,7 +46,7 @@ export interface CardAnimation {
     whileTap?: TargetAndTransition;
     layout?: boolean;
     transition?: Transition;
-    style?: React.CSSProperties;
+    style?: CSSProperties;
 }
 
 // Motion component prop types

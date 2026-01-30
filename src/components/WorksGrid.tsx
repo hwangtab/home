@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { memo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GridSkeleton } from './ui/SkeletonUI';
+import { GridSkeleton } from './ui/Skeleton';
 import { StaggerContainer, StaggerItem } from './ui/AnimatedComponents';
 import { Work } from '../types/data.types';
 
@@ -43,8 +43,8 @@ const WorksGrid: React.FC<WorksGridProps> = memo(({
     if (isLoading) {
         return (
             <GridSkeleton
-                count={skeletonCount}
-                columns="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                items={skeletonCount}
+                columns={3}
                 cardProps={{ showImage: true }}
             />
         );

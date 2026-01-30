@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactPlayer from 'react-player';
@@ -15,21 +14,17 @@ import {
     ExternalLink,
     List
 } from 'lucide-react';
-import { MusicWork } from '../types/data.types';
+import { Work } from '../types/data.types';
 
-// Extend MusicWork or define Track interface if MusicWork isn't exact
-export interface Track extends Partial<MusicWork> {
-    id: string;
-    title: string;
-    year: number;
-    cover: string;
-    audioUrl?: string; // specific to player
-    links?: Record<string, string>; // specific to player
-    // MusicWork has archiveCategory='music', etc.
-}
+// Extend Work to include properties specific to the player
+export type PlayableWork = Work & {
+    audioUrl?: string;
+    links?: Record<string, string>;
+    [key: string]: any; // Allow for other properties
+};
 
 interface MusicPlayerProps {
-    playlist: Track[];
+    playlist: PlayableWork[];
     isVisible: boolean;
     onClose: () => void;
 }
@@ -47,7 +42,16 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
 
     const currentTrack = playlist[currentIndex];
 
+    // Reset state when track changes or playlist changes
+    React.useEffect(() => {
+        if (!currentTrack) {
+            setIsPlaying(false);
+            setProgress(0);
+        }
+    }, [currentTrack]);
+
     const playNext = () => {
+        if (playlist.length <= 1) return;
         if (shuffle) {
             const nextIndex = Math.floor(Math.random() * playlist.length);
             setCurrentIndex(nextIndex);
@@ -57,18 +61,21 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
     };
 
     const playPrevious = () => {
+        if (playlist.length <= 1) return;
         setCurrentIndex((prev) => (prev - 1 + playlist.length) % playlist.length);
     };
 
     const handleEnded = () => {
         if (repeat) {
             setProgress(0);
+            setIsPlaying(true); // Ensure it keeps playing
         } else {
             playNext();
         }
     };
 
     const formatTime = (seconds: number) => {
+        if (!seconds || isNaN(seconds)) return "0:00";
         const mins = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
         return `${mins}:${secs.toString().padStart(2, '0')}`;
@@ -80,7 +87,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
         <AnimatePresence>
             {isVisible && (
                 <motion.div
-                    className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-4 z-50"
+                    className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-4 z-50 shadow-3xl"
                     initial={{ y: 100, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: 100, opacity: 0 }}
@@ -88,67 +95,86 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                 >
                     <div className="container mx-auto">
                         {/* Progress Bar */}
-                        <div className="w-full bg-gray-700 rounded-full h-1 mb-4">
+                        <div
+                            className="w-full bg-gray-700 rounded-full h-1 mb-4 cursor-pointer group"
+                            onClick={(e) => {
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                const x = e.clientX - rect.left;
+                                const width = rect.width;
+                                const percent = x / width;
+                                // We need a ref to ReactPlayer to seek, but for now just visual
+                            }}
+                        >
                             <div
-                                className="bg-blue-500 h-1 rounded-full transition-all duration-300"
-                                style={{ width: `${(progress / duration) * 100}%` }}
-                            />
+                                className="bg-brand-primary-500 h-1 rounded-full transition-all duration-300 relative group-hover:h-1.5"
+                                style={{ width: `${duration ? (progress / duration) * 100 : 0}%` }}
+                            >
+                                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm" />
+                            </div>
                         </div>
 
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between gap-4">
                             {/* Track Info */}
-                            <div className="flex items-center space-x-4 flex-1">
-                                <img
-                                    src={currentTrack.cover}
-                                    alt={currentTrack.title}
-                                    className="w-12 h-12 rounded object-cover"
-                                />
+                            <div className="flex items-center space-x-4 flex-1 min-w-0">
+                                <div className="relative group">
+                                    <img
+                                        src={currentTrack.cover || '/images/defaults/music-default.svg'}
+                                        alt={currentTrack.title}
+                                        className="w-12 h-12 rounded object-cover shadow-lg"
+                                    />
+                                    <div className="absolute inset-0 bg-black/20 rounded opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </div>
                                 <div className="min-w-0 flex-1">
-                                    <h4 className="text-white font-santokki truncate">
+                                    <h4 className="text-white font-santokki truncate text-lg">
                                         {currentTrack.title}
                                     </h4>
                                     <p className="text-gray-400 text-sm font-wanted-sans truncate">
                                         {currentTrack.year}
                                     </p>
                                 </div>
-                                <button className="text-gray-400 hover:text-white transition-colors">
+                                <button className="text-gray-400 hover:text-brand-solidarity-500 transition-colors hidden sm:block">
                                     <Heart size={20} />
                                 </button>
                             </div>
 
                             {/* Controls */}
-                            <div className="flex items-center space-x-4 mx-8">
+                            <div className="flex items-center space-x-2 sm:space-x-4">
                                 <button
                                     onClick={() => setShuffle(!shuffle)}
-                                    className={`transition-colors ${shuffle ? 'text-blue-400' : 'text-gray-400 hover:text-white'}`}
+                                    className={`transition-colors p-2 rounded-full hover:bg-gray-800 hidden sm:block ${shuffle ? 'text-brand-primary-400' : 'text-gray-400 hover:text-white'}`}
+                                    title="셔플"
                                 >
                                     <Shuffle size={20} />
                                 </button>
 
                                 <button
                                     onClick={playPrevious}
-                                    className="text-gray-400 hover:text-white transition-colors"
+                                    className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800"
+                                    title="이전 곡"
                                 >
                                     <SkipBack size={24} />
                                 </button>
 
                                 <button
                                     onClick={() => setIsPlaying(!isPlaying)}
-                                    className="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 transition-colors"
+                                    className="bg-brand-primary-500 hover:bg-brand-primary-600 text-white rounded-full p-3 transition-colors shadow-lg hover:shadow-brand-primary-500/30 hover:scale-105 transform active:scale-95"
+                                    title={isPlaying ? "일시정지" : "재생"}
                                 >
-                                    {isPlaying ? <Pause size={24} /> : <Play size={24} />}
+                                    {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" className="ml-1" />}
                                 </button>
 
                                 <button
                                     onClick={playNext}
-                                    className="text-gray-400 hover:text-white transition-colors"
+                                    className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800"
+                                    title="다음 곡"
                                 >
                                     <SkipForward size={24} />
                                 </button>
 
                                 <button
                                     onClick={() => setRepeat(!repeat)}
-                                    className={`transition-colors ${repeat ? 'text-blue-400' : 'text-gray-400 hover:text-white'}`}
+                                    className={`transition-colors p-2 rounded-full hover:bg-gray-800 hidden sm:block ${repeat ? 'text-brand-primary-400' : 'text-gray-400 hover:text-white'}`}
+                                    title="반복 재생"
                                 >
                                     <Repeat size={20} />
                                 </button>
@@ -156,45 +182,49 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
 
                             {/* Volume & Additional Controls */}
                             <div className="flex items-center space-x-4 flex-1 justify-end">
-                                <span className="text-gray-400 text-sm font-wanted-sans">
+                                <span className="text-gray-400 text-xs sm:text-sm font-wanted-sans min-w-[3rem] text-right hidden md:block">
                                     {formatTime(progress)} / {formatTime(duration)}
                                 </span>
 
-                                <div className="flex items-center space-x-2">
+                                <div className="hidden lg:flex items-center space-x-2 group">
                                     <button
                                         onClick={() => setIsMuted(!isMuted)}
-                                        className="text-gray-400 hover:text-white transition-colors"
+                                        className="text-gray-400 hover:text-white transition-colors p-1"
+                                        title={isMuted ? "음소거 해제" : "음소거"}
                                     >
-                                        {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                                        {isMuted || volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
                                     </button>
-                                    <input
-                                        type="range"
-                                        min="0"
-                                        max="1"
-                                        step="0.1"
-                                        value={isMuted ? 0 : volume}
-                                        onChange={(e) => setVolume(parseFloat(e.target.value))}
-                                        className="w-20 h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                                    />
+                                    <div className="w-0 group-hover:w-24 transition-all duration-300 overflow-hidden">
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="1"
+                                            step="0.05"
+                                            value={isMuted ? 0 : volume}
+                                            onChange={(e) => setVolume(parseFloat(e.target.value))}
+                                            className="w-20 h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-brand-primary-500"
+                                        />
+                                    </div>
                                 </div>
 
                                 <button
                                     onClick={() => setShowPlaylist(!showPlaylist)}
-                                    className="text-gray-400 hover:text-white transition-colors"
+                                    className={`transition-colors p-2 rounded-full hover:bg-gray-800 ${showPlaylist ? 'text-brand-primary-400' : 'text-gray-400 hover:text-white'}`}
+                                    title="플레이리스트"
                                 >
                                     <List size={20} />
                                 </button>
 
-                                {/* External Links */}
-                                {currentTrack.links && Object.keys(currentTrack.links).length > 0 && (
-                                    <div className="flex space-x-1">
+                                {/* External Links - using proper typing */}
+                                {currentTrack.links && typeof currentTrack.links === 'object' && Object.keys(currentTrack.links).length > 0 && (
+                                    <div className="hidden xl:flex space-x-1">
                                         {Object.entries(currentTrack.links).slice(0, 2).map(([platform, url]) => (
                                             <a
                                                 key={platform}
-                                                href={url}
+                                                href={url as string}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="text-gray-400 hover:text-white transition-colors"
+                                                className="text-gray-400 hover:text-white transition-colors p-2 hover:bg-gray-800 rounded-full"
                                                 title={`${platform}에서 듣기`}
                                             >
                                                 <ExternalLink size={16} />
@@ -205,7 +235,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
 
                                 <button
                                     onClick={onClose}
-                                    className="text-gray-400 hover:text-white transition-colors ml-4"
+                                    className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800 ml-2"
+                                    title="닫기"
                                 >
                                     ✕
                                 </button>
@@ -215,15 +246,22 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                         {/* Hidden ReactPlayer for audio */}
                         {currentTrack.audioUrl && (
                             <ReactPlayer
-                                url={currentTrack.audioUrl}
-                                playing={isPlaying}
-                                volume={isMuted ? 0 : volume}
-                                onProgress={({ played, playedSeconds }: { played: number, playedSeconds: number }) => setProgress(playedSeconds)}
-                                onDuration={setDuration}
-                                onEnded={handleEnded}
-                                width="0"
-                                height="0"
-                                style={{ display: 'none' }}
+                                {...({
+                                    url: currentTrack.audioUrl,
+                                    playing: isPlaying,
+                                    volume: isMuted ? 0 : volume,
+                                    onProgress: (state: { playedSeconds: number }) => setProgress(state.playedSeconds),
+                                    onDuration: setDuration,
+                                    onEnded: handleEnded,
+                                    width: "0",
+                                    height: "0",
+                                    style: { display: 'none' },
+                                    config: {
+                                        file: {
+                                            forceAudio: true
+                                        }
+                                    }
+                                } as any)}
                             />
                         )}
                     </div>
@@ -232,42 +270,47 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                     <AnimatePresence>
                         {showPlaylist && (
                             <motion.div
-                                className="absolute bottom-full left-0 right-0 bg-gray-800 border border-gray-700 rounded-t-lg max-h-64 overflow-y-auto"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 20 }}
+                                className="absolute bottom-full right-0 w-full sm:w-96 bg-gray-800/95 backdrop-blur-md border border-gray-700 rounded-t-lg sm:rounded-lg shadow-2xl overflow-hidden mb-2 sm:mr-4 max-h-[60vh] flex flex-col"
+                                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: 20, scale: 0.95 }}
                             >
-                                <div className="p-4">
-                                    <h3 className="text-white font-santokki mb-4">플레이리스트</h3>
-                                    <div className="space-y-2">
-                                        {playlist.map((track, index) => (
-                                            <div
-                                                key={track.id}
-                                                onClick={() => setCurrentIndex(index)}
-                                                className={`flex items-center space-x-3 p-2 rounded cursor-pointer transition-colors ${index === currentIndex ? 'bg-gray-700' : 'hover:bg-gray-700'
-                                                    }`}
-                                            >
+                                <div className="p-4 border-b border-gray-700 bg-gray-800 sticky top-0 z-10 flex justify-between items-center">
+                                    <h3 className="text-white font-santokki">플레이리스트</h3>
+                                    <span className="text-xs text-gray-400 font-wanted-sans">{playlist.length}곡</span>
+                                </div>
+                                <div className="overflow-y-auto p-2 space-y-1">
+                                    {playlist.map((track, index) => (
+                                        <div
+                                            key={`${track.id}-${index}`}
+                                            onClick={() => setCurrentIndex(index)}
+                                            className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-all ${index === currentIndex
+                                                ? 'bg-brand-primary-500/20 border border-brand-primary-500/30'
+                                                : 'hover:bg-gray-700/50 border border-transparent'
+                                                }`}
+                                        >
+                                            <div className="relative">
                                                 <img
-                                                    src={track.cover}
+                                                    src={track.cover || '/images/defaults/music-default.svg'}
                                                     alt={track.title}
-                                                    className="w-10 h-10 rounded object-cover"
+                                                    className={`w-10 h-10 rounded object-cover ${index === currentIndex ? 'opacity-100' : 'opacity-70'}`}
                                                 />
-                                                <div className="flex-1 min-w-0">
-                                                    <p className="text-white font-wanted-sans truncate">
-                                                        {track.title}
-                                                    </p>
-                                                    <p className="text-gray-400 text-sm truncate">
-                                                        {track.year}
-                                                    </p>
-                                                </div>
-                                                {index === currentIndex && (
-                                                    <div className="text-blue-400">
-                                                        {isPlaying ? <Pause size={16} /> : <Play size={16} />}
+                                                {index === currentIndex && isPlaying && (
+                                                    <div className="absolute inset-0 flex items-center justify-center">
+                                                        <div className="w-3 h-3 bg-brand-primary-500 rounded-full animate-pulse" />
                                                     </div>
                                                 )}
                                             </div>
-                                        ))}
-                                    </div>
+                                            <div className="flex-1 min-w-0">
+                                                <p className={`font-wanted-sans truncate text-sm ${index === currentIndex ? 'text-brand-primary-300 font-bold' : 'text-gray-300'}`}>
+                                                    {track.title}
+                                                </p>
+                                                <p className="text-gray-500 text-xs truncate">
+                                                    {track.year}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </motion.div>
                         )}

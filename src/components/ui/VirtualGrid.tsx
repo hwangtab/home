@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { memo, useState, useEffect, useRef, useMemo, useCallback, ReactNode } from 'react';
 
 interface VirtualGridItem {
@@ -15,6 +14,7 @@ interface VirtualGridProps<T extends VirtualGridItem> {
     gap?: number;
     overscan?: number;
     className?: string;
+    onScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
 }
 
 const VirtualGrid = memo(<T extends VirtualGridItem>({
@@ -25,7 +25,8 @@ const VirtualGrid = memo(<T extends VirtualGridItem>({
     columns = 3,
     gap = 24,
     overscan = 2,
-    className = ""
+    className = "",
+    onScroll
 }: VirtualGridProps<T>) => {
     const [scrollTop, setScrollTop] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -52,16 +53,10 @@ const VirtualGrid = memo(<T extends VirtualGridItem>({
         };
     }, [items, columns, itemHeight, gap, scrollTop, containerHeight, overscan]);
 
-    const handleScroll = useCallback((e: Event) => {
-        setScrollTop((e.target as HTMLDivElement).scrollTop);
-    }, []);
-
-    useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
-        container.addEventListener('scroll', handleScroll, { passive: true });
-        return () => container.removeEventListener('scroll', handleScroll);
-    }, [handleScroll]);
+    const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+        setScrollTop(e.currentTarget.scrollTop);
+        onScroll?.(e);
+    }, [onScroll]);
 
     const getItemPosition = useCallback((index: number) => {
         const row = Math.floor(index / columns);
@@ -74,14 +69,19 @@ const VirtualGrid = memo(<T extends VirtualGridItem>({
     }, [columns, rowHeight]);
 
     return (
-        <div ref={containerRef} className={`relative overflow-auto ${className}`} style={{ height: containerHeight }}>
+        <div
+            ref={containerRef}
+            className={`relative overflow-auto ${className}`}
+            style={{ height: containerHeight }}
+            onScroll={handleScroll}
+        >
             <div style={{ height: totalHeight, position: 'relative' }}>
                 {visibleItems.map((item, relativeIndex) => {
                     const actualIndex = visibleStart + relativeIndex;
                     const position = getItemPosition(actualIndex);
                     return (
                         <div
-                            key={item.id || actualIndex}
+                            key={item.id ?? actualIndex}
                             style={{
                                 position: 'absolute',
                                 top: position.top,
@@ -132,27 +132,37 @@ export const InfiniteVirtualGrid = memo(<T extends VirtualGridItem>({
     hasMore = false,
     isLoading = false,
     threshold = 200,
+    containerHeight = 600,
     ...virtualGridProps
 }: InfiniteVirtualGridProps<T>) => {
     const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-    const handleScroll = useCallback(async (e: Event) => {
+    const handleScroll = useCallback(async (e: React.UIEvent<HTMLDivElement>) => {
         if (!hasMore || isLoading || isLoadingMore) return;
-        const target = e.target as HTMLDivElement;
+
+        const target = e.currentTarget;
         const { scrollTop, scrollHeight, clientHeight } = target;
         const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
 
         if (distanceFromBottom < threshold) {
             setIsLoadingMore(true);
-            try { await loadMore(); } finally { setIsLoadingMore(false); }
+            try {
+                await loadMore();
+            } finally {
+                setIsLoadingMore(false);
+            }
         }
     }, [hasMore, isLoading, isLoadingMore, threshold, loadMore]);
 
-    useEffect(() => {
-        // Note: handleScroll is attached via the VirtualGrid's internal container
-    }, [handleScroll]);
-
-    return <VirtualGrid items={items} renderItem={renderItem} {...virtualGridProps} />;
+    return (
+        <VirtualGrid
+            items={items}
+            renderItem={renderItem}
+            containerHeight={containerHeight}
+            onScroll={handleScroll}
+            {...virtualGridProps}
+        />
+    );
 }) as <T extends VirtualGridItem>(props: InfiniteVirtualGridProps<T>) => JSX.Element;
 
 (InfiniteVirtualGrid as React.FC).displayName = 'InfiniteVirtualGrid';

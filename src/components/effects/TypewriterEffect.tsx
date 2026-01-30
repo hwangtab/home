@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 interface TypewriterEffectProps {
@@ -23,34 +22,45 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
     showCursor = true,
     onComplete = null
 }) => {
-    const [displayText, setDisplayText] = useState('');
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [isComplete, setIsComplete] = useState(false);
+    const [isStarted, setIsStarted] = useState(delay === 0);
+    const isCompleteRef = useRef(false);
 
+    // Reset when text changes
     useEffect(() => {
-        if (currentIndex < text.length) {
-            const timer = setTimeout(() => {
-                setDisplayText(prev => prev + text[currentIndex]);
-                setCurrentIndex(prev => prev + 1);
-            }, speed);
+        setCurrentIndex(0);
+        setIsStarted(delay === 0);
+        isCompleteRef.current = false;
+    }, [text, delay]);
 
-            return () => clearTimeout(timer);
-        } else if (!isComplete) {
-            setIsComplete(true);
-            onComplete?.();
-        }
-    }, [currentIndex, text, speed, isComplete, onComplete]);
-
+    // Handle delay before starting
     useEffect(() => {
         if (delay > 0) {
             const delayTimer = setTimeout(() => {
-                setCurrentIndex(0);
-                setDisplayText('');
+                setIsStarted(true);
             }, delay);
-
             return () => clearTimeout(delayTimer);
         }
     }, [delay]);
+
+    // Typing animation
+    useEffect(() => {
+        if (!isStarted) return;
+
+        if (currentIndex < text.length) {
+            const timer = setTimeout(() => {
+                setCurrentIndex(prev => prev + 1);
+            }, speed);
+            return () => clearTimeout(timer);
+        } else if (!isCompleteRef.current && currentIndex === text.length) {
+            isCompleteRef.current = true;
+            onComplete?.();
+        }
+    }, [currentIndex, text.length, speed, isStarted, onComplete]);
+
+    // Derived display text
+    const displayText = text.slice(0, currentIndex);
+    const isComplete = currentIndex >= text.length;
 
     return (
         <span className={className}>

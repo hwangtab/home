@@ -162,8 +162,7 @@ const News: React.FC = () => {
             <div>
                 <MetaDataManager {...seoData} />
                 <div className="container mx-auto py-8">
-                    {/* Correction: items={3}, columns={1} */}
-                    <GridSkeleton count={3} columns="grid-cols-1" />
+                    <GridSkeleton items={3} columns={1} />
                 </div>
             </div>
         );
