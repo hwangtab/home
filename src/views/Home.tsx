@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
@@ -45,12 +44,16 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ siteData }) => {
                             className="w-full bg-gray-750 p-6 rounded-lg shadow-lg transform-gpu hover:scale-105 transition-transform duration-300"
                         >
                             <Link href={`/works?category=music&id=${work.id}`}>
-                                <Image
+                                <img
                                     src={work.cover || '/images/defaults/music-default.svg'}
                                     alt={work.title}
-                                    width={640}
-                                    height={384}
                                     className="w-full h-48 object-cover mb-4 rounded"
+                                    loading="lazy"
+                                    onError={(e) => {
+                                        const target = e.currentTarget;
+                                        target.onerror = null;
+                                        target.src = '/images/defaults/music-default.svg';
+                                    }}
                                 />
                                 <h3 className="text-2xl font-bold mb-3 text-gray-100 font-santokki">
                                     {work.title} ({work.year})
