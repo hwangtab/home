@@ -26,7 +26,9 @@ export const usePageData = <T = SiteData>(pageType: string): PageDataReturn<T> =
                 setLoading(true);
                 setError(null);
 
-                const basePath = process.env.NODE_ENV === 'development' ? '' : process.env.PUBLIC_URL || '';
+                const basePath = process.env.NODE_ENV === 'development'
+                    ? ''
+                    : process.env.NEXT_PUBLIC_BASE_PATH || process.env.PUBLIC_URL || '';
                 const dataUrl = `${basePath}/data/${pageType}.json`;
                 controller = new AbortController();
                 timeoutId = window.setTimeout(() => controller?.abort(), 5000);
@@ -105,7 +107,9 @@ export const useCachedPageData = <T = SiteData>(pageType: string): PageDataRetur
                 setLoading(true);
                 setError(null);
 
-                const basePath = process.env.NODE_ENV === 'development' ? '' : process.env.PUBLIC_URL || '';
+                const basePath = process.env.NODE_ENV === 'development'
+                    ? ''
+                    : process.env.NEXT_PUBLIC_BASE_PATH || process.env.PUBLIC_URL || '';
                 const dataUrl = `${basePath}/data/${pageType}.json`;
                 controller = new AbortController();
                 timeoutId = window.setTimeout(() => controller?.abort(), 5000);

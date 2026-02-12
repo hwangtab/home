@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { useLocation } from 'react-router-dom';
 interface MetaDataManagerProps {
     title?: string;
     description?: string;
@@ -34,7 +33,7 @@ const MetaDataManager: React.FC<MetaDataManagerProps> = ({
     musicData,
     customMeta = {}
 }) => {
-    const location = useLocation();
+    const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
 
     const siteInfo = {
         siteName: '황경하 Official Web',
@@ -44,7 +43,7 @@ const MetaDataManager: React.FC<MetaDataManagerProps> = ({
         twitterHandle: '@podopodopo'
     };
 
-    const currentUrl = url || `${siteInfo.domain}${location.pathname}`;
+    const currentUrl = url || `${siteInfo.domain}${pathname}`;
 
     const getPageDefaults = (pathname: string) => {
         const pages: Record<string, { title: string; description: string; keywords: string[] }> = {
@@ -78,7 +77,7 @@ const MetaDataManager: React.FC<MetaDataManagerProps> = ({
         return pages[pathname] || pages['/'];
     };
 
-    const pageDefaults = getPageDefaults(location.pathname);
+    const pageDefaults = getPageDefaults(pathname);
 
     const finalTitle = title || pageDefaults.title;
     const finalDescription = description || pageDefaults.description;

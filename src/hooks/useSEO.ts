@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
 import type { Work } from '../types/data.types';
 
 interface SEOOptions {
@@ -48,7 +47,7 @@ interface PageConfig {
  * SEO 메타데이터 생성을 위한 커스텀 훅
  */
 export const useSEO = (options: SEOOptions = {}): SEOMetadata => {
-    const location = useLocation();
+    const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
 
     const {
         title,
@@ -121,8 +120,6 @@ export const useSEO = (options: SEOOptions = {}): SEOMetadata => {
 
     // 페이지별 기본 메타데이터
     const pageMeta = useMemo((): PageConfig => {
-        const pathname = location.pathname;
-
         const pageConfigs: Record<string, PageConfig> = {
             '/': {
                 title: '황경하 Official Web',
@@ -157,7 +154,7 @@ export const useSEO = (options: SEOOptions = {}): SEOMetadata => {
         };
 
         return pageConfigs[pathname] || pageConfigs['/'];
-    }, [location.pathname]);
+    }, [pathname]);
 
     return {
         title: title || pageMeta.title,

@@ -225,7 +225,6 @@ export const AnimationWrapper: React.FC<AnimationWrapperProps> = ({
 
     // 애니메이션이 비활성화된 경우 정적 버전 렌더링
     if (!isActive) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return React.cloneElement(children, {
             animate: false,
             transition: { duration: 0 }

@@ -1,5 +1,6 @@
 import React, { memo, ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { Heading1 } from './ui/Typography';
 import { Container } from './ui/Layout';
 
@@ -20,6 +21,8 @@ const PageHero: React.FC<PageHeroProps> = memo(({
     overlayOpacity = 0.5,
     className = ''
 }) => {
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH || process.env.PUBLIC_URL || '';
+
     return (
         <div
             className={`relative w-full overflow-hidden flex items-center justify-center ${className}`}
@@ -32,9 +35,12 @@ const PageHero: React.FC<PageHeroProps> = memo(({
                 animate={{ scale: 1 }}
                 transition={{ duration: 1.5, ease: "easeOut", delay: 0.1 }}
             >
-                <img
-                    src={process.env.PUBLIC_URL + imagePath}
+                <Image
+                    src={`${basePath}${imagePath}`}
                     alt={title}
+                    fill
+                    sizes="100vw"
+                    priority
                     className="w-full h-full object-cover"
                 />
                 {/* Dark Overlay */}

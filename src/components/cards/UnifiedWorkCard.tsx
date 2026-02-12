@@ -6,7 +6,7 @@ import { Work, WorkCategory, PrimaryAction, WritingWork } from '../../types/data
 
 // 설정 객체들
 const getAssetPath = (path: string): string => {
-    const publicUrl = process.env.PUBLIC_URL || '';
+    const publicUrl = process.env.NEXT_PUBLIC_BASE_PATH || process.env.PUBLIC_URL || '';
     return `${publicUrl}${path}`;
 };
 

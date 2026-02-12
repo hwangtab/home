@@ -1,12 +1,13 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { Calendar, ShoppingCart } from 'lucide-react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
-import MetaDataManager from '../components/SEO/MetaDataManager';
-import { usePageSEO } from '../hooks/useSEO';
 import { Concert, MusicWork, NewsItem } from '../types/data.types';
 
 interface ConcertSliderProps {
@@ -82,14 +83,16 @@ const AlbumPurchase: React.FC<AlbumPurchaseProps> = ({ album }) => (
         transition={{ duration: 0.5 }}
     >
         <div className="md:w-1/2 flex flex-col justify-center">
-            <motion.img
-                src={`${process.env.PUBLIC_URL}/${(album as any).coverUrl || album.cover}`}
-                alt={album.title}
-                className="w-full h-auto object-cover rounded cursor-pointer"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                onClick={() => album.purchaseUrl && window.open(album.purchaseUrl, '_blank')}
-            />
+            <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
+                <Image
+                    src={`${process.env.NEXT_PUBLIC_BASE_PATH || process.env.PUBLIC_URL || ''}/${(album as any).coverUrl || album.cover}`}
+                    alt={album.title}
+                    width={960}
+                    height={960}
+                    className="w-full h-auto object-cover rounded cursor-pointer"
+                    onClick={() => album.purchaseUrl && window.open(album.purchaseUrl, '_blank')}
+                />
+            </motion.div>
         </div>
         <div className="md:w-1/2 flex flex-col justify-center">
             <h3 className="text-3xl font-bold mb-6 text-gray-200 font-santokki leading-tight">
@@ -149,18 +152,9 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => (
 const News: React.FC = () => {
     const { data: siteData, loading, error } = useCachedPageData('news');
 
-    // SEO 메타데이터
-    const seoData = usePageSEO({
-        title: '소식 - 황경하',
-        description: '황경하의 최신 소식, 공연 일정, 새로운 앨범 정보 등을 확인하세요. 콘서트와 음반 구매 정보도 제공합니다.',
-        keywords: ['황경하', '소식', '공연', '콘서트', '음반', '뉴스', '일정'],
-        image: '/images/og/news-og.jpg'
-    });
-
     if (loading) {
         return (
             <div>
-                <MetaDataManager {...seoData} />
                 <div className="container mx-auto py-8">
                     <GridSkeleton items={3} columns={1} />
                 </div>
@@ -171,7 +165,6 @@ const News: React.FC = () => {
     if (error || !siteData) {
         return (
             <div>
-                <MetaDataManager {...seoData} />
                 <div className="container mx-auto py-8 text-center">
                     <p className="text-gray-300">데이터를 불러오는 중 오류가 발생했습니다.</p>
                 </div>
@@ -186,7 +179,6 @@ const News: React.FC = () => {
 
     return (
         <div>
-            <MetaDataManager {...seoData} />
             <PageHero
                 title="소식"
                 subtitle="새로운 활동과 공지사항"

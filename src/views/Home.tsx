@@ -1,10 +1,11 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
-import MetaDataManager from '../components/SEO/MetaDataManager';
-import { usePageSEO } from '../hooks/useSEO';
 import { GridSkeleton } from '../components/ui/Skeleton';
 import { useCachedPageData } from '../hooks/usePageData';
 import { MusicWork, SiteData } from '../types/data.types';
@@ -43,10 +44,12 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ siteData }) => {
                             key={work.id}
                             className="w-full bg-gray-750 p-6 rounded-lg shadow-lg transform-gpu hover:scale-105 transition-transform duration-300"
                         >
-                            <Link to={`/works?category=music&id=${work.id}`}>
-                                <img
-                                    src={work.cover}
+                            <Link href={`/works?category=music&id=${work.id}`}>
+                                <Image
+                                    src={work.cover || '/images/defaults/music-default.svg'}
                                     alt={work.title}
+                                    width={640}
+                                    height={384}
                                     className="w-full h-48 object-cover mb-4 rounded"
                                 />
                                 <h3 className="text-2xl font-bold mb-3 text-gray-100 font-santokki">
@@ -63,7 +66,7 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ siteData }) => {
             <div className="text-center mt-8">
                 <div className="hover:scale-105 transition-transform duration-200">
                     <Link
-                        to="/works"
+                        href="/works"
                         className="inline-flex items-center bg-gray-750 text-white px-8 py-4 rounded-full font-wanted-sans hover:bg-gray-600 transition-all duration-300 transform-gpu"
                     >
                         {t('home.viewAllWorks')}
@@ -132,7 +135,7 @@ const QuickNavigation: React.FC = () => {
                         {/* 브랜드 컬러 액센트 */}
                         <div className={`absolute top-0 left-0 w-full h-1 ${link.classes.line}`} />
 
-                        <Link to={link.path} className="block">
+                        <Link href={link.path} className="block">
                             <div className="flex flex-col items-center mb-4">
                                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-3 transition-colors duration-300 ${link.classes.iconBg} ${link.classes.iconBgHover}`}>
                                     <span className="text-2xl">{link.icon}</span>
@@ -161,17 +164,9 @@ const Home: React.FC = () => {
     const { t } = useLanguage();
     const { data: siteData, loading, error } = useCachedPageData('home');
 
-    const seoData = usePageSEO({
-        title: '황경하 Official Web',
-        description: '음악가이자 사운드 엔지니어, 프로듀서인 황경하의 공식 웹사이트입니다. 사회적 메시지를 담은 음악과 예술 활동을 만나보세요.',
-        keywords: ['황경하', '음악가', '프로듀서', '사운드엔지니어', '연대', '민중음악', '젠트리피케이션'],
-        image: '/images/og/home-og.jpg'
-    });
-
     // Always render PageHero to prevent double animation from layout shift
     return (
         <div className="contain-layout">
-            <MetaDataManager {...seoData} />
             <PageHero
                 title={t('home.hero.title')}
                 subtitle={t('home.hero.role')}

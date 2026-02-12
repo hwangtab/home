@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, LucideIcon } from 'lucide-react';
@@ -6,8 +8,6 @@ import PageHero from '../components/PageHero';
 import ContactForm from '../components/ContactForm';
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
-import MetaDataManager from '../components/SEO/MetaDataManager';
-import { usePageSEO } from '../hooks/useSEO';
 
 interface ContactInfoProps {
     icon: LucideIcon;
@@ -38,18 +38,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ icon: Icon, title, content, l
 const Contact: React.FC = () => {
     const { data: siteData, loading, error } = useCachedPageData('contact');
 
-    // SEO 메타데이터
-    const seoData = usePageSEO({
-        title: '연락처 - 황경하',
-        description: '황경하에게 연락하거나 문의사항이 있으시면 언제든지 연락해주세요. 이메일, 전화, 소셜미디어를 통해 소통할 수 있습니다.',
-        keywords: ['황경하', '연락처', '문의', '이메일', '전화번호', '소통'],
-        image: '/images/og/contact-og.jpg'
-    });
-
     if (loading) {
         return (
             <div>
-                <MetaDataManager {...seoData} />
                 <div className="container mx-auto py-8">
                     {/* Correction: columns={2} maps to md:grid-cols-2 */}
                     <GridSkeleton items={2} columns={2} />
@@ -61,7 +52,6 @@ const Contact: React.FC = () => {
     if (error || !siteData) {
         return (
             <div>
-                <MetaDataManager {...seoData} />
                 <div className="container mx-auto py-8 text-center">
                     <p className="text-gray-300">데이터를 불러오는 중 오류가 발생했습니다.</p>
                 </div>
@@ -73,7 +63,6 @@ const Contact: React.FC = () => {
 
     return (
         <div>
-            <MetaDataManager {...seoData} />
             <PageHero
                 title="연락처"
                 subtitle="협업 및 문의"

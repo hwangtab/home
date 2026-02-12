@@ -93,19 +93,19 @@ export const LazySearchBar = lazy(() =>
 
 // Lazy load pages
 export const LazyAbout = lazy(() =>
-    import('../pages/About').then(module => ({ default: module.default }))
+    import('../views/About').then(module => ({ default: module.default }))
 );
 
 export const LazyWorks = lazy(() =>
-    import('../pages/Works').then(module => ({ default: module.default }))
+    import('../views/Works').then(module => ({ default: module.default }))
 );
 
 export const LazyNews = lazy(() =>
-    import('../pages/News').then(module => ({ default: module.default }))
+    import('../views/News').then(module => ({ default: module.default }))
 );
 
 export const LazyContact = lazy(() =>
-    import('../pages/Contact').then(module => ({ default: module.default }))
+    import('../views/Contact').then(module => ({ default: module.default }))
 );
 
 // Wrapped components with error boundaries
@@ -130,7 +130,7 @@ export const preloadCriticalComponents = (): void => {
     const preloaders = [
         () => import('../components/MusicPlayer'),
         () => import('../components/SearchBar'),
-        () => import('../pages/Works')
+        () => import('../views/Works')
     ];
 
     preloaders.forEach(preloader => {

@@ -30,11 +30,11 @@ const createLazyComponent = <T extends ComponentType<any>>(
 };
 
 // 최적화된 코드 스플리팅
-const Home = createLazyComponent(() => import('./pages/Home'));
-const About = createLazyComponent(() => import('./pages/About'));
-const Works = createLazyComponent(() => import('./pages/Works'));
-const News = createLazyComponent(() => import('./pages/News'));
-const Contact = createLazyComponent(() => import('./pages/Contact'));
+const Home = createLazyComponent(() => import('./views/Home'));
+const About = createLazyComponent(() => import('./views/About'));
+const Works = createLazyComponent(() => import('./views/Works'));
+const News = createLazyComponent(() => import('./views/News'));
+const Contact = createLazyComponent(() => import('./views/Contact'));
 
 
 const App: React.FC = () => {

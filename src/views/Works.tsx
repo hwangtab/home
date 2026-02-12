@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useCallback, useEffect } from 'react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
@@ -9,23 +11,22 @@ import WorksGrid from '../components/WorksGrid';
 import { ScrollReveal } from '../components/ui/AnimatedComponents';
 import { useWorksData } from '../hooks/useDataProcessor';
 import { useCardActions } from '../hooks/useCardActions';
-import MetaDataManager from '../components/SEO/MetaDataManager';
-import { usePageSEO } from '../hooks/useSEO';
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'next/navigation';
 import { Work, WorkCategory, MusicWork } from '../types/data.types';
 
 const Works: React.FC = () => {
     const [activeFilter, setActiveFilter] = useState<WorkCategory | 'all'>('all');
-    const location = useLocation();
+    const searchParams = useSearchParams();
     const { data: siteData, loading, error } = useCachedPageData('works');
 
     // URL 파라미터 처리 및 스크롤
     useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const category = params.get('category');
-        const workId = params.get('id');
+        if (!searchParams) return;
+
+        const category = searchParams.get('category');
+        const workId = searchParams.get('id');
 
         if (category) {
             setActiveFilter(category as WorkCategory | 'all');
@@ -46,15 +47,7 @@ const Works: React.FC = () => {
             }, 800); // WorksGrid 애니메이션 지연 고려
             return () => clearTimeout(timer);
         }
-    }, [location.search, loading]);
-
-    // SEO 메타데이터
-    const seoData = usePageSEO({
-        title: '작품 - 황경하',
-        description: '황경하의 음악 작품들을 만나보세요. 젠트리피케이션, 민중음악 선곡집, 몸의 중심 등 사회적 메시지를 담은 음반과 글들을 소개합니다.',
-        keywords: ['황경하', '음반', '앨범', '민중음악', '연대', '작품', '젠트리피케이션', '몸의중심'],
-        image: '/images/og/works-og.jpg'
-    });
+    }, [searchParams, loading]);
 
     // hooks를 최상위에서 호출 - siteData가 null일 때 빈 객체 전달
     const { categorizedData, getWorksByCategory } = useWorksData(siteData?.works || {}, 'works');
@@ -85,8 +78,6 @@ const Works: React.FC = () => {
     if (loading) {
         return (
             <div>
-                {/* @ts-ignore */}
-                <MetaDataManager {...seoData} />
                 <div className="container mx-auto py-8">
                     <GridSkeleton items={6} columns={3} />
                 </div>
@@ -97,8 +88,6 @@ const Works: React.FC = () => {
     if (error || !siteData) {
         return (
             <div>
-                {/* @ts-ignore */}
-                <MetaDataManager {...seoData} />
                 <div className="container mx-auto py-8 text-center">
                     <p className="text-gray-300">데이터를 불러오는 중 오류가 발생했습니다.</p>
                 </div>
@@ -124,8 +113,6 @@ const Works: React.FC = () => {
 
     return (
         <>
-            {/* @ts-ignore */}
-            <MetaDataManager {...seoData} />
             <PageHero
                 title="작업"
                 subtitle="황경하의 음악, 저술, 그리고 활동들"

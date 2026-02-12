@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
@@ -6,8 +8,6 @@ import { Heading3, BodyText } from '../components/ui/Typography';
 import { Grid, Stack } from '../components/ui/Layout';
 import { UnifiedCard as Card } from '../components/ui/Card';
 import { useWorksData } from '../hooks/useDataProcessor';
-import MetaDataManager from '../components/SEO/MetaDataManager';
-import { usePageSEO } from '../hooks/useSEO';
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
 
@@ -16,21 +16,12 @@ interface AboutProps { }
 const About: React.FC<AboutProps> = () => {
     const { data: siteData, loading, error } = useCachedPageData('about');
 
-    // SEO 메타데이터
-    const seoData = usePageSEO({
-        title: '소개 - 황경하',
-        description: '황경하는 현장에서 글, 음악, 사진 등의 예술이 힘을 갖는 순간에 주목하여 활동하는 음악가입니다. 세상의 소외된 이들과 함께합니다.',
-        keywords: ['황경하', '아티스트', '프로필', '음악가', '연대', '사회운동', '예술가'],
-        image: '/images/og/about-og.jpg'
-    });
-
     // hooks를 최상위에서 호출 - siteData가 null일 때 빈 객체 전달
     const { timelineData } = useWorksData(siteData?.works || {}, 'about');
 
     if (loading) {
         return (
             <div>
-                <MetaDataManager {...seoData} />
                 <div className="container mx-auto py-8">
                     {/* Correction: maps to md:grid-cols-2 */}
                     <GridSkeleton items={3} columns={2} />
@@ -42,7 +33,6 @@ const About: React.FC<AboutProps> = () => {
     if (error || !siteData) {
         return (
             <div>
-                <MetaDataManager {...seoData} />
                 <div className="container mx-auto py-8 text-center">
                     <p className="text-gray-300">데이터를 불러오는 중 오류가 발생했습니다.</p>
                 </div>
@@ -52,7 +42,6 @@ const About: React.FC<AboutProps> = () => {
 
     return (
         <div>
-            <MetaDataManager {...seoData} />
             <PageHero
                 title="소개"
                 subtitle={<>황경하는 현장에서 글, 음악, 사진 등의 예술이 힘을 갖는 순간에<br className="hidden md:inline" /> 주목하여 활동하는 음악가입니다.</>}
@@ -69,7 +58,7 @@ const About: React.FC<AboutProps> = () => {
                             "그의 작업은 사회에 대한 날카로운 시선과 따뜻한 연대의 메시지를 담고 있습니다. 음악 활동 외에도 황경하는 다양한 투쟁에 참여하며, 음악을 통한 사회 변화를 추구하고 있습니다.",
                             "명성과 부를 좇기보다 시대의 아픔에 공감하고 약자와 연대하는 예술, 세상의 부조리에 저항하고 변화의 메시지를 전하는 예술의 길을 개척하고 있습니다. 비록 험난한 여정이겠지만 노래하는 자의 가녀린 어깨가 세상을 변화시키리라 믿습니다."
                         ]}
-                        imageSrc={`${process.env.PUBLIC_URL}/images/profile1.png`}
+                        imageSrc={`${process.env.NEXT_PUBLIC_BASE_PATH || process.env.PUBLIC_URL || ''}/images/profile1.png`}
                         imageAlt="황경하"
                         layout="horizontal"
                     />
