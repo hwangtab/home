@@ -18,10 +18,10 @@ import { Work, WorkCategory, MusicWork } from '../types/data.types';
 import { useLanguage } from '../i18n';
 
 const Works: React.FC = () => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [activeFilter, setActiveFilter] = useState<WorkCategory | 'all'>('all');
     const searchParams = useSearchParams();
-    const { data: siteData, loading, error } = useCachedPageData('works');
+    const { data: siteData, loading, error } = useCachedPageData('works', language);
 
     // URL 파라미터 처리 및 스크롤
     useEffect(() => {
@@ -91,7 +91,7 @@ const Works: React.FC = () => {
         return (
             <div>
                 <div className="container mx-auto py-8 text-center">
-                    <p className="text-gray-300">데이터를 불러오는 중 오류가 발생했습니다.</p>
+                    <p className="text-gray-300">{t('common.loadingError')}</p>
                 </div>
             </div>
         );

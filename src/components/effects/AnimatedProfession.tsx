@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Music, Mic, Headphones, Heart, LucideIcon } from 'lucide-react';
+import { useLanguage } from '../../i18n';
 
 interface Profession {
     text: string;
@@ -19,29 +20,30 @@ interface AnimatedProfessionProps {
  * 아이콘과 함께 직업을 순차적으로 표시하는 애니메이션
  */
 const AnimatedProfession: React.FC<AnimatedProfessionProps> = ({ className = '' }) => {
+    const { t } = useLanguage();
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const professions: Profession[] = [
         {
-            text: '음악가',
+            text: t('home.professions.musician'),
             icon: Music,
             color: 'text-brand-primary-400',
             bgColor: 'bg-brand-primary-500/20'
         },
         {
-            text: '사운드 엔지니어',
+            text: t('home.professions.soundEngineer'),
             icon: Headphones,
             color: 'text-brand-harmony-400',
             bgColor: 'bg-brand-harmony-500/20'
         },
         {
-            text: '프로듀서',
+            text: t('home.professions.producer'),
             icon: Mic,
             color: 'text-brand-earth-400',
             bgColor: 'bg-brand-earth-500/20'
         },
         {
-            text: '연대자',
+            text: t('home.professions.solidarityActivist'),
             icon: Heart,
             color: 'text-brand-solidarity-400',
             bgColor: 'bg-brand-solidarity-500/20'

@@ -15,6 +15,7 @@ import {
     List
 } from 'lucide-react';
 import { Work } from '../types/data.types';
+import { useLanguage } from '../i18n';
 
 // Extend Work to include properties specific to the player
 export type PlayableWork = Work & {
@@ -30,6 +31,7 @@ interface MusicPlayerProps {
 }
 
 const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = false, onClose }) => {
+    const { t } = useLanguage();
     const playerRef = React.useRef<any>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -148,7 +150,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 <button
                                     onClick={() => setShuffle(!shuffle)}
                                     className={`transition-colors p-2 rounded-full hover:bg-gray-800 hidden sm:block ${shuffle ? 'text-brand-primary-400' : 'text-gray-400 hover:text-white'}`}
-                                    title="셔플"
+                                    title={t('player.shuffle')}
                                 >
                                     <Shuffle size={20} />
                                 </button>
@@ -156,7 +158,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 <button
                                     onClick={playPrevious}
                                     className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800"
-                                    title="이전 곡"
+                                    title={t('player.previousTrack')}
                                 >
                                     <SkipBack size={24} />
                                 </button>
@@ -164,7 +166,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 <button
                                     onClick={() => setIsPlaying(!isPlaying)}
                                     className="bg-brand-primary-500 hover:bg-brand-primary-600 text-white rounded-full p-3 transition-colors shadow-lg hover:shadow-brand-primary-500/30 hover:scale-105 transform active:scale-95"
-                                    title={isPlaying ? "일시정지" : "재생"}
+                                    title={isPlaying ? t('player.pause') : t('player.play')}
                                 >
                                     {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" className="ml-1" />}
                                 </button>
@@ -172,7 +174,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 <button
                                     onClick={playNext}
                                     className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800"
-                                    title="다음 곡"
+                                    title={t('player.nextTrack')}
                                 >
                                     <SkipForward size={24} />
                                 </button>
@@ -180,7 +182,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 <button
                                     onClick={() => setRepeat(!repeat)}
                                     className={`transition-colors p-2 rounded-full hover:bg-gray-800 hidden sm:block ${repeat ? 'text-brand-primary-400' : 'text-gray-400 hover:text-white'}`}
-                                    title="반복 재생"
+                                    title={t('player.repeat')}
                                 >
                                     <Repeat size={20} />
                                 </button>
@@ -196,7 +198,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                     <button
                                         onClick={() => setIsMuted(!isMuted)}
                                         className="text-gray-400 hover:text-white transition-colors p-1"
-                                        title={isMuted ? "음소거 해제" : "음소거"}
+                                        title={isMuted ? t('player.unmute') : t('player.mute')}
                                     >
                                         {isMuted || volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
                                     </button>
@@ -216,7 +218,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 <button
                                     onClick={() => setShowPlaylist(!showPlaylist)}
                                     className={`transition-colors p-2 rounded-full hover:bg-gray-800 ${showPlaylist ? 'text-brand-primary-400' : 'text-gray-400 hover:text-white'}`}
-                                    title="플레이리스트"
+                                    title={t('player.playlist')}
                                 >
                                     <List size={20} />
                                 </button>
@@ -231,7 +233,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="text-gray-400 hover:text-white transition-colors p-2 hover:bg-gray-800 rounded-full"
-                                                title={`${platform}에서 듣기`}
+                                                title={`${platform} ${t('player.listenOn')}`}
                                             >
                                                 <ExternalLink size={16} />
                                             </a>
@@ -242,7 +244,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 <button
                                     onClick={onClose}
                                     className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800 ml-2"
-                                    title="닫기"
+                                    title={t('common.close')}
                                 >
                                     ✕
                                 </button>
@@ -283,8 +285,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 exit={{ opacity: 0, y: 20, scale: 0.95 }}
                             >
                                 <div className="p-4 border-b border-gray-700 bg-gray-800 sticky top-0 z-10 flex justify-between items-center">
-                                    <h3 className="text-white font-santokki">플레이리스트</h3>
-                                    <span className="text-xs text-gray-400 font-wanted-sans">{playlist.length}곡</span>
+                                    <h3 className="text-white font-santokki">{t('player.playlist')}</h3>
+                                    <span className="text-xs text-gray-400 font-wanted-sans">{playlist.length}{t('player.tracks')}</span>
                                 </div>
                                 <div className="overflow-y-auto p-2 space-y-1">
                                     {playlist.map((track, index) => (

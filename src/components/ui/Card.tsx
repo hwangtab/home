@@ -6,6 +6,7 @@ import { HoverCard } from './AnimatedComponents';
 import { Heading4, BodyText, Caption } from './Typography';
 import { Stack, Flex } from './Layout';
 import type { Work } from '../../types/data.types';
+import { useLanguage } from '../../i18n';
 
 const cardVariants: Variants = {
     initial: { opacity: 0, y: 20 },
@@ -96,6 +97,7 @@ interface CardFooterProps {
 }
 
 const CardFooter = memo<CardFooterProps>(({ work }) => {
+    const { t } = useLanguage();
     const hasTags = work.tags && work.tags.length > 0;
     const hasLinks = work.links && Object.keys(work.links).length > 0;
 
@@ -118,7 +120,7 @@ const CardFooter = memo<CardFooterProps>(({ work }) => {
                     className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors text-sm"
                 >
                     <ExternalLink size={14} className="mr-1" />
-                    보기
+                    {t('common.view')}
                 </a>
             )}
         </Flex>

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Fuse, { FuseResult, FuseResultMatch } from 'fuse.js';
 import { Search, X, Music, Calendar, FileText, Mic, Hash } from 'lucide-react';
+import { useLanguage } from '../i18n';
 
 interface SearchItem {
     id?: string;
@@ -21,6 +22,7 @@ interface SearchResultProps {
 }
 
 const SearchResult: React.FC<SearchResultProps> = ({ result, onClick, type }) => {
+    const { t } = useLanguage();
     const getIcon = (itemType: string) => {
         switch (itemType) {
             case 'music': return <Music size={16} />;
@@ -76,7 +78,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ result, onClick, type }) =>
 
                 {result.item.year && (
                     <p className="text-gray-400 text-sm">
-                        {result.item.year}년
+                        {result.item.year}{t('common.year')}
                     </p>
                 )}
 
@@ -106,7 +108,8 @@ interface SearchBarProps {
     placeholder?: string;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder = "작품, 연도 검색..." }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder }) => {
+    const { t } = useLanguage();
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<FuseResult<SearchItem>[]>([]);
     const [isOpen, setIsOpen] = useState(false);
@@ -254,7 +257,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder 
                         if (results.length > 0) setIsOpen(true);
                     }}
                     className="block w-full pl-10 pr-10 py-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    placeholder={placeholder}
+                    placeholder={placeholder || t('common.searchPlaceholder')}
                 />
 
                 {query && (
@@ -279,7 +282,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder 
                     >
                         <div className="py-2">
                             <div className="px-3 py-2 text-xs text-gray-400 font-wanted-sans border-b border-gray-700">
-                                {results.length}개 결과
+                                {results.length} {t('common.results')}
                             </div>
 
                             {results.map((result, index) => (
@@ -308,7 +311,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder 
                     transition={{ duration: 0.2 }}
                 >
                     <div className="p-4 text-center text-gray-400 font-wanted-sans">
-                        검색 결과가 없습니다.
+                        {t('common.noResults')}
                     </div>
                 </motion.div>
             )}

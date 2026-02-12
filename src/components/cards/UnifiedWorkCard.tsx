@@ -3,6 +3,7 @@ import { Calendar, ExternalLink, Play, BookOpen, Eye, Mic, Video, LucideIcon } f
 import DefaultImageComponent from './DefaultImageComponent';
 import useLazyImage from '../../hooks/useLazyImage';
 import { Work, WorkCategory, PrimaryAction, WritingWork } from '../../types/data.types';
+import { useLanguage } from '../../i18n';
 
 // 설정 객체들
 const getAssetPath = (path: string): string => {
@@ -81,6 +82,7 @@ const useImageFallback = (cover: string | undefined, category: WorkCategory | st
 };
 
 const TypeBadge: React.FC<{ type: string; category?: string }> = ({ type, category = 'music' }) => {
+    const { t } = useLanguage();
     const config = CATEGORY_CONFIG[category] || { icon: null, color: 'bg-gray-600' };
 
     // visual 카테고리에서 video 타입 처리
@@ -88,8 +90,8 @@ const TypeBadge: React.FC<{ type: string; category?: string }> = ({ type, catego
         ? Video
         : config.icon;
 
-    const label = category === 'music' ? (type === 'album' ? '앨범' : '싱글')
-        : category === 'performance' ? '공연'
+    const label = category === 'music' ? (type === 'album' ? t('works.album') : t('works.single'))
+        : category === 'performance' ? t('works.performance')
             : type;
 
     return (
@@ -175,6 +177,7 @@ export interface UnifiedWorkCardProps {
 }
 
 const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work, onClick }) => {
+    const { t } = useLanguage();
     const {
         title,
         year,
@@ -216,9 +219,9 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work, onClick }) => {
             }}
             tabIndex={0}
             role="button"
-            aria-label={`${title} (${year}년) - ${category === 'music' ? '음악' : category === 'writing' ? '글' : category === 'visual' ? '시각' : '공연'} 작품 상세보기`}
+            aria-label={`${title} (${year}${t('common.year')}) - ${category === 'music' ? t('works.music') : category === 'writing' ? t('works.writing') : category === 'visual' ? t('works.visual') : t('works.performance')} ${t('works.detailLabel')}`}
             data-cursor="card"
-            data-cursor-text="클릭하여 상세보기"
+            data-cursor-text={t('works.clickDetail')}
         >
             <CardImage cover={cover} title={title} category={category} type={type || ''} />
 
@@ -227,7 +230,7 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work, onClick }) => {
                     <TypeBadge type={type || ''} category={category} />
                     <div className="flex items-center gap-1 text-gray-400 text-base">
                         <Calendar size={16} />
-                        <span>{year}년</span>
+                        <span>{year}{t('common.year')}</span>
                     </div>
                 </div>
 

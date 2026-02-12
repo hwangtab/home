@@ -3,6 +3,7 @@ import React, { memo, ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import CardRenderer from './CardRenderer';
 import { Work } from '../types/data.types';
+import { useLanguage } from '../i18n';
 
 export const RENDER_TYPES = {
     CARD_GRID: 'card_grid',
@@ -29,11 +30,12 @@ const CardGridRenderer: React.FC<CardGridRendererProps> = memo(({
     itemKey = 'id',
     animation = true
 }) => {
+    const { t } = useLanguage();
     if (!data || data.length === 0) {
         return (
             <div className="text-center py-12">
                 <p className="text-gray-300 font-wanted-sans">
-                    표시할 데이터가 없습니다.
+                    {t('common.noData')}
                 </p>
             </div>
         );
@@ -277,11 +279,12 @@ const DataRenderer: React.FC<DataRendererProps> = memo(({
     data,
     ...props
 }) => {
+    const { t } = useLanguage();
     if (!data) {
         return (
             <div className="text-center py-8">
                 <p className="text-gray-300 font-wanted-sans">
-                    데이터를 불러오는 중...
+                    {t('common.loading')}
                 </p>
             </div>
         );
@@ -307,7 +310,7 @@ const DataRenderer: React.FC<DataRendererProps> = memo(({
             return (
                 <div className="text-center py-8">
                     <p className="text-gray-300 font-wanted-sans">
-                        알 수 없는 렌더링 타입입니다.
+                        {t('common.unknownRenderType')}
                     </p>
                 </div>
             );

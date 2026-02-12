@@ -9,6 +9,7 @@
     },
     "common": {
         "year": "년",
+        "results": "개 결과",
         "siteTitle": "황경하",
         "error": "오류",
         "loadingError": "데이터를 불러오는 중 오류가 발생했습니다.",
@@ -16,13 +17,19 @@
         "search": "검색",
         "searchPlaceholder": "작품, 연도, 태그로 검색...",
         "noResults": "검색 결과가 없습니다.",
+        "noData": "표시할 데이터가 없습니다.",
+        "unknownRenderType": "알 수 없는 렌더링 타입입니다.",
+        "imageLoadFailed": "이미지 로드 실패",
         "readMore": "더 보기",
+        "view": "보기",
         "close": "닫기",
         "download": "다운로드",
         "share": "공유",
         "back": "뒤로",
         "next": "다음",
         "previous": "이전"
+        ,"confirm": "확인"
+        ,"retry": "다시 시도"
     },
     "home": {
         "hero": {
@@ -39,11 +46,19 @@
             "aboutDesc": "아티스트 소개와 철학",
             "worksDesc": "음악, 글, 공연 작품 모음",
             "contactDesc": "문의 및 연락처"
+        },
+        "professions": {
+            "musician": "음악가",
+            "soundEngineer": "사운드 엔지니어",
+            "producer": "프로듀서",
+            "solidarityActivist": "연대자"
         }
     },
     "about": {
         "title": "소개",
         "heroSubtitle": "황경하는 현장에서 글, 음악, 사진 등의 예술이 힘을 갖는 순간에 주목하여 활동하는 음악가입니다.",
+        "profileParagraph1": "그의 작업은 사회에 대한 날카로운 시선과 따뜻한 연대의 메시지를 담고 있습니다. 음악 활동 외에도 황경하는 다양한 투쟁에 참여하며, 음악을 통한 사회 변화를 추구하고 있습니다.",
+        "profileParagraph2": "명성과 부를 좇기보다 시대의 아픔에 공감하고 약자와 연대하는 예술, 세상의 부조리에 저항하고 변화의 메시지를 전하는 예술의 길을 개척하고 있습니다. 비록 험난한 여정이겠지만 노래하는 자의 가녀린 어깨가 세상을 변화시키리라 믿습니다.",
         "philosophy": "예술 철학",
         "timeline": "활동 연혁",
         "resistanceTitle": "연대와 저항",
@@ -59,7 +74,12 @@
         "visual": "영상",
         "writing": "글쓰기",
         "performance": "공연",
+        "struggle": "투쟁",
         "playAll": "전체 재생",
+        "album": "앨범",
+        "single": "싱글",
+        "detailLabel": "작품 상세보기",
+        "clickDetail": "클릭하여 상세보기",
         "videos": "비디오 작품",
         "photography": "사진",
         "essays": "에세이",
@@ -72,6 +92,8 @@
         "photos": "사진",
         "watchOriginal": "원본 보기",
         "readArticle": "읽기"
+        ,"noWorksByCategory": "'{category}' 카테고리의 작품이 없습니다."
+        ,"loadingMore": "더 많은 작품 로딩 중..."
     },
     "archive": {
         "title": "아카이브",
@@ -110,7 +132,14 @@
             "send": "메시지 보내기",
             "sending": "전송 중...",
             "success": "메시지가 성공적으로 전송되었습니다!",
-            "error": "메시지 전송에 실패했습니다. 다시 시도해주세요."
+            "error": "메시지 전송에 실패했습니다. 다시 시도해주세요.",
+            "errors": {
+                "nameMin": "이름은 최소 2글자 이상이어야 합니다.",
+                "emailInvalid": "올바른 이메일 형식을 입력해주세요.",
+                "subjectMin": "제목은 최소 3글자 이상이어야 합니다.",
+                "messageMin": "메시지는 최소 10글자 이상이어야 합니다.",
+                "checkInput": "입력 정보를 확인해주세요."
+            }
         },
         "businessHours": "업무 시간",
         "businessHoursText": "평일 10:00 - 18:00\n주말 및 공휴일 휴무",
@@ -124,10 +153,23 @@
     },
     "player": {
         "playlist": "플레이리스트",
+        "tracks": "곡",
         "shuffle": "셔플",
+        "play": "재생",
+        "pause": "일시정지",
+        "previousTrack": "이전 곡",
+        "nextTrack": "다음 곡",
         "repeat": "반복",
         "volume": "볼륨",
-        "mute": "음소거"
+        "mute": "음소거",
+        "unmute": "음소거 해제",
+        "listenOn": "에서 듣기"
+    },
+    "video": {
+        "galleryTitle": "비디오 갤러리",
+        "views": "조회",
+        "noVideos": "비디오가 없습니다.",
+        "noVideosByType": "'{type}' 유형의 비디오가 없습니다."
     },
     "footer": {
         "copyright": "황경하. All rights reserved."

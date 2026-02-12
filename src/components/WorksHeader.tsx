@@ -7,6 +7,7 @@ import Button from './ui/Button';
 import { Flex, Stack } from './ui/Layout';
 import { MusicWork } from '../types/data.types';
 import { FuseResult } from 'fuse.js';
+import { useLanguage } from '../i18n';
 
 interface WorksHeaderProps {
     activeFilter: string;
@@ -25,6 +26,7 @@ const WorksHeader: React.FC<WorksHeaderProps> = memo(({
     musicWorks,
     openMusicPlayer
 }) => {
+    const { t } = useLanguage();
     return (
         <Stack spacing="lg" className="mb-8">
             <Flex
@@ -38,7 +40,7 @@ const WorksHeader: React.FC<WorksHeaderProps> = memo(({
                     <SearchBar
                         data={siteData}
                         onResultClick={handleSearchResult}
-                        placeholder="작품 검색..."
+                        placeholder={t('common.searchPlaceholder')}
                     />
 
                     {activeFilter === 'music' && musicWorks.length > 0 && (
@@ -49,7 +51,7 @@ const WorksHeader: React.FC<WorksHeaderProps> = memo(({
                             leftIcon={<Play size={16} />}
                             animation="bounce"
                         >
-                            전체 재생
+                            {t('works.playAll')}
                         </Button>
                     )}
                 </Flex>

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { GridSkeleton } from './ui/Skeleton';
 import { StaggerContainer, StaggerItem } from './ui/AnimatedComponents';
 import { Work } from '../types/data.types';
+import { useLanguage } from '../i18n';
 
 interface WorksGridProps {
     filteredWorks: Work[];
@@ -22,6 +23,7 @@ const WorksGrid: React.FC<WorksGridProps> = memo(({
     isLoading = false,
     skeletonCount = 6
 }) => {
+    const { t } = useLanguage();
     // 점진적 로딩을 위한 상태
     const [visibleCount, setVisibleCount] = useState(6); // 첫 6개만 즉시 표시
     const [showAll, setShowAll] = useState(false);
@@ -54,7 +56,9 @@ const WorksGrid: React.FC<WorksGridProps> = memo(({
         return (
             <div className="text-center py-12">
                 <p className="text-gray-400 font-wanted-sans">
-                    {emptyMessage || (activeFilter === 'all' ? '작품이 없습니다.' : `'${activeFilter}' 카테고리의 작품이 없습니다.`)}
+                    {emptyMessage || (activeFilter === 'all'
+                        ? t('works.noWorks')
+                        : t('works.noWorksByCategory').replace('{category}', activeFilter))}
                 </p>
             </div>
         );
@@ -90,7 +94,7 @@ const WorksGrid: React.FC<WorksGridProps> = memo(({
                 >
                     <div className="inline-flex items-center gap-2 text-gray-400 font-wanted-sans">
                         <div className="w-2 h-2 bg-brand-primary-400 rounded-full animate-pulse"></div>
-                        <span>더 많은 작품 로딩 중...</span>
+                        <span>{t('works.loadingMore')}</span>
                     </div>
                 </motion.div>
             )}

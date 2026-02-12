@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { useState, useEffect, memo, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../i18n';
 // @ts-ignore - utils might be JS
 import {
     supportsWebP,
@@ -46,6 +47,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
     breakpoints = null,
     ...props
 }) => {
+    const { t } = useLanguage();
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasError, setHasError] = useState(false);
     // @ts-ignore
@@ -91,7 +93,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
                 className={`bg-gray-700 flex items-center justify-center ${className}`}
                 {...props}
             >
-                <span className="text-gray-400 text-sm">이미지 로드 실패</span>
+                <span className="text-gray-400 text-sm">{t('common.imageLoadFailed')}</span>
             </div>
         );
     }

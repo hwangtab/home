@@ -164,8 +164,8 @@ const QuickNavigation: React.FC = () => {
 };
 
 const Home: React.FC = () => {
-    const { t } = useLanguage();
-    const { data: siteData, loading, error } = useCachedPageData('home');
+    const { t, language } = useLanguage();
+    const { data: siteData, loading, error } = useCachedPageData('home', language);
 
     // Always render PageHero to prevent double animation from layout shift
     return (

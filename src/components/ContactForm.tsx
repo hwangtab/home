@@ -7,6 +7,7 @@ import { THEME_STYLES } from '../constants/styles';
 import { useToast } from './ui/Toast';
 import { Input, Textarea } from './ui/FormElements';
 import Button from './ui/Button';
+import { useLanguage } from '../i18n';
 
 interface FormData {
     name: string;
@@ -27,10 +28,11 @@ interface ContactFormProps {
 const ContactForm: React.FC<ContactFormProps> = ({
     theme = 'dark',
     includeSubject = true,
-    title = '문의하기',
+    title = '',
     className = '',
     animation = COMMON_ANIMATIONS.slideInRight
 }) => {
+    const { t } = useLanguage();
     const initialFormData: FormData = {
         name: '',
         email: '',
@@ -46,14 +48,14 @@ const ContactForm: React.FC<ContactFormProps> = ({
     const validateField = (name: string, value: string) => {
         switch (name) {
             case 'name':
-                return value.trim().length >= 2 ? null : '이름은 최소 2글자 이상이어야 합니다.';
+                return value.trim().length >= 2 ? null : t('contact.form.errors.nameMin');
             case 'email':
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return emailRegex.test(value) ? null : '올바른 이메일 형식을 입력해주세요.';
+                return emailRegex.test(value) ? null : t('contact.form.errors.emailInvalid');
             case 'subject':
-                return includeSubject && value.trim().length < 3 ? '제목은 최소 3글자 이상이어야 합니다.' : null;
+                return includeSubject && value.trim().length < 3 ? t('contact.form.errors.subjectMin') : null;
             case 'message':
-                return value.trim().length >= 10 ? null : '메시지는 최소 10글자 이상이어야 합니다.';
+                return value.trim().length >= 10 ? null : t('contact.form.errors.messageMin');
             default:
                 return null;
         }
@@ -87,7 +89,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
         setErrors(newErrors);
 
         if (Object.keys(newErrors).length > 0) {
-            showError('입력 정보를 확인해주세요.');
+            showError(t('contact.form.errors.checkInput'));
             return;
         }
 
@@ -95,9 +97,9 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
         try {
             await sendEmail(formData);
-            showSuccess('메시지가 성공적으로 전송되었습니다!', {
+            showSuccess(t('contact.form.success'), {
                 action: {
-                    label: '확인',
+                    label: t('common.confirm'),
                     onClick: () => console.log('Success confirmed')
                 }
             });
@@ -105,9 +107,9 @@ const ContactForm: React.FC<ContactFormProps> = ({
             setErrors({});
         } catch (error) {
             console.error('Failed to send email:', error);
-            showError('메시지 전송에 실패했습니다. 다시 시도해주세요.', {
+            showError(t('contact.form.error'), {
                 action: {
-                    label: '다시 시도',
+                    label: t('common.retry'),
                     onClick: () => void submitForm()
                 }
             });
@@ -123,9 +125,9 @@ const ContactForm: React.FC<ContactFormProps> = ({
             className={`${themeConfig.surface} ${themeConfig.text.primary} p-8 rounded-lg shadow-lg ${className}`}
             {...animation}
         >
-            {title && (
+            {(title || t('contact.form.title')) && (
                 <h3 className="text-2xl font-bold font-santokki mb-6">
-                    {title}
+                    {title || t('contact.form.title')}
                 </h3>
             )}
 
@@ -133,13 +135,13 @@ const ContactForm: React.FC<ContactFormProps> = ({
                 <Input
                     id="name"
                     name="name"
-                    label="이름"
+                    label={t('contact.form.name')}
                     type="text"
                     value={formData.name}
                     onChange={handleChange}
                     error={errors.name || undefined}
                     required
-                    placeholder="성함을 입력해주세요"
+                    placeholder={t('contact.form.namePlaceholder')}
                     realTimeValidation={true}
                     validation={(value) => !validateField('name', value)}
                 />
@@ -147,13 +149,13 @@ const ContactForm: React.FC<ContactFormProps> = ({
                 <Input
                     id="email"
                     name="email"
-                    label="이메일"
+                    label={t('contact.form.email')}
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
                     error={errors.email || undefined}
                     required
-                    placeholder="이메일 주소를 입력해주세요"
+                    placeholder={t('contact.form.emailPlaceholder')}
                     realTimeValidation={true}
                     validation={(value) => !validateField('email', value)}
                 />
@@ -162,13 +164,13 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     <Input
                         id="subject"
                         name="subject"
-                        label="제목"
+                        label={t('contact.form.subject')}
                         type="text"
                         value={formData.subject || ''}
                         onChange={handleChange}
                         error={errors.subject || undefined}
                         required
-                        placeholder="문의 제목을 입력해주세요"
+                        placeholder={t('contact.form.subjectPlaceholder')}
                         realTimeValidation={true}
                         validation={(value) => !validateField('subject', value)}
                     />
@@ -176,7 +178,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
                 <div>
                     <label htmlFor="message" className="block text-sm font-medium text-gray-200 font-wanted-sans mb-2">
-                        메시지 <span className="text-red-400">*</span>
+                        {t('contact.form.message')} <span className="text-red-400">*</span>
                     </label>
                     <Textarea
                         id="message"
@@ -184,7 +186,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                         rows={6}
                         value={formData.message}
                         onChange={handleChange}
-                        placeholder="문의 내용을 자세히 입력해주세요"
+                        placeholder={t('contact.form.messagePlaceholder')}
                         className={errors.message ? 'border-red-500' : ''}
                     />
                     {errors.message && (
@@ -202,11 +204,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     size="lg"
                     fullWidth={true}
                     loading={isSubmitting}
-                    loadingText="전송 중..."
+                    loadingText={t('contact.form.sending')}
                     leftIcon={!isSubmitting ? <Send size={20} /> : null}
                     animation="default"
                 >
-                    메시지 보내기
+                    {t('contact.form.send')}
                 </Button>
             </form>
         </motion.div>

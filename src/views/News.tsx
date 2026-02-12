@@ -156,8 +156,8 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => (
 );
 
 const News: React.FC = () => {
-    const { t } = useLanguage();
-    const { data: siteData, loading, error } = useCachedPageData('news');
+    const { t, language } = useLanguage();
+    const { data: siteData, loading, error } = useCachedPageData('news', language);
 
     if (loading) {
         return (
@@ -173,7 +173,7 @@ const News: React.FC = () => {
         return (
             <div>
                 <div className="container mx-auto py-8 text-center">
-                    <p className="text-gray-300">데이터를 불러오는 중 오류가 발생했습니다.</p>
+                    <p className="text-gray-300">{t('common.loadingError')}</p>
                 </div>
             </div>
         );

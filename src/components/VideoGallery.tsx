@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactPlayer from 'react-player';
 import { Play, X, ExternalLink, Calendar, Tag } from 'lucide-react';
+import { useLanguage } from '../i18n';
 
 export interface VideoItem {
     id: string | number;
@@ -26,6 +27,7 @@ interface VideoModalProps {
 }
 
 const VideoModal: React.FC<VideoModalProps> = ({ video, isOpen, onClose }) => {
+    const { t } = useLanguage();
     if (!video) return null;
 
     return (
@@ -108,7 +110,7 @@ const VideoModal: React.FC<VideoModalProps> = ({ video, isOpen, onClose }) => {
 
                             {video.credits && video.credits.length > 0 && (
                                 <div className="mb-4">
-                                    <h3 className="font-bold mb-2">크레딧</h3>
+                                    <h3 className="font-bold mb-2">{t('works.credits')}</h3>
                                     <div className="text-sm text-gray-400 space-y-1">
                                         {video.credits.map((credit, index) => (
                                             <div key={index}>
@@ -132,6 +134,7 @@ interface VideoCardProps {
 }
 
 const VideoCard: React.FC<VideoCardProps> = ({ video, onClick }) => {
+    const { t } = useLanguage();
     const [imageLoaded, setImageLoaded] = useState(false);
 
     return (
@@ -189,7 +192,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onClick }) => {
 
                 <div className="flex items-center justify-between text-sm text-gray-400 mb-2">
                     <span>{video.year}</span>
-                    {video.views && <span>{video.views} 조회</span>}
+                    {video.views && <span>{video.views} {t('video.views')}</span>}
                 </div>
 
                 {video.description && (
@@ -227,7 +230,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onClick }) => {
                             onClick={(e: React.MouseEvent) => e.stopPropagation()}
                         >
                             <ExternalLink size={14} className="mr-1" />
-                            원본 보기
+                            {t('works.watchOriginal')}
                         </a>
                     </div>
                 )}
@@ -241,7 +244,8 @@ interface VideoGalleryProps {
     title?: string;
 }
 
-const VideoGallery: React.FC<VideoGalleryProps> = ({ videos = [], title = "비디오 갤러리" }) => {
+const VideoGallery: React.FC<VideoGalleryProps> = ({ videos = [], title }) => {
+    const { t } = useLanguage();
     const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [filter, setFilter] = useState('all');
@@ -266,7 +270,7 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({ videos = [], title = "비�
         <div>
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-3xl font-bold text-gray-200 font-santokki">
-                    {title}
+                    {title || t('video.galleryTitle')}
                 </h2>
 
                 {videoTypes.length > 1 && (
@@ -280,7 +284,7 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({ videos = [], title = "비�
                                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                                     }`}
                             >
-                                {type === 'all' ? '전체' : type}
+                                {type === 'all' ? t('works.all') : type}
                             </button>
                         ))}
                     </div>
@@ -290,7 +294,7 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({ videos = [], title = "비�
             {filteredVideos.length === 0 ? (
                 <div className="text-center py-12">
                     <p className="text-gray-400 font-wanted-sans">
-                        {filter === 'all' ? '비디오가 없습니다.' : `'${filter}' 유형의 비디오가 없습니다.`}
+                        {filter === 'all' ? t('video.noVideos') : t('video.noVideosByType').replace('{type}', filter)}
                     </p>
                 </div>
             ) : (

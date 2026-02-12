@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 import { Music, Video, FileText, Grid, Flame } from 'lucide-react';
 import { ToggleButton, ButtonGroup } from './ui/Button';
 import { Flex } from './ui/Layout';
+import { useLanguage } from '../i18n';
 
 interface WorksFilterProps {
     activeFilter: string;
@@ -10,12 +11,13 @@ interface WorksFilterProps {
 }
 
 const WorksFilter: React.FC<WorksFilterProps> = memo(({ activeFilter, setActiveFilter }) => {
+    const { t } = useLanguage();
     const filters = [
-        { id: 'all', name: '전체', icon: Grid },
-        { id: 'music', name: '음악', icon: Music },
-        { id: 'visual', name: '영상', icon: Video },
-        { id: 'writing', name: '글쓰기', icon: FileText },
-        { id: 'struggle', name: '투쟁', icon: Flame }
+        { id: 'all', name: t('works.all'), icon: Grid },
+        { id: 'music', name: t('works.music'), icon: Music },
+        { id: 'visual', name: t('works.visual'), icon: Video },
+        { id: 'writing', name: t('works.writing'), icon: FileText },
+        { id: 'struggle', name: t('works.struggle'), icon: Flame }
     ];
 
     return (

@@ -143,7 +143,7 @@ interface SearchInputProps extends InputProps {
     searchDelay?: number;
 }
 
-export const SearchInput = memo(forwardRef<HTMLInputElement, SearchInputProps>(({ onSearch, searchDelay = 300, placeholder = '검색...', ...props }, ref) => {
+export const SearchInput = memo(forwardRef<HTMLInputElement, SearchInputProps>(({ onSearch, searchDelay = 300, placeholder = 'Search...', ...props }, ref) => {
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
@@ -190,7 +190,7 @@ interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'siz
     placeholder?: string;
 }
 
-export const Select = memo(forwardRef<HTMLSelectElement, SelectProps>(({ options = [], placeholder = '선택하세요', size = 'md', className = '', ...props }, ref) => {
+export const Select = memo(forwardRef<HTMLSelectElement, SelectProps>(({ options = [], placeholder = 'Select an option', size = 'md', className = '', ...props }, ref) => {
     const sizeClasses = { sm: 'px-3 py-1.5 text-sm', md: 'px-4 py-2 text-sm', lg: 'px-4 py-3 text-base' };
     const baseClasses = [
         'w-full', 'bg-gray-700 border border-gray-600', 'text-gray-100', 'rounded-lg',

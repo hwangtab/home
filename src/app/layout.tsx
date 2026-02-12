@@ -5,8 +5,8 @@ import Providers from './providers';
 import SiteLayout from '../components/next/SiteLayout';
 
 export const metadata: Metadata = {
-  title: '황경하 Official Web',
-  description: '음악가이자 사운드 엔지니어, 프로듀서인 황경하의 공식 웹사이트입니다.'
+  title: 'Hwang Gyeongha Official Web',
+  description: 'Official website of musician, sound engineer, and producer Hwang Gyeongha.'
 };
 
 export default function RootLayout({
