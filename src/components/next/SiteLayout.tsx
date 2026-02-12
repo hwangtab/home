@@ -58,7 +58,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
               {t('common.siteTitle')}
             </h1>
           </Link>
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-6 md:-translate-y-1">
             {nav.map((item) => (
               <Link
                 key={item.path}
