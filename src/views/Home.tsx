@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
@@ -9,6 +10,7 @@ import { GridSkeleton } from '../components/ui/Skeleton';
 import { useCachedPageData } from '../hooks/usePageData';
 import { MusicWork, SiteData } from '../types/data.types';
 import { useLanguage } from '../i18n';
+import { getLocaleFromPathname, withLocalePrefix } from '../utils/localePath';
 
 interface FeaturedWorksProps {
     siteData: SiteData | null;
@@ -16,6 +18,8 @@ interface FeaturedWorksProps {
 
 const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ siteData }) => {
     const { t } = useLanguage();
+    const pathname = usePathname();
+    const locale = getLocaleFromPathname(pathname);
     const [featuredWorks, setFeaturedWorks] = useState<MusicWork[]>([]);
 
     useEffect(() => {
@@ -43,7 +47,7 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ siteData }) => {
                             key={work.id}
                             className="w-full bg-gray-750 p-6 rounded-lg shadow-lg transform-gpu hover:scale-105 transition-transform duration-300"
                         >
-                            <Link href={`/works?category=music&id=${work.id}`}>
+                            <Link href={withLocalePrefix(`/works/${work.id}`, locale)}>
                                 <img
                                     src={work.cover || '/images/defaults/music-default.svg'}
                                     alt={work.title}
@@ -69,7 +73,7 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ siteData }) => {
             <div className="text-center mt-8">
                 <div className="hover:scale-105 transition-transform duration-200">
                     <Link
-                        href="/works"
+                        href={withLocalePrefix('/works', locale)}
                         className="inline-flex items-center bg-gray-750 text-white px-8 py-4 rounded-full font-wanted-sans hover:bg-gray-600 transition-all duration-300 transform-gpu"
                     >
                         {t('home.viewAllWorks')}
@@ -82,6 +86,8 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ siteData }) => {
 
 const QuickNavigation: React.FC = () => {
     const { t } = useLanguage();
+    const pathname = usePathname();
+    const locale = getLocaleFromPathname(pathname);
     const quickLinks = [
         {
             name: t('nav.about'),
@@ -138,7 +144,7 @@ const QuickNavigation: React.FC = () => {
                         {/* 브랜드 컬러 액센트 */}
                         <div className={`absolute top-0 left-0 w-full h-1 ${link.classes.line}`} />
 
-                        <Link href={link.path} className="block">
+                        <Link href={withLocalePrefix(link.path, locale)} className="block">
                             <div className="flex flex-col items-center mb-4">
                                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-3 transition-colors duration-300 ${link.classes.iconBg} ${link.classes.iconBgHover}`}>
                                     <span className="text-2xl">{link.icon}</span>

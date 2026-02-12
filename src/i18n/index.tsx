@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import koTranslations from '../locales/ko.json';
 import enTranslations from '../locales/en.json';
+import { getLocaleFromPathname } from '../utils/localePath';
 
 type SupportedLanguage = 'ko' | 'en';
 
@@ -31,14 +33,15 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-    const [language, setLanguage] = useState<SupportedLanguage>('ko');
+    const pathname = usePathname();
+    const routeLanguage = getLocaleFromPathname(pathname);
+    const [language, setLanguage] = useState<SupportedLanguage>(routeLanguage);
 
     useEffect(() => {
-        const savedLanguage = (localStorage.getItem('site-language') || localStorage.getItem('language')) as SupportedLanguage | null;
-        if (savedLanguage === 'ko' || savedLanguage === 'en') {
-            setLanguage(savedLanguage);
+        if (language !== routeLanguage) {
+            setLanguage(routeLanguage);
         }
-    }, []);
+    }, [language, routeLanguage]);
 
     useEffect(() => {
         if (typeof document !== 'undefined') {

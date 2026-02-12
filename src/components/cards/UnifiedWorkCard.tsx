@@ -1,9 +1,12 @@
 import React, { useState, memo, useCallback, ReactNode } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Calendar, ExternalLink, Play, BookOpen, Eye, Mic, Video, LucideIcon } from 'lucide-react';
 import DefaultImageComponent from './DefaultImageComponent';
 import useLazyImage from '../../hooks/useLazyImage';
 import { Work, WorkCategory, PrimaryAction, WritingWork } from '../../types/data.types';
 import { useLanguage } from '../../i18n';
+import { getLocaleFromPathname, withLocalePrefix } from '../../utils/localePath';
 
 // 설정 객체들
 const getAssetPath = (path: string): string => {
@@ -178,6 +181,8 @@ export interface UnifiedWorkCardProps {
 
 const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work, onClick }) => {
     const { t } = useLanguage();
+    const pathname = usePathname();
+    const locale = getLocaleFromPathname(pathname);
     const {
         title,
         year,
@@ -195,6 +200,7 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work, onClick }) => {
     const truncatedDescription = displayDescription.length > 100
         ? displayDescription.substring(0, 100) + '...'
         : displayDescription;
+    const detailHref = withLocalePrefix(`/works/${work.id}`, locale);
 
     const handleCardClick = useCallback((e: React.MouseEvent | React.KeyboardEvent) => {
         if ((e.target as HTMLElement).closest('a')) return;
@@ -245,7 +251,15 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work, onClick }) => {
                 </p>
 
                 <div className="flex justify-end mt-auto pt-2 border-t border-gray-700/50 group-hover:border-brand-primary-500/20 transition-colors duration-300">
-                    <ActionButton action={primaryAction} category={category} />
+                    <div className="flex items-center gap-2">
+                        <Link
+                            href={detailHref}
+                            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg border border-gray-600 text-gray-200 hover:border-brand-primary-400 hover:text-brand-primary-300 transition-colors"
+                        >
+                            {t('common.readMore')}
+                        </Link>
+                        <ActionButton action={primaryAction} category={category} />
+                    </div>
                 </div>
             </div>
         </article>

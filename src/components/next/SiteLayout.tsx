@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { useLanguage } from '../../i18n';
 import LanguageToggle from '../LanguageToggle';
+import { getLocaleFromPathname, stripLocalePrefix, withLocalePrefix } from '../../utils/localePath';
 
 interface SiteLayoutProps {
   children: React.ReactNode;
@@ -13,6 +14,8 @@ interface SiteLayoutProps {
 
 const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
   const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
+  const basePathname = stripLocalePrefix(pathname);
   const { t } = useLanguage();
   const [isOpen, setIsOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
@@ -38,7 +41,14 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
     { path: '/works', label: t('nav.works') },
     { path: '/news', label: t('nav.news') },
     { path: '/contact', label: t('nav.contact') }
-  ];
+  ].map((item) => ({
+    ...item,
+    href: withLocalePrefix(item.path, locale),
+    isActive:
+      item.path === '/'
+        ? basePathname === '/'
+        : basePathname === item.path || basePathname.startsWith(`${item.path}/`)
+  }));
 
   return (
     <div className="bg-gradient-to-b from-gray-950 to-gray-900 min-h-screen font-wanted-sans text-gray-100">
@@ -50,20 +60,20 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
         }`}
       >
         <div className="container mx-auto flex items-center justify-between">
-          <Link href="/" className="focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary-400 rounded-lg">
-            <h1
+          <Link href={withLocalePrefix('/', locale)} className="focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary-400 rounded-lg">
+            <p
               className="text-3xl sm:text-4xl md:text-5xl font-bold font-bombaram transform-gpu hover:scale-105 transition-transform duration-200"
               style={{ lineHeight: '1', transform: 'translateY(12px)' }}
             >
               {t('common.siteTitle')}
-            </h1>
+            </p>
           </Link>
           <nav className="hidden md:flex items-center gap-6 md:-translate-y-1">
             {nav.map((item) => (
               <Link
                 key={item.path}
-                href={item.path}
-                className={pathname === item.path ? 'text-brand-primary-400' : 'text-gray-200 hover:text-brand-primary-300'}
+                href={item.href}
+                className={item.isActive ? 'text-brand-primary-400' : 'text-gray-200 hover:text-brand-primary-300'}
               >
                 {item.label}
               </Link>
@@ -83,7 +93,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
           <div className={`md:hidden border-t ${isScrolled ? 'border-gray-800 bg-gray-900/95 backdrop-blur-md' : 'border-transparent bg-gray-950/70 backdrop-blur-sm'}`}>
             <div className="container mx-auto px-4 py-3 flex flex-col gap-3">
               {nav.map((item) => (
-                <Link key={item.path} href={item.path} className={pathname === item.path ? 'text-brand-primary-400' : 'text-gray-200'}>
+                <Link key={item.path} href={item.href} className={item.isActive ? 'text-brand-primary-400' : 'text-gray-200'}>
                   {item.label}
                 </Link>
               ))}

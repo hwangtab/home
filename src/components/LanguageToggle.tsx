@@ -2,7 +2,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Globe } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
 import { useLanguage } from '../i18n';
+import { stripLocalePrefix, withLocalePrefix } from '../utils/localePath';
 
 interface LanguageToggleProps {
     className?: string;
@@ -11,11 +13,22 @@ interface LanguageToggleProps {
 const LanguageToggle: React.FC<LanguageToggleProps> = ({ className = "" }) => {
     // @ts-ignore - useLanguage context might not be fully typed yet
     const { language, changeLanguage } = useLanguage();
+    const pathname = usePathname();
+    const router = useRouter();
+
+    const handleToggleLanguage = () => {
+        const nextLanguage = language === 'ko' ? 'en' : 'ko';
+        const basePath = stripLocalePrefix(pathname);
+        const targetPath = withLocalePrefix(basePath, nextLanguage);
+
+        changeLanguage(nextLanguage);
+        router.push(targetPath);
+    };
 
     return (
         <div className={`relative ${className}`}>
             <motion.button
-                onClick={() => changeLanguage(language === 'ko' ? 'en' : 'ko')}
+                onClick={handleToggleLanguage}
                 className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
