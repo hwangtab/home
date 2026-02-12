@@ -10,12 +10,6 @@ import MetaDataManager from '../components/SEO/MetaDataManager';
 import { usePageSEO } from '../hooks/useSEO';
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
-import { Work } from '../types/data.types';
-
-interface TimelineEvent {
-    title: string;
-    description: string;
-}
 
 interface AboutProps { }
 

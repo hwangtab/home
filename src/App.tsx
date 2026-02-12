@@ -6,6 +6,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { ToastProvider } from './components/ui/Toast';
 import { SEOProvider } from './components/SEO/MetaDataManager';
 import { AnimationProvider } from './context/AnimationContext';
+import { getRouterBasename } from './utils/env';
 
 // 성능 최적화된 로딩 화면 컴포넌트
 const OptimizedLoadingFallback: React.FC<{ page?: string }> = ({ page = '페이지' }) => (
@@ -16,6 +17,8 @@ const OptimizedLoadingFallback: React.FC<{ page?: string }> = ({ page = '페이�
         </div>
     </div>
 );
+
+
 
 
 // 고급 에러 처리가 포함된 lazy loading 유틸리티
@@ -35,10 +38,7 @@ const Contact = createLazyComponent(() => import('./pages/Contact'));
 
 
 const App: React.FC = () => {
-    // GitHub Pages에서만 basename 사용, Vercel에서는 필요 없음
-    const isGitHubPages = process.env.NODE_ENV === 'production' &&
-        window.location.hostname === 'hwangtab.github.io';
-    const basename = isGitHubPages ? '/home' : '';
+    const basename = getRouterBasename();
 
     return (
         <SEOProvider>

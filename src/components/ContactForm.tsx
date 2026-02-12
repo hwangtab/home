@@ -1,6 +1,5 @@
-// @ts-nocheck
 import React, { useState, memo } from 'react';
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 import { Send } from 'lucide-react';
 import { sendEmail } from '../config/emailjs';
 import { COMMON_ANIMATIONS } from '../constants/animations';
@@ -22,11 +21,7 @@ interface ContactFormProps {
     includeSubject?: boolean;
     title?: string;
     className?: string;
-    animation?: {
-        initial?: React.ComponentProps<typeof motion.div>["initial"];
-        animate?: React.ComponentProps<typeof motion.div>["animate"];
-        transition?: React.ComponentProps<typeof motion.div>["transition"];
-    };
+    animation?: HTMLMotionProps<"div">;
 }
 
 const ContactForm: React.FC<ContactFormProps> = ({
@@ -34,13 +29,13 @@ const ContactForm: React.FC<ContactFormProps> = ({
     includeSubject = true,
     title = '문의하기',
     className = '',
-    animation = COMMON_ANIMATIONS.slideInRight as any
+    animation = COMMON_ANIMATIONS.slideInRight
 }) => {
     const initialFormData: FormData = {
         name: '',
         email: '',
-        ...(includeSubject && { subject: '' }),
-        message: ''
+        message: '',
+        ...(includeSubject ? { subject: '' } : {})
     };
 
     const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -78,7 +73,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        await submitForm();
+    };
 
+    const submitForm = async (): Promise<void> => {
         // 전체 유효성 검사
         const newErrors: Record<string, string> = {};
         Object.keys(formData).forEach(key => {
@@ -110,8 +108,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             showError('메시지 전송에 실패했습니다. 다시 시도해주세요.', {
                 action: {
                     label: '다시 시도',
-                    // @ts-ignore - recreating event object is complex, but handleSubmit mainly needs preventDefault which is done.
-                    onClick: () => handleSubmit({ preventDefault: () => { } } as React.FormEvent)
+                    onClick: () => void submitForm()
                 }
             });
         } finally {
@@ -121,14 +118,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
     const themeConfig = THEME_STYLES[theme as keyof typeof THEME_STYLES] || THEME_STYLES.dark;
 
-    // @ts-ignore - framer-motion v6 type compatibility issue
     return (
-        // @ts-ignore - framer-motion v6 type compatibility issue
         <motion.div
             className={`${themeConfig.surface} ${themeConfig.text.primary} p-8 rounded-lg shadow-lg ${className}`}
-            initial={animation.initial}
-            animate={animation.animate}
-            transition={animation.transition}
+            {...animation}
         >
             {title && (
                 <h3 className="text-2xl font-bold font-santokki mb-6">

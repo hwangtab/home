@@ -47,10 +47,10 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
     const t = (path: string): string => {
         const keys = path.split('.');
-        let value: TranslationValue | string | string[] | undefined = translations[language];
+        let value: any = translations[language];
 
         for (const key of keys) {
-            if (value && typeof value === 'object' && !Array.isArray(value)) {
+            if (value && typeof value === 'object' && key in value) {
                 value = value[key];
             } else {
                 return path; // Return the path if translation not found

@@ -98,7 +98,7 @@ const VirtualGrid = memo(<T extends VirtualGridItem>({
             </div>
         </div>
     );
-}) as <T extends VirtualGridItem>(props: VirtualGridProps<T>) => JSX.Element;
+}) as <T extends VirtualGridItem>(props: VirtualGridProps<T>) => React.JSX.Element;
 
 (VirtualGrid as React.FC).displayName = 'VirtualGrid';
 
@@ -114,7 +114,7 @@ interface VirtualListProps<T extends VirtualGridItem> {
 
 export const VirtualList = memo(<T extends VirtualGridItem>(props: VirtualListProps<T>) => {
     return <VirtualGrid {...props} columns={1} />;
-}) as <T extends VirtualGridItem>(props: VirtualListProps<T>) => JSX.Element;
+}) as <T extends VirtualGridItem>(props: VirtualListProps<T>) => React.JSX.Element;
 
 (VirtualList as React.FC).displayName = 'VirtualList';
 
@@ -163,7 +163,7 @@ export const InfiniteVirtualGrid = memo(<T extends VirtualGridItem>({
             {...virtualGridProps}
         />
     );
-}) as <T extends VirtualGridItem>(props: InfiniteVirtualGridProps<T>) => JSX.Element;
+}) as <T extends VirtualGridItem>(props: InfiniteVirtualGridProps<T>) => React.JSX.Element;
 
 (InfiniteVirtualGrid as React.FC).displayName = 'InfiniteVirtualGrid';
 
@@ -185,7 +185,7 @@ export const ResponsiveVirtualGrid = memo(<T extends VirtualGridItem>(props: Res
     }, []);
 
     return <VirtualGrid {...props} columns={columns} />;
-}) as <T extends VirtualGridItem>(props: ResponsiveVirtualGridProps<T>) => JSX.Element;
+}) as <T extends VirtualGridItem>(props: ResponsiveVirtualGridProps<T>) => React.JSX.Element;
 
 (ResponsiveVirtualGrid as React.FC).displayName = 'ResponsiveVirtualGrid';
 

@@ -7,7 +7,7 @@ import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
 import MetaDataManager from '../components/SEO/MetaDataManager';
 import { usePageSEO } from '../hooks/useSEO';
-import { Concert, MusicWork, NewsItem, SiteData } from '../types/data.types';
+import { Concert, MusicWork, NewsItem } from '../types/data.types';
 
 interface ConcertSliderProps {
     concerts: Concert[];

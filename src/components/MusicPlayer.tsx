@@ -30,6 +30,7 @@ interface MusicPlayerProps {
 }
 
 const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = false, onClose }) => {
+    const playerRef = React.useRef<any>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(0.8);
@@ -98,11 +99,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                         <div
                             className="w-full bg-gray-700 rounded-full h-1 mb-4 cursor-pointer group"
                             onClick={(e) => {
+                                if (!duration || !playerRef.current) return;
                                 const rect = e.currentTarget.getBoundingClientRect();
-                                const x = e.clientX - rect.left;
-                                const width = rect.width;
-                                const percent = x / width;
-                                // We need a ref to ReactPlayer to seek, but for now just visual
+                                const ratio = (e.clientX - rect.left) / rect.width;
+                                const clampedRatio = Math.min(Math.max(ratio, 0), 1);
+                                playerRef.current.seekTo(clampedRatio, 'fraction');
+                                setProgress(clampedRatio * duration);
                             }}
                         >
                             <div
@@ -246,6 +248,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                         {/* Hidden ReactPlayer for audio */}
                         {currentTrack.audioUrl && (
                             <ReactPlayer
+                                ref={playerRef}
                                 {...({
                                     url: currentTrack.audioUrl,
                                     playing: isPlaying,

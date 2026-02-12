@@ -15,12 +15,6 @@ import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
 import { useLocation } from 'react-router-dom';
 import { Work, WorkCategory, MusicWork } from '../types/data.types';
-import type { FuseResult } from 'fuse.js';
-
-interface SearchResultItem {
-    type?: string;
-    archiveCategory?: string;
-}
 
 const Works: React.FC = () => {
     const [activeFilter, setActiveFilter] = useState<WorkCategory | 'all'>('all');
@@ -73,15 +67,9 @@ const Works: React.FC = () => {
 
     // 콜백 함수들 메모이제이션 - 모든 hooks를 최상위에서 호출
     const handleSearchResult = useCallback((result: any) => {
-        // Navigate to the specific work based on search result
-        if (result.item.type === 'music') {
-            setActiveFilter('music');
-        } else if (['photography', 'videos'].includes(result.item.type)) {
-            setActiveFilter('visual');
-        } else if (result.item.type === 'writing') {
-            setActiveFilter('writing');
-        } else if (result.item.type === 'struggle') {
-            setActiveFilter('struggle');
+        const category = result?.item?.archiveCategory || result?.item?.type;
+        if (['music', 'visual', 'writing', 'performance', 'struggle'].includes(category)) {
+            setActiveFilter(category as WorkCategory);
         }
     }, []);
 
@@ -119,7 +107,7 @@ const Works: React.FC = () => {
     }
 
     // 필터링된 작품 목록
-    const filteredWorks = getWorksByCategory(activeFilter === 'all' ? 'music' : activeFilter);
+    const filteredWorks = activeFilter === 'all' ? categorizedData.all : getWorksByCategory(activeFilter);
     const musicWorks = categorizedData.music || [];
 
     return (

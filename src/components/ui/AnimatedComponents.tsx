@@ -188,7 +188,6 @@ interface AnimatedCounterProps {
 
 export const AnimatedCounter = memo<AnimatedCounterProps>(({ from = 0, to, duration = 2, className = '' }) => {
     const nodeRef = useRef<HTMLSpanElement>(null);
-    const [inView, setInView] = useState(false);
 
     // Spring animation for smooth counting
     const springValue = useSpring(from, { duration: duration * 1000, bounce: 0 });
@@ -199,7 +198,6 @@ export const AnimatedCounter = memo<AnimatedCounterProps>(({ from = 0, to, durat
 
         const observer = new IntersectionObserver(([entry]) => {
             if (entry.isIntersecting) {
-                setInView(true);
                 springValue.set(to);
             }
         }, { threshold: 0.1 });

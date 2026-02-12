@@ -1,4 +1,4 @@
-import { useCallback, useState, useMemo } from 'react';
+import { useCallback, useState } from 'react';
 import type { Work } from '../types/data.types';
 
 interface CardActionsOptions {
@@ -182,84 +182,5 @@ export const useCardActions = (options: CardActionsOptions = {}): CardActionsRet
     };
 };
 
-// Search hook
-interface SearchReturn<T> {
-    searchTerm: string;
-    searchResults: T[];
-    handleSearchChange: (term: string) => void;
-    clearSearch: () => void;
-    performSearch: (term: string) => void;
-    hasResults: boolean;
-}
-
-export const useSearch = <T extends Record<string, unknown>>(
-    data: T[],
-    searchKeys: (keyof T)[] = ['title' as keyof T, 'description' as keyof T]
-): SearchReturn<T> => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [searchResults, setSearchResults] = useState<T[]>([]);
-
-    const performSearch = useCallback((term: string) => {
-        if (!term || !data) { setSearchResults([]); return; }
-        const results = data.filter(item =>
-            searchKeys.some(key => {
-                const val = item[key];
-                return typeof val === 'string' && val.toLowerCase().includes(term.toLowerCase());
-            })
-        );
-        setSearchResults(results);
-    }, [data, searchKeys]);
-
-    const handleSearchChange = useCallback((term: string) => {
-        setSearchTerm(term);
-        performSearch(term);
-    }, [performSearch]);
-
-    const clearSearch = useCallback(() => { setSearchTerm(''); setSearchResults([]); }, []);
-
-    return { searchTerm, searchResults, handleSearchChange, clearSearch, performSearch, hasResults: searchResults.length > 0 };
-};
-
-// Filter hook
-interface FilterReturn<T> {
-    activeFilter: string;
-    availableFilters: string[];
-    filteredData: T[];
-    setFilter: (filter: string) => void;
-    clearFilter: () => void;
-    isFiltered: boolean;
-}
-
-export const useFilter = <T extends Record<string, unknown>>(
-    data: T[],
-    filterKey: keyof T = 'type' as keyof T
-): FilterReturn<T> => {
-    const [activeFilter, setActiveFilter] = useState('all');
-
-    const availableFilters = useMemo(() => {
-        if (!data || !Array.isArray(data)) return ['all'];
-        const filters = new Set<string>();
-        data.forEach(item => {
-            const value = item[filterKey];
-            if (Array.isArray(value)) value.forEach(v => filters.add(String(v)));
-            else if (value) filters.add(String(value));
-        });
-        return ['all', ...Array.from(filters)];
-    }, [data, filterKey]);
-
-    const filteredData = useMemo(() => {
-        if (!data || activeFilter === 'all') return data || [];
-        return data.filter(item => {
-            const value = item[filterKey];
-            if (Array.isArray(value)) return value.includes(activeFilter);
-            return value === activeFilter;
-        });
-    }, [data, activeFilter, filterKey]);
-
-    const setFilter = useCallback((filter: string) => setActiveFilter(filter), []);
-    const clearFilter = useCallback(() => setActiveFilter('all'), []);
-
-    return { activeFilter, availableFilters, filteredData, setFilter, clearFilter, isFiltered: activeFilter !== 'all' };
-};
 
 export default useCardActions;
