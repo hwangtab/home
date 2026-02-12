@@ -1,5 +1,6 @@
 {
   "installCommand": "npm install --legacy-peer-deps",
+  "outputDirectory": ".next",
   "headers": [
     {
       "source": "/_next/static/(.*)",
