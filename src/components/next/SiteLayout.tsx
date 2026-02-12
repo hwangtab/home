@@ -72,7 +72,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
           </nav>
           <button
             type="button"
-            aria-label="메뉴 열기"
+            aria-label={t('nav.openMenu')}
             onClick={() => setIsOpen((prev) => !prev)}
             className="md:hidden p-2 rounded-lg border border-brand-primary-500/20 text-brand-primary-400"
           >

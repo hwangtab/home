@@ -1,6 +1,7 @@
 
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../../i18n';
 
 type SpinnerSize = 'small' | 'medium' | 'large' | 'xlarge';
 type SpinnerColor = 'gray' | 'blue' | 'white' | 'primary';
@@ -82,29 +83,37 @@ interface PageLoadingSpinnerProps {
     message?: string;
 }
 
-export const PageLoadingSpinner = memo<PageLoadingSpinnerProps>(({ message = '페이지를 불러오는 중...' }) => (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800 transform-gpu">
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: [0.25, 0.25, 0, 1] }}
-            className="animate-optimized"
-        >
-            <LoadingSpinner size="large" color="primary" message={message} variant="pulse" />
-        </motion.div>
-    </div>
-));
+const PageLoadingSpinnerBase: React.FC<PageLoadingSpinnerProps> = ({ message }) => {
+    const { t } = useLanguage();
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800 transform-gpu">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, ease: [0.25, 0.25, 0, 1] }}
+                className="animate-optimized"
+            >
+                <LoadingSpinner size="large" color="primary" message={message || t('loading.page')} variant="pulse" />
+            </motion.div>
+        </div>
+    );
+};
+export const PageLoadingSpinner = memo<PageLoadingSpinnerProps>(PageLoadingSpinnerBase);
 
 interface InlineLoadingSpinnerProps {
     message?: string;
     size?: SpinnerSize;
 }
 
-export const InlineLoadingSpinner = memo<InlineLoadingSpinnerProps>(({ message = '로딩 중...', size = 'small' }) => (
-    <div className="flex items-center justify-center py-8">
-        <LoadingSpinner size={size} color="gray" message={message} variant="dots" />
-    </div>
-));
+const InlineLoadingSpinnerBase: React.FC<InlineLoadingSpinnerProps> = ({ message, size = 'small' }) => {
+    const { t } = useLanguage();
+    return (
+        <div className="flex items-center justify-center py-8">
+            <LoadingSpinner size={size} color="gray" message={message || t('loading.default')} variant="dots" />
+        </div>
+    );
+};
+export const InlineLoadingSpinner = memo<InlineLoadingSpinnerProps>(InlineLoadingSpinnerBase);
 
 interface ButtonLoadingSpinnerProps {
     size?: SpinnerSize;
@@ -121,10 +130,11 @@ interface OverlayLoadingSpinnerProps {
 }
 
 export const OverlayLoadingSpinner = memo<OverlayLoadingSpinnerProps>(({
-    message = '처리 중...',
+    message,
     isVisible = false,
     backdrop = true
 }) => {
+    const { t } = useLanguage();
     if (!isVisible) return null;
 
     return (
@@ -142,7 +152,7 @@ export const OverlayLoadingSpinner = memo<OverlayLoadingSpinnerProps>(({
                 exit={{ scale: 0.8, opacity: 0 }}
                 transition={{ duration: 0.2 }}
             >
-                <LoadingSpinner size="large" color="primary" message={message} variant="default" />
+                <LoadingSpinner size="large" color="primary" message={message || t('loading.processing')} variant="default" />
             </motion.div>
         </motion.div>
     );

@@ -1,5 +1,6 @@
 
 import React from 'react';
+import LanguageContext from '../i18n';
 
 interface ErrorBoundaryState {
     hasError: boolean;
@@ -13,6 +14,9 @@ interface ErrorBoundaryProps {
 }
 
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+    static contextType = LanguageContext;
+    declare context: React.ContextType<typeof LanguageContext>;
+
     constructor(props: ErrorBoundaryProps) {
         super(props);
         this.state = {
@@ -70,6 +74,8 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     };
 
     render() {
+        const t = this.context?.t || ((key: string) => key);
+
         if (this.state.hasError) {
             if (this.state.isChunkError) {
                 return (
@@ -77,14 +83,14 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
                         <div className="max-w-md mx-auto text-center space-y-6">
                             <div className="text-6xl mb-4">🔄</div>
                             <h2 className="text-2xl font-bold text-white font-santokki">
-                                페이지 로딩 중 문제가 발생했습니다
+                                {t('errorBoundary.chunkTitle')}
                             </h2>
                             <p className="text-gray-300 font-wanted-sans">
-                                새로운 업데이트가 있을 수 있습니다. 페이지를 새로고침해 주세요.
+                                {t('errorBoundary.chunkDesc')}
                             </p>
                             {this.state.retryCount > 0 && (
                                 <p className="text-gray-400 text-sm font-wanted-sans">
-                                    재시도 횟수: {this.state.retryCount}/3
+                                    {t('errorBoundary.retryCount')}: {this.state.retryCount}/3
                                 </p>
                             )}
                             <div className="flex gap-4 justify-center">
@@ -93,14 +99,14 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
                                         onClick={this.handleRetry}
                                         className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition-colors font-wanted-sans"
                                     >
-                                        다시 시도
+                                        {t('common.retry')}
                                     </button>
                                 )}
                                 <button
                                     onClick={this.handleReload}
                                     className="px-6 py-3 bg-brand-primary-600 text-white rounded-lg hover:bg-brand-primary-700 transition-colors font-wanted-sans"
                                 >
-                                    새로고침
+                                    {t('common.refresh')}
                                 </button>
                             </div>
                         </div>
@@ -113,10 +119,10 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
                     <div className="max-w-md mx-auto text-center space-y-6">
                         <div className="text-6xl mb-4">⚠️</div>
                         <h2 className="text-2xl font-bold text-white font-santokki">
-                            예기치 않은 오류가 발생했습니다
+                            {t('errorBoundary.unexpectedTitle')}
                         </h2>
                         <p className="text-gray-300 font-wanted-sans">
-                            페이지를 로드하는 중 문제가 발생했습니다.
+                            {t('errorBoundary.unexpectedDesc')}
                         </p>
                         <p className="text-gray-400 text-sm font-wanted-sans break-words">
                             {this.state.error?.toString()}
@@ -125,7 +131,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
                             onClick={this.handleReload}
                             className="px-6 py-3 bg-brand-primary-600 text-white rounded-lg hover:bg-brand-primary-700 transition-colors font-wanted-sans"
                         >
-                            페이지 새로고침
+                            {t('errorBoundary.refreshPage')}
                         </button>
                     </div>
                 </div>

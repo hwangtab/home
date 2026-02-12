@@ -2,12 +2,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, Music, Instagram, Youtube } from 'lucide-react';
+import { useLanguage } from '../i18n';
 
 interface MinimalBrandingProps {
     onScrollHint?: () => void;
 }
 
 const MinimalBranding: React.FC<MinimalBrandingProps> = ({ onScrollHint }) => {
+    const { t } = useLanguage();
     return (
         <>
             <motion.div
@@ -57,7 +59,7 @@ const MinimalBranding: React.FC<MinimalBrandingProps> = ({ onScrollHint }) => {
             >
                 <div className="text-center px-4">
                     <h1 className="text-3xl md:text-6xl font-bold text-white/90 font-bombaram tracking-wider">
-                        황경하
+                        {t('common.siteTitle')}
                     </h1>
                     <p className="text-white/60 font-wanted-sans text-xs md:text-base mt-2 tracking-widest">
                         MUSICIAN · ACTIVIST

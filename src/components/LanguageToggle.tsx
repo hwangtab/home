@@ -22,7 +22,7 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({ className = "" }) => {
             >
                 <Globe size={16} />
                 <span className="font-wanted-sans text-sm">
-                    {language === 'ko' ? 'EN' : '한국어'}
+                    {language === 'ko' ? 'EN' : 'KO'}
                 </span>
             </motion.button>
         </div>

@@ -6,7 +6,7 @@ interface LoadingSpinnerProps {
     message?: string;
 }
 
-const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ message = "로딩 중..." }) => (
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ message = "Loading..." }) => (
     <div className="flex items-center justify-center min-h-[200px]">
         <div className="text-center">
             <div className="w-8 h-8 border-4 border-gray-600 border-t-gray-400 rounded-full animate-spin mx-auto mb-4"></div>
@@ -43,12 +43,12 @@ class LazyErrorBoundary extends React.Component<LazyErrorBoundaryProps, LazyErro
             return (
                 <div className="flex items-center justify-center min-h-[200px]">
                     <div className="text-center">
-                        <p className="text-red-400 font-wanted-sans mb-2">컴포넌트 로딩 실패</p>
+                        <p className="text-red-400 font-wanted-sans mb-2">Component failed to load</p>
                         <button
                             onClick={() => window.location.reload()}
                             className="text-blue-400 hover:text-blue-300 text-sm underline"
                         >
-                            페이지 새로고침
+                            Refresh page
                         </button>
                     </div>
                 </div>
@@ -109,16 +109,16 @@ export const LazyContact = lazy(() =>
 );
 
 // Wrapped components with error boundaries
-export const MusicPlayer = withLazyLoading(LazyMusicPlayer, "음악 플레이어 로딩 중...");
-export const VideoGallery = withLazyLoading(LazyVideoGallery, "비디오 갤러리 로딩 중...");
-export const Lightbox = withLazyLoading(LazyLightbox, "이미지 뷰어 로딩 중...");
-export const SearchBar = withLazyLoading(LazySearchBar, "검색 기능 로딩 중...");
+export const MusicPlayer = withLazyLoading(LazyMusicPlayer, "Loading music player...");
+export const VideoGallery = withLazyLoading(LazyVideoGallery, "Loading video gallery...");
+export const Lightbox = withLazyLoading(LazyLightbox, "Loading image viewer...");
+export const SearchBar = withLazyLoading(LazySearchBar, "Loading search...");
 
 // Page components with lazy loading
-export const About = withLazyLoading(LazyAbout, "소개 페이지 로딩 중...");
-export const Works = withLazyLoading(LazyWorks, "작품 페이지 로딩 중...");
-export const News = withLazyLoading(LazyNews, "소식 페이지 로딩 중...");
-export const Contact = withLazyLoading(LazyContact, "연락처 페이지 로딩 중...");
+export const About = withLazyLoading(LazyAbout, "Loading about page...");
+export const Works = withLazyLoading(LazyWorks, "Loading works page...");
+export const News = withLazyLoading(LazyNews, "Loading news page...");
+export const Contact = withLazyLoading(LazyContact, "Loading contact page...");
 
 // Utility for preloading components
 export const preloadComponent = (componentImport: () => Promise<unknown>): void => {

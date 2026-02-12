@@ -5,7 +5,8 @@
         "works": "Works",
         "archive": "Archive",
         "news": "News",
-        "contact": "Contact"
+        "contact": "Contact",
+        "openMenu": "Open menu"
     },
     "common": {
         "year": "",
@@ -30,6 +31,20 @@
         "previous": "Previous"
         ,"confirm": "Confirm"
         ,"retry": "Retry"
+        ,"refresh": "Refresh"
+    },
+    "loading": {
+        "default": "Loading...",
+        "page": "Loading page...",
+        "processing": "Processing..."
+    },
+    "errorBoundary": {
+        "chunkTitle": "There was a problem loading this page",
+        "chunkDesc": "A new update may be available. Please refresh the page.",
+        "retryCount": "Retry count",
+        "unexpectedTitle": "An unexpected error occurred",
+        "unexpectedDesc": "There was a problem while loading the page.",
+        "refreshPage": "Refresh page"
     },
     "home": {
         "hero": {

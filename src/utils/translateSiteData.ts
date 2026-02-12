@@ -25,6 +25,8 @@ const KO_TO_EN: Record<string, string> = {
   '칼럼': 'Column',
   '르포': 'Reportage',
   '투쟁': 'Struggle',
+  '황해문화 2025년 봄호': 'Hwanghae Review, Spring 2025',
+  '식소사번': 'Siksosabeon',
   '기획 및 예술연대 조직': 'Planning and organizing artistic solidarity',
   '연대 활동': 'Solidarity activity',
   '음악 듣기': 'Listen',

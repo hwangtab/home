@@ -179,7 +179,7 @@ interface LoadingProgressProps {
     className?: string;
 }
 
-export const LoadingProgress = memo<LoadingProgressProps>(({ message = '로딩 중...', className = '' }) => (
+export const LoadingProgress = memo<LoadingProgressProps>(({ message = 'Loading...', className = '' }) => (
     <div className={`flex flex-col items-center ${className}`}>
         <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
             <motion.div className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"

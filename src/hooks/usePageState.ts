@@ -81,7 +81,7 @@ export const usePageState = (options: PageStateOptions = {}): PageStateReturn =>
         }
     });
 
-    const startLoading = useCallback((message = '로딩 중...') => {
+    const startLoading = useCallback((message = 'Loading...') => {
         setIsLoading(true);
         setLoadingMessage(message);
         setError(null);
@@ -92,7 +92,7 @@ export const usePageState = (options: PageStateOptions = {}): PageStateReturn =>
         setLoadingMessage('');
     }, []);
 
-    const setErrorState = useCallback((err: Error, message = '오류가 발생했습니다.') => {
+    const setErrorState = useCallback((err: Error, message = 'An error occurred.') => {
         setError(err);
         setErrorMessage(message);
         setIsLoading(false);

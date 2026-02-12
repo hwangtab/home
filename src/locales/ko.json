@@ -5,7 +5,8 @@
         "works": "작품",
         "archive": "아카이브",
         "news": "소식",
-        "contact": "연락처"
+        "contact": "연락처",
+        "openMenu": "메뉴 열기"
     },
     "common": {
         "year": "년",
@@ -30,6 +31,20 @@
         "previous": "이전"
         ,"confirm": "확인"
         ,"retry": "다시 시도"
+        ,"refresh": "새로고침"
+    },
+    "loading": {
+        "default": "로딩 중...",
+        "page": "페이지를 불러오는 중...",
+        "processing": "처리 중..."
+    },
+    "errorBoundary": {
+        "chunkTitle": "페이지 로딩 중 문제가 발생했습니다",
+        "chunkDesc": "새로운 업데이트가 있을 수 있습니다. 페이지를 새로고침해 주세요.",
+        "retryCount": "재시도 횟수",
+        "unexpectedTitle": "예기치 않은 오류가 발생했습니다",
+        "unexpectedDesc": "페이지를 로드하는 중 문제가 발생했습니다.",
+        "refreshPage": "페이지 새로고침"
     },
     "home": {
         "hero": {
