@@ -22,7 +22,7 @@ export const useFilter = <T extends Record<string, unknown>>(
         data.forEach(item => {
             const value = item[filterKey];
             if (Array.isArray(value)) value.forEach(v => filters.add(String(v)));
-            else if (value) filters.add(String(value));
+            else if (value !== undefined && value !== null) filters.add(String(value));
         });
         return ['all', ...Array.from(filters)];
     }, [data, filterKey]);
