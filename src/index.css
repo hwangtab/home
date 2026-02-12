@@ -1,3 +1,5 @@
+@import url('https://fastly.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.1/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css');
+
 @font-face {
   font-family: 'HSBombaram3_Regular';
   src: url('https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.1/HSBombaram3_Regular.woff') format('woff');
@@ -27,8 +29,6 @@
   font-style: normal;
   font-display: swap;
 }
-
-@import url('https://fastly.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.1/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css');
 
 @tailwind base;
 @tailwind components;

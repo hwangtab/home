@@ -1,5 +1,5 @@
 import React, { memo, ReactNode } from 'react';
-import { motion, useAnimation, Variants, AnimationControls } from 'framer-motion';
+import { motion, useAnimation, Variants } from 'framer-motion';
 import { useAnimationTrigger } from '../hooks/useIntersectionObserver';
 import { Heading2 } from './ui/Typography';
 import { Container, Spacer } from './ui/Layout';
@@ -331,7 +331,7 @@ export const SubSection: React.FC<SubSectionProps> = memo(({ children, className
 
     return (
         <motion.div
-            ref={ref}
+            ref={ref as React.RefObject<HTMLDivElement>}
             className={`transform-gpu ${className}`}
             variants={variants[variant]}
             initial="hidden"
@@ -403,7 +403,7 @@ export const Item: React.FC<ItemProps> = memo(({ children, className = '', index
 
     return (
         <motion.div
-            ref={ref}
+            ref={ref as React.RefObject<HTMLDivElement>}
             className={`transform-gpu ${className}`}
             variants={variants[variant]}
             initial="hidden"
@@ -423,7 +423,7 @@ export const AboutSection = (props: SectionProps) => <Section variant="slideLeft
 export const ContactSection = (props: SectionProps) => <Section variant="scale" {...props} />;
 
 // 고성능 스크롤 애니메이션을 위한 추가 유틸리티
-export const useScrollAnimation = (): [any, AnimationControls] => {
+export const useScrollAnimation = (): [any, ReturnType<typeof useAnimation>] => {
     const controls = useAnimation();
     const [ref, inView] = useAnimationTrigger();
 

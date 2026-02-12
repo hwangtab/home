@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef, RefObject } from 'react';
-import { useAnimation, AnimationControls, Variants } from 'framer-motion';
+import { useAnimation } from 'framer-motion';
 import { useAnimation as useAnimationContext } from '../context/AnimationContext';
 
 interface ScrollAnimationOptions {
@@ -13,10 +13,10 @@ interface ScrollAnimationOptions {
 interface ScrollAnimationReturn {
     elementRef: RefObject<HTMLElement | null>;
     isVisible: boolean;
-    controls: AnimationControls;
-    variants: Record<string, Variants['hidden'] | Variants['visible']>;
+    controls: ReturnType<typeof useAnimation>;
+    variants: Record<string, any>;
     containerVariants: Record<string, unknown>;
-    itemVariants: Record<string, Variants['hidden'] | Variants['visible']>;
+    itemVariants: Record<string, any>;
     parallaxY: number;
     scrollY: number;
 }

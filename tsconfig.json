@@ -1,45 +1,70 @@
 {
-    "compilerOptions": {
-        "target": "ES2017",
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
-        ],
-        "module": "ESNext",
-        "moduleResolution": "bundler",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "jsx": "preserve",
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "allowJs": true,
-        "skipLibCheck": true,
-        "noEmit": true,
-        "incremental": true,
-        "plugins": [
-            {
-                "name": "next"
-            }
-        ],
-        "baseUrl": "src",
-        "paths": {
-            "@/*": ["./*"],
-            "@components/*": ["components/*"],
-            "@hooks/*": ["hooks/*"],
-            "@pages/*": ["pages/*"],
-            "@context/*": ["context/*"],
-            "@types/*": ["types/*"],
-            "@constants/*": ["constants/*"],
-            "@utils/*": ["utils/*"],
-            "@config/*": ["config/*"],
-            "@i18n/*": ["i18n/*"],
-            "@data/*": ["data/*"]
-        }
-    },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": "src",
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ],
+      "@context/*": [
+        "context/*"
+      ],
+      "@types/*": [
+        "types/*"
+      ],
+      "@constants/*": [
+        "constants/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@config/*": [
+        "config/*"
+      ],
+      "@i18n/*": [
+        "i18n/*"
+      ],
+      "@data/*": [
+        "data/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
