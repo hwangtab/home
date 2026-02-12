@@ -9,12 +9,14 @@ import PageHero from '../components/PageHero';
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
 import { Concert, MusicWork, NewsItem } from '../types/data.types';
+import { useLanguage } from '../i18n';
 
 interface ConcertSliderProps {
     concerts: Concert[];
 }
 
 const ConcertSlider: React.FC<ConcertSliderProps> = ({ concerts }) => {
+    const { t } = useLanguage();
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
@@ -62,7 +64,7 @@ const ConcertSlider: React.FC<ConcertSliderProps> = ({ concerts }) => {
                             whileTap={{ scale: 0.95 }}
                         >
                             <Calendar className="mr-3" size={24} />
-                            공연정보
+                            {t('news.concertInfo')}
                         </motion.a>
                     )}
                 </motion.div>
@@ -75,50 +77,54 @@ interface AlbumPurchaseProps {
     album: MusicWork;
 }
 
-const AlbumPurchase: React.FC<AlbumPurchaseProps> = ({ album }) => (
-    <motion.div
-        className="bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col md:flex-row items-stretch gap-12"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-    >
-        <div className="md:w-1/2 flex flex-col justify-center">
-            <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
-                <Image
-                    src={`${process.env.NEXT_PUBLIC_BASE_PATH || process.env.PUBLIC_URL || ''}/${(album as any).coverUrl || album.cover}`}
-                    alt={album.title}
-                    width={960}
-                    height={960}
-                    className="w-full h-auto object-cover rounded cursor-pointer"
-                    onClick={() => album.purchaseUrl && window.open(album.purchaseUrl, '_blank')}
-                />
-            </motion.div>
-        </div>
-        <div className="md:w-1/2 flex flex-col justify-center">
-            <h3 className="text-3xl font-bold mb-6 text-gray-200 font-santokki leading-tight">
-                {album.title}
-            </h3>
-            {/* price is not in MusicWork type usually? */}
-            <p className="text-xl mb-4 font-wanted-sans text-gray-300">
-                {(album as any).price}
-            </p>
-            <p className="text-gray-400 mb-6 font-wanted-sans">
-                {album.description}
-            </p>
-            {album.purchaseUrl && (
-                <motion.button
-                    className="bg-gray-700 text-white px-8 py-4 rounded-full font-wanted-sans hover:bg-gray-600 transition duration-300 flex items-center justify-center self-start"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => window.open(album.purchaseUrl, '_blank')}
-                >
-                    <ShoppingCart className="mr-3" size={24} />
-                    구매하기
-                </motion.button>
-            )}
-        </div>
-    </motion.div>
-);
+const AlbumPurchase: React.FC<AlbumPurchaseProps> = ({ album }) => {
+    const { t } = useLanguage();
+
+    return (
+        <motion.div
+            className="bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col md:flex-row items-stretch gap-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
+            <div className="md:w-1/2 flex flex-col justify-center">
+                <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
+                    <Image
+                        src={`${process.env.NEXT_PUBLIC_BASE_PATH || process.env.PUBLIC_URL || ''}/${(album as any).coverUrl || album.cover}`}
+                        alt={album.title}
+                        width={960}
+                        height={960}
+                        className="w-full h-auto object-cover rounded cursor-pointer"
+                        onClick={() => album.purchaseUrl && window.open(album.purchaseUrl, '_blank')}
+                    />
+                </motion.div>
+            </div>
+            <div className="md:w-1/2 flex flex-col justify-center">
+                <h3 className="text-3xl font-bold mb-6 text-gray-200 font-santokki leading-tight">
+                    {album.title}
+                </h3>
+                {/* price is not in MusicWork type usually? */}
+                <p className="text-xl mb-4 font-wanted-sans text-gray-300">
+                    {(album as any).price}
+                </p>
+                <p className="text-gray-400 mb-6 font-wanted-sans">
+                    {album.description}
+                </p>
+                {album.purchaseUrl && (
+                    <motion.button
+                        className="bg-gray-700 text-white px-8 py-4 rounded-full font-wanted-sans hover:bg-gray-600 transition duration-300 flex items-center justify-center self-start"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => window.open(album.purchaseUrl, '_blank')}
+                    >
+                        <ShoppingCart className="mr-3" size={24} />
+                        {t('news.purchase')}
+                    </motion.button>
+                )}
+            </div>
+        </motion.div>
+    );
+};
 
 interface NewsCardProps {
     news: NewsItem;
@@ -150,6 +156,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => (
 );
 
 const News: React.FC = () => {
+    const { t } = useLanguage();
     const { data: siteData, loading, error } = useCachedPageData('news');
 
     if (loading) {
@@ -180,12 +187,12 @@ const News: React.FC = () => {
     return (
         <div>
             <PageHero
-                title="소식"
-                subtitle="새로운 활동과 공지사항"
+                title={t('news.pageTitle')}
+                subtitle={t('news.pageSubtitle')}
                 imagePath="/images/hwang/6.png"
             />
 
-            <Section title="최신 소식" className="mt-8">
+            <Section title={t('news.title')} className="mt-8">
                 <div className="grid grid-cols-1 gap-6 mb-8">
                     {news.map((item) => (
                         <NewsCard key={item.id} news={item} />
@@ -193,12 +200,12 @@ const News: React.FC = () => {
                 </div>
             </Section>
 
-            <Section title="공연 일정">
+            <Section title={t('news.concerts')}>
                 <ConcertSlider concerts={concerts} />
             </Section>
 
             {album && (
-                <Section title="음반 구매">
+                <Section title={t('news.albumPurchase')}>
                     <AlbumPurchase album={album} />
                 </Section>
             )}

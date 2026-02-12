@@ -43,6 +43,7 @@
     },
     "about": {
         "title": "소개",
+        "heroSubtitle": "황경하는 현장에서 글, 음악, 사진 등의 예술이 힘을 갖는 순간에 주목하여 활동하는 음악가입니다.",
         "philosophy": "예술 철학",
         "timeline": "활동 연혁",
         "resistanceTitle": "연대와 저항",
@@ -52,6 +53,7 @@
     },
     "works": {
         "title": "작품",
+        "heroSubtitle": "황경하의 음악, 저술, 그리고 활동들",
         "all": "전체",
         "music": "음악",
         "visual": "영상",
@@ -80,6 +82,8 @@
         "overallTimeline": "전체 활동 연혁"
     },
     "news": {
+        "pageTitle": "소식",
+        "pageSubtitle": "새로운 활동과 공지사항",
         "title": "최신 소식",
         "concerts": "공연 일정",
         "albumPurchase": "음반 구매",
@@ -88,6 +92,7 @@
     },
     "contact": {
         "title": "연락처",
+        "pageSubtitle": "협업 및 문의",
         "info": "연락처 정보",
         "email": "이메일",
         "phone": "전화",

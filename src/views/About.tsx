@@ -10,10 +10,12 @@ import { UnifiedCard as Card } from '../components/ui/Card';
 import { useWorksData } from '../hooks/useDataProcessor';
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
+import { useLanguage } from '../i18n';
 
 interface AboutProps { }
 
 const About: React.FC<AboutProps> = () => {
+    const { t } = useLanguage();
     const { data: siteData, loading, error } = useCachedPageData('about');
 
     // hooks를 최상위에서 호출 - siteData가 null일 때 빈 객체 전달
@@ -43,8 +45,8 @@ const About: React.FC<AboutProps> = () => {
     return (
         <div>
             <PageHero
-                title="소개"
-                subtitle={<>황경하는 현장에서 글, 음악, 사진 등의 예술이 힘을 갖는 순간에<br className="hidden md:inline" /> 주목하여 활동하는 음악가입니다.</>}
+                title={t('about.title')}
+                subtitle={t('about.heroSubtitle')}
                 imagePath="/images/hwang/3.png"
             />
 
@@ -65,28 +67,26 @@ const About: React.FC<AboutProps> = () => {
                 </Card>
             </Section>
 
-            <Section title="예술 철학" containerSize="default">
+            <Section title={t('about.philosophy')} containerSize="default">
                 <Card variant="default" padding="default" shadow="default">
                     <Grid cols={2} gap="lg" responsive={true}>
                         <Stack spacing="sm">
-                            <Heading3 color="primary">연대와 저항</Heading3>
+                            <Heading3 color="primary">{t('about.resistanceTitle')}</Heading3>
                             <BodyText color="secondary" className="break-words">
-                                예술은 세상의 소외된 이들과 함께할 때 진정한 힘을 발휘합니다. 젠트리피케이션으로 쫓겨나는 상인들,
-                                산업재해로 목숨을 잃는 노동자들, 재개발로 터전을 잃는 주민들과 함께 서며 그들의 이야기를 음악으로 기록합니다.
+                                {t('about.resistanceText')}
                             </BodyText>
                         </Stack>
                         <Stack spacing="sm">
-                            <Heading3 color="primary">기록과 기억</Heading3>
+                            <Heading3 color="primary">{t('about.memoryTitle')}</Heading3>
                             <BodyText color="secondary" className="break-words">
-                                사라져가는 것들, 잊혀져가는 것들을 예술로 기록하고 보존합니다.
-                                개발이라는 이름으로 사라지는 골목길, 경제논리로 밀려나는 삶의 터전들을 음악으로 남겨 후세에 전합니다.
+                                {t('about.memoryText')}
                             </BodyText>
                         </Stack>
                     </Grid>
                 </Card>
             </Section>
 
-            <Section title="활동 연혁" containerSize="default">
+            <Section title={t('about.timeline')} containerSize="default">
                 <Card variant="default" padding="default" shadow="default">
                     <DataRenderer
                         type={RENDER_TYPES.TIMELINE}

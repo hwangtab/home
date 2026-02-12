@@ -15,8 +15,10 @@ import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
 import { useSearchParams } from 'next/navigation';
 import { Work, WorkCategory, MusicWork } from '../types/data.types';
+import { useLanguage } from '../i18n';
 
 const Works: React.FC = () => {
+    const { t } = useLanguage();
     const [activeFilter, setActiveFilter] = useState<WorkCategory | 'all'>('all');
     const searchParams = useSearchParams();
     const { data: siteData, loading, error } = useCachedPageData('works');
@@ -114,8 +116,8 @@ const Works: React.FC = () => {
     return (
         <>
             <PageHero
-                title="작업"
-                subtitle="황경하의 음악, 저술, 그리고 활동들"
+                title={t('works.title')}
+                subtitle={t('works.heroSubtitle')}
                 imagePath="/images/hwang/4.png"
             />
 

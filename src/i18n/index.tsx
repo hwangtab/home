@@ -34,14 +34,21 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     const [language, setLanguage] = useState<SupportedLanguage>('ko');
 
     useEffect(() => {
-        const savedLanguage = localStorage.getItem('language') as SupportedLanguage | null;
+        const savedLanguage = (localStorage.getItem('site-language') || localStorage.getItem('language')) as SupportedLanguage | null;
         if (savedLanguage === 'ko' || savedLanguage === 'en') {
             setLanguage(savedLanguage);
         }
     }, []);
 
+    useEffect(() => {
+        if (typeof document !== 'undefined') {
+            document.documentElement.lang = language;
+        }
+    }, [language]);
+
     const changeLanguage = (lang: SupportedLanguage) => {
         setLanguage(lang);
+        localStorage.setItem('site-language', lang);
         localStorage.setItem('language', lang);
     };
 

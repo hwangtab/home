@@ -43,6 +43,7 @@
     },
     "about": {
         "title": "About",
+        "heroSubtitle": "Hwang Gyeongha is an artist who focuses on moments when writing, music, and photography gain power in real-world spaces.",
         "philosophy": "Artistic Philosophy",
         "timeline": "Career Timeline",
         "resistanceTitle": "Solidarity and Resistance",
@@ -52,6 +53,7 @@
     },
     "works": {
         "title": "Works",
+        "heroSubtitle": "Music, writings, and activities by Hwang Gyeongha",
         "all": "All",
         "music": "Music",
         "visual": "Visual",
@@ -80,6 +82,8 @@
         "overallTimeline": "Overall Timeline"
     },
     "news": {
+        "pageTitle": "News",
+        "pageSubtitle": "New activities and announcements",
         "title": "Latest News",
         "concerts": "Concert Schedule",
         "albumPurchase": "Album Purchase",
@@ -88,6 +92,7 @@
     },
     "contact": {
         "title": "Contact",
+        "pageSubtitle": "Collaborations and inquiries",
         "info": "Contact Information",
         "email": "Email",
         "phone": "Phone",

@@ -8,15 +8,17 @@ import PageHero from '../components/PageHero';
 import ContactForm from '../components/ContactForm';
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
+import { useLanguage } from '../i18n';
 
 interface ContactInfoProps {
     icon: LucideIcon;
     title: string;
     content: string;
     link: string;
+    openInNewTab?: boolean;
 }
 
-const ContactInfo: React.FC<ContactInfoProps> = ({ icon: Icon, title, content, link }) => (
+const ContactInfo: React.FC<ContactInfoProps> = ({ icon: Icon, title, content, link, openInNewTab = false }) => (
     <div className="flex items-center mb-8">
         <div className="bg-gray-700 p-4 rounded-full mr-4">
             <Icon className="text-gray-300" size={28} />
@@ -26,8 +28,8 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ icon: Icon, title, content, l
             <a
                 href={link}
                 className="text-gray-400 hover:text-gray-200 transition-colors duration-300"
-                target={title === "주소" ? "_blank" : "_self"}
-                rel={title === "주소" ? "noopener noreferrer" : ""}
+                target={openInNewTab ? "_blank" : "_self"}
+                rel={openInNewTab ? "noopener noreferrer" : ""}
             >
                 {content}
             </a>
@@ -36,6 +38,7 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ icon: Icon, title, content, l
 );
 
 const Contact: React.FC = () => {
+    const { t } = useLanguage();
     const { data: siteData, loading, error } = useCachedPageData('contact');
 
     if (loading) {
@@ -64,12 +67,12 @@ const Contact: React.FC = () => {
     return (
         <div>
             <PageHero
-                title="연락처"
-                subtitle="협업 및 문의"
+                title={t('contact.title')}
+                subtitle={t('contact.pageSubtitle')}
                 imagePath="/images/hwang/12.png"
             />
 
-            <Section title="연락처" className="mt-8">
+            <Section title={t('contact.title')} className="mt-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <motion.div
                         className="bg-gray-800 p-8 rounded-lg shadow-lg"
@@ -77,44 +80,48 @@ const Contact: React.FC = () => {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5 }}
                     >
-                        <h3 className="text-2xl font-bold mb-8 text-gray-200 font-santokki">연락처 정보</h3>
+                        <h3 className="text-2xl font-bold mb-8 text-gray-200 font-santokki">{t('contact.info')}</h3>
 
                         <ContactInfo
                             icon={Mail}
-                            title="이메일"
+                            title={t('contact.email')}
                             content={contactInfo.email}
                             link={`mailto:${contactInfo.email}`}
                         />
 
                         <ContactInfo
                             icon={Phone}
-                            title="전화"
+                            title={t('contact.phone')}
                             content={contactInfo.phone}
                             link={`tel:${contactInfo.phone?.replace(/-/g, '')}`}
                         />
 
                         <ContactInfo
                             icon={MapPin}
-                            title="주소"
+                            title={t('contact.address')}
                             content={contactInfo.address}
                             link={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contactInfo.address)}`}
+                            openInNewTab={true}
                         />
 
                         <div className="mt-8 p-4 bg-gray-700 rounded-lg">
-                            <h4 className="font-bold text-gray-200 mb-2 font-wanted-sans">업무 시간</h4>
+                            <h4 className="font-bold text-gray-200 mb-2 font-wanted-sans">{t('contact.businessHours')}</h4>
                             <p className="text-gray-400 text-sm">
-                                평일 10:00 - 18:00<br />
-                                주말 및 공휴일 휴무
+                                {t('contact.businessHoursText').split('\n').map((line, index) => (
+                                    <React.Fragment key={`${line}-${index}`}>
+                                        {line}
+                                        {index === 0 && <br />}
+                                    </React.Fragment>
+                                ))}
                             </p>
                         </div>
 
                         <div className="mt-4 p-4 bg-gray-700 rounded-lg">
-                            <h4 className="font-bold text-gray-200 mb-2 font-wanted-sans">문의 유형</h4>
+                            <h4 className="font-bold text-gray-200 mb-2 font-wanted-sans">{t('contact.inquiryTypes')}</h4>
                             <ul className="text-gray-400 text-sm space-y-1">
-                                <li>• 공연 및 콜라보레이션 문의</li>
-                                <li>• 인터뷰 및 취재 요청</li>
-                                <li>• 음반 구매 및 배송 문의</li>
-                                <li>• 기타 일반 문의</li>
+                                {[0, 1, 2, 3].map((index) => (
+                                    <li key={`inquiry-type-${index}`}>• {t(`contact.inquiryTypesList.${index}`)}</li>
+                                ))}
                             </ul>
                         </div>
                     </motion.div>
