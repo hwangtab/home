@@ -16,16 +16,20 @@ export const usePageData = <T = SiteData>(pageType: string): PageDataReturn<T> =
     const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
+        let isActive = true;
+        let controller: AbortController | null = null;
+        let timeoutId: number | undefined;
+
         const loadPageData = async (): Promise<void> => {
             try {
+                if (!isActive) return;
                 setLoading(true);
                 setError(null);
 
                 const basePath = process.env.NODE_ENV === 'development' ? '' : process.env.PUBLIC_URL || '';
                 const dataUrl = `${basePath}/data/${pageType}.json`;
-
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 5000);
+                controller = new AbortController();
+                timeoutId = window.setTimeout(() => controller?.abort(), 5000);
 
                 const response = await fetch(dataUrl, {
                     signal: controller.signal,
@@ -34,26 +38,30 @@ export const usePageData = <T = SiteData>(pageType: string): PageDataReturn<T> =
                     }
                 });
 
-                clearTimeout(timeoutId);
-
                 if (!response.ok) {
                     throw new Error(`Failed to load ${pageType} data: ${response.status}`);
                 }
 
                 const pageData = await response.json();
+                if (!isActive) return;
                 setData(pageData as T);
             } catch (err) {
+                if (!isActive) return;
                 console.error(`Error loading ${pageType} data:`, err);
                 setError(err as Error);
 
                 try {
                     const siteData = await import('../data/siteData.json');
+                    if (!isActive) return;
                     setData(siteData.default as T);
                 } catch (fallbackErr) {
+                    if (!isActive) return;
                     console.error('Fallback data loading failed:', fallbackErr);
                     setError(fallbackErr as Error);
                 }
             } finally {
+                if (timeoutId !== undefined) clearTimeout(timeoutId);
+                if (!isActive) return;
                 setLoading(false);
             }
         };
@@ -61,6 +69,12 @@ export const usePageData = <T = SiteData>(pageType: string): PageDataReturn<T> =
         if (pageType) {
             loadPageData();
         }
+
+        return () => {
+            isActive = false;
+            controller?.abort();
+            if (timeoutId !== undefined) clearTimeout(timeoutId);
+        };
     }, [pageType]);
 
     return { data, loading, error };
@@ -77,20 +91,24 @@ export const useCachedPageData = <T = SiteData>(pageType: string): PageDataRetur
     const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
+        let isActive = true;
+        let controller: AbortController | null = null;
+        let timeoutId: number | undefined;
+
         const loadPageData = async (): Promise<void> => {
             if (dataCache.has(pageType)) {
                 return;
             }
 
             try {
+                if (!isActive) return;
                 setLoading(true);
                 setError(null);
 
                 const basePath = process.env.NODE_ENV === 'development' ? '' : process.env.PUBLIC_URL || '';
                 const dataUrl = `${basePath}/data/${pageType}.json`;
-
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 5000);
+                controller = new AbortController();
+                timeoutId = window.setTimeout(() => controller?.abort(), 5000);
 
                 const response = await fetch(dataUrl, {
                     signal: controller.signal,
@@ -99,30 +117,34 @@ export const useCachedPageData = <T = SiteData>(pageType: string): PageDataRetur
                     }
                 });
 
-                clearTimeout(timeoutId);
-
                 if (!response.ok) {
                     throw new Error(`Failed to load ${pageType} data: ${response.status}`);
                 }
 
                 const pageData = await response.json();
+                if (!isActive) return;
 
                 dataCache.set(pageType, pageData);
                 setData(pageData as T);
             } catch (err) {
+                if (!isActive) return;
                 console.error(`Error loading ${pageType} data:`, err);
                 setError(err as Error);
 
                 try {
                     const siteData = await import('../data/siteData.json');
+                    if (!isActive) return;
                     const fallbackData = siteData.default;
                     dataCache.set(pageType, fallbackData);
                     setData(fallbackData as T);
                 } catch (fallbackErr) {
+                    if (!isActive) return;
                     console.error('Fallback data loading failed:', fallbackErr);
                     setError(fallbackErr as Error);
                 }
             } finally {
+                if (timeoutId !== undefined) clearTimeout(timeoutId);
+                if (!isActive) return;
                 setLoading(false);
             }
         };
@@ -130,6 +152,12 @@ export const useCachedPageData = <T = SiteData>(pageType: string): PageDataRetur
         if (pageType) {
             loadPageData();
         }
+
+        return () => {
+            isActive = false;
+            controller?.abort();
+            if (timeoutId !== undefined) clearTimeout(timeoutId);
+        };
     }, [pageType]);
 
     return { data, loading, error };

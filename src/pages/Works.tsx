@@ -109,6 +109,18 @@ const Works: React.FC = () => {
     // 필터링된 작품 목록
     const filteredWorks = activeFilter === 'all' ? categorizedData.all : getWorksByCategory(activeFilter);
     const musicWorks = categorizedData.music || [];
+    const playableMusicWorks = musicWorks.filter((work) => {
+        const candidate = work as MusicWork & {
+            audioUrl?: string;
+            links?: string | Record<string, string>;
+        };
+        const hasAudioUrl = typeof candidate.audioUrl === 'string' && candidate.audioUrl.length > 0;
+        const hasLinks =
+            typeof candidate.links === 'string'
+                ? candidate.links.length > 0
+                : !!candidate.links && Object.keys(candidate.links).length > 0;
+        return hasAudioUrl || hasLinks;
+    });
 
     return (
         <>
@@ -127,7 +139,7 @@ const Works: React.FC = () => {
                         setActiveFilter={setActiveFilter as (filter: string) => void}
                         siteData={siteData}
                         handleSearchResult={handleSearchResult}
-                        musicWorks={musicWorks as MusicWork[]}
+                        musicWorks={playableMusicWorks as MusicWork[]}
                         openMusicPlayer={musicPlayer.openMusicPlayer as (tracks: MusicWork[]) => void}
                     />
                 </ScrollReveal>

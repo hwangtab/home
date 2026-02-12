@@ -43,6 +43,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
 
     const currentTrack = playlist[currentIndex];
 
+    React.useEffect(() => {
+        setCurrentIndex(0);
+    }, [playlist]);
+
     // Reset state when track changes or playlist changes
     React.useEffect(() => {
         if (!currentTrack) {
