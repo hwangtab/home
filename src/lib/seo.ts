@@ -1,9 +1,36 @@
 import type { Metadata } from 'next';
 import { SupportedLocale, withLocalePrefix } from '../utils/localePath';
 
-const DEFAULT_SITE_URL = 'https://hwang-gyeongha.vercel.app';
+const normalizeSiteUrl = (value: string): string => {
+  const withProtocol = /^https?:\/\//.test(value) ? value : `https://${value}`;
+  return withProtocol.replace(/\/+$/, '');
+};
 
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL).replace(/\/+$/, '');
+let hasWarnedMissingSiteUrl = false;
+
+const resolveSiteUrl = (): string => {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL;
+  if (configured) {
+    return normalizeSiteUrl(configured);
+  }
+
+  const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+  if (vercelUrl) {
+    return normalizeSiteUrl(vercelUrl);
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    if (!hasWarnedMissingSiteUrl) {
+      // Keep builds runnable while making misconfiguration obvious in logs.
+      console.warn('[seo] NEXT_PUBLIC_SITE_URL is not set. Falling back to http://localhost:3000.');
+      hasWarnedMissingSiteUrl = true;
+    }
+  }
+
+  return 'http://localhost:3000';
+};
+
+export const SITE_URL = resolveSiteUrl();
 
 export const toAbsoluteUrl = (path: string): string => {
   const normalized = path.startsWith('/') ? path : `/${path}`;
