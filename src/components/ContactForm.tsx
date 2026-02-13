@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, useRef, memo } from 'react';
 import { motion, HTMLMotionProps } from 'framer-motion';
 import { Send } from 'lucide-react';
 import { sendEmail } from '../config/emailjs';
@@ -14,6 +14,7 @@ interface FormData {
     email: string;
     subject?: string;
     message: string;
+    website?: string;
     [key: string]: string | undefined;
 }
 
@@ -36,11 +37,13 @@ const ContactForm: React.FC<ContactFormProps> = ({
     const initialFormData: FormData = {
         name: '',
         email: '',
+        website: '',
         message: '',
         ...(includeSubject ? { subject: '' } : {})
     };
 
     const [formData, setFormData] = useState<FormData>(initialFormData);
+    const formStartedAt = useRef<number>(Date.now());
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState<Record<string, string | null>>({});
     const { showSuccess, showError } = useToast();
@@ -79,6 +82,17 @@ const ContactForm: React.FC<ContactFormProps> = ({
     };
 
     const submitForm = async (): Promise<void> => {
+        // Basic bot mitigation: hidden honeypot field + too-fast submit guard.
+        if ((formData.website || '').trim().length > 0) {
+            setFormData(initialFormData);
+            return;
+        }
+
+        if (Date.now() - formStartedAt.current < 1200) {
+            showError(t('contact.form.errors.checkInput'));
+            return;
+        }
+
         // 전체 유효성 검사
         const newErrors: Record<string, string> = {};
         Object.keys(formData).forEach(key => {
@@ -104,6 +118,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                 }
             });
             setFormData(initialFormData);
+            formStartedAt.current = Date.now();
             setErrors({});
         } catch (error) {
             console.error('Failed to send email:', error);
@@ -132,6 +147,17 @@ const ContactForm: React.FC<ContactFormProps> = ({
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
+                <input
+                    type="text"
+                    name="website"
+                    value={formData.website || ''}
+                    onChange={handleChange}
+                    autoComplete="off"
+                    tabIndex={-1}
+                    aria-hidden="true"
+                    className="hidden"
+                />
+
                 <Input
                     id="name"
                     name="name"

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { Calendar, ShoppingCart } from 'lucide-react';
@@ -8,8 +8,9 @@ import Section from '../components/Section';
 import PageHero from '../components/PageHero';
 import { useCachedPageData } from '../hooks/usePageData';
 import { GridSkeleton } from '../components/ui/Skeleton';
-import { Concert, MusicWork, NewsItem } from '../types/data.types';
+import { Concert, NewsItem } from '../types/data.types';
 import { useLanguage } from '../i18n';
+import { getWorkBySlug, getWorkCoverUrl, type WorkDetail } from '../lib/works';
 
 interface ConcertSliderProps {
     concerts: Concert[];
@@ -74,11 +75,14 @@ const ConcertSlider: React.FC<ConcertSliderProps> = ({ concerts }) => {
 };
 
 interface AlbumPurchaseProps {
-    album: MusicWork;
+    album: WorkDetail;
 }
 
 const AlbumPurchase: React.FC<AlbumPurchaseProps> = ({ album }) => {
     const { t } = useLanguage();
+    const imageUrl = getWorkCoverUrl(album.cover, album.category);
+    const actionUrl = album.primaryAction?.url;
+    const actionLabel = album.primaryAction?.label || t('news.purchase');
 
     return (
         <motion.div
@@ -90,12 +94,12 @@ const AlbumPurchase: React.FC<AlbumPurchaseProps> = ({ album }) => {
             <div className="md:w-1/2 flex flex-col justify-center">
                 <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
                     <Image
-                        src={`${process.env.NEXT_PUBLIC_BASE_PATH || process.env.PUBLIC_URL || ''}/${(album as any).coverUrl || album.cover}`}
+                        src={imageUrl}
                         alt={album.title}
                         width={960}
                         height={960}
-                        className="w-full h-auto object-cover rounded cursor-pointer"
-                        onClick={() => album.purchaseUrl && window.open(album.purchaseUrl, '_blank')}
+                        className={`w-full h-auto object-cover rounded ${actionUrl ? 'cursor-pointer' : ''}`}
+                        onClick={() => actionUrl && window.open(actionUrl, '_blank', 'noopener,noreferrer')}
                     />
                 </motion.div>
             </div>
@@ -103,22 +107,18 @@ const AlbumPurchase: React.FC<AlbumPurchaseProps> = ({ album }) => {
                 <h3 className="text-3xl font-bold mb-6 text-gray-200 font-santokki leading-tight">
                     {album.title}
                 </h3>
-                {/* price is not in MusicWork type usually? */}
-                <p className="text-xl mb-4 font-wanted-sans text-gray-300">
-                    {(album as any).price}
-                </p>
                 <p className="text-gray-400 mb-6 font-wanted-sans">
                     {album.description}
                 </p>
-                {album.purchaseUrl && (
+                {actionUrl && (
                     <motion.button
                         className="bg-gray-700 text-white px-8 py-4 rounded-full font-wanted-sans hover:bg-gray-600 transition duration-300 flex items-center justify-center self-start"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => window.open(album.purchaseUrl, '_blank')}
+                        onClick={() => window.open(actionUrl, '_blank', 'noopener,noreferrer')}
                     >
                         <ShoppingCart className="mr-3" size={24} />
-                        {t('news.purchase')}
+                        {actionLabel}
                     </motion.button>
                 )}
             </div>
@@ -140,7 +140,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => (
             <h3 className="text-xl font-bold text-gray-200 font-santokki">
                 {news.title}
             </h3>
-            {(news as any).featured && (
+            {news.featured && (
                 <span className="bg-red-600 text-white px-2 py-1 rounded-full text-xs font-wanted-sans">
                     NEW
                 </span>
@@ -158,6 +158,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => (
 const News: React.FC = () => {
     const { t, language } = useLanguage();
     const { data: siteData, loading, error } = useCachedPageData('news', language);
+    const album = useMemo(() => getWorkBySlug('fish-without-water-2023', language), [language]);
 
     if (loading) {
         return (
@@ -180,8 +181,6 @@ const News: React.FC = () => {
     }
 
     const concerts: Concert[] = siteData.events?.concerts || [];
-    // 데이터 구조 변경에 따라 'fish-album'을 works.music 배열에서 찾도록 수정
-    const album = siteData.works?.music?.find((item: any) => item.id === 'fish-without-water-2023');
     const news: NewsItem[] = siteData.news || [];
 
     return (

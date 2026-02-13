@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { Work } from '../types/data.types';
 import { useLanguage } from '../i18n';
+import { getWorkCoverUrl } from '../lib/works';
 
 // Extend Work to include properties specific to the player
 export type PlayableWork = Work & {
@@ -44,6 +45,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
     const [repeat, setRepeat] = useState(false);
 
     const currentTrack = playlist[currentIndex];
+    const currentTrackCover = currentTrack ? getWorkCoverUrl(currentTrack.cover, 'music') : '/images/defaults/music-default.svg';
 
     React.useEffect(() => {
         setCurrentIndex(0);
@@ -126,7 +128,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                             <div className="flex items-center space-x-4 flex-1 min-w-0">
                                 <div className="relative group">
                                     <img
-                                        src={currentTrack.cover || '/images/defaults/music-default.svg'}
+                                        src={currentTrackCover}
                                         alt={currentTrack.title}
                                         className="w-12 h-12 rounded object-cover shadow-lg"
                                     />
@@ -300,7 +302,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                         >
                                             <div className="relative">
                                                 <img
-                                                    src={track.cover || '/images/defaults/music-default.svg'}
+                                                    src={getWorkCoverUrl(track.cover, 'music')}
                                                     alt={track.title}
                                                     className={`w-10 h-10 rounded object-cover ${index === currentIndex ? 'opacity-100' : 'opacity-70'}`}
                                                 />

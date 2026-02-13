@@ -30,9 +30,7 @@ export const usePageData = <T = SiteData>(pageType: string, language: 'ko' | 'en
                 const basePath = process.env.NODE_ENV === 'development'
                     ? ''
                     : process.env.NEXT_PUBLIC_BASE_PATH || process.env.PUBLIC_URL || '';
-                const dataUrl = language === 'en'
-                    ? `${basePath}/data/${pageType}.en.json`
-                    : `${basePath}/data/${pageType}.json`;
+                const dataUrl = `${basePath}/data/${pageType}.json`;
                 controller = new AbortController();
                 timeoutId = window.setTimeout(() => controller?.abort(), 5000);
 
@@ -43,20 +41,11 @@ export const usePageData = <T = SiteData>(pageType: string, language: 'ko' | 'en
                     }
                 });
 
-                const fallbackResponse = language === 'en' && !response.ok
-                    ? await fetch(`${basePath}/data/${pageType}.json`, {
-                        signal: controller.signal,
-                        headers: {
-                            'Cache-Control': 'public, max-age=300'
-                        }
-                    })
-                    : response;
-
-                if (!fallbackResponse.ok) {
-                    throw new Error(`Failed to load ${pageType} data: ${fallbackResponse.status}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to load ${pageType} data: ${response.status}`);
                 }
 
-                const pageData = await fallbackResponse.json();
+                const pageData = await response.json();
                 if (!isActive) return;
                 setData(translateSiteData(pageData, language) as T);
             } catch (err) {
@@ -123,9 +112,7 @@ export const useCachedPageData = <T = SiteData>(pageType: string, language: 'ko'
                 const basePath = process.env.NODE_ENV === 'development'
                     ? ''
                     : process.env.NEXT_PUBLIC_BASE_PATH || process.env.PUBLIC_URL || '';
-                const dataUrl = language === 'en'
-                    ? `${basePath}/data/${pageType}.en.json`
-                    : `${basePath}/data/${pageType}.json`;
+                const dataUrl = `${basePath}/data/${pageType}.json`;
                 controller = new AbortController();
                 timeoutId = window.setTimeout(() => controller?.abort(), 5000);
 
@@ -136,20 +123,11 @@ export const useCachedPageData = <T = SiteData>(pageType: string, language: 'ko'
                     }
                 });
 
-                const fallbackResponse = language === 'en' && !response.ok
-                    ? await fetch(`${basePath}/data/${pageType}.json`, {
-                        signal: controller.signal,
-                        headers: {
-                            'Cache-Control': 'public, max-age=300'
-                        }
-                    })
-                    : response;
-
-                if (!fallbackResponse.ok) {
-                    throw new Error(`Failed to load ${pageType} data: ${fallbackResponse.status}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to load ${pageType} data: ${response.status}`);
                 }
 
-                const pageData = await fallbackResponse.json();
+                const pageData = await response.json();
                 if (!isActive) return;
 
                 const translatedData = translateSiteData(pageData, language);

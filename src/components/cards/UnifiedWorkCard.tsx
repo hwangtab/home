@@ -7,6 +7,7 @@ import useLazyImage from '../../hooks/useLazyImage';
 import { Work, WorkCategory, PrimaryAction, WritingWork } from '../../types/data.types';
 import { useLanguage } from '../../i18n';
 import { getLocaleFromPathname, withLocalePrefix } from '../../utils/localePath';
+import { getWorkCoverUrl } from '../../lib/works';
 
 // 설정 객체들
 const getAssetPath = (path: string): string => {
@@ -106,7 +107,16 @@ const TypeBadge: React.FC<{ type: string; category?: string }> = ({ type, catego
 };
 
 const CardImage: React.FC<{ cover?: string; title: string; category?: string; type: string }> = ({ cover, title, category, type }) => {
-    const imageProps = useImageFallback(cover, category, title);
+    const normalizedCategory: WorkCategory =
+        category === 'music' ||
+        category === 'visual' ||
+        category === 'writing' ||
+        category === 'performance' ||
+        category === 'struggle'
+            ? category
+            : 'music';
+    const normalizedCover = cover ? getWorkCoverUrl(cover, normalizedCategory) : undefined;
+    const imageProps = useImageFallback(normalizedCover, category, title);
     const { imgRef, isLoaded, shouldLoad } = useLazyImage(imageProps.src || '');
     const isVideo = type === 'video' || type === '다큐멘터리';
 

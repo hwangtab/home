@@ -11,6 +11,7 @@ import { useCachedPageData } from '../hooks/usePageData';
 import { MusicWork, SiteData } from '../types/data.types';
 import { useLanguage } from '../i18n';
 import { getLocaleFromPathname, withLocalePrefix } from '../utils/localePath';
+import { getWorkCoverUrl } from '../lib/works';
 
 interface FeaturedWorksProps {
     siteData: SiteData | null;
@@ -49,7 +50,7 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ siteData }) => {
                         >
                             <Link href={withLocalePrefix(`/works/${work.id}`, locale)}>
                                 <img
-                                    src={work.cover || '/images/defaults/music-default.svg'}
+                                    src={getWorkCoverUrl(work.cover, 'music')}
                                     alt={work.title}
                                     className="w-full h-48 object-cover mb-4 rounded"
                                     loading="lazy"
