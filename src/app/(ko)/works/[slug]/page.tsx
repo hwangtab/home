@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: WorkDetailRouteProps): Promis
   const image = getWorkCoverUrl(work.cover, work.category);
 
   return {
-    title: `${work.title} | 황경하`,
+    title: work.title,
     description: work.shortDescription || work.description,
     alternates: getAlternates(path, 'ko'),
     openGraph: {
