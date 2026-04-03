@@ -22,6 +22,7 @@ const KO_TO_EN: Record<string, string> = {
   '예정 없음': 'No Scheduled Events',
   '2024년 모월 모일': 'TBD, 2024',
   '미정': 'To be announced',
+  '사진': 'Photography',
   '칼럼': 'Column',
   '르포': 'Reportage',
   '투쟁': 'Struggle',
@@ -59,6 +60,16 @@ const KO_TO_EN: Record<string, string> = {
   '가로수길 곱창집 \'우장창창\'과 건물주 리쌍 간의 임대차 분쟁 사건. \'맘편히장사하고픈상인모임(맘상모)\'과 함께 강제집행을 저지하고, 불합리한 상가건물 임대차보호법의 문제점을 사회적으로 공론화하여 법 개정을 이끌어낸 상징적인 투쟁이다.': 'A lease dispute between the Garosu-gil restaurant "Ujangchangchang" and landlord Leessang. Together with a merchants’ coalition, activists resisted forced eviction and helped drive legal reform by publicizing flaws in commercial lease protection law.',
   '리쌍 건물 강제집행 저지 및 상가법 개정 운동': 'Leessang building eviction resistance and commercial lease law reform movement.',
   '자식을 잃은 어머니의 가슴 저미는 아픔을 담은 새 싱글 \'눈녹듯\'을 발매했습니다.': 'A new single, "Like Melting Snow," has been released, capturing the deep pain of a mother who lost her child.'
+  ,
+  '무대와 연대의 순간들': 'Moments of Stage and Solidarity',
+  '황경하가 야외와 현장에서 노래하는 장면들을 담은 공연 사진 모음입니다.': 'A collection of performance photographs capturing Hwang Gyeongha singing in outdoor and on-site spaces.',
+  '현장 공연과 연대의 장면을 담은 사진 모음': 'A photo series of live performance and solidarity scenes',
+  '인물과 침묵의 초상': 'Portraits in Stillness',
+  '흑백과 저채도의 프레임으로 황경하의 얼굴과 시선을 기록한 인물 사진 연작입니다.': 'A portrait series recording Hwang Gyeongha’s face and gaze through black-and-white and low-saturation frames.',
+  '얼굴과 시선을 중심으로 한 인물 사진 연작': 'A portrait series centered on face and gaze',
+  '작업실과 생활의 장면': 'Studio and Everyday Scenes',
+  '카메라를 들고 현장을 바라보거나 실내에서 준비하는 순간 등 작업 전후의 시간을 담은 사진들입니다.': 'Photographs of time before and after the work, including moments of looking at the field with a camera and preparing indoors.',
+  '작업 전후의 준비와 생활 장면을 담은 사진 기록': 'A photographic record of preparation and everyday moments around the work'
 };
 
 const translateValue = (value: JsonValue): JsonValue => {

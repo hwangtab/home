@@ -123,6 +123,8 @@
         "pageSubtitle": "새로운 활동과 공지사항",
         "title": "최신 소식",
         "concerts": "공연 일정",
+        "noConcerts": "현재 등록된 공연 일정이 없습니다.",
+        "noNews": "현재 등록된 소식이 없습니다.",
         "albumPurchase": "음반 구매",
         "concertInfo": "공연정보",
         "purchase": "구매하기"

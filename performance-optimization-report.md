@@ -4,21 +4,11 @@
 ## 📊 최적화 결과 요약
 
 ### 1. 데이터 로딩 최적화
-- **원본 siteData.json**: 6.5KB
-- **홈페이지 전용 데이터**: 3.6KB 
-- **데이터 크기 감소**: 44.7% 개선
+- **단일 데이터 소스**: `src/data/siteData.json`
+- **페이지별 selector 계층**: `src/data/siteContent.ts`
+- **페이지별 동기 hook**: `src/hooks/usePageData.ts`
 
-### 2. 페이지별 데이터 분할
-| 페이지 | 데이터 크기 | 감소율 |
-|--------|-------------|--------|
-| Home | 3.6KB | 44.7% |
-| Works | 5.9KB | 9.3% |
-| About | 3.9KB | 40.6% |
-| Archive | 5.9KB | 9.3% |
-| Contact | 0.2KB | 97.1% |
-| News | 0.4KB | 94.3% |
-
-### 3. 번들 크기 분석
+### 2. 번들 크기 분석
 - **메인 JS 번들**: 120KB (gzip 압축 후)
 - **코드 스플리팅**: 24개의 청크로 분할
 - **React Player**: 별도 청크로 분리 (124.99KB)
@@ -26,16 +16,17 @@
 
 ## 🚀 구현된 최적화 기술
 
-### 1. 동적 데이터 로딩
-```javascript
-// 페이지별 최적화된 데이터 로딩
-const { data: siteData, loading, error } = useCachedPageData('home');
+### 1. 단일 데이터 소스 + selector 기반 접근
+```typescript
+const { data: homeData } = useHomePageData(language);
+const { data: worksPageData } = useWorksPageData(language);
 ```
 
 **특징:**
-- 페이지별 필요한 데이터만 로드
-- 메모리 캐시로 재사용 최적화
-- Fallback 메커니즘으로 안정성 확보
+- 콘텐츠 수정 지점이 `src/data/siteData.json` 하나로 고정
+- 페이지별 데이터 형상은 selector에서만 관리
+- 클라이언트 fetch 제거로 데이터 경로 복잡도 감소
+- 타입 기반으로 페이지 데이터 스키마를 명확히 유지
 
 ### 2. React.lazy 코드 스플리팅
 ```javascript
@@ -59,41 +50,38 @@ const createLazyComponent = (importFn, componentName) => {
 - 고급 에러 처리 및 재시도 메커니즘
 
 ### 3. 캐시 최적화
-- 페이지 데이터를 메모리에 캐시하여 재방문 시 즉시 로드
-- 브라우저의 HTTP 캐시와 연동
+- 정적 데이터는 모듈 캐시를 통해 재사용
+- 페이지별 파생 데이터는 selector와 `useMemo`로 계산 비용 최소화
 
 ## 📈 예상 성능 개선 효과
 
-### Time to Interactive (TTI)
-- **개선 전**: 전체 데이터 로드 필요
-- **개선 후**: 홈페이지 데이터만 로드 (44.7% 감소)
-- **예상 TTI 개선**: 30-40%
+### 유지보수성과 안정성
+- 데이터 원본과 페이지별 파생 데이터가 분리되어 변경 영향 범위 축소
+- 중복 JSON 제거로 데이터 불일치 가능성 감소
+- `npm run data:validate`로 콘텐츠 변경 시 기본 스키마 검증 가능
 
 ### First Contentful Paint (FCP)
 - 코드 스플리팅으로 초기 번들 크기 감소
-- 동적 로딩으로 필수 컴포넌트 우선 렌더링
+- 필수 컴포넌트 우선 렌더링 유지
 
 ### 네트워크 사용량
-- 페이지별 필요한 데이터만 다운로드
-- 평균 데이터 전송량 40-50% 감소
+- 별도 페이지 JSON 요청 제거
+- 정적 번들에 포함된 데이터와 selector만 사용
 
 ## 🛠 기술적 세부사항
 
-### 데이터 분할 스크립트
-```bash
-node scripts/split-data.js
-```
-- 자동으로 페이지별 JSON 파일 생성
-- public/data/ 폴더에 최적화된 데이터 저장
+### 데이터 selector 계층
+- `src/data/siteContent.ts`에서 locale별 데이터와 페이지별 selector 제공
+- `src/lib/works.ts`는 작품 상세/slug 조회를 이 계층 위에서 수행
 
 ### 새로운 Hook: usePageData
-- 페이지별 데이터 로딩 전담
-- 에러 처리 및 로딩 상태 관리
-- 캐시 메커니즘 내장
+- 페이지별 typed data 반환
+- fetch/abort/fallback 없이 동기 selector 결과 사용
+- `useHomePageData`, `useWorksPageData` 같은 목적별 hook 제공
 
 ### 로딩 상태 개선
 - 스켈레톤 UI로 사용자 경험 향상
-- 에러 상황에서의 재시도 메커니즘
+- 데이터 요청 실패 분기 제거로 불필요한 로딩 상태 단순화
 
 ## 🔮 추가 최적화 권장사항
 
@@ -116,17 +104,14 @@ node scripts/split-data.js
    - Archive 페이지에 적용 권장
 
 ### 장기 개선 (3-6개월)
-1. **TypeScript 마이그레이션**
-   - 런타임 에러 감소
-   - 개발 생산성 향상
-
-2. **State Management 최적화**
+1. **State Management 최적화**
    - Zustand 또는 Jotai 도입 검토
    - 글로벌 상태 최적화
 
 ## ✅ 검증 완료 사항
-- [x] 데이터 분할 스크립트 정상 작동
-- [x] 홈페이지 44.7% 데이터 감소 확인
+- [x] `siteData.json` 단일 소스 기반 selector 계층 적용
+- [x] `public/data/*.json` 제거
+- [x] `npm run data:validate` 검증 스크립트 추가
 - [x] React.lazy 코드 스플리팅 적용
 - [x] 빌드 성공 및 번들 분석 완료
-- [x] 에러 처리 및 fallback 메커니즘 구현
+- [x] 타입 체크, 린트, 프로덕션 빌드 통과

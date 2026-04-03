@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import siteData from '../data/siteData.json';
+import { getSiteData } from '../data/siteContent';
 import { getAllWorkSlugs } from '../lib/works';
 import { SITE_URL } from '../lib/seo';
 
@@ -52,7 +52,7 @@ const toLocalizedEntries = (basePath: string, options: EntryOptions, lastModifie
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date(siteData.metadata.lastUpdated);
+  const lastModified = new Date(getSiteData('ko').metadata.lastUpdated);
 
   const staticEntries: SitemapEntry[] = [
     ...toLocalizedEntries('/', { changeFrequency: 'weekly', priority: 1.0 }, lastModified),

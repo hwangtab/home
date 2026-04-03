@@ -1,18 +1,19 @@
-// Work Categories
-export type WorkCategory = 'music' | 'visual' | 'writing' | 'performance' | 'struggle';
+export const WORK_CATEGORIES = ['music', 'visual', 'writing', 'performance', 'struggle'] as const;
+export type WorkCategory = (typeof WORK_CATEGORIES)[number];
+
 export type MusicType = 'album' | 'single';
 export type WritingType = '칼럼' | '르포' | 'essay' | 'report';
 export type ActionType = 'play' | 'read' | 'view' | 'watch' | 'link';
-export type PageType = 'works' | 'archive' | 'about' | 'all';
 
-// Primary Action
+export const PAGE_TYPES = ['works', 'archive', 'about', 'all'] as const;
+export type PageType = (typeof PAGE_TYPES)[number];
+
 export interface PrimaryAction {
     type: ActionType;
     url: string;
     label: string;
 }
 
-// Base Work Interface
 export interface BaseWork {
     id: string;
     title: string;
@@ -29,7 +30,6 @@ export interface BaseWork {
     role?: string;
 }
 
-// Specialized Work Types
 export interface MusicWork extends BaseWork {
     archiveCategory: 'music';
     type: MusicType;
@@ -63,7 +63,6 @@ export interface StruggleWork extends BaseWork {
 
 export type Work = MusicWork | WritingWork | VisualWork | PerformanceWork | StruggleWork | BaseWork;
 
-// Works Collection
 export interface Works {
     music: MusicWork[];
     visual: VisualWork[];
@@ -72,7 +71,6 @@ export interface Works {
     struggle?: StruggleWork[];
 }
 
-// Artist
 export interface Contact {
     email: string;
     phone: string;
@@ -86,7 +84,6 @@ export interface Artist {
     contact: Contact;
 }
 
-// Events
 export type ConcertStatus = 'upcoming' | 'past' | 'cancelled';
 
 export interface Concert {
@@ -102,7 +99,6 @@ export interface Events {
     concerts: Concert[];
 }
 
-// News
 export interface NewsItem {
     id: string;
     title: string;
@@ -111,13 +107,11 @@ export interface NewsItem {
     featured?: boolean;
 }
 
-// Metadata
 export interface SiteMetadata {
     lastUpdated: string;
     version: string;
 }
 
-// Complete Site Data
 export interface SiteData {
     metadata: SiteMetadata;
     artist: Artist;

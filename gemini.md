@@ -30,7 +30,7 @@
 
 - `src/pages`: `Home`, `About`, `Works`, `Archive`, `News`, `Contact` 등 주요 페이지 컴포넌트 위치.
 - `src/components`: 재사용 가능한 UI 컴포넌트. 리팩토링을 통해 `cards`, `timeline`, `media`, `forms` 등으로 세분화될 예정.
-- `src/data`: 웹사이트 콘텐츠를 담고 있는 JSON 파일들. `siteData.json`으로 통합하는 리팩토링 진행 중.
+- `src/data`: 웹사이트 콘텐츠와 selector 계층을 관리. 현재 `siteData.json` 단일 소스와 `siteContent.ts` selector를 사용.
 - `src/hooks`: `useTimelineData`, `useUnifiedActions` 등 재사용 가능한 커스텀 훅.
 - `src/i18n`: 다국어 지원을 위한 설정.
 - `public`: `index.html`, 이미지, 파비콘 등 정적 에셋.
@@ -38,7 +38,7 @@
 ## 4. 데이터 관리
 
 - 현재 여러 JSON 파일(`works/`, `albums.json` 등)에 데이터가 분산되어 있음.
-- **리팩토링 목표**: 모든 콘텐츠를 `src/data/siteData.json` 파일 하나로 통합하여 관리의 일관성과 효율성을 높이는 것을 최우선 과제로 진행 중.
+- **리팩토링 목표**: 완료. 모든 콘텐츠를 `src/data/siteData.json` 하나로 관리하고, 페이지별 데이터는 selector 계층에서 파생한다.
 - `useTimelineData` 같은 커스텀 훅을 사용하여 통합된 데이터 소스에서 각 페이지에 필요한 데이터를 필터링하여 제공할 계획.
 
 ## 5. 주요 NPM 스크립트
@@ -53,7 +53,7 @@
 - **현재 ���태**: 기능적으로는 구현되어 있으나, 코드 품질, 성능, 유지보수성 개선을 위한 **대규모 리팩토링이 계획 및 진행 중**인 단계.
 - **핵심 문서**: `docs/refactoring-plan.md`에 상세한 분석과 6단계 실행 계획이 명시되어 있음.
 - **주요 리팩토링 계획**:
-  1.  **데이터 일원화**: 분산된 JSON 데이터를 `siteData.json`으로 통합.
+  1.  **데이터 일원화**: 완료. 분산된 JSON 데이터를 `siteData.json`으로 통합하고 `siteContent.ts`로 페이지별 selector 제공.
   2.  **컴포넌트 통합**: 중복되는 카드, 폼 등의 컴포넌트를 재사용 가능한 구조로 변경.
   3.  **성능 최적화**: `React.memo`, `useMemo`, 이미지 지연 로딩, 번들 분석 등 적용.
   4.  **품질 개선**: 에러 처리 시스템 도입, 거대 컴포넌트 분할, 공통 훅 시스템 구축.

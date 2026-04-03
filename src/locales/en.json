@@ -123,6 +123,8 @@
         "pageSubtitle": "New activities and announcements",
         "title": "Latest News",
         "concerts": "Concert Schedule",
+        "noConcerts": "There are no scheduled concerts right now.",
+        "noNews": "There are no published updates right now.",
         "albumPurchase": "Album Purchase",
         "concertInfo": "Concert Info",
         "purchase": "Purchase"

@@ -24,7 +24,7 @@
 - ✅ GitHub Pages 배포 자동화
 
 ### 개선 필요 사항
-- ❌ 데이터 구조 분산 (works, timeline, about 개별 관리)
+- ❌ 일부 계획 문서가 현재 구조와 불일치
 - ❌ 컴포넌트 중복 (ContactForm, 카드 컴포넌트들)
 - ❌ 성능 최적화 부족
 - ❌ 에러 처리 및 로딩 상태 미흡
@@ -52,6 +52,8 @@
 
 ### 1.1 통합 데이터 구조 설계
 
+**상태**: 완료
+
 **목표**: 모든 페이지가 하나의 데이터 소스 사용
 
 ```json
@@ -77,10 +79,11 @@
 }
 ```
 
-**작업 내용**:
-- [ ] `siteData.json`의 `works` 섹션을 `timeline`으로 통합
-- [ ] About.js의 하드코딩된 연혁 데이터를 `timeline`에 추가
-- [ ] 각 이벤트에 `pages` 배열 추가로 표시 페이지 지정
+**현재 적용 내용**:
+- [x] `src/data/siteData.json`을 단일 콘텐츠 소스로 사용
+- [x] `src/data/siteContent.ts`에서 페이지별 selector 제공
+- [x] `src/hooks/usePageData.ts`에서 typed page hook 제공
+- [x] `public/data/*.json` 제거
 
 ### 1.2 통합 카드 컴포넌트 시스템
 

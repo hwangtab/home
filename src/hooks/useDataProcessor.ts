@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from 'react';
-import type { Work, WorkCategory } from '../types/data.types';
+import { WORK_CATEGORIES, type Work, type WorkCategory } from '../types/data.types';
 
 interface DataProcessorOptions<T> {
     filterKey?: keyof T;
@@ -177,13 +177,7 @@ interface YearlyStats {
     [year: number]: { total: number; byType: Record<string, number> };
 }
 
-interface WorksCollection {
-    music?: Work[];
-    visual?: Work[];
-    writing?: Work[];
-    performance?: Work[];
-    struggle?: Work[];
-}
+type WorksCollection = Partial<Record<WorkCategory, Work[]>>;
 
 /**
  * 통합 작품 데이터 전용 훅
@@ -191,13 +185,7 @@ interface WorksCollection {
 export const useWorksData = (worksData: WorksCollection | null, pageType: 'works' | 'archive' | 'about' | 'all' = 'all') => {
     const allWorks = useMemo(() => {
         if (!worksData) return [];
-        const works = [
-            ...(worksData.music || []),
-            ...(worksData.visual || []),
-            ...(worksData.writing || []),
-            ...(worksData.performance || []),
-            ...(worksData.struggle || [])
-        ];
+        const works = WORK_CATEGORIES.flatMap((category) => worksData[category] || []);
         if (pageType === 'all') return works;
         return works.filter(work => work.showInPages?.includes(pageType));
     }, [worksData, pageType]);

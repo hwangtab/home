@@ -1,38 +1,20 @@
-import siteData from '../data/siteData.json';
-import { translateSiteData } from '../utils/translateSiteData';
-import { SiteData, Work, WorkCategory } from '../types/data.types';
-import { SupportedLocale } from '../utils/localePath';
+import {
+  getAllWorkSlugs as getAllWorkSlugsFromData,
+  getAllWorks,
+  getWorkBySlug as getWorkBySlugFromData
+} from '../data/siteContent';
+import type { WorkCategory } from '../types/data.types';
+import type { SupportedLocale } from '../utils/localePath';
 
-const WORK_CATEGORIES: WorkCategory[] = ['music', 'visual', 'writing', 'performance', 'struggle'];
+export type { WorkDetail } from '../data/siteContent';
 
-export type WorkDetail = Work & {
-  category: WorkCategory;
+export const getAllWorkSlugs = (): string[] => getAllWorkSlugsFromData();
+
+export const getWorkBySlug = (slug: string, locale: SupportedLocale) => {
+  return getWorkBySlugFromData(slug, locale);
 };
 
-const toLocalizedSiteData = (locale: SupportedLocale): SiteData => {
-  if (locale === 'en') {
-    return translateSiteData(siteData as SiteData, 'en');
-  }
-
-  return siteData as SiteData;
-};
-
-export const getAllWorks = (locale: SupportedLocale): WorkDetail[] => {
-  const data = toLocalizedSiteData(locale);
-
-  return WORK_CATEGORIES.flatMap((category) => {
-    const items = data.works[category] || [];
-    return items.map((work) => ({ ...work, category }));
-  });
-};
-
-export const getAllWorkSlugs = (): string[] => {
-  return getAllWorks('ko').map((work) => work.id);
-};
-
-export const getWorkBySlug = (slug: string, locale: SupportedLocale): WorkDetail | null => {
-  return getAllWorks(locale).find((work) => work.id === slug) || null;
-};
+export const getLocalizedWorks = (locale: SupportedLocale) => getAllWorks(locale);
 
 export const getWorkCoverUrl = (cover: string | undefined, category: WorkCategory): string => {
   if (!cover) {
@@ -43,6 +25,7 @@ export const getWorkCoverUrl = (cover: string | undefined, category: WorkCategor
       performance: '/images/defaults/performance-default.svg',
       struggle: '/images/defaults/performance-default.svg'
     };
+
     return defaultCoverByCategory[category];
   }
 

@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "lastUpdated": "2025-07-13",
-    "version": "3.1.0"
+    "lastUpdated": "2026-04-03",
+    "version": "3.2.0"
   },
   "artist": {
     "name": "황경하",
@@ -204,7 +204,89 @@
         "sortPriority": 7
       }
     ],
-    "visual": [],
+    "visual": [
+      {
+        "id": "stage-and-solidarity-scenes",
+        "title": "무대와 연대의 순간들",
+        "year": 2023,
+        "type": "사진",
+        "cover": "/images/hwang/3.png",
+        "images": [
+          "/images/hwang/1.png",
+          "/images/hwang/3.png",
+          "/images/hwang/6.png"
+        ],
+        "description": "황경하가 야외와 현장에서 노래하는 장면들을 담은 공연 사진 모음입니다.",
+        "shortDescription": "현장 공연과 연대의 장면을 담은 사진 모음",
+        "tags": [
+          "performance",
+          "solidarity",
+          "live"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "visual",
+        "sortPriority": 1
+      },
+      {
+        "id": "portraits-in-stillness",
+        "title": "인물과 침묵의 초상",
+        "year": 2024,
+        "type": "사진",
+        "cover": "/images/hwang/4.png",
+        "images": [
+          "/images/hwang/2.png",
+          "/images/hwang/4.png",
+          "/images/hwang/7.png",
+          "/images/hwang/9.png",
+          "/images/hwang/10.png",
+          "/images/hwang/11.png"
+        ],
+        "description": "흑백과 저채도의 프레임으로 황경하의 얼굴과 시선을 기록한 인물 사진 연작입니다.",
+        "shortDescription": "얼굴과 시선을 중심으로 한 인물 사진 연작",
+        "tags": [
+          "portrait",
+          "black and white",
+          "documentary"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "visual",
+        "sortPriority": 2
+      },
+      {
+        "id": "studio-and-everyday-scenes",
+        "title": "작업실과 생활의 장면",
+        "year": 2024,
+        "type": "사진",
+        "cover": "/images/hwang/12.png",
+        "images": [
+          "/images/hwang/5.png",
+          "/images/hwang/8.png",
+          "/images/hwang/12.png"
+        ],
+        "description": "카메라를 들고 현장을 바라보거나 실내에서 준비하는 순간 등 작업 전후의 시간을 담은 사진들입니다.",
+        "shortDescription": "작업 전후의 준비와 생활 장면을 담은 사진 기록",
+        "tags": [
+          "studio",
+          "everyday",
+          "behind the scenes"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "visual",
+        "sortPriority": 3
+      }
+    ],
     "writing": [
       {
         "id": "hope-2025",
@@ -262,19 +344,74 @@
         "sortPriority": 2
       }
     ],
-    "performance": []
-  },
-  "events": {
-    "concerts": [
+    "performance": [
       {
-        "id": "upcoming-tbd",
-        "title": "예정 없음",
-        "date": "2024년 모월 모일",
-        "location": "미정",
-        "ticketUrl": "https://www.instagram.com/podopodopo/",
-        "status": "upcoming"
+        "id": "body-center-release-concert-2019",
+        "title": "몸의 중심 발매 기념 콘서트",
+        "year": 2019,
+        "description": "'몸의 중심' 앨범 발매를 기념해 진행한 공연입니다.",
+        "shortDescription": "'몸의 중심' 앨범 발매 기념 공연",
+        "location": "라이브클럽 Day",
+        "tags": [
+          "concert",
+          "live",
+          "album release",
+          "performance"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "performance",
+        "sortPriority": 1
+      },
+      {
+        "id": "may-day-solidarity-performance-2023",
+        "title": "2023 메이데이 연대 공연",
+        "year": 2023,
+        "description": "노동절을 맞아 진행된 노동자 연대 공연에서 '몸의 중심' 등을 연주했습니다.",
+        "shortDescription": "노동절 노동자 연대 공연",
+        "location": "서울 광화문광장",
+        "tags": [
+          "may day",
+          "labor",
+          "solidarity",
+          "protest"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "performance",
+        "sortPriority": 2
+      },
+      {
+        "id": "fish-market-solidarity-performance-2023",
+        "title": "노량진수산시장 상인 연대 공연",
+        "year": 2023,
+        "description": "쫓겨난 옛 노량진수산시장 상인들과 함께한 연대 공연입니다.",
+        "shortDescription": "노량진수산시장 상인들과 함께한 연대 공연",
+        "location": "옛 노량진수산시장",
+        "tags": [
+          "fish market",
+          "displacement",
+          "solidarity",
+          "traditional market"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "performance",
+        "sortPriority": 3
       }
     ]
+  },
+  "events": {
+    "concerts": []
   },
   "news": [
     {
