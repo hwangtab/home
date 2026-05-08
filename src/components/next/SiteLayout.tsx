@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, memo } from 'react';
 import { useLanguage } from '../../i18n';
 import LanguageToggle from '../LanguageToggle';
 import { getLocaleFromPathname, stripLocalePrefix, withLocalePrefix } from '../../utils/localePath';
@@ -13,7 +13,7 @@ interface SiteLayoutProps {
   children: React.ReactNode;
 }
 
-const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
+const SiteLayoutInner: React.FC<SiteLayoutProps> = ({ children }) => {
   const pathname = usePathname();
   const locale = getLocaleFromPathname(pathname);
   const basePathname = stripLocalePrefix(pathname);
@@ -36,20 +36,22 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const nav = [
+  const nav = useMemo(() => [
     { path: '/', label: t('nav.home') },
     { path: '/about', label: t('nav.about') },
     { path: '/works', label: t('nav.works') },
     { path: '/news', label: t('nav.news') },
     { path: '/contact', label: t('nav.contact') }
-  ].map((item) => ({
+  ], [t]);
+
+  const navWithLinks = useMemo(() => nav.map((item) => ({
     ...item,
     href: withLocalePrefix(item.path, locale),
     isActive:
       item.path === '/'
         ? basePathname === '/'
         : basePathname === item.path || basePathname.startsWith(`${item.path}/`)
-  }));
+  })), [nav, locale, basePathname]);
 
   return (
     <div className="bg-gradient-to-b from-gray-950 to-gray-900 min-h-screen font-wanted-sans text-gray-100">
@@ -74,7 +76,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
             </p>
           </Link>
           <nav className="hidden md:flex items-center gap-6 md:-translate-y-1">
-            {nav.map((item) => (
+            {navWithLinks.map((item) => (
               <Link
                 key={item.path}
                 href={item.href}
@@ -97,7 +99,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
         {isOpen && (
           <div className={`md:hidden border-t ${isScrolled ? 'border-gray-800 bg-gray-900/95 backdrop-blur-md' : 'border-transparent bg-gray-950/70 backdrop-blur-sm'}`}>
             <div className="container mx-auto px-4 py-3 flex flex-col gap-3">
-              {nav.map((item) => (
+              {navWithLinks.map((item) => (
                 <Link
                   key={item.path}
                   href={item.href}
@@ -124,4 +126,4 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
   );
 };
 
-export default SiteLayout;
+export default memo(SiteLayoutInner);
