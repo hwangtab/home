@@ -1,4 +1,5 @@
-// @ts-nocheck
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Music, Mic, Headphones, Heart, LucideIcon } from 'lucide-react';

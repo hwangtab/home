@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactPlayer from 'react-player';
 import {
@@ -21,8 +21,16 @@ import { getWorkCoverUrl } from '../lib/works';
 // Extend Work to include properties specific to the player
 export type PlayableWork = Work & {
     audioUrl?: string;
-    links?: Record<string, string>;
-    [key: string]: any; // Allow for other properties
+    purchaseUrl?: string;
+    price?: string;
+    coverUrl?: string;
+    publication?: string;
+    excerpt?: string;
+    location?: string;
+    credits?: string[];
+    images?: string[];
+    primaryAction?: { type: string; url: string; label: string };
+    // links는 BaseWork에 이미 정의됨
 };
 
 interface MusicPlayerProps {
@@ -33,7 +41,8 @@ interface MusicPlayerProps {
 
 const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = false, onClose }) => {
     const { t } = useLanguage();
-    const playerRef = React.useRef<any>(null);
+    // ReactPlayer ref: HTMLVideoElement + seekTo (hls.js API)
+    const playerRef = useRef<HTMLVideoElement & { seekTo?: (value: number, format?: string) => void }>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(0.8);
@@ -59,29 +68,41 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
         }
     }, [currentTrack]);
 
-    const playNext = () => {
+    const playPrevious = useCallback(() => {
         if (playlist.length <= 1) return;
-        if (shuffle) {
+        setCurrentIndex((prev) => (prev - 1 + playlist.length) % playlist.length);
+    }, [playlist.length]);
+
+    // repeat/shuffle 상태를 ref로 추적하여 stale closure 방지
+    const repeatRef = useRef(repeat);
+    const shuffleRef = useRef(shuffle);
+
+    useEffect(() => {
+        repeatRef.current = repeat;
+    }, [repeat]);
+
+    useEffect(() => {
+        shuffleRef.current = shuffle;
+    }, [shuffle]);
+
+    const playNext = useCallback(() => {
+        if (playlist.length <= 1) return;
+        if (shuffleRef.current) {
             const nextIndex = Math.floor(Math.random() * playlist.length);
             setCurrentIndex(nextIndex);
         } else {
             setCurrentIndex((prev) => (prev + 1) % playlist.length);
         }
-    };
+    }, [playlist.length]);
 
-    const playPrevious = () => {
-        if (playlist.length <= 1) return;
-        setCurrentIndex((prev) => (prev - 1 + playlist.length) % playlist.length);
-    };
-
-    const handleEnded = () => {
-        if (repeat) {
+    const handleEnded = useCallback(() => {
+        if (repeatRef.current) {
             setProgress(0);
-            setIsPlaying(true); // Ensure it keeps playing
+            setIsPlaying(true);
         } else {
             playNext();
         }
-    };
+    }, [playNext]);
 
     const formatTime = (seconds: number) => {
         if (!seconds || isNaN(seconds)) return "0:00";
@@ -111,7 +132,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 const rect = e.currentTarget.getBoundingClientRect();
                                 const ratio = (e.clientX - rect.left) / rect.width;
                                 const clampedRatio = Math.min(Math.max(ratio, 0), 1);
-                                playerRef.current.seekTo(clampedRatio, 'fraction');
+                                playerRef.current.seekTo?.(clampedRatio, 'fraction');
                                 setProgress(clampedRatio * duration);
                             }}
                         >
@@ -257,22 +278,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                         {currentTrack.audioUrl && (
                             <ReactPlayer
                                 ref={playerRef}
-                                {...({
-                                    url: currentTrack.audioUrl,
-                                    playing: isPlaying,
-                                    volume: isMuted ? 0 : volume,
-                                    onProgress: (state: { playedSeconds: number }) => setProgress(state.playedSeconds),
-                                    onDuration: setDuration,
-                                    onEnded: handleEnded,
-                                    width: "0",
-                                    height: "0",
-                                    style: { display: 'none' },
-                                    config: {
-                                        file: {
-                                            forceAudio: true
-                                        }
-                                    }
-                                } as any)}
+                                src={currentTrack.audioUrl}
+                                playing={isPlaying}
+                                volume={isMuted ? 0 : volume}
+                                // @ts-expect-error react-player 타입이 onDuration/onEnded 누락 (HTMLMediaElement 이벤트)
+                                onDuration={setDuration}
+                                onEnded={handleEnded}
+                                width={0}
+                                height={0}
+                                style={{ display: 'none' }}
                             />
                         )}
                     </div>
@@ -293,7 +307,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 <div className="overflow-y-auto p-2 space-y-1">
                                     {playlist.map((track, index) => (
                                         <div
-                                            key={`${track.id}-${index}`}
+                                            key={track.id}
                                             onClick={() => setCurrentIndex(index)}
                                             className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-all ${index === currentIndex
                                                 ? 'bg-brand-primary-500/20 border border-brand-primary-500/30'

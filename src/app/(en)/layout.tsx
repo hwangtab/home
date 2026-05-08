@@ -1,39 +1,40 @@
 import '../globals.css';
-import React from 'react';
 import type { Metadata } from 'next';
-import Providers from '../providers';
-import SiteLayout from '../../components/next/SiteLayout';
-import { SITE_URL } from '../../lib/seo';
+import { SharedLayout } from '../../components/Layout/SharedLayout';
+import { getAlternates } from '../../lib/seo';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
   title: 'Hwang Gyeongha Official Web',
   description: 'Official website of musician, sound engineer, and producer Hwang Gyeongha.',
   openGraph: {
     title: 'Hwang Gyeongha Official Web',
     description: 'Official website of musician, sound engineer, and producer Hwang Gyeongha.',
-    type: 'website',
     locale: 'en_US',
-    url: '/en',
-    images: [{ url: '/images/og/default-og.svg', alt: 'Hwang Gyeongha Official Web' }]
+    images: [{ url: '/images/og/default-og.svg', alt: 'Hwang Gyeongha Official Web' }],
   },
   twitter: {
-    card: 'summary_large_image',
     title: 'Hwang Gyeongha Official Web',
     description: 'Official website of musician, sound engineer, and producer Hwang Gyeongha.',
-    images: ['/images/og/default-og.svg']
-  }
+    images: ['/images/og/default-og.svg'],
+  },
+  alternates: getAlternates('/en', 'en'),
 };
 
-export default function EnglishRootLayout({
-  children
-}: Readonly<{ children: React.ReactNode }>) {
+export default function EnglishLayout({
+  children,
+}: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <Providers>
-          <SiteLayout>{children}</SiteLayout>
-        </Providers>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-brand-primary-600 focus:text-white focus:rounded-md"
+        >
+          Skip to main content
+        </a>
+        <main id="main-content">
+          <SharedLayout>{children}</SharedLayout>
+        </main>
       </body>
     </html>
   );

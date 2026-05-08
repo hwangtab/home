@@ -1,4 +1,5 @@
-// @ts-nocheck
+'use client';
+
 import React from 'react';
 import { Music, BookOpen, Camera, Mic } from 'lucide-react';
 import { WorkCategory } from '../../types/data.types';

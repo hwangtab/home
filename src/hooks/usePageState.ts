@@ -294,7 +294,7 @@ export const useFormState = <T extends Record<string, unknown>>(
     }, [initialValues]);
 
     const resetField = useCallback((name: keyof T) => {
-        setValues(prev => ({ ...prev, [name]: initialValues[name] || '' as T[keyof T] }));
+        setValues(prev => ({ ...prev, [name]: initialValues[name] ?? ('' as T[keyof T]) }));
         setErrors(prev => { const n = { ...prev }; delete n[name]; return n; });
         setTouched(prev => { const n = { ...prev }; delete n[name]; return n; });
     }, [initialValues]);
@@ -308,7 +308,12 @@ export const useFormState = <T extends Record<string, unknown>>(
 
     const getFieldProps = useCallback(<K extends keyof T>(name: K): FieldProps<T[K]> => ({
         value: values[name],
-        onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(name, e.target.value as T[K]),
+        onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+          const value = e.target.value;
+          // String input에서 오는 값은 기본적으로 string 타입
+          // T[K]가 string을 포함하는 경우에만 안전
+          handleChange(name, value as unknown as T[K]);
+        },
         onBlur: () => handleBlur(name),
         error: errors[name],
         touched: !!touched[name]

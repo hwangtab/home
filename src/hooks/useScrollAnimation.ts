@@ -42,6 +42,8 @@ const useScrollAnimation = (options: ScrollAnimationOptions = {}): ScrollAnimati
     const animationFrameId = useRef<number | null>(null);
     const { isAnimationAllowed, registerAnimation, unregisterAnimation } = useAnimationContext();
     const animationIdRef = useRef<string>(`scroll-animation-${Date.now()}`);
+    // isVisibleRef은 effect 내부에서 stale dependency 방지용
+    const isVisibleRef = useRef(false);
 
     const updateScrollY = useCallback(() => {
         if (!isAnimationAllowed()) return;
@@ -63,10 +65,13 @@ const useScrollAnimation = (options: ScrollAnimationOptions = {}): ScrollAnimati
             ([entry]) => {
                 if (!isAnimationAllowed()) return;
                 const isIntersecting = entry.isIntersecting;
-                if (isIntersecting && (!isVisible || !triggerOnce)) {
+                const wasVisible = isVisibleRef.current;
+                if (isIntersecting && (!wasVisible || !triggerOnce)) {
+                    isVisibleRef.current = true;
                     setIsVisible(true);
                     controls.start('visible');
                 } else if (!triggerOnce && !isIntersecting) {
+                    isVisibleRef.current = false;
                     setIsVisible(false);
                     controls.start('hidden');
                 }
@@ -85,7 +90,7 @@ const useScrollAnimation = (options: ScrollAnimationOptions = {}): ScrollAnimati
             if (animationFrameId.current) { cancelAnimationFrame(animationFrameId.current); animationFrameId.current = null; }
             unregisterAnimation(currentAnimationId);
         };
-    }, [threshold, offset, triggerOnce, isVisible, controls, isAnimationAllowed, registerAnimation, unregisterAnimation]);
+    }, [threshold, offset, triggerOnce, controls, isAnimationAllowed, registerAnimation, unregisterAnimation]);
 
     useEffect(() => {
         if (!enableParallax) return;
@@ -159,7 +164,7 @@ export const useScrollProgress = (): number => {
  */
 export const useScrollDirection = (threshold = 10): 'up' | 'down' => {
     const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('up');
-    const [lastScrollY, setLastScrollY] = useState(0);
+    const lastScrollYRef = useRef(0);
     const animationFrameId = useRef<number | null>(null);
     const { isAnimationAllowed, registerAnimation, unregisterAnimation } = useAnimationContext();
     const animationIdRef = useRef<string>(`scroll-direction-${Date.now()}`);
@@ -172,10 +177,11 @@ export const useScrollDirection = (threshold = 10): 'up' | 'down' => {
             if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
             animationFrameId.current = requestAnimationFrame(() => {
                 const currentScrollY = window.scrollY;
+                const lastScrollY = lastScrollYRef.current;
                 const direction = currentScrollY > lastScrollY ? 'down' : 'up';
                 if (Math.abs(currentScrollY - lastScrollY) > threshold) {
                     setScrollDirection(direction);
-                    setLastScrollY(currentScrollY);
+                    lastScrollYRef.current = currentScrollY;
                 }
                 animationFrameId.current = null;
             });
@@ -187,7 +193,7 @@ export const useScrollDirection = (threshold = 10): 'up' | 'down' => {
         };
         document.addEventListener('cleanupAnimations', handleCleanup);
         return () => { handleCleanup(); document.removeEventListener('cleanupAnimations', handleCleanup); unregisterAnimation(currentAnimationId); };
-    }, [lastScrollY, threshold, isAnimationAllowed, registerAnimation, unregisterAnimation]);
+    }, [threshold, isAnimationAllowed, registerAnimation, unregisterAnimation]);
 
     return scrollDirection;
 };

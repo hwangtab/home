@@ -28,6 +28,8 @@ export interface BaseWork {
     archiveCategory?: WorkCategory;
     sortPriority?: number;
     role?: string;
+    /** 플랫폼별 외부 링크 (e.g., { spotify: '...', youtube: '...' }) */
+    links?: Record<string, string>;
 }
 
 export interface MusicWork extends BaseWork {
@@ -61,7 +63,7 @@ export interface StruggleWork extends BaseWork {
     archiveCategory: 'struggle';
 }
 
-export type Work = MusicWork | WritingWork | VisualWork | PerformanceWork | StruggleWork | BaseWork;
+export type Work = MusicWork | WritingWork | VisualWork | PerformanceWork | StruggleWork;
 
 export interface Works {
     music: MusicWork[];

@@ -22,6 +22,7 @@ type AnimationPriority = typeof ANIMATION_PRIORITY[keyof typeof ANIMATION_PRIORI
 interface AnimationContextType {
     currentState: AnimationState;
     runningAnimations: Set<string>;
+    reducedMotion: boolean;
     startPageTransition: () => void;
     endPageTransition: () => void;
     registerAnimation: (id: string, priority?: AnimationPriority) => boolean;
@@ -38,10 +39,25 @@ interface AnimationProviderProps {
     children: ReactNode;
 }
 
+// prefers-reduced-motion 미디어 쿼리 감지
+const getReducedMotionPreference = (): boolean => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
+
 export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }) => {
     const [currentState, setCurrentState] = useState<AnimationState>(ANIMATION_STATES.IDLE);
     const [runningAnimations, setRunningAnimations] = useState<Set<string>>(new Set());
+    const [reducedMotion, setReducedMotion] = useState(getReducedMotionPreference);
     const animationTimeouts = useRef<Map<string, NodeJS.Timeout>>(new Map());
+
+    // prefers-reduced-motion 변경 감지
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+        mediaQuery.addEventListener('change', handler);
+        return () => mediaQuery.removeEventListener('change', handler);
+    }, []);
 
     // 페이지 전환 시작
     const startPageTransition = useCallback(() => {
@@ -97,18 +113,23 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }
 
     // 성능 최적화를 위한 애니메이션 제한
     const shouldReduceAnimations = useCallback(() => {
+        // prefers-reduced-motion 설정이 있으면 즉시 제한
+        if (reducedMotion) {
+            return true;
+        }
+
         // 많은 애니메이션이 동시에 실행 중인 경우 제한
         if (runningAnimations.size > 3) {
             return true;
         }
 
         // 모바일 환경에서는 더 제한적
-        if (window.innerWidth < 768 && runningAnimations.size > 2) {
+        if (typeof window !== 'undefined' && window.innerWidth < 768 && runningAnimations.size > 2) {
             return true;
         }
 
         return false;
-    }, [runningAnimations.size]);
+    }, [runningAnimations.size, reducedMotion]);
 
     // 정리 함수 강화
     const cleanup = useCallback(() => {
@@ -136,6 +157,7 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }
     const value = useMemo(() => ({
         currentState,
         runningAnimations,
+        reducedMotion,
         startPageTransition,
         endPageTransition,
         registerAnimation,
@@ -146,6 +168,7 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }
     }), [
         currentState,
         runningAnimations,
+        reducedMotion,
         startPageTransition,
         endPageTransition,
         registerAnimation,

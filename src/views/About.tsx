@@ -4,6 +4,7 @@ import React from 'react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
 import DataRenderer, { RENDER_TYPES } from '../components/DataRenderer';
+import { resolvePath } from '../utils/pathUtils';
 import { Heading3, BodyText } from '../components/ui/Typography';
 import { Grid, Stack } from '../components/ui/Layout';
 import { UnifiedCard as Card } from '../components/ui/Card';
@@ -34,7 +35,7 @@ const About: React.FC = () => {
               t('about.profileParagraph1'),
               t('about.profileParagraph2')
             ]}
-            imageSrc={`${process.env.NEXT_PUBLIC_BASE_PATH || process.env.PUBLIC_URL || ''}/images/profile1.png`}
+            imageSrc={resolvePath('/images/profile1.png')}
             imageAlt={t('common.siteTitle')}
             layout="horizontal"
           />

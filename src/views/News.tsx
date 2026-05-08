@@ -41,6 +41,9 @@ const ConcertSlider: React.FC<ConcertSliderProps> = ({ concerts }) => {
 
   const currentConcert = concerts[currentIndex];
 
+  // concert.id를 key로 사용하여 데이터 변경 시 안정성 보장
+  const key = `${currentConcert.id}-${currentIndex}`;
+
   return (
     <motion.div
       className="rounded-lg bg-gray-800 p-8 shadow-lg"
@@ -50,7 +53,7 @@ const ConcertSlider: React.FC<ConcertSliderProps> = ({ concerts }) => {
     >
       <AnimatePresence initial={false}>
         <motion.div
-          key={currentIndex}
+          key={key}
           className="text-center"
           initial={{ opacity: 0, x: 300 }}
           animate={{ opacity: 1, x: 0 }}

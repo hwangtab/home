@@ -1,42 +1,43 @@
 import '../globals.css';
-import React from 'react';
 import type { Metadata } from 'next';
-import Providers from '../providers';
-import SiteLayout from '../../components/next/SiteLayout';
-import { SITE_URL } from '../../lib/seo';
+import { SharedLayout } from '../../components/Layout/SharedLayout';
+import { getAlternates } from '../../lib/seo';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
   title: {
     default: '황경하 공식 웹사이트',
-    template: '%s | 황경하'
+    template: '%s | 황경하',
   },
   description: '황경하의 공식 웹사이트입니다. 음악, 저술, 공연, 소식을 확인할 수 있습니다.',
   openGraph: {
     title: '황경하 공식 웹사이트',
     description: '황경하의 공식 웹사이트입니다. 음악, 저술, 공연, 소식을 확인할 수 있습니다.',
-    type: 'website',
     locale: 'ko_KR',
-    url: '/',
-    images: [{ url: '/images/og/default-og.svg', alt: '황경하 공식 웹사이트' }]
+    images: [{ url: '/images/og/default-og.svg', alt: '황경하 공식 웹사이트' }],
   },
   twitter: {
-    card: 'summary_large_image',
     title: '황경하 공식 웹사이트',
     description: '황경하의 공식 웹사이트입니다. 음악, 저술, 공연, 소식을 확인할 수 있습니다.',
-    images: ['/images/og/default-og.svg']
-  }
+    images: ['/images/og/default-og.svg'],
+  },
+  alternates: getAlternates('/', 'ko'),
 };
 
-export default function KoreanRootLayout({
-  children
-}: Readonly<{ children: React.ReactNode }>) {
+export default function KoreanLayout({
+  children,
+}: { children: React.ReactNode }) {
   return (
     <html lang="ko">
       <body>
-        <Providers>
-          <SiteLayout>{children}</SiteLayout>
-        </Providers>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-brand-primary-600 focus:text-white focus:rounded-md"
+        >
+          메인 콘텐츠로 이동
+        </a>
+        <main id="main-content">
+          <SharedLayout>{children}</SharedLayout>
+        </main>
       </body>
     </html>
   );

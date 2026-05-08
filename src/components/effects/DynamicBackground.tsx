@@ -1,6 +1,7 @@
-// @ts-nocheck
+'use client';
+
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, HTMLMotionProps } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 interface Particle {
     id: number;

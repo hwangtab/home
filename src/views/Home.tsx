@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
+import OptimizedImage from '../components/OptimizedImage';
 import { useHomePageData } from '../hooks/usePageData';
 import type { MusicWork } from '../types/data.types';
 import { useLanguage } from '../i18n';
@@ -20,10 +21,7 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ works }) => {
   const { t } = useLanguage();
   const pathname = usePathname();
   const locale = getLocaleFromPathname(pathname);
-  const featuredWorks = useMemo(
-    () => works.filter((work) => work.id !== 'melting-snow-2024').slice(0, 3),
-    [works]
-  );
+  const featuredWorks = works.filter((work) => work.featured).slice(0, 3);
 
   if (featuredWorks.length === 0) {
     return null;
@@ -38,16 +36,11 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ works }) => {
             className="w-full rounded-lg bg-gray-750 p-6 shadow-lg transition-transform duration-300 hover:scale-105"
           >
             <Link href={withLocalePrefix(`/works/${work.id}`, locale)}>
-              <img
+              <OptimizedImage
                 src={getWorkCoverUrl(work.cover, 'music')}
                 alt={work.title}
-                className="mb-4 h-48 w-full rounded object-cover"
-                loading="lazy"
-                onError={(event) => {
-                  const target = event.currentTarget;
-                  target.onerror = null;
-                  target.src = '/images/defaults/music-default.svg';
-                }}
+                className="mb-4 h-48 w-full rounded"
+                lazy
               />
               <h3 className="mb-3 font-santokki text-2xl font-bold text-gray-100">
                 {work.title} ({work.year})

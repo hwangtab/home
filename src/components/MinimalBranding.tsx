@@ -1,4 +1,5 @@
-// @ts-nocheck
+'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, Music, Instagram, Youtube } from 'lucide-react';

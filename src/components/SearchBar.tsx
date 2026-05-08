@@ -1,9 +1,24 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+"use client";
+
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Fuse, { type FuseResult, type FuseResultMatch } from 'fuse.js';
 import { Search, X, Music, Calendar, FileText, Mic, Hash } from 'lucide-react';
 import { WORK_CATEGORIES, type Events, type Work, type WorkCategory, type Works } from '../types/data.types';
 import { useLanguage } from '../i18n';
+
+const FUSE_OPTIONS = {
+  keys: [
+    { name: 'title', weight: 0.4 },
+    { name: 'description', weight: 0.3 },
+    { name: 'year', weight: 0.1 }
+  ],
+  threshold: 0.3,
+  includeMatches: true,
+  includeScore: true,
+  minMatchCharLength: 2,
+  shouldSort: true
+};
 
 export interface SearchResultItem {
   id?: string;
@@ -106,15 +121,19 @@ const toSearchItems = (data: SearchSource): SearchResultItem[] => {
   });
 
   WORK_CATEGORIES.forEach((category) => {
-    const works = data.works?.[category] as Work[] | undefined;
+    const works = data.works?.[category as WorkCategory];
 
-    works?.forEach((work) => {
+    if (!works) {
+      return;
+    }
+
+    works.forEach((work) => {
       items.push({
         id: work.id,
         title: work.title,
         year: work.year,
         description: work.description,
-        type: work.archiveCategory ?? work.type ?? 'work',
+        type: work.type ?? work.archiveCategory ?? 'work',
         archiveCategory: work.archiveCategory ?? 'unknown'
       });
     });
@@ -161,22 +180,20 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder 
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
 
-  const searchData = useMemo(() => toSearchItems(data), [data]);
+  // Cache search data using ref to prevent Fuse.js rebuild on every render
+  const searchDataRef = useRef<SearchResultItem[]>(toSearchItems(data));
+  const fuseRef = useRef<Fuse<SearchResultItem>>(new Fuse(toSearchItems(data), FUSE_OPTIONS));
 
-  const fuse = useMemo(() => {
-    return new Fuse<SearchResultItem>(searchData, {
-      keys: [
-        { name: 'title', weight: 0.4 },
-        { name: 'description', weight: 0.3 },
-        { name: 'year', weight: 0.1 }
-      ],
-      threshold: 0.3,
-      includeMatches: true,
-      includeScore: true,
-      minMatchCharLength: 2,
-      shouldSort: true
-    });
-  }, [searchData]);
+  // Only rebuild search index when the underlying data actually changes
+  useEffect(() => {
+    const newData = toSearchItems(data);
+    const prevData = searchDataRef.current;
+    // Compare by length first, then by id for stability
+    if (newData.length !== prevData.length || newData.some((item, i) => item.id !== prevData[i]?.id)) {
+      searchDataRef.current = newData;
+      fuseRef.current = new Fuse(newData, FUSE_OPTIONS);
+    }
+  }, [data]);
 
   useEffect(() => {
     if (query.trim().length < 2) {
@@ -186,10 +203,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder 
       return;
     }
 
-    setResults(fuse.search(query).slice(0, 8));
+    setResults(fuseRef.current.search(query).slice(0, 8));
     setIsOpen(true);
     setSelectedIndex(-1);
-  }, [fuse, query]);
+  }, [query]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

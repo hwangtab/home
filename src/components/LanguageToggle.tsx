@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Globe } from 'lucide-react';
@@ -10,8 +9,7 @@ interface LanguageToggleProps {
     className?: string;
 }
 
-const LanguageToggle: React.FC<LanguageToggleProps> = ({ className = "" }) => {
-    // @ts-ignore - useLanguage context might not be fully typed yet
+const LanguageToggle: React.FC<LanguageToggleProps> = ({ className = '' }) => {
     const { language, changeLanguage } = useLanguage();
     const pathname = usePathname();
     const router = useRouter();

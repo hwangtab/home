@@ -19,6 +19,12 @@ import { useLanguage } from '../i18n';
 import { WORK_CATEGORIES, type MusicWork, type Work, type WorkCategory } from '../types/data.types';
 
 const WORK_FILTER_SET = new Set<string>(['all', ...WORK_CATEGORIES]);
+const RING_HIGHLIGHT_DURATION_MS = 2000;
+
+// MusicWork 확장: audioUrl 필드 추가 (플레이어에서 사용)
+interface PlayableMusicWork extends MusicWork {
+  audioUrl?: string;
+}
 
 const isWorkFilter = (value: string | null): value is WorkCategory | 'all' => {
   return value !== null && WORK_FILTER_SET.has(value);
@@ -28,25 +34,26 @@ const Works: React.FC = () => {
   const { t, language } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<WorkCategory | 'all'>('all');
   const searchParams = useSearchParams();
+
+  // searchParams에서 추출한 값들을 상수로 분리 — 의존성 안정화
+  const categoryParam = searchParams?.get('category');
+  const workIdParam = searchParams?.get('id');
+
   const { data: worksPageData } = useWorksPageData(language);
 
   useEffect(() => {
-    const category = searchParams?.get('category') ?? null;
-
-    if (isWorkFilter(category)) {
-      setActiveFilter(category);
+    if (isWorkFilter(categoryParam)) {
+      setActiveFilter(categoryParam);
     }
-  }, [searchParams]);
+  }, [categoryParam]);
 
   useEffect(() => {
-    const workId = searchParams?.get('id');
-
-    if (!workId) {
+    if (!workIdParam) {
       return;
     }
 
     const timer = window.setTimeout(() => {
-      const element = document.getElementById(`work-${workId}`);
+      const element = document.getElementById(`work-${workIdParam}`);
 
       if (!element) {
         return;
@@ -69,11 +76,11 @@ const Works: React.FC = () => {
           'ring-offset-gray-900',
           'rounded-lg'
         );
-      }, 2000);
+      }, RING_HIGHLIGHT_DURATION_MS);
     }, 400);
 
     return () => window.clearTimeout(timer);
-  }, [searchParams, activeFilter]);
+  }, [workIdParam, activeFilter]);
 
   const { categorizedData, getWorksByCategory } = useWorksData(worksPageData.works, 'works');
   const { lightbox, musicPlayer } = useCardActions({
@@ -99,18 +106,15 @@ const Works: React.FC = () => {
   );
 
   const filteredWorks = activeFilter === 'all' ? categorizedData.all : getWorksByCategory(activeFilter);
-  const playableMusicWorks = (categorizedData.music as MusicWork[]).filter((work) => {
-    const candidate = work as MusicWork & {
-      audioUrl?: string;
-      links?: string | Record<string, string>;
-    };
-    const links = candidate.links;
-    const hasAudioUrl = typeof candidate.audioUrl === 'string' && candidate.audioUrl.length > 0;
-    const hasLinks =
-      typeof links === 'string' ? links.length > 0 : links !== undefined && Object.keys(links).length > 0;
 
+  const isPlayableMusicWork = (work: Work): work is PlayableMusicWork => {
+    const musicWork = work as PlayableMusicWork;
+    const hasAudioUrl = typeof musicWork.audioUrl === 'string' && musicWork.audioUrl.length > 0;
+    const hasLinks = musicWork.links !== undefined && Object.keys(musicWork.links).length > 0;
     return hasAudioUrl || hasLinks;
-  });
+  };
+  
+  const playableMusicWorks = (categorizedData.music as PlayableMusicWork[]).filter(isPlayableMusicWork);
 
   return (
     <>
@@ -128,7 +132,7 @@ const Works: React.FC = () => {
             siteData={worksPageData}
             handleSearchResult={handleSearchResult}
             musicWorks={playableMusicWorks}
-            openMusicPlayer={musicPlayer.openMusicPlayer as (tracks: MusicWork[]) => void}
+            openMusicPlayer={musicPlayer.openMusicPlayer as (tracks: PlayableMusicWork[]) => void}
           />
         </ScrollReveal>
 
@@ -141,7 +145,6 @@ const Works: React.FC = () => {
         </ScrollReveal>
       </Section>
 
-      {/* @ts-ignore */}
       <Lightbox
         images={lightbox.selectedImages}
         currentIndex={lightbox.lightboxIndex}
@@ -150,7 +153,6 @@ const Works: React.FC = () => {
         onImageChange={lightbox.changeLightboxImage}
       />
 
-      {/* @ts-ignore */}
       <MusicPlayer
         playlist={musicPlayer.playlist}
         isVisible={musicPlayer.musicPlayerVisible}

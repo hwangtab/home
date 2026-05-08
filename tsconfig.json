@@ -27,33 +27,6 @@
     "paths": {
       "@/*": [
         "./*"
-      ],
-      "@components/*": [
-        "components/*"
-      ],
-      "@hooks/*": [
-        "hooks/*"
-      ],
-      "@context/*": [
-        "context/*"
-      ],
-      "@types/*": [
-        "types/*"
-      ],
-      "@constants/*": [
-        "constants/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@config/*": [
-        "config/*"
-      ],
-      "@i18n/*": [
-        "i18n/*"
-      ],
-      "@data/*": [
-        "data/*"
       ]
     }
   },

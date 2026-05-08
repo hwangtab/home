@@ -89,13 +89,8 @@ const Contact: React.FC = () => {
 
             <div className="mt-8 rounded-lg bg-gray-700 p-4">
               <h4 className="mb-2 font-wanted-sans font-bold text-gray-200">{t('contact.businessHours')}</h4>
-              <p className="text-sm text-gray-400">
-                {t('contact.businessHoursText').split('\n').map((line, index) => (
-                  <React.Fragment key={`${line}-${index}`}>
-                    {line}
-                    {index === 0 ? <br /> : null}
-                  </React.Fragment>
-                ))}
+              <p className="whitespace-pre-line text-sm text-gray-400">
+                {t('contact.businessHoursText')}
               </p>
             </div>
 

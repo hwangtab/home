@@ -53,7 +53,14 @@ const Typography = memo(forwardRef<HTMLElement, TypographyProps>(({
 
     if (animate) {
         return (
-            <motion.div ref={ref as React.Ref<HTMLDivElement>} className={classes} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.25, 0.25, 0, 1] }} {...(props as any)}>
+            <motion.div
+                ref={ref as React.Ref<HTMLDivElement>}
+                className={classes}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: [0.25, 0.25, 0, 1] }}
+                {...(props as React.ComponentPropsWithoutRef<'div'> as Record<string, unknown>)}
+            >
                 <Component className="w-full">{children}</Component>
             </motion.div>
         );

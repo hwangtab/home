@@ -56,7 +56,7 @@ export const Input = memo(forwardRef<HTMLInputElement, InputProps>(({
     type = 'text', size = 'md', variant = 'default', leftIcon = null, rightIcon = null, validation = null,
     realTimeValidation = false, className = '', onChange, onBlur, value, error, helper, label, ...props
 }, ref) => {
-    const [internalValue, setInternalValue] = useState<string | number | readonly string[]>((value as string) || '');
+    const [internalValue, setInternalValue] = useState<string | number | readonly string[]>(typeof value === 'string' || value === undefined ? '' : value);
     const [isValid, setIsValid] = useState<boolean | null>(null);
     const [isFocused, setIsFocused] = useState(false);
 

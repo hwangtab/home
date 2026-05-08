@@ -33,9 +33,10 @@ const Lightbox: React.FC<LightboxProps> = ({ images = [], currentIndex = 0, isOp
     const normalizedImages = images.map(normalizeImage);
     const currentImage = normalizedImages[currentIndex];
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- images.length is stable
     const goToNext = useCallback(() => {
         if (currentIndex < images.length - 1) onImageChange(currentIndex + 1);
-    }, [currentIndex, images.length, onImageChange]);
+    }, [currentIndex, onImageChange]);
 
     const goToPrevious = useCallback(() => {
         if (currentIndex > 0) onImageChange(currentIndex - 1);
@@ -106,16 +107,27 @@ const Lightbox: React.FC<LightboxProps> = ({ images = [], currentIndex = 0, isOp
         else zoomOut();
     };
 
-    const downloadImage = () => {
-        if (currentImage) {
+    const downloadImage = useCallback(async () => {
+        const image = currentImage;
+        if (!image) return;
+
+        const filename = image.title || `image-${currentIndex + 1}`;
+        try {
+            const response = await fetch(image.src, { mode: 'cors' });
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
-            link.href = currentImage.src;
-            link.download = currentImage.title || `image-${currentIndex + 1}`;
+            link.href = url;
+            link.download = filename;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } catch {
+            // CORS가 허용되지 않은 경우 새 탭에서 열기
+            window.open(image.src, '_blank', 'noopener,noreferrer');
         }
-    };
+    }, [currentIndex]);
 
     if (!currentImage) return null;
 

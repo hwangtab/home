@@ -1,5 +1,6 @@
+'use client';
 
-import React from 'react';
+import React, { Component, ErrorInfo } from 'react';
 import LanguageContext from '../i18n';
 
 interface ErrorBoundaryState {
@@ -13,9 +14,103 @@ interface ErrorBoundaryProps {
     children: React.ReactNode;
 }
 
-class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+interface ErrorFallbackProps {
+    retryCount: number;
+    error: Error;
+    isChunkError: boolean;
+    onRetry: () => void;
+    onReload: () => void;
+    t: (key: string) => string;
+}
+
+const isChunkError = (error: Error): boolean =>
+    error?.name === 'ChunkLoadError' ||
+    error?.message?.includes('Loading chunk') ||
+    error?.message?.includes('Loading CSS chunk');
+
+const clearCacheAndReload = () => {
+    const reload = () => window.location.reload();
+    if ('caches' in window) {
+        window.caches.keys().then(names => {
+            names.forEach(name => window.caches.delete(name));
+        }).finally(reload);
+    } else {
+        reload();
+    }
+};
+
+const ErrorFallback: React.FC<ErrorFallbackProps> = ({
+    retryCount,
+    error,
+    isChunkError,
+    onRetry,
+    onReload,
+    t
+}) => {
+    if (isChunkError) {
+        return (
+            <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex items-center justify-center p-4">
+                <div className="max-w-md mx-auto text-center space-y-6">
+                    <div className="text-6xl mb-4">🔄</div>
+                    <h2 className="text-2xl font-bold text-white font-santokki">
+                        {t('errorBoundary.chunkTitle')}
+                    </h2>
+                    <p className="text-gray-300 font-wanted-sans">
+                        {t('errorBoundary.chunkDesc')}
+                    </p>
+                    {retryCount > 0 && (
+                        <p className="text-gray-400 text-sm font-wanted-sans">
+                            {t('errorBoundary.retryCount')}: {retryCount}/3
+                        </p>
+                    )}
+                    <div className="flex gap-4 justify-center">
+                        {retryCount < 3 && (
+                            <button
+                                onClick={onRetry}
+                                className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition-colors font-wanted-sans"
+                            >
+                                {t('common.retry')}
+                            </button>
+                        )}
+                        <button
+                            onClick={onReload}
+                            className="px-6 py-3 bg-brand-primary-600 text-white rounded-lg hover:bg-brand-primary-700 transition-colors font-wanted-sans"
+                        >
+                            {t('common.refresh')}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex items-center justify-center p-4">
+            <div className="max-w-md mx-auto text-center space-y-6">
+                <div className="text-6xl mb-4">⚠️</div>
+                <h2 className="text-2xl font-bold text-white font-santokki">
+                    {t('errorBoundary.unexpectedTitle')}
+                </h2>
+                <p className="text-gray-300 font-wanted-sans">
+                    {t('errorBoundary.unexpectedDesc')}
+                </p>
+                <p className="text-gray-400 text-sm font-wanted-sans break-words">
+                    {error.toString()}
+                </p>
+                <button
+                    onClick={onReload}
+                    className="px-6 py-3 bg-brand-primary-600 text-white rounded-lg hover:bg-brand-primary-700 transition-colors font-wanted-sans"
+                >
+                    {t('errorBoundary.refreshPage')}
+                </button>
+            </div>
+        </div>
+    );
+};
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     static contextType = LanguageContext;
-    declare context: React.ContextType<typeof LanguageContext>;
+    context!: React.ContextType<typeof LanguageContext> & { t?: (key: string) => string };
 
     constructor(props: ErrorBoundaryProps) {
         super(props);
@@ -27,20 +122,16 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
         };
     }
 
-    static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
-        const isChunkError = error?.name === 'ChunkLoadError' ||
-            error?.message?.includes('Loading chunk') ||
-            error?.message?.includes('Loading CSS chunk');
-
+    static getDerivedStateFromError(error: Error): ErrorBoundaryState {
         return {
             hasError: true,
             error,
-            isChunkError,
+            isChunkError: isChunkError(error),
             retryCount: 0
         };
     }
 
-    componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         console.error("ErrorBoundary caught error:", error, errorInfo);
 
         if (this.state.isChunkError && this.state.retryCount < 2) {
@@ -55,86 +146,30 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     }
 
     handleReload = () => {
-        const reload = () => window.location.reload();
-        if ('caches' in window) {
-            (window as Window & { caches?: CacheStorage }).caches!.keys().then(names => {
-                names.forEach(name => (window as Window & { caches?: CacheStorage }).caches!.delete(name));
-            }).finally(reload);
-        } else {
-            reload();
-        }
+        clearCacheAndReload();
     };
 
     handleRetry = () => {
-        this.setState({
+        this.setState(prevState => ({
             hasError: false,
             error: null,
-            retryCount: this.state.retryCount + 1
-        });
+            retryCount: prevState.retryCount + 1
+        }));
     };
 
     render() {
-        const t = this.context?.t || ((key: string) => key);
+        const t = (this.context?.t as ((key: string) => string) | undefined) || ((key: string) => key);
 
         if (this.state.hasError) {
-            if (this.state.isChunkError) {
-                return (
-                    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex items-center justify-center p-4">
-                        <div className="max-w-md mx-auto text-center space-y-6">
-                            <div className="text-6xl mb-4">🔄</div>
-                            <h2 className="text-2xl font-bold text-white font-santokki">
-                                {t('errorBoundary.chunkTitle')}
-                            </h2>
-                            <p className="text-gray-300 font-wanted-sans">
-                                {t('errorBoundary.chunkDesc')}
-                            </p>
-                            {this.state.retryCount > 0 && (
-                                <p className="text-gray-400 text-sm font-wanted-sans">
-                                    {t('errorBoundary.retryCount')}: {this.state.retryCount}/3
-                                </p>
-                            )}
-                            <div className="flex gap-4 justify-center">
-                                {this.state.retryCount < 3 && (
-                                    <button
-                                        onClick={this.handleRetry}
-                                        className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition-colors font-wanted-sans"
-                                    >
-                                        {t('common.retry')}
-                                    </button>
-                                )}
-                                <button
-                                    onClick={this.handleReload}
-                                    className="px-6 py-3 bg-brand-primary-600 text-white rounded-lg hover:bg-brand-primary-700 transition-colors font-wanted-sans"
-                                >
-                                    {t('common.refresh')}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
             return (
-                <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex items-center justify-center p-4">
-                    <div className="max-w-md mx-auto text-center space-y-6">
-                        <div className="text-6xl mb-4">⚠️</div>
-                        <h2 className="text-2xl font-bold text-white font-santokki">
-                            {t('errorBoundary.unexpectedTitle')}
-                        </h2>
-                        <p className="text-gray-300 font-wanted-sans">
-                            {t('errorBoundary.unexpectedDesc')}
-                        </p>
-                        <p className="text-gray-400 text-sm font-wanted-sans break-words">
-                            {this.state.error?.toString()}
-                        </p>
-                        <button
-                            onClick={this.handleReload}
-                            className="px-6 py-3 bg-brand-primary-600 text-white rounded-lg hover:bg-brand-primary-700 transition-colors font-wanted-sans"
-                        >
-                            {t('errorBoundary.refreshPage')}
-                        </button>
-                    </div>
-                </div>
+                <ErrorFallback
+                    retryCount={this.state.retryCount}
+                    error={this.state.error!}
+                    isChunkError={this.state.isChunkError}
+                    onRetry={this.handleRetry}
+                    onReload={this.handleReload}
+                    t={t}
+                />
             );
         }
 

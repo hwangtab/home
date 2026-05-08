@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import koTranslations from '../locales/ko.json';
 import enTranslations from '../locales/en.json';
@@ -51,11 +51,10 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
     const changeLanguage = (lang: SupportedLanguage) => {
         setLanguage(lang);
-        localStorage.setItem('site-language', lang);
         localStorage.setItem('language', lang);
     };
 
-    const t = (path: string): string => {
+    const t = useCallback((path: string): string => {
         const keys = path.split('.');
         let value: any = translations[language];
 
@@ -63,12 +62,21 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
             if (value && typeof value === 'object' && key in value) {
                 value = value[key];
             } else {
-                return path; // Return the path if translation not found
+                // Fallback to English if translation is missing in the current language
+                value = translations.en;
+                for (const fallbackKey of keys) {
+                    if (value && typeof value === 'object' && fallbackKey in value) {
+                        value = value[fallbackKey];
+                    } else {
+                        return path; // Return the key path only if also missing in English
+                    }
+                }
+                return typeof value === 'string' ? value : path;
             }
         }
 
         return typeof value === 'string' ? value : path;
-    };
+    }, [language]);
 
     return (
         <LanguageContext.Provider value={{ language, changeLanguage, t }}>

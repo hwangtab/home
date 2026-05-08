@@ -1,7 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import { WORK_CATEGORIES, type Work, type WorkCategory } from '../types/data.types';
 
-interface DataProcessorOptions<T> {
+interface DataProcessorOptions<T extends object> {
     filterKey?: keyof T;
     sortKey?: keyof T;
     sortOrder?: 'asc' | 'desc';
@@ -39,8 +39,9 @@ interface ProcessFilters<T> {
 
 /**
  * 데이터 처리 및 필터링을 위한 통합 훅
+ * 타입 안전성을 위해 T는 구체적인 타입으로 전달해야 함.
  */
-export const useDataProcessor = <T extends Record<string, unknown>>(
+export const useDataProcessor = <T extends object>(
     data: T[] | null,
     options: DataProcessorOptions<T> = {}
 ) => {
@@ -122,9 +123,12 @@ export const useDataProcessor = <T extends Record<string, unknown>>(
             const year = item['year' as keyof T];
             if (typeof year === 'number') {
                 stats.byYear[year] = (stats.byYear[year] || 0) + 1;
-                const workItem = item as unknown as Work;
-                if (!stats.latest || year > stats.latest.year) stats.latest = workItem;
-                if (!stats.oldest || year < stats.oldest.year) stats.oldest = workItem;
+                if (!stats.latest || year > stats.latest.year) {
+                    stats.latest = item as unknown as Work;
+                }
+                if (!stats.oldest || year < stats.oldest.year) {
+                    stats.oldest = item as unknown as Work;
+                }
             }
         });
         return stats;
@@ -133,11 +137,12 @@ export const useDataProcessor = <T extends Record<string, unknown>>(
     const paginateData = useCallback(<U>(targetData: U[], page = 1, itemsPerPage = 10): PaginationResult<U> => {
         if (!targetData || !Array.isArray(targetData)) return { data: [], totalPages: 0, currentPage: 1, totalItems: 0, hasNext: false, hasPrev: false };
         const startIndex = (page - 1) * itemsPerPage;
+        const totalItems = targetData.length;
         return {
             data: targetData.slice(startIndex, startIndex + itemsPerPage),
-            totalPages: Math.ceil(targetData.length / itemsPerPage),
-            currentPage: page, totalItems: targetData.length,
-            hasNext: startIndex + itemsPerPage < targetData.length, hasPrev: page > 1
+            totalPages: Math.ceil(totalItems / itemsPerPage),
+            currentPage: page, totalItems,
+            hasNext: startIndex + itemsPerPage < totalItems, hasPrev: page > 1
         };
     }, []);
 
@@ -181,58 +186,84 @@ type WorksCollection = Partial<Record<WorkCategory, Work[]>>;
 
 /**
  * 통합 작품 데이터 전용 훅
+ * WorksCollection을 Work[]로 평탄화하여 타입 안전하게 처리.
  */
 export const useWorksData = (worksData: WorksCollection | null, pageType: 'works' | 'archive' | 'about' | 'all' = 'all') => {
     const allWorks = useMemo(() => {
         if (!worksData) return [];
-        const works = WORK_CATEGORIES.flatMap((category) => worksData[category] || []);
+        const works: Work[] = WORK_CATEGORIES.flatMap(
+            (category) => worksData[category] || []
+        );
         if (pageType === 'all') return works;
-        return works.filter(work => work.showInPages?.includes(pageType));
+        return works.filter((work) => work.showInPages?.includes(pageType));
     }, [worksData, pageType]);
 
-    const processor = useDataProcessor(allWorks as unknown as Record<string, unknown>[], {
-        filterKey: 'archiveCategory' as keyof Work,
-        sortKey: 'year' as keyof Work, sortOrder: 'desc',
-        searchKeys: ['title', 'description'] as (keyof Work)[], enableSearch: true, enableFilter: true, enableSort: true
+    const processor = useDataProcessor<Work>(allWorks, {
+        filterKey: 'archiveCategory',
+        sortKey: 'year',
+        sortOrder: 'desc',
+        searchKeys: ['title', 'description'],
+        enableSearch: true,
+        enableFilter: true,
+        enableSort: true
     });
 
     const categorizedData = useMemo((): CategorizedData => {
-        const data = processor.data as unknown as Work[];
-        if (!data) return { music: [], visual: [], writing: [], performance: [], struggle: [], all: [] };
+        const data = processor.data;
+        if (!data || !Array.isArray(data)) {
+            return { music: [], visual: [], writing: [], performance: [], struggle: [], all: [] };
+        }
+        // processor.data는 Work[] (제네릭으로부터 타입 추론됨)
         return {
-            music: data.filter(item => item.archiveCategory === 'music'),
-            visual: data.filter(item => item.archiveCategory === 'visual'),
-            writing: data.filter(item => item.archiveCategory === 'writing'),
-            performance: data.filter(item => item.archiveCategory === 'performance'),
-            struggle: data.filter(item => item.archiveCategory === 'struggle'),
+            music: data.filter((item) => item.archiveCategory === 'music'),
+            visual: data.filter((item) => item.archiveCategory === 'visual'),
+            writing: data.filter((item) => item.archiveCategory === 'writing'),
+            performance: data.filter((item) => item.archiveCategory === 'performance'),
+            struggle: data.filter((item) => item.archiveCategory === 'struggle'),
             all: data
         };
     }, [processor.data]);
 
     const timelineData = useMemo((): TimelineYear[] => {
-        const data = processor.data as unknown as Work[];
-        if (!data) return [];
+        const data = processor.data;
+        if (!data || !Array.isArray(data)) return [];
         const yearGroups: Record<number, TimelineYear> = {};
-        data.forEach(work => {
+        data.forEach((work) => {
             if (!yearGroups[work.year]) yearGroups[work.year] = { year: work.year, events: [] };
             yearGroups[work.year].events.push(work);
         });
         return Object.values(yearGroups).sort((a, b) => b.year - a.year);
     }, [processor.data]);
 
-    const getEventsByYear = useCallback((year: number) => (processor.data as unknown as Work[]).filter(work => work.year === year), [processor.data]);
-    const getEventsByType = useCallback((type: string) => {
-        const data = processor.data as unknown as Work[];
-        if (!type || type === 'all') return data;
-        return data.filter(work => work.archiveCategory === type);
-    }, [processor.data]);
-    const searchEvents = useCallback((searchTerm: string) => processor.searchData(searchTerm, processor.data as unknown as Record<string, unknown>[]) as unknown as Work[], [processor]);
+    const getEventsByYear = useCallback(
+        (year: number) => {
+            const data = processor.data;
+            if (!data) return [];
+            return data.filter((work) => work.year === year);
+        },
+        [processor.data]
+    );
+
+    const getEventsByType = useCallback(
+        (type: string) => {
+            const data = processor.data;
+            if (!data) return [];
+            if (!type || type === 'all') return data;
+            return data.filter((work) => work.archiveCategory === type);
+        },
+        [processor.data]
+    );
+
+    const searchEvents = useCallback(
+        (searchTerm: string) => processor.searchData(searchTerm, processor.data ?? []),
+        [processor]
+    );
 
     const yearlyStats = useMemo((): YearlyStats => {
-        const data = processor.data as unknown as Work[];
-        if (!data) return {};
+        const data = processor.data;
+        if (!data || !Array.isArray(data)) return {};
         const stats: YearlyStats = {};
-        data.forEach(work => {
+        data.forEach((work) => {
             if (!stats[work.year]) stats[work.year] = { total: 0, byType: {} };
             stats[work.year].total += 1;
             const type = work.archiveCategory || 'unknown';
@@ -242,16 +273,16 @@ export const useWorksData = (worksData: WorksCollection | null, pageType: 'works
     }, [processor.data]);
 
     return {
-        ...processor, categorizedData, timelineData, flattenedEvents: processor.data as unknown as Work[], yearlyStats,
+        ...processor,
+        categorizedData,
+        timelineData,
+        flattenedEvents: processor.data ?? [],
+        yearlyStats,
         getWorksByCategory: (category: WorkCategory) => categorizedData[category] || [],
-        getEventsByYear, getEventsByType, searchEvents
+        getEventsByYear,
+        getEventsByType,
+        searchEvents
     };
-};
-
-/** @deprecated Use useWorksData instead */
-export const useTimelineData = (worksData: WorksCollection | null) => {
-    console.warn('useTimelineData is deprecated. Use useWorksData instead.');
-    return useWorksData(worksData, 'archive');
 };
 
 export default useDataProcessor;

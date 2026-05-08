@@ -16,7 +16,6 @@ interface SectionProps {
     variant?: 'default' | 'slideUp' | 'slideLeft' | 'slideRight' | 'fade' | 'scale';
     id?: string;
     enableScrollAnimation?: boolean;
-    [key: string]: any;
 }
 
 const Section: React.FC<SectionProps> = memo(({
@@ -31,7 +30,6 @@ const Section: React.FC<SectionProps> = memo(({
     variant = 'default',
     id,
     enableScrollAnimation = true, // 스크롤 애니메이션 활성화 여부
-    ...props
 }) => {
     const [ref, shouldAnimate] = useAnimationTrigger();
     const controls = useAnimation();
@@ -173,7 +171,6 @@ const Section: React.FC<SectionProps> = memo(({
             variants={variants[variant]}
             initial={enableScrollAnimation ? "hidden" : "visible"}
             animate={controls}
-            {...props}
         >
             <Container size={containerSize}>
                 {(title || subtitle) && (
@@ -276,11 +273,10 @@ interface SubSectionProps {
     className?: string;
     delay?: number;
     variant?: 'default' | 'card';
-    [key: string]: any;
 }
 
 // 서브 섹션 컴포넌트
-export const SubSection: React.FC<SubSectionProps> = memo(({ children, className = '', delay = 0, variant = 'default', ...props }) => {
+export const SubSection: React.FC<SubSectionProps> = memo(({ children, className = '', delay = 0, variant = 'default' }) => {
     const [ref, shouldAnimate] = useAnimationTrigger();
     const controls = useAnimation();
 
@@ -336,7 +332,6 @@ export const SubSection: React.FC<SubSectionProps> = memo(({ children, className
             variants={variants[variant]}
             initial="hidden"
             animate={controls}
-            {...props}
         >
             {children}
         </motion.div>
@@ -348,11 +343,10 @@ interface ItemProps {
     className?: string;
     index?: number;
     variant?: 'default' | 'grid';
-    [key: string]: any;
 }
 
 // 아이템 컴포넌트
-export const Item: React.FC<ItemProps> = memo(({ children, className = '', index = 0, variant = 'default', ...props }) => {
+export const Item: React.FC<ItemProps> = memo(({ children, className = '', index = 0, variant = 'default' }) => {
     const [ref, shouldAnimate] = useAnimationTrigger();
     const controls = useAnimation();
 
@@ -408,7 +402,6 @@ export const Item: React.FC<ItemProps> = memo(({ children, className = '', index
             variants={variants[variant]}
             initial="hidden"
             animate={controls}
-            {...props}
         >
             {children}
         </motion.div>

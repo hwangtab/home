@@ -1,6 +1,7 @@
-// @ts-nocheck
+'use client';
+
 import React, { useState, useEffect, memo, ReactNode } from 'react';
-import { motion, useMotionValue, useSpring, HTMLMotionProps, Variants } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 type CursorVariant = 'default' | 'link' | 'button' | 'card';
 
@@ -114,9 +115,21 @@ const CustomCursor = memo(() => {
         <>
             <motion.div
                 className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-50"
-                style={{ x: cursorXSpring, y: cursorYSpring, mixBlendMode: 'difference' as any, willChange: 'transform', backfaceVisibility: 'hidden' }}
-                animate={{ ...variants[cursorVariant], opacity: isVisible ? variants[cursorVariant].opacity : 0 }}
-                initial={variants.default}
+                style={{ x: cursorXSpring, y: cursorYSpring, mixBlendMode: 'difference' as 'normal' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten' | 'color-dodge' | 'color-burn' | 'hard-light' | 'soft-light' | 'difference' | 'exclusion' | 'hue' | 'saturation' | 'color' | 'luminosity', willChange: 'transform', backfaceVisibility: 'hidden' }}
+                animate={{
+                    scale: variants[cursorVariant].scale,
+                    opacity: isVisible ? variants[cursorVariant].opacity : 0,
+                    backgroundColor: variants[cursorVariant].backgroundColor,
+                    border: variants[cursorVariant].border,
+                    boxShadow: variants[cursorVariant].boxShadow
+                }}
+                initial={{
+                    scale: variants.default.scale,
+                    opacity: variants.default.opacity,
+                    backgroundColor: variants.default.backgroundColor,
+                    border: variants.default.border,
+                    boxShadow: variants.default.boxShadow
+                }}
                 transition={{ type: 'spring', damping: 25, stiffness: 400, mass: 0.3 }}
             >
                 {cursorText && (

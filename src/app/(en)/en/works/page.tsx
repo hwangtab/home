@@ -1,7 +1,7 @@
-import React, { Suspense } from 'react';
 import type { Metadata } from 'next';
 import Works from '../../../../views/Works';
 import { getAlternates, toAbsoluteUrl } from '../../../../lib/seo';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Works - Hwang Gyeongha',
@@ -24,9 +24,17 @@ export const metadata: Metadata = {
   }
 };
 
+function WorksLoader() {
+  return (
+    <div className="flex min-h-[400px] items-center justify-center">
+      <p className="text-gray-400">Loading works...</p>
+    </div>
+  );
+}
+
 export default function EnWorksPage() {
   return (
-    <Suspense fallback={<div className="container mx-auto py-12 text-gray-300">Loading works page...</div>}>
+    <Suspense fallback={<WorksLoader />}>
       <Works />
     </Suspense>
   );

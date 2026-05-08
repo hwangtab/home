@@ -1,8 +1,9 @@
-// @ts-nocheck
+'use client';
+
 import React, { memo, ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import CardRenderer from './CardRenderer';
-import { Work } from '../types/data.types';
+import type { Work } from '../types/data.types';
 import { useLanguage } from '../i18n';
 
 export const RENDER_TYPES = {
@@ -13,24 +14,27 @@ export const RENDER_TYPES = {
     SIMPLE_LIST: 'simple_list'
 } as const;
 
-type RenderType = typeof RENDER_TYPES[keyof typeof RENDER_TYPES];
+type RenderType = (typeof RENDER_TYPES)[keyof typeof RENDER_TYPES];
+
+// --- CardGrid ---
 
 interface CardGridRendererProps {
     data: Work[];
     columns?: string;
     renderItem?: (item: Work, index: number) => ReactNode;
-    itemKey?: string;
     animation?: boolean;
+    className?: string;
 }
 
 const CardGridRenderer: React.FC<CardGridRendererProps> = memo(({
     data,
     columns = 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
     renderItem,
-    itemKey = 'id',
-    animation = true
+    animation = true,
+    className = ''
 }) => {
     const { t } = useLanguage();
+
     if (!data || data.length === 0) {
         return (
             <div className="text-center py-12">
@@ -42,10 +46,10 @@ const CardGridRenderer: React.FC<CardGridRendererProps> = memo(({
     }
 
     return (
-        <div className={`grid ${columns} gap-2 sm:gap-4 md:gap-6 items-stretch`}>
+        <div className={`${className} ${columns} gap-2 sm:gap-4 md:gap-6 items-stretch`}>
             {data.map((item, index) => (
                 <motion.div
-                    key={(item as any)[itemKey] || `item-${index}`}
+                    key={item.id ?? index}
                     initial={animation ? { opacity: 0, y: 20 } : undefined}
                     animate={animation ? { opacity: 1, y: 0 } : undefined}
                     transition={animation ? { duration: 0.3, delay: index * 0.1 } : undefined}
@@ -57,52 +61,47 @@ const CardGridRenderer: React.FC<CardGridRendererProps> = memo(({
     );
 });
 
+// --- Timeline ---
+
+interface TimelineEvent {
+    title: string;
+    description: string;
+}
+
 interface TimelineData {
     year: number;
-    events: Array<{
-        title: string;
-        description: string;
-    }>;
-    [key: string]: any;
+    events: TimelineEvent[];
 }
 
 interface TimelineRendererProps {
     data: TimelineData[];
-    yearKey?: string;
-    eventsKey?: string;
-    renderEvent?: (event: TimelineData["events"][0], index: number) => ReactNode;
+    renderEvent?: (event: TimelineEvent, index: number) => ReactNode;
     reversed?: boolean;
+    className?: string;
 }
 
 const TimelineRenderer: React.FC<TimelineRendererProps> = memo(({
     data,
-    yearKey = 'year',
-    eventsKey = 'events',
     renderEvent,
-    reversed = false
+    reversed = false,
+    className = ''
 }) => {
     const sortedData = [...data].sort((a, b) =>
-        reversed ? b[yearKey].toString().localeCompare(a[yearKey].toString()) : a[yearKey].toString().localeCompare(b[yearKey].toString())
-        // Assuming year is numeric but sort expects numbers comparison if actual numbers. 
-        // Types say number.
-        // Fixed: reversed ? b[yearKey] - a[yearKey] : a[yearKey] - b[yearKey]
+        reversed ? Number(b.year) - Number(a.year) : Number(a.year) - Number(b.year)
     );
 
-    // Re-sorting using numbers
-    sortedData.sort((a, b) => reversed ? Number(b[yearKey]) - Number(a[yearKey]) : Number(a[yearKey]) - Number(b[yearKey]));
-
     return (
-        <div className="space-y-8">
+        <div className={className}>
             {sortedData.map((yearData) => (
-                <div key={yearData[yearKey]} className="relative">
+                <div key={yearData.year} className="relative">
                     <div className="flex items-center mb-2 sm:mb-4">
-                        <div className="bg-gray-700 rounded-full w-4 h-4 mr-4"></div>
+                        <div className="bg-gray-700 rounded-full w-4 h-4 mr-4" />
                         <h4 className="text-xl font-bold text-gray-100 font-santokki">
-                            {yearData[yearKey]}
+                            {yearData.year}
                         </h4>
                     </div>
                     <div className="ml-2 sm:ml-4 md:ml-8 space-y-2 sm:space-y-3">
-                        {yearData[eventsKey].map((event: TimelineData["events"][0], index: number) => (
+                        {yearData.events.map((event, index) => (
                             <div key={index} className="bg-gray-750 p-2 sm:p-4 rounded-lg">
                                 {renderEvent ? renderEvent(event, index) : (
                                     <div>
@@ -123,7 +122,9 @@ const TimelineRenderer: React.FC<TimelineRendererProps> = memo(({
     );
 });
 
-interface EventCardProps {
+// --- EventCard ---
+
+interface EventCardRendererProps {
     event: {
         type?: string;
         title: string;
@@ -132,42 +133,44 @@ interface EventCardProps {
     showIcon?: boolean;
     getEventIcon?: (type: string) => ReactNode;
     getEventColor?: (type: string) => string;
+    className?: string;
 }
 
-const EventCardRenderer: React.FC<EventCardProps> = memo(({
+const EventCardRenderer: React.FC<EventCardRendererProps> = memo(({
     event,
     showIcon = true,
     getEventIcon,
-    getEventColor
+    getEventColor,
+    className = ''
 }) => {
     const defaultGetIcon = (type: string) => {
         const icons: Record<string, string> = {
-            'album': '🎵',
-            'single': '🎵',
-            'writing': '✍️',
-            'performance': '🎤',
-            'visual': '🎨',
-            'default': '📅'
+            album: '\u{1F3B5}',
+            single: '\u{1F3B5}',
+            writing: '\u{270D}\u{FE0F}',
+            performance: '\u{1F3A4}',
+            visual: '\u{1F3A8}',
+            default: '\u{1F4C5}'
         };
-        return icons[type] || icons['default'];
+        return icons[type] ?? icons.default;
     };
 
     const defaultGetColor = (type: string) => {
         const colors: Record<string, string> = {
-            'album': 'bg-brand-primary-600',
-            'single': 'bg-brand-primary-600',
-            'writing': 'bg-brand-harmony-600',
-            'performance': 'bg-brand-solidarity-600',
-            'visual': 'bg-brand-earth-600',
-            'default': 'bg-gray-700'
+            album: 'bg-brand-primary-600',
+            single: 'bg-brand-primary-600',
+            writing: 'bg-brand-harmony-600',
+            performance: 'bg-brand-solidarity-600',
+            visual: 'bg-brand-earth-600',
+            default: 'bg-gray-700'
         };
-        return colors[type] || colors['default'];
+        return colors[type] ?? colors.default;
     };
 
-    const eventType = event.type || 'default';
+    const eventType = event.type ?? 'default';
 
     return (
-        <div className="bg-gray-850 p-3 sm:p-6 rounded-lg shadow-lg h-full flex flex-col">
+        <div className={`${className} bg-gray-850 p-3 sm:p-6 rounded-lg shadow-lg h-full flex flex-col`}>
             <div className="flex items-start space-x-2 sm:space-x-4 flex-1">
                 {showIcon && (
                     <div className={`p-3 rounded-full ${getEventColor ? getEventColor(eventType) : defaultGetColor(eventType)} flex-shrink-0`}>
@@ -187,23 +190,27 @@ const EventCardRenderer: React.FC<EventCardProps> = memo(({
     );
 });
 
-interface ProfileProps {
+// --- Profile ---
+
+interface ProfileRendererProps {
     profile: string | string[];
     imageSrc?: string;
     imageAlt?: string;
     layout?: 'horizontal' | 'vertical';
+    className?: string;
 }
 
-const ProfileRenderer: React.FC<ProfileProps> = memo(({
+const ProfileRenderer: React.FC<ProfileRendererProps> = memo(({
     profile,
     imageSrc,
     imageAlt = 'Profile',
-    layout = 'horizontal'
+    layout = 'horizontal',
+    className = ''
 }) => {
     const isHorizontal = layout === 'horizontal';
 
     return (
-        <div className={`flex ${isHorizontal ? 'flex-col lg:flex-row' : 'flex-col'} items-start gap-2 sm:gap-4 lg:gap-8`}>
+        <div className={`${className} flex ${isHorizontal ? 'flex-col lg:flex-row' : 'flex-col'} items-start gap-2 sm:gap-4 lg:gap-8`}>
             <div className={`${isHorizontal ? 'w-full lg:max-w-xs lg:flex-shrink-0' : 'w-full'} flex flex-col justify-center`}>
                 {imageSrc && (
                     <motion.img
@@ -233,78 +240,164 @@ const ProfileRenderer: React.FC<ProfileProps> = memo(({
     );
 });
 
-interface SimpleListProps {
-    data: any[];
-    renderItem?: (item: any, index: number) => ReactNode;
-    itemKey?: string;
-    spacing?: string;
+// --- SimpleList ---
+
+interface SimpleListDataItem {
+    [key: string]: unknown;
 }
 
-const SimpleListRenderer: React.FC<SimpleListProps> = memo(({
+interface SimpleListRendererProps {
+    data: SimpleListDataItem[];
+    renderItem?: (item: SimpleListDataItem, index: number) => ReactNode;
+    itemKey?: string;
+    spacing?: string;
+    className?: string;
+}
+
+const SimpleListRenderer: React.FC<SimpleListRendererProps> = memo(({
     data,
     renderItem,
     itemKey = 'id',
-    spacing = 'space-y-4'
+    spacing = 'space-y-4',
+    className = ''
 }) => {
     return (
-        <div className={spacing}>
-            {data.map((item, index) => (
-                <div key={item[itemKey] || `item-${index}`}>
-                    {renderItem ? renderItem(item, index) : (
-                        <div className="bg-gray-750 p-2 sm:p-4 rounded-lg">
-                            <h4 className="font-bold text-gray-100 font-wanted-sans">
-                                {item.title || item.name}
-                            </h4>
-                            {item.description && (
-                                <p className="text-gray-300 text-sm mt-1">
-                                    {item.description}
-                                </p>
-                            )}
-                        </div>
-                    )}
-                </div>
-            ))}
+        <div className={`${className} ${spacing}`}>
+            {data.map((item, index) => {
+                const record = item as Record<string, unknown>;
+                const key = record[itemKey] as string | number | undefined;
+                return (
+                    <div key={key ?? `item-${index}`}>
+                        {renderItem ? renderItem(item, index) : (
+                            <div className="bg-gray-750 p-2 sm:p-4 rounded-lg">
+                                <h4 className="font-bold text-gray-100 font-wanted-sans">
+                                    {String(record.title ?? record.name ?? '')}
+                                </h4>
+                                {typeof record.description === 'string' && record.description && (
+                                    <p className="text-gray-300 text-sm mt-1">
+                                        {record.description}
+                                    </p>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                );
+            })}
         </div>
     );
 });
 
-interface DataRendererProps {
-    type?: RenderType;
-    data: any;
-    [key: string]: any;
+// --- DataRenderer (Union Type) ---
+
+interface DataRendererBase {
+    type: RenderType;
+    className?: string;
 }
 
-const DataRenderer: React.FC<DataRendererProps> = memo(({
-    type = RENDER_TYPES.CARD_GRID,
-    data,
-    ...props
-}) => {
+interface CardGridData extends DataRendererBase {
+    type: 'card_grid';
+    data: Work[];
+    columns?: string;
+    renderItem?: (item: Work, index: number) => ReactNode;
+    animation?: boolean;
+}
+
+interface TimelineDataProp extends DataRendererBase {
+    type: 'timeline';
+    data: TimelineData[];
+    renderEvent?: (event: TimelineEvent, index: number) => ReactNode;
+    reversed?: boolean;
+}
+
+interface EventCardData extends DataRendererBase {
+    type: 'event_card';
+    data: {
+        type?: string;
+        title: string;
+        description: string;
+    };
+    showIcon?: boolean;
+    getEventIcon?: (type: string) => ReactNode;
+    getEventColor?: (type: string) => string;
+}
+
+interface ProfileData extends DataRendererBase {
+    type: 'profile';
+    profile?: string | string[];
+    /** @deprecated Use 'profile' instead. Kept for backward compatibility. */
+    data?: string | string[];
+    imageSrc?: string;
+    imageAlt?: string;
+    layout?: 'horizontal' | 'vertical';
+}
+
+interface SimpleListData extends DataRendererBase {
+    type: 'simple_list';
+    data: SimpleListDataItem[];
+    renderItem?: (item: SimpleListDataItem, index: number) => ReactNode;
+    itemKey?: string;
+    spacing?: string;
+}
+
+type DataRendererProps = CardGridData | TimelineDataProp | EventCardData | ProfileData | SimpleListData;
+
+const DataRenderer: React.FC<DataRendererProps> = memo((props) => {
     const { t } = useLanguage();
-    if (!data) {
-        return (
-            <div className="text-center py-8">
-                <p className="text-gray-300 font-wanted-sans">
-                    {t('common.loading')}
-                </p>
-            </div>
-        );
-    }
 
-    switch (type) {
-        case RENDER_TYPES.CARD_GRID:
-            return <CardGridRenderer data={data} {...props} />;
+    switch (props.type) {
+        case 'card_grid':
+            return (
+                <CardGridRenderer
+                    data={props.data}
+                    columns={props.columns}
+                    renderItem={props.renderItem}
+                    animation={props.animation}
+                    className={props.className}
+                />
+            );
 
-        case RENDER_TYPES.TIMELINE:
-            return <TimelineRenderer data={data} {...props} />;
+        case 'timeline':
+            return (
+                <TimelineRenderer
+                    data={props.data}
+                    renderEvent={props.renderEvent}
+                    reversed={props.reversed}
+                    className={props.className}
+                />
+            );
 
-        case RENDER_TYPES.EVENT_CARD:
-            return <EventCardRenderer event={data} {...props} />;
+        case 'event_card':
+            return (
+                <EventCardRenderer
+                    event={props.data}
+                    showIcon={props.showIcon}
+                    getEventIcon={props.getEventIcon}
+                    getEventColor={props.getEventColor}
+                    className={props.className}
+                />
+            );
 
-        case RENDER_TYPES.PROFILE:
-            return <ProfileRenderer profile={data || props.profile} {...props} />;
+        case 'profile':
+            return (
+                <ProfileRenderer
+                    profile={props.profile ?? props.data ?? ''}
+                    imageSrc={props.imageSrc}
+                    imageAlt={props.imageAlt}
+                    layout={props.layout}
+                    className={props.className}
+                />
+            );
 
-        case RENDER_TYPES.SIMPLE_LIST:
-            return <SimpleListRenderer data={data} {...props} />;
+        case 'simple_list':
+            return (
+                <SimpleListRenderer
+                    data={props.data}
+                    renderItem={props.renderItem}
+                    itemKey={props.itemKey}
+                    spacing={props.spacing}
+                    className={props.className}
+                />
+            );
 
         default:
             return (

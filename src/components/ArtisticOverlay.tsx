@@ -1,4 +1,5 @@
-// @ts-nocheck
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
@@ -12,10 +13,6 @@ const ArtisticOverlay: React.FC<ArtisticOverlayProps> = ({ className = '' }) => 
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
-            // Use e.target as fallback if currentTarget is null, but specific logic uses Hero Section
-            // Actually e.currentTarget works on event listener attached element
-            // But we attach to document.querySelector('[data-hero-section]')
-
             const target = e.currentTarget as HTMLElement;
             if (!target) return;
 
@@ -28,10 +25,8 @@ const ArtisticOverlay: React.FC<ArtisticOverlayProps> = ({ className = '' }) => 
 
         const heroElement = document.querySelector('[data-hero-section]');
         if (heroElement) {
-            // @ts-ignore - EventListener type mismatch for mousemove vs Event
-            heroElement.addEventListener('mousemove', handleMouseMove);
-            // @ts-ignore
-            return () => heroElement.removeEventListener('mousemove', handleMouseMove);
+            heroElement.addEventListener('mousemove', handleMouseMove as EventListener);
+            return () => heroElement.removeEventListener('mousemove', handleMouseMove as EventListener);
         }
     }, []);
 

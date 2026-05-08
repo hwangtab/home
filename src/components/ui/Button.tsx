@@ -6,7 +6,7 @@ type ButtonVariant = 'primary' | 'solidarity' | 'earth' | 'harmony' | 'secondary
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 type ButtonAnimation = 'default' | 'bounce' | 'slide' | 'pulse' | 'subtle' | 'magnetic' | 'glow';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, Omit<MotionProps, "children" | "onAnimationStart" | "onDrag" | "onDragStart" | "onDragEnd" | "style"> {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children?: ReactNode;
     variant?: ButtonVariant;
     size?: ButtonSize;
@@ -19,6 +19,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, Omi
     loadingText?: string;
     className?: string;
 }
+
 
 const BUTTON_VARIANTS: Record<ButtonVariant, { base: string; disabled: string; loading: string }> = {
     primary: {
@@ -111,7 +112,11 @@ const Button = memo(forwardRef<HTMLButtonElement, ButtonProps>(({
     };
 
     return (
-        <motion.button ref={ref} type={type} className={baseClasses} onClick={handleClick} disabled={isDisabled} {...animationProps} {...(props as any)}>
+        <motion.button
+            ref={ref} type={type} className={baseClasses} onClick={handleClick} disabled={isDisabled}
+            {...animationProps}
+            {...(props as React.ComponentPropsWithoutRef<'button'> as Record<string, unknown>)}
+        >
             {leftIcon && !loading && <span className="mr-2">{leftIcon}</span>}
             {loading && <ButtonLoadingSpinner size={size === 'xs' || size === 'sm' ? 'small' : 'medium'} />}
             <span>{loading && loadingText ? loadingText : children}</span>
@@ -145,7 +150,11 @@ export const IconButton = memo(forwardRef<HTMLButtonElement, IconButtonProps>(({
     const animationProps = !isDisabled ? buttonAnimations[animation!] || buttonAnimations.default : {};
 
     return (
-        <motion.button ref={ref} className={baseClasses} disabled={isDisabled} aria-label={ariaLabel} {...animationProps} {...(props as any)}>
+        <motion.button
+            ref={ref} className={baseClasses} disabled={isDisabled} aria-label={ariaLabel}
+            {...animationProps}
+            {...(props as React.ComponentPropsWithoutRef<'button'> as Record<string, unknown>)}
+        >
             {loading ? <ButtonLoadingSpinner size="small" /> : React.cloneElement(icon, { size: iconSizeMap[size!] })}
         </motion.button>
     );
@@ -197,7 +206,6 @@ export const FloatingActionButton = memo(forwardRef<HTMLButtonElement, FloatingA
             className={`${positionClasses[position]} z-50`}
             initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            {...({} as any)} 
         >
             <IconButton ref={ref} icon={icon} variant={variant} size={size} animation="bounce" className={`shadow-lg hover:shadow-xl ${className}`} onClick={onClick} {...props} />
         </motion.div>

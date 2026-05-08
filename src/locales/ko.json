@@ -28,10 +28,10 @@
         "share": "공유",
         "back": "뒤로",
         "next": "다음",
-        "previous": "이전"
-        ,"confirm": "확인"
-        ,"retry": "다시 시도"
-        ,"refresh": "새로고침"
+        "previous": "이전",
+        "confirm": "확인",
+        "retry": "다시 시도",
+        "refresh": "새로고침"
     },
     "loading": {
         "default": "로딩 중...",
@@ -106,9 +106,9 @@
         "collaborators": "협력",
         "photos": "사진",
         "watchOriginal": "원본 보기",
-        "readArticle": "읽기"
-        ,"noWorksByCategory": "'{category}' 카테고리의 작품이 없습니다."
-        ,"loadingMore": "더 많은 작품 로딩 중..."
+        "readArticle": "읽기",
+        "noWorksByCategory": "'{category}' 카테고리의 작품이 없습니다.",
+        "loadingMore": "더 많은 작품 로딩 중..."
     },
     "archive": {
         "title": "아카이브",

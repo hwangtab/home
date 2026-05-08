@@ -49,8 +49,8 @@ interface CardActionsReturn {
 type WorkWithExtras = Work & {
     images?: string[];
     audioUrl?: string;
-    links?: string;
     url?: string;
+    // links는 BaseWork에 이미 정의됨
 };
 
 /**
@@ -154,6 +154,8 @@ export const useCardActions = (options: CardActionsOptions = {}): CardActionsRet
     }, []);
 
     const [favorites, setFavorites] = useState<string[]>(() => {
+        // localStorage는 클라이언트에서만 사용 가능
+        if (typeof window === 'undefined') return [];
         try {
             const saved = localStorage.getItem('favorites');
             return saved ? JSON.parse(saved) : [];

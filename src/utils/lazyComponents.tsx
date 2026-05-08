@@ -1,4 +1,5 @@
-// @ts-nocheck
+'use client';
+
 import React, { lazy, Suspense, ReactNode, ComponentType } from 'react';
 
 // Loading component
@@ -6,10 +7,10 @@ interface LoadingSpinnerProps {
     message?: string;
 }
 
-const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ message = "Loading..." }) => (
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ message = 'Loading...' }) => (
     <div className="flex items-center justify-center min-h-[200px]">
         <div className="text-center">
-            <div className="w-8 h-8 border-4 border-gray-600 border-t-gray-400 rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="w-8 h-8 border-4 border-gray-600 border-t-gray-400 rounded-full animate-spin mx-auto mb-4" />
             <p className="text-gray-400 font-wanted-sans">{message}</p>
         </div>
     </div>
@@ -75,50 +76,50 @@ export const withLazyLoading = <P extends object>(
 };
 
 // Lazy load heavy components
-export const LazyMusicPlayer = lazy(() =>
-    import('../components/MusicPlayer').then(module => ({ default: module.default }))
+export const LazyMusicPlayer = lazy(
+    () => import('../components/MusicPlayer').then(module => ({ default: module.default }))
 );
 
-export const LazyVideoGallery = lazy(() =>
-    import('../components/VideoGallery').then(module => ({ default: module.default }))
+export const LazyVideoGallery = lazy(
+    () => import('../components/VideoGallery').then(module => ({ default: module.default }))
 );
 
-export const LazyLightbox = lazy(() =>
-    import('../components/Lightbox').then(module => ({ default: module.default }))
+export const LazyLightbox = lazy(
+    () => import('../components/Lightbox').then(module => ({ default: module.default }))
 );
 
-export const LazySearchBar = lazy(() =>
-    import('../components/SearchBar').then(module => ({ default: module.default }))
+export const LazySearchBar = lazy(
+    () => import('../components/SearchBar').then(module => ({ default: module.default }))
 );
 
 // Lazy load pages
-export const LazyAbout = lazy(() =>
-    import('../views/About').then(module => ({ default: module.default }))
+export const LazyAbout = lazy(
+    () => import('../views/About').then(module => ({ default: module.default }))
 );
 
-export const LazyWorks = lazy(() =>
-    import('../views/Works').then(module => ({ default: module.default }))
+export const LazyWorks = lazy(
+    () => import('../views/Works').then(module => ({ default: module.default }))
 );
 
-export const LazyNews = lazy(() =>
-    import('../views/News').then(module => ({ default: module.default }))
+export const LazyNews = lazy(
+    () => import('../views/News').then(module => ({ default: module.default }))
 );
 
-export const LazyContact = lazy(() =>
-    import('../views/Contact').then(module => ({ default: module.default }))
+export const LazyContact = lazy(
+    () => import('../views/Contact').then(module => ({ default: module.default }))
 );
 
 // Wrapped components with error boundaries
-export const MusicPlayer = withLazyLoading(LazyMusicPlayer, "Loading music player...");
-export const VideoGallery = withLazyLoading(LazyVideoGallery, "Loading video gallery...");
-export const Lightbox = withLazyLoading(LazyLightbox, "Loading image viewer...");
-export const SearchBar = withLazyLoading(LazySearchBar, "Loading search...");
+export const MusicPlayer = withLazyLoading(LazyMusicPlayer, 'Loading music player...');
+export const VideoGallery = withLazyLoading(LazyVideoGallery, 'Loading video gallery...');
+export const Lightbox = withLazyLoading(LazyLightbox, 'Loading image viewer...');
+export const SearchBar = withLazyLoading(LazySearchBar, 'Loading search...');
 
 // Page components with lazy loading
-export const About = withLazyLoading(LazyAbout, "Loading about page...");
-export const Works = withLazyLoading(LazyWorks, "Loading works page...");
-export const News = withLazyLoading(LazyNews, "Loading news page...");
-export const Contact = withLazyLoading(LazyContact, "Loading contact page...");
+export const About = withLazyLoading(LazyAbout, 'Loading about page...');
+export const Works = withLazyLoading(LazyWorks, 'Loading works page...');
+export const News = withLazyLoading(LazyNews, 'Loading news page...');
+export const Contact = withLazyLoading(LazyContact, 'Loading contact page...');
 
 // Utility for preloading components
 export const preloadComponent = (componentImport: () => Promise<unknown>): void => {
@@ -151,7 +152,7 @@ export const createLazyRoute = <P extends object>(
 
     return (props: P) => (
         <LazyErrorBoundary>
-            <Suspense fallback={fallback || <LoadingSpinner />}>
+            <Suspense fallback={fallback ?? <LoadingSpinner />}>
                 <LazyComponent {...props} />
             </Suspense>
         </LazyErrorBoundary>

@@ -79,6 +79,7 @@ const normalizeSiteData = (siteData: SiteData): NormalizedSiteData => ({
   works: normalizeWorks(siteData.works)
 });
 
+// JSON import는 타입 시스템이 정적으로 검증 불가 — 런타임 구조는 siteData.json 스키마에 의존
 const rawSiteData = normalizeSiteData(rawSiteDataJson as unknown as SiteData);
 
 const localizedSiteDataMap: Record<SupportedLocale, NormalizedSiteData> = {

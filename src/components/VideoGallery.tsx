@@ -1,4 +1,5 @@
-// @ts-nocheck
+'use client';
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactPlayer from 'react-player';
@@ -59,15 +60,14 @@ const VideoModal: React.FC<VideoModalProps> = ({ video, isOpen, onClose }) => {
                         <div className="relative bg-black rounded-lg overflow-hidden">
                             <div className="aspect-video">
                                 <ReactPlayer
-                                    url={video.url}
+                                    src={video.url}
                                     width="100%"
                                     height="100%"
                                     controls
-                                    playing={true}
+                                    playing
                                     config={{
                                         youtube: {
                                             playerVars: {
-                                                showinfo: 1,
                                                 modestbranding: 1
                                             }
                                         }

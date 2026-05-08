@@ -147,6 +147,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Bot honeypot — hidden via inline style so bots that fill all fields catch it */}
                 <input
                     type="text"
                     name="website"
@@ -155,7 +156,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     autoComplete="off"
                     tabIndex={-1}
                     aria-hidden="true"
-                    className="hidden"
+                    style={{ display: 'none', pointerEvents: 'none' }}
                 />
 
                 <Input

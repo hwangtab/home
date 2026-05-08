@@ -1,8 +1,8 @@
-// @ts-nocheck
+'use client';
+
 import React, { useState, useEffect, memo, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../i18n';
-// @ts-ignore - utils might be JS
 import {
     supportsWebP,
     getResponsiveImageSources,
@@ -10,7 +10,6 @@ import {
     createWebPSrcSet,
     getSizesAttribute
 } from '../utils/imageOptimization';
-// @ts-ignore - hooks might be JS or untyped
 import { useLazyLoading } from '../hooks/useIntersectionObserver';
 
 interface ResponsiveBreakpoints {
@@ -19,17 +18,17 @@ interface ResponsiveBreakpoints {
     desktop: string;
 }
 
-interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement | HTMLDivElement> {
+interface OptimizedImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'sizes'> {
     src?: string;
     alt?: string;
     className?: string;
     lazy?: boolean;
     responsive?: boolean;
     webp?: boolean;
-    placeholder?: string;
+    placeholder?: string | null;
     onLoad?: (e: React.SyntheticEvent<HTMLImageElement, Event>) => void;
     onError?: (e: React.SyntheticEvent<HTMLImageElement, Event>) => void;
-    sizes?: number[];
+    imageSizes?: number[];
     breakpoints?: ResponsiveBreakpoints;
 }
 
@@ -41,17 +40,16 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
     responsive = true,
     webp = true,
     placeholder = null,
-    onLoad = null,
-    onError = null,
-    sizes = [400, 800, 1200],
-    breakpoints = null,
+    onLoad,
+    onError,
+    imageSizes = [400, 800, 1200],
+    breakpoints,
     ...props
 }) => {
     const { t } = useLanguage();
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasError, setHasError] = useState(false);
-    // @ts-ignore
-    const [imageSrc, setImageSrc] = useState<string>(placeholder || '');
+    const [imageSrc, setImageSrc] = useState<string>(placeholder ?? '');
 
     const [imgRef, isInView] = useLazyLoading({
         rootMargin: '100px'
@@ -61,8 +59,8 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
     const shouldUseWebP = useMemo(() => webp && webpSupported, [webp, webpSupported]);
 
     const sources = useMemo(() =>
-        responsive ? getResponsiveImageSources(src, sizes) : [],
-        [responsive, src, sizes]
+        responsive ? getResponsiveImageSources(src, imageSizes) : [],
+        [responsive, src, imageSizes]
     );
     const sizesAttr = useMemo(() =>
         breakpoints ? getSizesAttribute(breakpoints) : getSizesAttribute(),
@@ -79,12 +77,12 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
 
     const handleLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement, Event>) => {
         setIsLoaded(true);
-        if (onLoad) onLoad(e);
+        onLoad?.(e);
     }, [onLoad]);
 
     const handleError = useCallback((e: React.SyntheticEvent<HTMLImageElement, Event>) => {
         setHasError(true);
-        if (onError) onError(e);
+        onError?.(e);
     }, [onError]);
 
     if (hasError) {
@@ -101,7 +99,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
     if (!shouldLoad || (!isLoaded && !imageSrc)) {
         return (
             <div
-                ref={imgRef}
+                ref={imgRef as React.Ref<HTMLDivElement>}
                 className={`bg-gray-700 animate-pulse ${className}`}
                 {...props}
             >
@@ -118,7 +116,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
 
     if (responsive && sources.length > 0) {
         return (
-            <picture ref={imgRef} className={className}>
+            <picture ref={imgRef as React.Ref<HTMLPictureElement>} className={className}>
                 {shouldUseWebP && (
                     <source
                         srcSet={createWebPSrcSet(sources)}
@@ -141,7 +139,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: isLoaded ? 1 : 0 }}
                     transition={{ duration: 0.3 }}
-                    {...props}
+                    {...(props as Record<string, unknown>)}
                 />
             </picture>
         );
@@ -149,7 +147,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
 
     return (
         <motion.img
-            ref={imgRef}
+            ref={imgRef as React.Ref<HTMLImageElement>}
             src={imageSrc}
             alt={alt}
             className={`transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'
@@ -159,7 +157,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
             initial={{ opacity: 0 }}
             animate={{ opacity: isLoaded ? 1 : 0 }}
             transition={{ duration: 0.3 }}
-            {...props}
+            {...(props as Record<string, unknown>)}
         />
     );
 });
@@ -169,10 +167,10 @@ OptimizedImage.displayName = 'OptimizedImage';
 export const HeroImage: React.FC<Partial<OptimizedImageProps>> = (props) => (
     <OptimizedImage
         {...props}
-        responsive={true}
-        webp={true}
+        responsive
+        webp
         lazy={false}
-        sizes={[800, 1200, 1600, 2000]}
+        imageSizes={[800, 1200, 1600, 2000]}
         breakpoints={{
             mobile: '100vw',
             tablet: '100vw',
@@ -184,10 +182,10 @@ export const HeroImage: React.FC<Partial<OptimizedImageProps>> = (props) => (
 export const ThumbnailImage: React.FC<Partial<OptimizedImageProps>> = (props) => (
     <OptimizedImage
         {...props}
-        responsive={true}
-        webp={true}
-        lazy={true}
-        sizes={[200, 400, 600]}
+        responsive
+        webp
+        lazy
+        imageSizes={[200, 400, 600]}
         breakpoints={{
             mobile: '50vw',
             tablet: '33vw',
@@ -199,10 +197,10 @@ export const ThumbnailImage: React.FC<Partial<OptimizedImageProps>> = (props) =>
 export const GalleryImage: React.FC<Partial<OptimizedImageProps>> = (props) => (
     <OptimizedImage
         {...props}
-        responsive={true}
-        webp={true}
-        lazy={true}
-        sizes={[400, 800, 1200]}
+        responsive
+        webp
+        lazy
+        imageSizes={[400, 800, 1200]}
         breakpoints={{
             mobile: '100vw',
             tablet: '50vw',

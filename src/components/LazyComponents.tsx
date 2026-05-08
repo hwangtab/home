@@ -1,4 +1,5 @@
-// @ts-nocheck
+'use client';
+
 import React, { lazy, Suspense, memo, useState, useEffect, LazyExoticComponent, ComponentType } from 'react';
 import { PageLoadingSpinner } from './ui/LoadingSpinner';
 
@@ -9,8 +10,8 @@ const LazyContactForm = lazy(() => import('./ContactForm'));
 
 // HOC for Suspense
 function withSuspense<P extends object>(
-    Component: LazyExoticComponent<ComponentType<any>> | ComponentType<P>,
-    fallback: React.ReactNode = <PageLoadingSpinner size="sm" />
+    Component: LazyExoticComponent<ComponentType<P>> | ComponentType<P>,
+    fallback: React.ReactNode = <PageLoadingSpinner />
 ) {
     return memo((props: P) => (
         <Suspense fallback={fallback}>

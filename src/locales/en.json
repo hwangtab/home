@@ -28,10 +28,10 @@
         "share": "Share",
         "back": "Back",
         "next": "Next",
-        "previous": "Previous"
-        ,"confirm": "Confirm"
-        ,"retry": "Retry"
-        ,"refresh": "Refresh"
+        "previous": "Previous",
+        "confirm": "Confirm",
+        "retry": "Retry",
+        "refresh": "Refresh"
     },
     "loading": {
         "default": "Loading...",
@@ -106,9 +106,9 @@
         "collaborators": "Collaborators",
         "photos": "photos",
         "watchOriginal": "Watch Original",
-        "readArticle": "Read"
-        ,"noWorksByCategory": "No works in '{category}' category."
-        ,"loadingMore": "Loading more works..."
+        "readArticle": "Read",
+        "noWorksByCategory": "No works in '{category}' category.",
+        "loadingMore": "Loading more works..."
     },
     "archive": {
         "title": "Archive",

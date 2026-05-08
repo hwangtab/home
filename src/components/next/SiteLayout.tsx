@@ -1,12 +1,13 @@
 "use client";
 
-import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { useLanguage } from '../../i18n';
 import LanguageToggle from '../LanguageToggle';
 import { getLocaleFromPathname, stripLocalePrefix, withLocalePrefix } from '../../utils/localePath';
+import { Copyright } from '../ui/Copyright';
 
 interface SiteLayoutProps {
   children: React.ReactNode;
@@ -17,14 +18,14 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
   const locale = getLocaleFromPathname(pathname);
   const basePathname = stripLocalePrefix(pathname);
   const { t } = useLanguage();
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [isScrolled, setIsScrolled] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
@@ -107,7 +108,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
 
       <footer className="bg-gradient-to-r from-gray-950 to-gray-900 text-gray-400 p-6 mt-12">
         <div className="container mx-auto text-center font-wanted-sans">
-          <p>&copy; {new Date().getFullYear()} {t('footer.copyright')}</p>
+          <p><Copyright /> {t('footer.copyright')}</p>
         </div>
       </footer>
     </div>

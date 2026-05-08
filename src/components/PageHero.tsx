@@ -1,7 +1,9 @@
 import React, { memo, ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { Heading1 } from './ui/Typography';
 import { Container } from './ui/Layout';
+import { resolvePath } from '../utils/pathUtils';
 
 interface PageHeroProps {
     title: string;
@@ -20,9 +22,7 @@ const PageHero: React.FC<PageHeroProps> = memo(({
     overlayOpacity = 0.5,
     className = ''
 }) => {
-    const normalizedBasePath = (process.env.NEXT_PUBLIC_BASE_PATH || process.env.PUBLIC_URL || '').replace(/\/+$/, '');
-    const normalizedImagePath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
-    const resolvedImagePath = `${normalizedBasePath}${normalizedImagePath}`;
+    const resolvedImagePath = resolvePath(imagePath);
 
     return (
         <div
@@ -36,10 +36,13 @@ const PageHero: React.FC<PageHeroProps> = memo(({
                 animate={{ scale: 1 }}
                 transition={{ duration: 1.5, ease: "easeOut", delay: 0.1 }}
             >
-                <img
+                 <Image
                     src={resolvedImagePath}
                     alt={title}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    priority
+                    quality={85}
                 />
                 {/* Dark Overlay */}
                 <div
