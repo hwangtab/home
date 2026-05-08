@@ -107,6 +107,12 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
         if (Object.keys(newErrors).length > 0) {
             showError(t('contact.form.errors.checkInput'));
+            // Scroll to first invalid field
+            const firstErrorId = Object.keys(newErrors)[0];
+            setTimeout(() => {
+                document.getElementById(firstErrorId)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                document.getElementById(firstErrorId)?.focus();
+            }, 100);
             return;
         }
 

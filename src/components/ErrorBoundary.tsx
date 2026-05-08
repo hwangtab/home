@@ -122,12 +122,12 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
         };
     }
 
-    static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    static getDerivedStateFromError(error: Error, prevState: ErrorBoundaryState): ErrorBoundaryState {
         return {
             hasError: true,
             error,
             isChunkError: isChunkError(error),
-            retryCount: 0
+            retryCount: prevState.retryCount
         };
     }
 

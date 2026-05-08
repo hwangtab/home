@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import type { FuseResult } from 'fuse.js';
 import Section from '../components/Section';
@@ -47,39 +47,32 @@ const Works: React.FC = () => {
     }
   }, [categoryParam]);
 
-  useEffect(() => {
-    if (!workIdParam) {
-      return;
-    }
+  useLayoutEffect(() => {
+    if (!workIdParam) return;
 
-    const timer = window.setTimeout(() => {
-      const element = document.getElementById(`work-${workIdParam}`);
+    const element = document.getElementById(`work-${workIdParam}`);
+    if (!element) return;
 
-      if (!element) {
-        return;
-      }
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    element.classList.add(
+      'ring-2',
+      'ring-brand-primary-400',
+      'ring-offset-2',
+      'ring-offset-gray-900',
+      'rounded-lg'
+    );
 
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      element.classList.add(
+    const cleanupTimer = setTimeout(() => {
+      element.classList.remove(
         'ring-2',
         'ring-brand-primary-400',
         'ring-offset-2',
         'ring-offset-gray-900',
         'rounded-lg'
       );
+    }, RING_HIGHLIGHT_DURATION_MS);
 
-      window.setTimeout(() => {
-        element.classList.remove(
-          'ring-2',
-          'ring-brand-primary-400',
-          'ring-offset-2',
-          'ring-offset-gray-900',
-          'rounded-lg'
-        );
-      }, RING_HIGHLIGHT_DURATION_MS);
-    }, 400);
-
-    return () => window.clearTimeout(timer);
+    return () => clearTimeout(cleanupTimer);
   }, [workIdParam, activeFilter]);
 
   const { categorizedData, getWorksByCategory } = useWorksData(worksPageData.works, 'works');

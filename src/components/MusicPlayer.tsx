@@ -60,11 +60,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
         setCurrentIndex(0);
     }, [playlist]);
 
-    // Reset state when track changes or playlist changes
+    // Reset state when track changes
     React.useEffect(() => {
+        setProgress(0);
+        setDuration(0);
         if (!currentTrack) {
             setIsPlaying(false);
-            setProgress(0);
         }
     }, [currentTrack]);
 
