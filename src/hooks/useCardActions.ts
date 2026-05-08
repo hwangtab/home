@@ -87,8 +87,9 @@ export const useCardActions = (options: CardActionsOptions = {}): CardActionsRet
         setLightboxIndex(0);
     }, []);
 
-    const changeLightboxImage = useCallback((index: number) => {
+    const changeLightboxImage = useCallback((index: number, images?: string[]) => {
         setLightboxIndex(index);
+        if (images) setSelectedImages(images);
     }, []);
 
     const openMusicPlayer = useCallback((works: Work | Work[]) => {

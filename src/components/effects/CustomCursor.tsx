@@ -23,6 +23,23 @@ const CustomCursor = memo(() => {
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
 
+    // Refs to avoid stale closures in event listeners
+    const isHoveringRef = React.useRef(isHovering);
+    const cursorVariantRef = React.useRef(cursorVariant);
+    const cursorTextRef = React.useRef(cursorText);
+
+    React.useEffect(() => {
+        isHoveringRef.current = isHovering;
+    }, [isHovering]);
+
+    React.useEffect(() => {
+        cursorVariantRef.current = cursorVariant;
+    }, [cursorVariant]);
+
+    React.useEffect(() => {
+        cursorTextRef.current = cursorText;
+    }, [cursorText]);
+
     const springConfig = { damping: 30, stiffness: 500, mass: 0.1 };
     const cursorXSpring = useSpring(cursorX, springConfig);
     const cursorYSpring = useSpring(cursorY, springConfig);

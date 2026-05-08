@@ -66,7 +66,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData(prev => ({ ...prev, [name]: value }));
 
         // 실시간 유효성 검사
         const error = validateField(name, value);
@@ -82,8 +82,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
     };
 
     const submitForm = async (): Promise<void> => {
+        // Capture current state to avoid stale closure issues
+        const currentFormData = formData;
+
         // Basic bot mitigation: hidden honeypot field + too-fast submit guard.
-        if ((formData.website || '').trim().length > 0) {
+        if ((currentFormData.website || '').trim().length > 0) {
             setFormData(initialFormData);
             return;
         }
@@ -95,8 +98,8 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
         // 전체 유효성 검사
         const newErrors: Record<string, string> = {};
-        Object.keys(formData).forEach(key => {
-            const error = validateField(key, formData[key] || '');
+        Object.keys(currentFormData).forEach(key => {
+            const error = validateField(key, currentFormData[key] || '');
             if (error) newErrors[key] = error;
         });
 
@@ -110,7 +113,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
         setIsSubmitting(true);
 
         try {
-            await sendEmail(formData);
+            await sendEmail(currentFormData);
             showSuccess(t('contact.form.success'), {
                 action: {
                     label: t('common.confirm'),

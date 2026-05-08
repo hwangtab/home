@@ -30,7 +30,7 @@ const ConcertSlider: React.FC<ConcertSliderProps> = ({ concerts }) => {
     }, 5000);
 
     return () => window.clearInterval(timer);
-  }, [concerts.length]);
+  }, [concerts.length, concerts]);
 
   if (concerts.length === 0) {
     return (

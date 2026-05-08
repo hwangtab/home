@@ -28,6 +28,8 @@ interface DynamicBackgroundProps {
 const DynamicBackground: React.FC<DynamicBackgroundProps> = ({ className = '' }) => {
     const [smokeParticles, setSmokeParticles] = useState<Particle[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
+    const particleRefs = useRef<Particle[]>(smokeParticles);
+    const rafRef = useRef<number | null>(null);
     const { scrollYProgress } = useScroll();
 
     const y = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
@@ -55,6 +57,7 @@ const DynamicBackground: React.FC<DynamicBackgroundProps> = ({ className = '' })
                 });
             }
 
+            particleRefs.current = newParticles;
             setSmokeParticles(newParticles);
         };
 
@@ -65,7 +68,7 @@ const DynamicBackground: React.FC<DynamicBackgroundProps> = ({ className = '' })
 
     useEffect(() => {
         const animateSmoke = () => {
-            setSmokeParticles(prev => prev.map(particle => {
+            particleRefs.current = particleRefs.current.map(particle => {
                 let newX = particle.x + Math.cos(particle.direction) * particle.speed;
                 let newY = particle.y - particle.drift;
 
@@ -82,11 +85,28 @@ const DynamicBackground: React.FC<DynamicBackgroundProps> = ({ className = '' })
                     x: newX,
                     y: newY
                 };
-            }));
+            });
+
+            // Sync ref state back to state for rendering
+            setSmokeParticles(prev => {
+                // Only update if positions actually changed
+                const changed = prev.some((p, i) => 
+                    p.x !== particleRefs.current[i].x || p.y !== particleRefs.current[i].y
+                );
+                return changed ? [...particleRefs.current] : prev;
+            });
         };
 
-        const interval = setInterval(animateSmoke, 150);
-        return () => clearInterval(interval);
+        // Use requestAnimationFrame for smoother animation with less React state churn
+        const loop = () => {
+            animateSmoke();
+            rafRef.current = requestAnimationFrame(loop);
+        };
+        
+        rafRef.current = requestAnimationFrame(loop);
+        return () => {
+            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        };
     }, []);
 
     return (

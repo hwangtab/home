@@ -89,6 +89,13 @@ const translateValue = (value: JsonValue): JsonValue => {
   return value;
 };
 
+/**
+ * Get list of untranslated strings for debugging
+ */
+export const getUntranslatedStrings = (): string[] => {
+  return Object.keys(KO_TO_EN).filter(str => !KO_TO_EN[str]);
+};
+
 export const translateSiteData = <T>(data: T, language: Language): T => {
   if (language !== 'en') {
     return data;

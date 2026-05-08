@@ -31,7 +31,7 @@ const Section: React.FC<SectionProps> = memo(({
     id,
     enableScrollAnimation = true, // 스크롤 애니메이션 활성화 여부
 }) => {
-    const [ref, shouldAnimate] = useAnimationTrigger();
+    const [ref, shouldAnimate] = useAnimationTrigger({ once: false });
     const controls = useAnimation();
 
     // 다양한 애니메이션 변형
@@ -277,7 +277,7 @@ interface SubSectionProps {
 
 // 서브 섹션 컴포넌트
 export const SubSection: React.FC<SubSectionProps> = memo(({ children, className = '', delay = 0, variant = 'default' }) => {
-    const [ref, shouldAnimate] = useAnimationTrigger();
+    const [ref, shouldAnimate] = useAnimationTrigger({ once: false });
     const controls = useAnimation();
 
     const variants: Record<string, Variants> = {
@@ -347,7 +347,7 @@ interface ItemProps {
 
 // 아이템 컴포넌트
 export const Item: React.FC<ItemProps> = memo(({ children, className = '', index = 0, variant = 'default' }) => {
-    const [ref, shouldAnimate] = useAnimationTrigger();
+    const [ref, shouldAnimate] = useAnimationTrigger({ once: false });
     const controls = useAnimation();
 
     const variants: Record<string, Variants> = {
