@@ -56,26 +56,27 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
     const t = useCallback((path: string): string => {
         const keys = path.split('.');
-        let value: any = translations[language];
 
-        for (const key of keys) {
-            if (value && typeof value === 'object' && key in value) {
-                value = value[key];
-            } else {
-                // Fallback to English if translation is missing in the current language
-                value = translations.en;
-                for (const fallbackKey of keys) {
-                    if (value && typeof value === 'object' && fallbackKey in value) {
-                        value = value[fallbackKey];
-                    } else {
-                        return path; // Return the key path only if also missing in English
-                    }
+        // Traverse translation object by keys
+        const resolve = (obj: any): string | null => {
+            let current = obj;
+            for (const key of keys) {
+                if (current && typeof current === 'object' && key in current) {
+                    current = current[key];
+                } else {
+                    return null;
                 }
-                return typeof value === 'string' ? value : path;
             }
+            return typeof current === 'string' ? current : null;
+        };
+
+        // Try current language first, then English fallback
+        let result = resolve(translations[language]);
+        if (result === null) {
+            result = resolve(translations.en);
         }
 
-        return typeof value === 'string' ? value : path;
+        return result ?? path;
     }, [language]);
 
     return (

@@ -71,7 +71,10 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
 
     useEffect(() => {
         if (shouldLoad && src) {
+            // Set src immediately so the browser starts loading.
+            // The motion.img handles the fade-in via isLoaded state.
             setImageSrc(src);
+            setIsLoaded(false);
         }
     }, [shouldLoad, src]);
 

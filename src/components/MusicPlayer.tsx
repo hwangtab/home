@@ -277,6 +277,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                         {/* Hidden ReactPlayer for audio */}
                         {currentTrack.audioUrl && (
                             <ReactPlayer
+                                key={`player-${currentTrack.id}`}
                                 ref={playerRef}
                                 src={currentTrack.audioUrl}
                                 playing={isPlaying}

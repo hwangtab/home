@@ -13,6 +13,8 @@ interface Particle {
     direction: number;
     color: string;
     drift: number;
+    animDuration: number;
+    breathOffset: number;
 }
 
 interface DynamicBackgroundProps {
@@ -46,7 +48,10 @@ const DynamicBackground: React.FC<DynamicBackgroundProps> = ({ className = '' })
                     speed: Math.random() * 0.3 + 0.1,
                     direction: Math.random() * Math.PI * 2,
                     color: `rgba(${180 + Math.random() * 40}, ${170 + Math.random() * 30}, ${160 + Math.random() * 30}, ${0.3 + Math.random() * 0.2})`,
-                    drift: Math.random() * 0.02 + 0.01
+                    drift: Math.random() * 0.02 + 0.01,
+                    // Pre-computed animation params so we don't generate random values every frame
+                    animDuration: 8 + Math.random() * 4,
+                    breathOffset: Math.random() * Math.PI * 2
                 });
             }
 
@@ -69,14 +74,13 @@ const DynamicBackground: React.FC<DynamicBackgroundProps> = ({ className = '' })
 
                 if (newY < -10) {
                     newY = 110;
-                    newX = Math.random() * 100;
+                    newX = particle.x;
                 }
 
                 return {
                     ...particle,
                     x: newX,
-                    y: newY,
-                    opacity: Math.max(0.1, Math.min(0.4, particle.opacity + (Math.random() - 0.5) * 0.05))
+                    y: newY
                 };
             }));
         };
@@ -110,12 +114,12 @@ const DynamicBackground: React.FC<DynamicBackgroundProps> = ({ className = '' })
                         }}
                         animate={{
                             scale: [1, 1.1, 0.9, 1],
-                            opacity: [particle.opacity, particle.opacity * 0.7, particle.opacity]
                         }}
                         transition={{
-                            duration: 8 + Math.random() * 4,
+                            duration: particle.animDuration,
                             repeat: Infinity,
-                            ease: "easeInOut"
+                            ease: "easeInOut",
+                            delay: particle.breathOffset
                         }}
                     />
                 ))}

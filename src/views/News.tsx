@@ -21,6 +21,7 @@ const ConcertSlider: React.FC<ConcertSliderProps> = ({ concerts }) => {
 
   useEffect(() => {
     if (concerts.length === 0) {
+      setCurrentIndex(0);
       return;
     }
 

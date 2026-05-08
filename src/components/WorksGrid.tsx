@@ -31,14 +31,8 @@ const WorksGrid: React.FC<WorksGridProps> = memo(
 
     useEffect(() => {
       setVisibleCount(INITIAL_VISIBLE_COUNT);
-      setShowAll(false);
-
-      const timer = window.setTimeout(() => {
-        setShowAll(true);
-        setVisibleCount(filteredWorks.length);
-      }, 200);
-
-      return () => window.clearTimeout(timer);
+      setShowAll(true);
+      setVisibleCount(filteredWorks.length);
     }, [activeFilter, filteredWorks.length]);
 
     if (isLoading) {

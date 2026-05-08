@@ -10,9 +10,13 @@ import { getLocaleFromPathname, withLocalePrefix } from '../../utils/localePath'
 import { getWorkCoverUrl } from '../../lib/works';
 
 // 설정 객체들
+// Lazy-evaluate base path to avoid stale values in dev/HMR scenarios.
+const DEFAULT_BASE_PATH = typeof process !== 'undefined'
+    ? (process.env.NEXT_PUBLIC_BASE_PATH || '')
+    : '';
+
 const getAssetPath = (path: string): string => {
-    const publicUrl = process.env.NEXT_PUBLIC_BASE_PATH || process.env.PUBLIC_URL || '';
-    return `${publicUrl}${path}`;
+    return DEFAULT_BASE_PATH ? `${DEFAULT_BASE_PATH}${path}` : path;
 };
 
 interface CategoryConfigItem {
@@ -213,7 +217,16 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work, onClick }) => {
     const detailHref = withLocalePrefix(`/works/${work.id}`, locale);
 
     const handleCardClick = useCallback((e: React.MouseEvent | React.KeyboardEvent) => {
-        if ((e.target as HTMLElement).closest('a')) return;
+        // Ignore programmatic events (e.g., keyboard dispatch)
+        if (!('button' in e)) return;
+
+        const target = e.target as HTMLElement;
+
+        // Ignore clicks on interactive elements (buttons, inputs, etc.)
+        if (target.closest('button, input, select, textarea, [role="checkbox"], [role="radio"]')) return;
+
+        // Ignore clicks that started inside the detail Link — let it navigate
+        if (target.closest('a[href*="/works/"]')) return;
 
         if (primaryAction?.url) {
             window.open(primaryAction.url, '_blank', 'noopener,noreferrer');

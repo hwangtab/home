@@ -110,7 +110,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({
 
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     static contextType = LanguageContext;
-    context!: React.ContextType<typeof LanguageContext> & { t?: (key: string) => string };
+    declare context: React.ContextType<typeof LanguageContext>;
 
     constructor(props: ErrorBoundaryProps) {
         super(props);

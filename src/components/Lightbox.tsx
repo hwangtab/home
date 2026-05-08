@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Download } from 'lucide-react';
 
@@ -31,12 +31,11 @@ const Lightbox: React.FC<LightboxProps> = ({ images = [], currentIndex = 0, isOp
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
     const normalizedImages = images.map(normalizeImage);
-    const currentImage = normalizedImages[currentIndex];
+    const currentImage = useMemo(() => normalizedImages[currentIndex], [normalizedImages, currentIndex]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- images.length is stable
     const goToNext = useCallback(() => {
         if (currentIndex < images.length - 1) onImageChange(currentIndex + 1);
-    }, [currentIndex, onImageChange]);
+    }, [currentIndex, images.length, onImageChange]);
 
     const goToPrevious = useCallback(() => {
         if (currentIndex > 0) onImageChange(currentIndex - 1);
@@ -127,7 +126,7 @@ const Lightbox: React.FC<LightboxProps> = ({ images = [], currentIndex = 0, isOp
             // CORS가 허용되지 않은 경우 새 탭에서 열기
             window.open(image.src, '_blank', 'noopener,noreferrer');
         }
-    }, [currentIndex]);
+    }, [currentIndex, currentImage]);
 
     if (!currentImage) return null;
 
@@ -182,6 +181,7 @@ const Lightbox: React.FC<LightboxProps> = ({ images = [], currentIndex = 0, isOp
 
                     {/* Main Image */}
                     <motion.div
+                        key={`image-${currentIndex}`}
                         className="relative max-w-full max-h-full overflow-hidden"
                         onClick={(e: React.MouseEvent) => e.stopPropagation()}
                         initial={{ scale: 0.8, opacity: 0 }}

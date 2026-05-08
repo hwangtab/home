@@ -41,7 +41,8 @@ const useScrollAnimation = (options: ScrollAnimationOptions = {}): ScrollAnimati
     const observerRef = useRef<IntersectionObserver | null>(null);
     const animationFrameId = useRef<number | null>(null);
     const { isAnimationAllowed, registerAnimation, unregisterAnimation } = useAnimationContext();
-    const animationIdRef = useRef<string>(`scroll-animation-${Date.now()}`);
+    // Unique id generated once per hook invocation
+    const animationIdRef = useRef<string>(`scroll-animation-${Math.random().toString(36).slice(2, 9)}`);
     // isVisibleRef은 effect 내부에서 stale dependency 방지용
     const isVisibleRef = useRef(false);
 

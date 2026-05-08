@@ -61,7 +61,11 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
         }`}
       >
         <div className="container mx-auto flex items-center justify-between">
-          <Link href={withLocalePrefix('/', locale)} className="focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary-400 rounded-lg">
+          <Link
+            href={withLocalePrefix('/', locale)}
+            onClick={() => setIsOpen(false)}
+            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary-400 rounded-lg"
+          >
             <p
               className="text-3xl sm:text-4xl md:text-5xl font-bold font-bombaram transform-gpu hover:scale-105 transition-transform duration-200"
               style={{ lineHeight: '1', transform: 'translateY(12px)' }}
@@ -94,7 +98,12 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
           <div className={`md:hidden border-t ${isScrolled ? 'border-gray-800 bg-gray-900/95 backdrop-blur-md' : 'border-transparent bg-gray-950/70 backdrop-blur-sm'}`}>
             <div className="container mx-auto px-4 py-3 flex flex-col gap-3">
               {nav.map((item) => (
-                <Link key={item.path} href={item.href} className={item.isActive ? 'text-brand-primary-400' : 'text-gray-200'}>
+                <Link
+                  key={item.path}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={item.isActive ? 'text-brand-primary-400' : 'text-gray-200'}
+                >
                   {item.label}
                 </Link>
               ))}
