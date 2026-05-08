@@ -74,8 +74,9 @@ export const useCardActions = (options: CardActionsOptions = {}): CardActionsRet
     const openLightbox = useCallback((work: Work) => {
         if (!enableLightbox) return;
         const w = work as WorkWithExtras;
-        if (w.images && w.images.length > 0) {
-            setSelectedImages(w.images);
+        const images = w.images && w.images.length > 0 ? w.images : w.cover ? [w.cover] : [];
+        if (images.length > 0) {
+            setSelectedImages(images);
             setLightboxIndex(0);
             setIsLightboxOpen(true);
         }

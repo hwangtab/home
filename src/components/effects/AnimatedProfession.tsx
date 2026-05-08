@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Music, Mic, Headphones, Heart, LucideIcon } from 'lucide-react';
 import { useLanguage } from '../../i18n';
@@ -24,7 +24,7 @@ const AnimatedProfession: React.FC<AnimatedProfessionProps> = ({ className = '' 
     const { t } = useLanguage();
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const professions: Profession[] = [
+    const professions: Profession[] = useMemo(() => [
         {
             text: t('home.professions.musician'),
             icon: Music,
@@ -49,7 +49,7 @@ const AnimatedProfession: React.FC<AnimatedProfessionProps> = ({ className = '' 
             color: 'text-brand-solidarity-400',
             bgColor: 'bg-brand-solidarity-500/20'
         }
-    ];
+    ], [t]);
 
     useEffect(() => {
         const interval = setInterval(() => {

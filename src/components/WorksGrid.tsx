@@ -31,9 +31,8 @@ const WorksGrid: React.FC<WorksGridProps> = memo(
 
     useEffect(() => {
       setVisibleCount(INITIAL_VISIBLE_COUNT);
-      setShowAll(true);
-      setVisibleCount(filteredWorks.length);
-    }, [activeFilter, filteredWorks.length]);
+      setShowAll(false);
+    }, [activeFilter]);
 
     if (isLoading) {
       return <GridSkeleton items={skeletonCount} columns={3} cardProps={{ showImage: true }} />;
