@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import ReactPlayer from 'react-player';
 import {
     Play,
@@ -12,7 +13,8 @@ import {
     Repeat,
     Heart,
     ExternalLink,
-    List
+    List,
+    X
 } from 'lucide-react';
 import { Work } from '../types/data.types';
 import { useLanguage } from '../i18n';
@@ -149,10 +151,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                             {/* Track Info */}
                             <div className="flex items-center space-x-4 flex-1 min-w-0">
                                 <div className="relative group">
-                                    <img
+                                    <Image
                                         src={currentTrackCover}
                                         alt={currentTrack.title}
-                                        className="w-12 h-12 rounded object-cover shadow-lg"
+                                        fill
+                                        className="rounded object-cover shadow-lg"
                                     />
                                     <div className="absolute inset-0 bg-black/20 rounded opacity-0 group-hover:opacity-100 transition-opacity" />
                                 </div>
@@ -270,7 +273,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                     className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800 ml-2"
                                     title={t('common.close')}
                                 >
-                                    ✕
+                                    <X size={16} />
                                 </button>
                             </div>
                         </div>
@@ -283,12 +286,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 src={currentTrack.audioUrl}
                                 playing={isPlaying}
                                 volume={isMuted ? 0 : volume}
-                                // @ts-expect-error react-player 타입이 onDuration/onEnded 누락 (HTMLMediaElement 이벤트)
-                                onDuration={setDuration}
-                                onEnded={handleEnded}
                                 width={0}
                                 height={0}
                                 style={{ display: 'none' }}
+                                {...{ onDuration: setDuration, onEnded: handleEnded } as Record<string, unknown>}
                             />
                         )}
                     </div>
@@ -317,10 +318,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                                 }`}
                                         >
                                             <div className="relative">
-                                                <img
+                                                <Image
                                                     src={getWorkCoverUrl(track.cover, 'music')}
                                                     alt={track.title}
-                                                    className={`w-10 h-10 rounded object-cover ${index === currentIndex ? 'opacity-100' : 'opacity-70'}`}
+                                                    fill
+                                                    className={`rounded object-cover ${index === currentIndex ? 'opacity-100' : 'opacity-70'}`}
                                                 />
                                                 {index === currentIndex && isPlaying && (
                                                     <div className="absolute inset-0 flex items-center justify-center">

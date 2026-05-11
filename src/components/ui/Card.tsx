@@ -114,7 +114,7 @@ const CardFooter = memo<CardFooterProps>(({ work }) => {
             </Flex>
             {hasLinks && (
                 <a
-                    href={Object.values(work.links!)[0]}
+                    href={Object.values(work.links || {})[0]}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors text-sm"

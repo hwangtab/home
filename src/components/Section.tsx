@@ -257,7 +257,7 @@ const useScrollVariant = (
                 }
             }
         }
-    }), [delay, options.duration, options.baseY, options.baseScale]);
+    }), [delay, options.duration, options.baseY, options.baseScale, options.extra]);
 
     useEffect(() => {
         if (shouldAnimate) {
@@ -269,7 +269,7 @@ const useScrollVariant = (
 };
 
 export const SubSection: React.FC<SubSectionProps> = memo(({ children, className = '', delay = 0, variant = 'default' }) => {
-    const { ref, controls, variants } = useScrollVariant(delay, {
+    const { ref, controls } = useScrollVariant(delay, {
         baseY: variant === 'card' ? 40 : 30,
         baseScale: variant === 'card' ? 0.95 : 0.98,
         duration: variant === 'card' ? 0.7 : 0.6,
@@ -279,8 +279,11 @@ export const SubSection: React.FC<SubSectionProps> = memo(({ children, className
         } : undefined
     });
 
-    const variantMap = useMemo<Record<string, Variants>>(() => ({
-        default: variants.default,
+    const variantMap: Record<string, Variants> = {
+        default: {
+            hidden: { opacity: 0, y: 30, scale: 0.98 },
+            visible: { opacity: 1, y: 0, scale: 1 }
+        },
         card: {
             hidden: { opacity: 0, y: 40, scale: 0.95, rotateX: 5 },
             visible: {
@@ -292,7 +295,7 @@ export const SubSection: React.FC<SubSectionProps> = memo(({ children, className
                 }
             }
         }
-    }), [delay]);
+    };
 
     return (
         <motion.div

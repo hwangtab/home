@@ -90,7 +90,10 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }
             return false;
         }
 
-        setRunningAnimations(prev => new Set([...prev, id]));
+        setRunningAnimations(prev => {
+            if (prev.has(id)) return prev; // 중복 등록 방지
+            return new Set([...prev, id]);
+        });
         return true;
     }, [currentState]);
 

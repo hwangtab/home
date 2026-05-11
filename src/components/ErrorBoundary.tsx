@@ -134,15 +134,14 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         console.error("ErrorBoundary caught error:", error, errorInfo);
 
-        if (this.state.isChunkError && this.state.retryCount < 2) {
-            setTimeout(() => {
-                this.setState(prevState => ({
-                    hasError: false,
-                    error: null,
-                    retryCount: prevState.retryCount + 1
-                }));
-            }, 1000);
+        if (this.state.isChunkError) {
+            // chunk 로딩 실패 시: 캐시 삭제 후 페이지 재로드하여 chunk 재요청
+            clearCacheAndReload();
         }
+
+        this.setState(prevState => ({
+            retryCount: prevState.retryCount + 1
+        }));
     }
 
     handleReload = () => {
@@ -150,11 +149,16 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     };
 
     handleRetry = () => {
-        this.setState(prevState => ({
-            hasError: false,
-            error: null,
-            retryCount: prevState.retryCount + 1
-        }));
+        // chunk 에러: 캐시 삭제 후 리로드 / 일반 에러: 상태만 리셋
+        if (this.state.isChunkError) {
+            clearCacheAndReload();
+        } else {
+            this.setState(prevState => ({
+                hasError: false,
+                error: null,
+                retryCount: prevState.retryCount + 1
+            }));
+        }
     };
 
     render() {

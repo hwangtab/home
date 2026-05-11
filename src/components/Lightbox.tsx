@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Download } from 'lucide-react';
 
 interface LightboxImage {
@@ -29,9 +30,53 @@ const Lightbox: React.FC<LightboxProps> = ({ images = [], currentIndex = 0, isOp
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+    const lightboxRef = useRef<HTMLDivElement>(null);
 
     const normalizedImages = images.map(normalizeImage);
     const currentImage = useMemo(() => normalizedImages[currentIndex], [normalizedImages, currentIndex]);
+
+    // Focus trap: manage focus within the lightbox modal
+    useEffect(() => {
+        if (!isOpen || !lightboxRef.current) return;
+
+        // Store previously focused element
+        const previouslyFocused = document.activeElement as HTMLElement;
+
+        // Focus the lightbox container on open
+        lightboxRef.current.focus();
+
+        // Focus trap handler
+        const handleFocusTrap = (e: KeyboardEvent) => {
+            if (e.key !== 'Tab' || !lightboxRef.current) return;
+
+            const focusableElements = lightboxRef.current.querySelectorAll<HTMLElement>(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+
+            const firstFocusable = focusableElements[0];
+            const lastFocusable = focusableElements[focusableElements.length - 1];
+
+            if (e.shiftKey) {
+                if (document.activeElement === firstFocusable) {
+                    e.preventDefault();
+                    lastFocusable.focus();
+                }
+            } else {
+                if (document.activeElement === lastFocusable) {
+                    e.preventDefault();
+                    firstFocusable.focus();
+                }
+            }
+        };
+
+        document.addEventListener('keydown', handleFocusTrap);
+
+        // Cleanup: restore focus
+        return () => {
+            document.removeEventListener('keydown', handleFocusTrap);
+            previouslyFocused?.focus();
+        };
+    }, [isOpen]);
 
     const goToNext = useCallback(() => {
         if (currentIndex < images.length - 1) onImageChange(currentIndex + 1);
@@ -92,13 +137,25 @@ const Lightbox: React.FC<LightboxProps> = ({ images = [], currentIndex = 0, isOp
         }
     };
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (isDragging && zoom > 1) {
-            setPosition({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
-        }
-    };
+    useEffect(() => {
+        if (!isDragging) return;
 
-    const handleMouseUp = () => setIsDragging(false);
+        const handleGlobalMouseMove = (e: MouseEvent) => {
+            setPosition({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
+        };
+
+        const handleGlobalMouseUp = () => {
+            setIsDragging(false);
+        };
+
+        document.addEventListener('mousemove', handleGlobalMouseMove);
+        document.addEventListener('mouseup', handleGlobalMouseUp);
+
+        return () => {
+            document.removeEventListener('mousemove', handleGlobalMouseMove);
+            document.removeEventListener('mouseup', handleGlobalMouseUp);
+        };
+    }, [isDragging, dragStart]);
 
     const handleWheel = (e: React.WheelEvent) => {
         e.preventDefault();
@@ -134,7 +191,9 @@ const Lightbox: React.FC<LightboxProps> = ({ images = [], currentIndex = 0, isOp
         <AnimatePresence>
             {isOpen && (
                 <motion.div
-                    className="fixed inset-0 z-50 bg-black bg-opacity-95 flex items-center justify-center"
+                    ref={lightboxRef}
+                    tabIndex={-1}
+                    className="fixed inset-0 z-50 bg-black bg-opacity-95 flex items-center justify-center outline-none"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -189,19 +248,17 @@ const Lightbox: React.FC<LightboxProps> = ({ images = [], currentIndex = 0, isOp
                         exit={{ scale: 0.8, opacity: 0 }}
                         transition={{ duration: 0.3 }}
                     >
-                        <img
+                        <Image
                             src={currentImage.src}
-                            alt={currentImage.title || currentImage.alt}
-                            className="max-w-full max-h-full object-contain cursor-grab active:cursor-grabbing"
+                            alt={currentImage.title || currentImage.alt || ''}
+                            fill
+                            className="object-contain cursor-grab active:cursor-grabbing"
                             style={{
                                 transform: `scale(${zoom}) translate(${position.x / zoom}px, ${position.y / zoom}px)`,
                                 transformOrigin: 'center',
                                 transition: isDragging ? 'none' : 'transform 0.2s ease-out'
                             }}
                             onMouseDown={handleMouseDown}
-                            onMouseMove={handleMouseMove}
-                            onMouseUp={handleMouseUp}
-                            onMouseLeave={handleMouseUp}
                             onWheel={handleWheel}
                             draggable={false}
                         />
@@ -217,7 +274,7 @@ const Lightbox: React.FC<LightboxProps> = ({ images = [], currentIndex = 0, isOp
                                         onClick={(e) => { e.stopPropagation(); onImageChange(index); }}
                                         className={`flex-shrink-0 w-16 h-16 rounded border-2 overflow-hidden transition-all ${index === currentIndex ? 'border-white' : 'border-transparent opacity-70 hover:opacity-100'}`}
                                     >
-                                        <img src={image.src} alt={image.title || image.alt} className="w-full h-full object-cover" />
+                                        <Image src={image.src} alt={image.title || image.alt || ''} fill className="object-cover" />
                                     </button>
                                 ))}
                             </div>

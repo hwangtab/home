@@ -1,4 +1,4 @@
-import React, { useState, useRef, memo, useMemo } from 'react';
+import React, { useState, useRef, memo, useMemo, useLayoutEffect } from 'react';
 import { motion, HTMLMotionProps } from 'framer-motion';
 import { Send } from 'lucide-react';
 import { sendEmail } from '../config/emailjs';
@@ -26,6 +26,8 @@ interface ContactFormProps {
     animation?: HTMLMotionProps<"div">;
 }
 
+const MAX_RETRY_ATTEMPTS = 3;
+
 const ContactForm: React.FC<ContactFormProps> = ({
     theme = 'dark',
     includeSubject = true,
@@ -45,11 +47,12 @@ const ContactForm: React.FC<ContactFormProps> = ({
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const formStartedAt = useRef<number>(Date.now());
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [retryCount, setRetryCount] = useState(0);
     const [errors, setErrors] = useState<Record<string, string | null>>({});
     const { showSuccess, showError } = useToast();
 
-    // includeSubject 변경 시 formData를 초기값으로 리셋
-    React.useEffect(() => {
+    // includeSubject 변경 시 formData를 초기값으로 리셋 (useLayoutEffect로 레이아웃 계산 전 적용)
+    useLayoutEffect(() => {
         setFormData(initialFormData);
         setErrors({});
     }, [initialFormData]);
@@ -87,7 +90,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
         await submitForm();
     };
 
-    const submitForm = async (): Promise<void> => {
+    const submitForm = async (attempts: number = 0): Promise<void> => {
         // Capture current state to avoid stale closure issues
         const currentFormData = formData;
 
@@ -135,14 +138,35 @@ const ContactForm: React.FC<ContactFormProps> = ({
             setFormData(initialFormData);
             formStartedAt.current = Date.now();
             setErrors({});
+            setRetryCount(0);
         } catch (error) {
             console.error('Failed to send email:', error);
-            showError(t('contact.form.error'), {
-                action: {
-                    label: t('common.retry'),
-                    onClick: () => void submitForm()
-                }
-            });
+            const currentAttempts = attempts + 1;
+            
+            if (currentAttempts < MAX_RETRY_ATTEMPTS) {
+                showError(t('contact.form.error'), {
+                    action: {
+                        label: t('common.retry'),
+                        onClick: () => {
+                            // Ensure clean state before retry
+                            setIsSubmitting(false);
+                            setRetryCount(currentAttempts);
+                            void submitForm(currentAttempts);
+                        }
+                    }
+                });
+            } else {
+                showError(t('contact.form.error'), {
+                    action: {
+                        label: t('common.retry'),
+                        onClick: () => {
+                            setIsSubmitting(false);
+                            setRetryCount(0);
+                            void submitForm(0);
+                        }
+                    }
+                });
+            }
         } finally {
             setIsSubmitting(false);
         }

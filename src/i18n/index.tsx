@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import koTranslations from '../locales/ko.json';
 import enTranslations from '../locales/en.json';
@@ -36,6 +36,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     const pathname = usePathname();
     const router = useRouter();
     const routeLanguage = getLocaleFromPathname(pathname);
+    const isRouterSyncingRef = useRef(false);
 
     // Resolve initial language: prefer localStorage, then route, then default 'ko'
     const getInitialLanguage = (): SupportedLanguage => {
@@ -47,28 +48,35 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     };
 
     const [language, setLanguage] = useState<SupportedLanguage>(getInitialLanguage());
-    const [isRouterSyncing, setIsRouterSyncing] = useState(false);
 
-    // Sync: store language preference when changed
+   // Sync: store language preference when changed
     useEffect(() => {
         if (language !== 'ko' && language !== 'en') return;
         localStorage.setItem('language', language);
     }, [language]);
 
     // Sync: navigate to locale-matching route when language changes
-    // Guard against infinite redirect loops during hydration
+    // Use pathname-based detection for guard reset — more reliable than rAF
     useEffect(() => {
         if (typeof window === 'undefined') return;
-        if (isRouterSyncing) return;
+        if (isRouterSyncingRef.current) return;
 
         const currentLocale = getLocaleFromPathname(window.location.pathname);
         if (language !== currentLocale) {
-            setIsRouterSyncing(true);
-            router.push(withLocalePrefix(window.location.pathname, language));
-            // Reset guard after navigation completes
-            setTimeout(() => setIsRouterSyncing(false), 500);
+            const targetPath = withLocalePrefix(window.location.pathname, language);
+            // Prevent redundant push when already at the target path
+            if (window.location.pathname === targetPath) return;
+            isRouterSyncingRef.current = true;
+            router.push(targetPath);
         }
-    }, [language, router, isRouterSyncing]);
+    }, [language, router]);
+
+    // Guard 해제: pathname이 변경되었을 때 (네비게이션 완료 감지)
+    useEffect(() => {
+        if (isRouterSyncingRef.current && getLocaleFromPathname(pathname) === language) {
+            isRouterSyncingRef.current = false;
+        }
+    }, [pathname, language]);
 
     useEffect(() => {
         if (typeof document !== 'undefined') {

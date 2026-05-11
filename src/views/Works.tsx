@@ -51,28 +51,40 @@ const Works: React.FC = () => {
     if (!workIdParam) return;
 
     const element = document.getElementById(`work-${workIdParam}`);
-    if (!element) return;
+    if (!element) {
+      // DOM 렌더링 대기: 필터 변경 직후 element가 아직 없을 수 있음
+      const rafId = requestAnimationFrame(() => {
+        const el = document.getElementById(`work-${workIdParam}`);
+        if (!el) return;
+        startHighlight(el);
+      });
+      return () => cancelAnimationFrame(rafId);
+    }
 
-    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    element.classList.add(
-      'ring-2',
-      'ring-brand-primary-400',
-      'ring-offset-2',
-      'ring-offset-gray-900',
-      'rounded-lg'
-    );
+    startHighlight(element);
 
-    const cleanupTimer = setTimeout(() => {
-      element.classList.remove(
+    function startHighlight(el: HTMLElement) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add(
         'ring-2',
         'ring-brand-primary-400',
         'ring-offset-2',
         'ring-offset-gray-900',
         'rounded-lg'
       );
-    }, RING_HIGHLIGHT_DURATION_MS);
 
-    return () => clearTimeout(cleanupTimer);
+      const cleanupTimer = setTimeout(() => {
+        el.classList.remove(
+          'ring-2',
+          'ring-brand-primary-400',
+          'ring-offset-2',
+          'ring-offset-gray-900',
+          'rounded-lg'
+        );
+      }, RING_HIGHLIGHT_DURATION_MS);
+
+      return () => clearTimeout(cleanupTimer);
+    }
   }, [workIdParam, activeFilter]);
 
   const { categorizedData, getWorksByCategory } = useWorksData(worksPageData.works, 'works');

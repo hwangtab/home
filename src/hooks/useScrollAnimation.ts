@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef, RefObject } from 'react';
-import { useAnimation } from 'framer-motion';
+import { useAnimation as useMotionAnimation } from 'framer-motion';
 import { useAnimation as useAnimationContext } from '../context/AnimationContext';
 
 interface ScrollAnimationOptions {
@@ -13,7 +13,7 @@ interface ScrollAnimationOptions {
 interface ScrollAnimationReturn {
     elementRef: RefObject<HTMLElement | null>;
     isVisible: boolean;
-    controls: ReturnType<typeof useAnimation>;
+    controls: ReturnType<typeof useMotionAnimation>;
     variants: Record<string, any>;
     containerVariants: Record<string, unknown>;
     itemVariants: Record<string, any>;
@@ -37,7 +37,7 @@ const useScrollAnimation = (options: ScrollAnimationOptions = {}): ScrollAnimati
     const [scrollY, setScrollY] = useState(0);
     const [elementTop, setElementTop] = useState(0);
     const elementRef = useRef<HTMLElement>(null);
-    const controls = useAnimation();
+    const controls = useMotionAnimation();
     const observerRef = useRef<IntersectionObserver | null>(null);
     const animationFrameId = useRef<number | null>(null);
     const { isAnimationAllowed, registerAnimation, unregisterAnimation } = useAnimationContext();

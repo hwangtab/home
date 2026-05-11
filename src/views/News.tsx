@@ -43,7 +43,8 @@ const ConcertSlider: React.FC<ConcertSliderProps> = ({ concerts }) => {
   const currentConcert = concerts[currentIndex];
 
   // concert.id를 key로 사용하여 데이터 변경 시 안정성 보장
-  const key = `${currentConcert.id}-${currentIndex}`;
+  // currentIndex에 종속되지 않아 불필요한 unmount/remount 방지
+  const key = currentConcert.id;
 
   return (
     <motion.div

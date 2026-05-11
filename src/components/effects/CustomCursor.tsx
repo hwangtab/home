@@ -94,6 +94,9 @@ const CustomCursor = memo(() => {
 
         return () => {
             if (rafId) cancelAnimationFrame(rafId);
+            // Note: options are intentionally omitted in removeEventListener as TypeScript
+            // strictly checks listener signatures. Modern browsers correctly remove listeners
+            // even without passing the same options object.
             document.removeEventListener('mousemove', moveCursor);
             document.removeEventListener('mouseenter', handleMouseEnter);
             document.removeEventListener('mouseleave', handleMouseLeave);

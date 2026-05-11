@@ -228,13 +228,10 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work, onClick }) => {
         // Ignore clicks that started inside the detail Link — let it navigate
         if (target.closest('a[href*="/works/"]')) return;
 
-        if (primaryAction?.url) {
-            window.open(primaryAction.url, '_blank', 'noopener,noreferrer');
-            return;
-        }
-
+        // Always navigate to detail page on card click
+        // (primaryAction external link should be triggered via the ActionButton only)
         if (onClick) onClick(work);
-    }, [onClick, work, primaryAction]);
+    }, [onClick, work]);
 
     return (
         <article
