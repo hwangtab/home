@@ -1,4 +1,4 @@
-import React, { useState, useRef, memo } from 'react';
+import React, { useState, useRef, memo, useMemo } from 'react';
 import { motion, HTMLMotionProps } from 'framer-motion';
 import { Send } from 'lucide-react';
 import { sendEmail } from '../config/emailjs';
@@ -34,19 +34,25 @@ const ContactForm: React.FC<ContactFormProps> = ({
     animation = COMMON_ANIMATIONS.slideInRight
 }) => {
     const { t } = useLanguage();
-    const initialFormData: FormData = {
+    const initialFormData = useMemo<FormData>(() => ({
         name: '',
         email: '',
         website: '',
         message: '',
         ...(includeSubject ? { subject: '' } : {})
-    };
+    }), [includeSubject]);
 
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const formStartedAt = useRef<number>(Date.now());
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState<Record<string, string | null>>({});
     const { showSuccess, showError } = useToast();
+
+    // includeSubject 변경 시 formData를 초기값으로 리셋
+    React.useEffect(() => {
+        setFormData(initialFormData);
+        setErrors({});
+    }, [initialFormData]);
 
     const validateField = (name: string, value: string) => {
         switch (name) {
@@ -156,7 +162,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Bot honeypot — hidden via inline style so bots that fill all fields catch it */}
+                {/* Bot honeypot — hidden via CSS so bots that fill all fields catch it */}
                 <input
                     type="text"
                     name="website"
@@ -165,7 +171,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     autoComplete="off"
                     tabIndex={-1}
                     aria-hidden="true"
-                    style={{ display: 'none', pointerEvents: 'none' }}
+                    className="absolute -left-[9999px] top-0 opacity-0 pointer-events-none"
                 />
 
                 <Input

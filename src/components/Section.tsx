@@ -1,4 +1,4 @@
-import React, { memo, ReactNode } from 'react';
+import React, { memo, ReactNode, useMemo, useEffect } from 'react';
 import { motion, useAnimation, Variants } from 'framer-motion';
 import { useAnimationTrigger } from '../hooks/useIntersectionObserver';
 import { Heading2 } from './ui/Typography';
@@ -18,6 +18,52 @@ interface SectionProps {
     enableScrollAnimation?: boolean;
 }
 
+// Section용 사전 정의된 애니메이션 variants 프리셋
+const SECTION_VARIANTS: Record<string, Variants> = {
+    default: {
+        hidden: { opacity: 0, y: 60, scale: 0.95 },
+        visible: {
+            opacity: 1, y: 0, scale: 1,
+            transition: { duration: 0.8, delay: 0.15, ease: [0.25, 0.1, 0.25, 1], staggerChildren: 0.1 }
+        }
+    },
+    slideUp: {
+        hidden: { opacity: 0, y: 100, filter: 'blur(4px)' },
+        visible: {
+            opacity: 1, y: 0, filter: 'blur(0px)',
+            transition: { duration: 0.9, ease: [0.165, 0.84, 0.44, 1], staggerChildren: 0.15 }
+        }
+    },
+    slideLeft: {
+        hidden: { opacity: 0, x: -80, scale: 0.9 },
+        visible: {
+            opacity: 1, x: 0, scale: 1,
+            transition: { duration: 0.7, ease: [0.23, 1, 0.32, 1], staggerChildren: 0.1 }
+        }
+    },
+    slideRight: {
+        hidden: { opacity: 0, x: 80, scale: 0.9 },
+        visible: {
+            opacity: 1, x: 0, scale: 1,
+            transition: { duration: 0.7, ease: [0.23, 1, 0.32, 1], staggerChildren: 0.1 }
+        }
+    },
+    fade: {
+        hidden: { opacity: 0, scale: 0.98 },
+        visible: {
+            opacity: 1, scale: 1,
+            transition: { duration: 0.6, ease: 'easeOut', staggerChildren: 0.05 }
+        }
+    },
+    scale: {
+        hidden: { opacity: 0, scale: 0.8, rotateY: -15 },
+        visible: {
+            opacity: 1, scale: 1, rotateY: 0,
+            transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], staggerChildren: 0.1 }
+        }
+    }
+};
+
 const Section: React.FC<SectionProps> = memo(({
     title,
     subtitle,
@@ -29,121 +75,15 @@ const Section: React.FC<SectionProps> = memo(({
     titleAlign = 'left',
     variant = 'default',
     id,
-    enableScrollAnimation = true, // 스크롤 애니메이션 활성화 여부
+    enableScrollAnimation = true,
 }) => {
     const [ref, shouldAnimate] = useAnimationTrigger({ once: false });
     const controls = useAnimation();
 
-    // 다양한 애니메이션 변형
-    const variants: Record<string, Variants> = {
-        default: {
-            hidden: {
-                opacity: 0,
-                y: 60,
-                scale: 0.95
-            },
-            visible: {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                transition: {
-                    duration: 0.8,
-                    delay: 0.15, // Added delay to let PageTransition complete first
-                    ease: [0.25, 0.1, 0.25, 1],
-                    staggerChildren: 0.1
-                }
-            }
-        },
-        slideUp: {
-            hidden: {
-                opacity: 0,
-                y: 100,
-                filter: 'blur(4px)'
-            },
-            visible: {
-                opacity: 1,
-                y: 0,
-                filter: 'blur(0px)',
-                transition: {
-                    duration: 0.9,
-                    ease: [0.165, 0.84, 0.44, 1],
-                    staggerChildren: 0.15
-                }
-            }
-        },
-        slideLeft: {
-            hidden: {
-                opacity: 0,
-                x: -80,
-                scale: 0.9
-            },
-            visible: {
-                opacity: 1,
-                x: 0,
-                scale: 1,
-                transition: {
-                    duration: 0.7,
-                    ease: [0.23, 1, 0.32, 1],
-                    staggerChildren: 0.1
-                }
-            }
-        },
-        slideRight: {
-            hidden: {
-                opacity: 0,
-                x: 80,
-                scale: 0.9
-            },
-            visible: {
-                opacity: 1,
-                x: 0,
-                scale: 1,
-                transition: {
-                    duration: 0.7,
-                    ease: [0.23, 1, 0.32, 1],
-                    staggerChildren: 0.1
-                }
-            }
-        },
-        fade: {
-            hidden: {
-                opacity: 0,
-                scale: 0.98
-            },
-            visible: {
-                opacity: 1,
-                scale: 1,
-                transition: {
-                    duration: 0.6,
-                    ease: 'easeOut',
-                    staggerChildren: 0.05
-                }
-            }
-        },
-        scale: {
-            hidden: {
-                opacity: 0,
-                scale: 0.8,
-                rotateY: -15
-            },
-            visible: {
-                opacity: 1,
-                scale: 1,
-                rotateY: 0,
-                transition: {
-                    duration: 0.8,
-                    ease: [0.25, 0.46, 0.45, 0.94],
-                    staggerChildren: 0.1
-                }
-            }
-        }
-    };
-
-    React.useEffect(() => {
+    useEffect(() => {
         if (shouldAnimate && enableScrollAnimation) {
             controls.start('visible');
         } else if (!enableScrollAnimation) {
-            // 애니메이션 비활성화 시 즉시 visible 상태로 설정
             controls.start('visible');
         }
     }, [shouldAnimate, controls, enableScrollAnimation]);
@@ -168,7 +108,7 @@ const Section: React.FC<SectionProps> = memo(({
             ref={ref}
             id={id}
             className={`transform-gpu ${spacingClasses[spacing]} ${backgroundClasses[background]} ${className}`}
-            variants={variants[variant]}
+            variants={SECTION_VARIANTS[variant]}
             initial={enableScrollAnimation ? "hidden" : "visible"}
             animate={controls}
         >
@@ -275,41 +215,76 @@ interface SubSectionProps {
     variant?: 'default' | 'card';
 }
 
-// 서브 섹션 컴포넌트
-export const SubSection: React.FC<SubSectionProps> = memo(({ children, className = '', delay = 0, variant = 'default' }) => {
-    const [ref, shouldAnimate] = useAnimationTrigger({ once: false });
-    const controls = useAnimation();
+// ─── SubSection/Item 공통 애니메이션 variants 생성 ─────────────
 
-    const variants: Record<string, Variants> = {
+interface UseScrollVariantOptions {
+    baseY?: number;
+    baseScale?: number;
+    duration?: number;
+    stagger?: number;
+    extra?: { hidden?: Record<string, any>; transition?: Record<string, any> };
+}
+
+const useScrollVariant = (
+    delay: number = 0,
+    options: UseScrollVariantOptions = {}
+): {
+    ref: React.RefObject<any>;
+    shouldAnimate: boolean;
+    controls: ReturnType<typeof useAnimation>;
+    variants: Record<string, Variants>;
+} => {
+    const controls = useAnimation();
+    const [ref, shouldAnimate] = useAnimationTrigger({ once: false });
+
+    const variants = useMemo<Record<string, Variants>>(() => ({
         default: {
             hidden: {
                 opacity: 0,
-                y: 30,
-                scale: 0.98
+                y: options.baseY ?? 30,
+                scale: options.baseScale ?? 0.98,
+                ...(options.extra?.hidden || {})
             },
             visible: {
                 opacity: 1,
                 y: 0,
                 scale: 1,
                 transition: {
-                    duration: 0.6,
+                    duration: options.duration ?? 0.6,
                     ease: [0.25, 0.1, 0.25, 1],
-                    delay: delay / 1000
+                    delay: delay / 1000,
+                    ...(options.extra?.transition || {})
                 }
             }
-        },
+        }
+    }), [delay, options.duration, options.baseY, options.baseScale]);
+
+    useEffect(() => {
+        if (shouldAnimate) {
+            controls.start('visible');
+        }
+    }, [shouldAnimate, controls]);
+
+    return { ref, shouldAnimate, controls, variants };
+};
+
+export const SubSection: React.FC<SubSectionProps> = memo(({ children, className = '', delay = 0, variant = 'default' }) => {
+    const { ref, controls, variants } = useScrollVariant(delay, {
+        baseY: variant === 'card' ? 40 : 30,
+        baseScale: variant === 'card' ? 0.95 : 0.98,
+        duration: variant === 'card' ? 0.7 : 0.6,
+        extra: variant === 'card' ? {
+            hidden: { rotateX: 5 },
+            transition: { ease: [0.165, 0.84, 0.44, 1] }
+        } : undefined
+    });
+
+    const variantMap = useMemo<Record<string, Variants>>(() => ({
+        default: variants.default,
         card: {
-            hidden: {
-                opacity: 0,
-                y: 40,
-                scale: 0.95,
-                rotateX: 5
-            },
+            hidden: { opacity: 0, y: 40, scale: 0.95, rotateX: 5 },
             visible: {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                rotateX: 0,
+                opacity: 1, y: 0, scale: 1, rotateX: 0,
                 transition: {
                     duration: 0.7,
                     ease: [0.165, 0.84, 0.44, 1],
@@ -317,19 +292,13 @@ export const SubSection: React.FC<SubSectionProps> = memo(({ children, className
                 }
             }
         }
-    };
-
-    React.useEffect(() => {
-        if (shouldAnimate) {
-            controls.start('visible');
-        }
-    }, [shouldAnimate, controls]);
+    }), [delay]);
 
     return (
         <motion.div
             ref={ref as React.RefObject<HTMLDivElement>}
             className={`transform-gpu ${className}`}
-            variants={variants[variant]}
+            variants={variantMap[variant]}
             initial="hidden"
             animate={controls}
         >
@@ -347,20 +316,17 @@ interface ItemProps {
 
 // 아이템 컴포넌트
 export const Item: React.FC<ItemProps> = memo(({ children, className = '', index = 0, variant = 'default' }) => {
-    const [ref, shouldAnimate] = useAnimationTrigger({ once: false });
-    const controls = useAnimation();
+    const { ref, controls } = useScrollVariant(index * 50, {
+        baseY: 25,
+        baseScale: 0.95,
+        duration: 0.5
+    });
 
-    const variants: Record<string, Variants> = {
+    const variantMap = useMemo<Record<string, Variants>>(() => ({
         default: {
-            hidden: {
-                opacity: 0,
-                y: 25,
-                scale: 0.95
-            },
+            hidden: { opacity: 0, y: 25, scale: 0.95 },
             visible: {
-                opacity: 1,
-                y: 0,
-                scale: 1,
+                opacity: 1, y: 0, scale: 1,
                 transition: {
                     duration: 0.5,
                     ease: [0.25, 0.1, 0.25, 1],
@@ -369,17 +335,9 @@ export const Item: React.FC<ItemProps> = memo(({ children, className = '', index
             }
         },
         grid: {
-            hidden: {
-                opacity: 0,
-                y: 30,
-                scale: 0.9,
-                rotateY: 10
-            },
+            hidden: { opacity: 0, y: 30, scale: 0.9, rotateY: 10 },
             visible: {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                rotateY: 0,
+                opacity: 1, y: 0, scale: 1, rotateY: 0,
                 transition: {
                     duration: 0.6,
                     ease: [0.165, 0.84, 0.44, 1],
@@ -387,19 +345,13 @@ export const Item: React.FC<ItemProps> = memo(({ children, className = '', index
                 }
             }
         }
-    };
-
-    React.useEffect(() => {
-        if (shouldAnimate) {
-            controls.start('visible');
-        }
-    }, [shouldAnimate, controls]);
+    }), [index]);
 
     return (
         <motion.div
             ref={ref as React.RefObject<HTMLDivElement>}
             className={`transform-gpu ${className}`}
-            variants={variants[variant]}
+            variants={variantMap[variant]}
             initial="hidden"
             animate={controls}
         >

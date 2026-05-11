@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import koTranslations from '../locales/ko.json';
 import enTranslations from '../locales/en.json';
-import { getLocaleFromPathname } from '../utils/localePath';
+import { getLocaleFromPathname, withLocalePrefix } from '../utils/localePath';
 
 type SupportedLanguage = 'ko' | 'en';
 
@@ -34,14 +34,41 @@ interface LanguageProviderProps {
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
     const pathname = usePathname();
+    const router = useRouter();
     const routeLanguage = getLocaleFromPathname(pathname);
-    const [language, setLanguage] = useState<SupportedLanguage>(routeLanguage);
 
-    useEffect(() => {
-        if (language !== routeLanguage) {
-            setLanguage(routeLanguage);
+    // Resolve initial language: prefer localStorage, then route, then default 'ko'
+    const getInitialLanguage = (): SupportedLanguage => {
+        if (typeof window !== 'undefined') {
+            const stored = localStorage.getItem('language');
+            if (stored === 'ko' || stored === 'en') return stored;
         }
-    }, [language, routeLanguage]);
+        return routeLanguage === 'ko' || routeLanguage === 'en' ? routeLanguage : 'ko';
+    };
+
+    const [language, setLanguage] = useState<SupportedLanguage>(getInitialLanguage());
+    const [isRouterSyncing, setIsRouterSyncing] = useState(false);
+
+    // Sync: store language preference when changed
+    useEffect(() => {
+        if (language !== 'ko' && language !== 'en') return;
+        localStorage.setItem('language', language);
+    }, [language]);
+
+    // Sync: navigate to locale-matching route when language changes
+    // Guard against infinite redirect loops during hydration
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        if (isRouterSyncing) return;
+
+        const currentLocale = getLocaleFromPathname(window.location.pathname);
+        if (language !== currentLocale) {
+            setIsRouterSyncing(true);
+            router.push(withLocalePrefix(window.location.pathname, language));
+            // Reset guard after navigation completes
+            setTimeout(() => setIsRouterSyncing(false), 500);
+        }
+    }, [language, router, isRouterSyncing]);
 
     useEffect(() => {
         if (typeof document !== 'undefined') {
@@ -51,7 +78,6 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
     const changeLanguage = (lang: SupportedLanguage) => {
         setLanguage(lang);
-        localStorage.setItem('language', lang);
     };
 
     const t = useCallback((path: string): string => {
