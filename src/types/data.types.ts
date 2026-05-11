@@ -79,11 +79,19 @@ export interface Contact {
     address: string;
 }
 
+export interface ArtistAward {
+    year: number;
+    name: string;
+    work: string;
+    issuer: string;
+}
+
 export interface Artist {
     name: string;
     bio: string;
     philosophy: string;
     contact: Contact;
+    awards?: ArtistAward[];
 }
 
 export type ConcertStatus = 'upcoming' | 'past' | 'cancelled';
