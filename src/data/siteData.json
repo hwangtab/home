@@ -70,7 +70,7 @@
         "tags": ["punk", "no control", "debut"],
         "showInPages": ["archive"],
         "archiveCategory": "music",
-        "sortPriority": 1
+        "sortPriority": 13
       },
       {
         "id": "gentrification-2016",
@@ -89,7 +89,7 @@
         "tags": ["gentrification", "solidarity", "urban"],
         "showInPages": ["works", "archive", "about"],
         "archiveCategory": "music",
-        "sortPriority": 2
+        "sortPriority": 11
       },
       {
         "id": "takeout-drawing-2015",
@@ -108,7 +108,7 @@
         "tags": ["solidarity", "gentrification", "omnibus", "takeout drawing"],
         "showInPages": ["archive"],
         "archiveCategory": "music",
-        "sortPriority": 3
+        "sortPriority": 12
       },
       {
         "id": "new-minjung-vol3-2017",
@@ -127,7 +127,7 @@
         "tags": ["minjung", "solidarity", "resistance"],
         "showInPages": ["works", "archive", "about"],
         "archiveCategory": "music",
-        "sortPriority": 4
+        "sortPriority": 9
       },
       {
         "id": "colt-coltex-10th-2017",
@@ -146,7 +146,7 @@
         "tags": ["labor", "solidarity", "resistance", "colt coltex"],
         "showInPages": ["archive"],
         "archiveCategory": "music",
-        "sortPriority": 5
+        "sortPriority": 10
       },
       {
         "id": "behold-2018",
@@ -165,7 +165,7 @@
         "tags": ["solidarity", "resistance", "faith"],
         "showInPages": ["works", "archive", "about"],
         "archiveCategory": "music",
-        "sortPriority": 6
+        "sortPriority": 8
       },
       {
         "id": "body-center-2019",
@@ -203,7 +203,7 @@
         "tags": ["solidarity", "fish market", "displacement"],
         "showInPages": ["works", "archive", "about"],
         "archiveCategory": "music",
-        "sortPriority": 8
+        "sortPriority": 4
       },
       {
         "id": "ganghojung-2022",
@@ -222,7 +222,7 @@
         "tags": ["producer", "ganghojung", "2022"],
         "showInPages": ["archive"],
         "archiveCategory": "music",
-        "sortPriority": 9
+        "sortPriority": 5
       },
       {
         "id": "eongadeul-2022",
@@ -241,7 +241,7 @@
         "tags": ["producer", "eongadeul", "2022"],
         "showInPages": ["archive"],
         "archiveCategory": "music",
-        "sortPriority": 10
+        "sortPriority": 6
       },
       {
         "id": "semin-youlin-2024",
@@ -260,7 +260,7 @@
         "tags": ["producer", "semin", "2024"],
         "showInPages": ["archive"],
         "archiveCategory": "music",
-        "sortPriority": 11
+        "sortPriority": 3
       },
       {
         "id": "anonymous-distance-2024",
@@ -279,7 +279,7 @@
         "tags": ["producer", "omnibus", "solidarity", "award"],
         "showInPages": ["archive"],
         "archiveCategory": "music",
-        "sortPriority": 12
+        "sortPriority": 2
       },
       {
         "id": "melting-snow-2024",
@@ -298,7 +298,7 @@
         "tags": ["mother", "grief", "solidarity", "latest"],
         "showInPages": ["works", "archive", "about"],
         "archiveCategory": "music",
-        "sortPriority": 12
+        "sortPriority": 1
       }
     ],
     "visual": [
