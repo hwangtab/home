@@ -59,12 +59,12 @@
         "year": 2012,
         "type": "album",
         "featured": false,
-        "cover": "https://image.bugsm.co.kr/album/images/1000/206620/20662057.jpg",
+        "cover": "/images/defaults/music-default.svg",
         "description": "펑크 밴드 노컨트롤의 앨범. 다음뮤직 이달의 음반 수상.",
         "shortDescription": "펑크 밴드 노컨트롤의 데뷔 앨범, 다음뮤직 이달의 음반 수상",
         "primaryAction": {
           "type": "play",
-          "url": "https://www.melon.com",
+          "url": "",
           "label": "음악 듣기"
         },
         "tags": ["punk", "no control", "debut"],
@@ -97,12 +97,12 @@
         "year": 2015,
         "type": "album",
         "featured": false,
-        "cover": "https://koreanmusicawards.com/wp-content/uploads/2021/01/2017_gentrification.jpg",
+        "cover": "/images/defaults/music-default.svg",
         "description": "이태원 갤러리 테이크아웃드로잉 철거를 막기 위해 기획·제작한 옴니버스 앨범. 2015 레드어워드 주목할만한 연대부문 수상.",
         "shortDescription": "이태원 테이크아웃드로잉 철거 반대 연대 옴니버스 앨범",
         "primaryAction": {
           "type": "play",
-          "url": "https://www.melon.com",
+          "url": "",
           "label": "음악 듣기"
         },
         "tags": ["solidarity", "gentrification", "omnibus", "takeout drawing"],
@@ -135,12 +135,12 @@
         "year": 2017,
         "type": "album",
         "featured": false,
-        "cover": "https://image.bugsm.co.kr/album/images/1000/206620/20662057.jpg",
+        "cover": "/images/defaults/music-default.svg",
         "description": "콜트·콜텍에서 기타를 만들다 부당 해고당한 노동자들의 밴드 음반. 10년 넘는 시간 동안 복직투쟁 중인 노동자들과 함께. 2017 레드어워드 현장부문 수상.",
         "shortDescription": "콜트·콜텍 해고노동자 밴드의 10주년 기념 투쟁 음반",
         "primaryAction": {
           "type": "play",
-          "url": "https://www.melon.com",
+          "url": "",
           "label": "음악 듣기"
         },
         "tags": ["labor", "solidarity", "resistance", "colt coltex"],
@@ -211,12 +211,12 @@
         "year": 2022,
         "type": "album",
         "featured": false,
-        "cover": "https://image.bugsm.co.kr/album/images/1000/206620/20662057.jpg",
+        "cover": "/images/defaults/music-default.svg",
         "description": "강호중의 앨범. 프로듀서로 참여.",
         "shortDescription": "강호중 앨범 프로듀싱",
         "primaryAction": {
           "type": "play",
-          "url": "https://www.melon.com",
+          "url": "",
           "label": "음악 듣기"
         },
         "tags": ["producer", "ganghojung", "2022"],
@@ -230,12 +230,12 @@
         "year": 2022,
         "type": "album",
         "featured": false,
-        "cover": "https://image.bugsm.co.kr/album/images/1000/206620/20662057.jpg",
+        "cover": "/images/defaults/music-default.svg",
         "description": "엉아들의 앨범. 프로듀서로 참여.",
         "shortDescription": "엉아들 앨범 프로듀싱",
         "primaryAction": {
           "type": "play",
-          "url": "https://www.melon.com",
+          "url": "",
           "label": "음악 듣기"
         },
         "tags": ["producer", "eongadeul", "2022"],
@@ -244,23 +244,42 @@
         "sortPriority": 10
       },
       {
+        "id": "semin-youlin-2024",
+        "title": "여린잎 (세민)",
+        "year": 2024,
+        "type": "single",
+        "featured": false,
+        "cover": "/images/defaults/music-default.svg",
+        "description": "세민의 싱글 앨범. 기획 및 제작.",
+        "shortDescription": "세민의 싱글 앨범 기획 및 제작",
+        "primaryAction": {
+          "type": "play",
+          "url": "",
+          "label": "음악 듣기"
+        },
+        "tags": ["producer", "semin", "2024"],
+        "showInPages": ["archive"],
+        "archiveCategory": "music",
+        "sortPriority": 11
+      },
+      {
         "id": "anonymous-distance-2024",
         "title": "이름을 모르는 먼 곳의 그대에게",
         "year": 2024,
         "type": "album",
         "featured": true,
-        "cover": "https://image.bugsm.co.kr/album/images/1000/206620/20662057.jpg",
+        "cover": "/images/defaults/music-default.svg",
         "description": "옴니버스 앨범. 2024 레드어워드 주목할만한 연대부문 수상.",
         "shortDescription": "레드어워드 수상작 — 옴니버스 앨범",
         "primaryAction": {
           "type": "play",
-          "url": "https://www.melon.com",
+          "url": "",
           "label": "음악 듣기"
         },
         "tags": ["producer", "omnibus", "solidarity", "award"],
         "showInPages": ["archive"],
         "archiveCategory": "music",
-        "sortPriority": 11
+        "sortPriority": 12
       },
       {
         "id": "melting-snow-2024",
