@@ -30,12 +30,9 @@ const isWorkFilter = (value: string | null): value is WorkCategory | 'all' => {
   return value !== null && WORK_FILTER_SET.has(value);
 };
 
-const INITIAL_VISIBLE_COUNT = 6;
-
 const Works: React.FC = () => {
   const { t, language } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<WorkCategory | 'all'>('all');
-  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
   const searchParams = useSearchParams();
 
   // searchParams에서 추출한 값들을 상수로 분리 — 의존성 안정화
@@ -49,10 +46,6 @@ const Works: React.FC = () => {
       setActiveFilter(categoryParam);
     }
   }, [categoryParam]);
-
-  useEffect(() => {
-    setVisibleCount(INITIAL_VISIBLE_COUNT);
-  }, [activeFilter]);
 
   useLayoutEffect(() => {
     if (!workIdParam) return;
@@ -153,9 +146,6 @@ const Works: React.FC = () => {
             filteredWorks={filteredWorks}
             activeFilter={activeFilter}
             renderWork={renderWork}
-            onLoadMore={() => {
-              setVisibleCount(prev => Math.min(prev + 6, filteredWorks.length));
-            }}
           />
         </ScrollReveal>
       </Section>
