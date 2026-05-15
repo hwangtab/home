@@ -320,11 +320,7 @@
           "solidarity",
           "live"
         ],
-        "showInPages": [
-          "works",
-          "archive",
-          "about"
-        ],
+        "showInPages": [],
         "archiveCategory": "visual",
         "sortPriority": 1
       },
@@ -349,11 +345,7 @@
           "black and white",
           "documentary"
         ],
-        "showInPages": [
-          "works",
-          "archive",
-          "about"
-        ],
+        "showInPages": [],
         "archiveCategory": "visual",
         "sortPriority": 2
       },
@@ -375,11 +367,7 @@
           "everyday",
           "behind the scenes"
         ],
-        "showInPages": [
-          "works",
-          "archive",
-          "about"
-        ],
+        "showInPages": [],
         "archiveCategory": "visual",
         "sortPriority": 3
       }
