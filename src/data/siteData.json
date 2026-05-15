@@ -473,6 +473,90 @@
         "sortPriority": 2
       },
       {
+        "id": "fish-market-solidarity-performance-2019",
+        "title": "노량진수산시장 상인 연대 공연",
+        "year": 2019,
+        "description": "쫓겨난 옛 노량진수산시장 상인들과 함께한 연대 공연입니다.",
+        "shortDescription": "노량진수산시장 상인들과 함께한 연대 공연",
+        "location": "옛 노량진수산시장",
+        "tags": [
+          "fish market",
+          "displacement",
+          "solidarity",
+          "traditional market"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "performance",
+        "sortPriority": 7
+      },
+      {
+        "id": "fish-market-solidarity-performance-2020",
+        "title": "노량진수산시장 상인 연대 공연",
+        "year": 2020,
+        "description": "쫓겨난 옛 노량진수산시장 상인들과 함께한 연대 공연입니다.",
+        "shortDescription": "노량진수산시장 상인들과 함께한 연대 공연",
+        "location": "옛 노량진수산시장",
+        "tags": [
+          "fish market",
+          "displacement",
+          "solidarity",
+          "traditional market"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "performance",
+        "sortPriority": 6
+      },
+      {
+        "id": "fish-market-solidarity-performance-2021",
+        "title": "노량진수산시장 상인 연대 공연",
+        "year": 2021,
+        "description": "쫓겨난 옛 노량진수산시장 상인들과 함께한 연대 공연입니다.",
+        "shortDescription": "노량진수산시장 상인들과 함께한 연대 공연",
+        "location": "옛 노량진수산시장",
+        "tags": [
+          "fish market",
+          "displacement",
+          "solidarity",
+          "traditional market"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "performance",
+        "sortPriority": 5
+      },
+      {
+        "id": "fish-market-solidarity-performance-2022",
+        "title": "노량진수산시장 상인 연대 공연",
+        "year": 2022,
+        "description": "쫓겨난 옛 노량진수산시장 상인들과 함께한 연대 공연입니다.",
+        "shortDescription": "노량진수산시장 상인들과 함께한 연대 공연",
+        "location": "옛 노량진수산시장",
+        "tags": [
+          "fish market",
+          "displacement",
+          "solidarity",
+          "traditional market"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "performance",
+        "sortPriority": 4
+      },
+      {
         "id": "fish-market-solidarity-performance-2023",
         "title": "노량진수산시장 상인 연대 공연",
         "year": 2023,
@@ -492,6 +576,27 @@
         ],
         "archiveCategory": "performance",
         "sortPriority": 3
+      },
+      {
+        "id": "fish-market-solidarity-performance-2024",
+        "title": "노량진수산시장 상인 연대 공연",
+        "year": 2024,
+        "description": "쫓겨난 옛 노량진수산시장 상인들과 함께한 연대 공연입니다.",
+        "shortDescription": "노량진수산시장 상인들과 함께한 연대 공연",
+        "location": "옛 노량진수산시장",
+        "tags": [
+          "fish market",
+          "displacement",
+          "solidarity",
+          "traditional market"
+        ],
+        "showInPages": [
+          "works",
+          "archive",
+          "about"
+        ],
+        "archiveCategory": "performance",
+        "sortPriority": 2
       },
       {
         "id": "-51-plus-festival",
@@ -578,9 +683,44 @@
         "status": "past"
       },
       {
+        "id": "fish-market-solidarity-performance-2019",
+        "title": "노량진수산시장 상인 연대 공연",
+        "date": "2019-06-01",
+        "location": "옛 노량진수산시장",
+        "status": "past"
+      },
+      {
+        "id": "fish-market-solidarity-performance-2020",
+        "title": "노량진수산시장 상인 연대 공연",
+        "date": "2020-06-01",
+        "location": "옛 노량진수산시장",
+        "status": "past"
+      },
+      {
+        "id": "fish-market-solidarity-performance-2021",
+        "title": "노량진수산시장 상인 연대 공연",
+        "date": "2021-06-01",
+        "location": "옛 노량진수산시장",
+        "status": "past"
+      },
+      {
+        "id": "fish-market-solidarity-performance-2022",
+        "title": "노량진수산시장 상인 연대 공연",
+        "date": "2022-06-01",
+        "location": "옛 노량진수산시장",
+        "status": "past"
+      },
+      {
         "id": "fish-market-solidarity-performance-2023",
         "title": "노량진수산시장 상인 연대 공연",
         "date": "2023-06-01",
+        "location": "옛 노량진수산시장",
+        "status": "past"
+      },
+      {
+        "id": "fish-market-solidarity-performance-2024",
+        "title": "노량진수산시장 상인 연대 공연",
+        "date": "2024-06-01",
         "location": "옛 노량진수산시장",
         "status": "past"
       }
