@@ -108,7 +108,8 @@
         "watchOriginal": "Watch Original",
         "readArticle": "Read",
         "noWorksByCategory": "No works in '{category}' category.",
-        "loadingMore": "Loading more works..."
+        "loadingMore": "Loading more works...",
+        "loadMore": "Load More Works"
     },
     "archive": {
         "title": "Archive",

@@ -108,7 +108,8 @@
         "watchOriginal": "원본 보기",
         "readArticle": "읽기",
         "noWorksByCategory": "'{category}' 카테고리의 작품이 없습니다.",
-        "loadingMore": "더 많은 작품 로딩 중..."
+        "loadingMore": "더 많은 작품 로딩 중...",
+        "loadMore": "더 많은 작품 보기"
     },
     "archive": {
         "title": "아카이브",

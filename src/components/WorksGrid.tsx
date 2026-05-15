@@ -12,6 +12,7 @@ interface WorksGridProps {
   emptyMessage?: string;
   isLoading?: boolean;
   skeletonCount?: number;
+  onLoadMore?: () => void;
 }
 
 const INITIAL_VISIBLE_COUNT = 6;
@@ -23,7 +24,8 @@ const WorksGrid: React.FC<WorksGridProps> = memo(
     renderWork,
     emptyMessage,
     isLoading = false,
-    skeletonCount = INITIAL_VISIBLE_COUNT
+    skeletonCount = INITIAL_VISIBLE_COUNT,
+    onLoadMore
   }) => {
     const { t } = useLanguage();
     const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
@@ -74,10 +76,19 @@ const WorksGrid: React.FC<WorksGridProps> = memo(
             transition={{ delay: 0.2 }}
             className="mt-8 text-center"
           >
-            <div className="inline-flex items-center gap-2 font-wanted-sans text-gray-400">
-              <div className="h-2 w-2 animate-pulse rounded-full bg-brand-primary-400" />
-              <span>{t('works.loadingMore')}</span>
-            </div>
+            {onLoadMore ? (
+              <button
+                onClick={() => setVisibleCount(prev => Math.min(prev + 6, filteredWorks.length))}
+                className="rounded-lg border border-gray-700 bg-gray-800/50 px-6 py-3 font-wanted-sans text-sm font-medium text-gray-300 transition-colors hover:bg-gray-700/50"
+              >
+                {t('works.loadMore')}
+              </button>
+            ) : (
+              <div className="inline-flex items-center gap-2 font-wanted-sans text-gray-400">
+                <div className="h-2 w-2 animate-pulse rounded-full bg-brand-primary-400" />
+                <span>{t('works.loadingMore')}</span>
+              </div>
+            )}
           </motion.div>
         ) : null}
       </AnimatePresence>
