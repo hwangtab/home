@@ -190,10 +190,9 @@ const ActionButton: React.FC<{ action?: PrimaryAction; category?: string }> = ({
 
 export interface UnifiedWorkCardProps {
     work: Work;
-    onClick?: (work: Work) => void;
 }
 
-const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work, onClick }) => {
+const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work }) => {
     const { t } = useLanguage();
     const pathname = usePathname();
     const locale = getLocaleFromPathname(pathname);
@@ -216,35 +215,10 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work, onClick }) => {
         : displayDescription;
     const detailHref = withLocalePrefix(`/works/${work.id}`, locale);
 
-    const handleCardClick = useCallback((e: React.MouseEvent | React.KeyboardEvent) => {
-        // Ignore programmatic events (e.g., keyboard dispatch)
-        if (!('button' in e)) return;
-
-        const target = e.target as HTMLElement;
-
-        // Ignore clicks on interactive elements (buttons, inputs, etc.)
-        if (target.closest('button, input, select, textarea, [role="checkbox"], [role="radio"]')) return;
-
-        // Ignore clicks that started inside the detail Link — let it navigate
-        if (target.closest('a[href*="/works/"]')) return;
-
-        // Always navigate to detail page on card click
-        // (primaryAction external link should be triggered via the ActionButton only)
-        if (onClick) onClick(work);
-    }, [onClick, work]);
-
     return (
-        <article
+        <Link
+            href={detailHref}
             className={`${STYLES.cardContainer} transform-gpu hover:-translate-y-2 hover:scale-105 hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-a11y focus:ring-brand-primary-400 focus:ring-offset-a11y focus:ring-offset-gray-900 focus-visible:ring-a11y focus-visible:ring-brand-primary-400`}
-            onClick={handleCardClick}
-            onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleCardClick(e);
-                }
-            }}
-            tabIndex={0}
-            role="button"
             aria-label={`${title} (${year}${t('common.year')}) - ${category === 'music' ? t('works.music') : category === 'writing' ? t('works.writing') : category === 'visual' ? t('works.visual') : t('works.performance')} ${t('works.detailLabel')}`}
             data-cursor="card"
             data-cursor-text={t('works.clickDetail')}
@@ -282,7 +256,7 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work, onClick }) => {
                     </div>
                 </div>
             </div>
-        </article>
+        </Link>
     );
 };
 

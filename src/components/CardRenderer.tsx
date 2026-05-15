@@ -4,11 +4,10 @@ import type { Work } from '../types/data.types';
 
 interface CardRendererProps {
   work: Work;
-  onClick?: (work: Work) => void;
 }
 
-const CardRenderer: React.FC<CardRendererProps> = ({ work, onClick }) => {
-  return <UnifiedWorkCard work={work} onClick={onClick} />;
+const CardRenderer: React.FC<CardRendererProps> = ({ work }) => {
+  return <UnifiedWorkCard work={work} />;
 };
 
 export default CardRenderer;

@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation';
 import type { FuseResult } from 'fuse.js';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
-import Lightbox from '../components/Lightbox';
 import MusicPlayer from '../components/MusicPlayer';
 import CardRenderer from '../components/CardRenderer';
 import type { SearchResultItem } from '../components/SearchBar';
@@ -88,8 +87,7 @@ const Works: React.FC = () => {
   }, [workIdParam, activeFilter]);
 
   const { categorizedData, getWorksByCategory } = useWorksData(worksPageData.works, 'works');
-  const { lightbox, musicPlayer } = useCardActions({
-    enableLightbox: true,
+  const { musicPlayer } = useCardActions({
     enableMusicPlayer: true
   });
 
@@ -104,10 +102,10 @@ const Works: React.FC = () => {
   const renderWork = useCallback(
     (work: Work) => (
       <div id={`work-${work.id}`} className="h-full">
-        <CardRenderer work={work} onClick={lightbox.openLightbox} />
+        <CardRenderer work={work} />
       </div>
     ),
-    [lightbox.openLightbox]
+    []
   );
 
   const filteredWorks = activeFilter === 'all' ? categorizedData.all : getWorksByCategory(activeFilter);
@@ -149,14 +147,6 @@ const Works: React.FC = () => {
           />
         </ScrollReveal>
       </Section>
-
-      <Lightbox
-        images={lightbox.selectedImages}
-        currentIndex={lightbox.lightboxIndex}
-        isOpen={lightbox.isLightboxOpen}
-        onClose={lightbox.closeLightbox}
-        onImageChange={lightbox.changeLightboxImage}
-      />
 
       <MusicPlayer
         playlist={musicPlayer.playlist}
