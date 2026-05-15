@@ -1,6 +1,5 @@
-import React, { memo, useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { GridSkeleton } from './ui/Skeleton';
+import React, { memo } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { StaggerContainer, StaggerItem } from './ui/AnimatedComponents';
 import type { Work, WorkCategory } from '../types/data.types';
 import { useLanguage } from '../i18n';
@@ -10,11 +9,7 @@ interface WorksGridProps {
   activeFilter: WorkCategory | 'all';
   renderWork: (work: Work, index: number) => React.ReactNode;
   emptyMessage?: string;
-  isLoading?: boolean;
-  skeletonCount?: number;
 }
-
-const INITIAL_VISIBLE_COUNT = 6;
 
 const WorksGrid: React.FC<WorksGridProps> = memo(
   ({
@@ -22,14 +17,8 @@ const WorksGrid: React.FC<WorksGridProps> = memo(
     activeFilter,
     renderWork,
     emptyMessage,
-    isLoading = false,
-    skeletonCount = INITIAL_VISIBLE_COUNT,
   }) => {
     const { t } = useLanguage();
-
-    if (isLoading) {
-      return <GridSkeleton items={skeletonCount} columns={3} cardProps={{ showImage: true }} />;
-    }
 
     if (filteredWorks.length === 0) {
       return (
