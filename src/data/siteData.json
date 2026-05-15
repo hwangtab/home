@@ -452,27 +452,6 @@
         "sortPriority": 1
       },
       {
-        "id": "may-day-solidarity-performance-2023",
-        "title": "2023 메이데이 연대 공연",
-        "year": 2023,
-        "description": "노동절을 맞아 진행된 노동자 연대 공연에서 '몸의 중심' 등을 연주했습니다.",
-        "shortDescription": "노동절 노동자 연대 공연",
-        "location": "서울 광화문광장",
-        "tags": [
-          "may day",
-          "labor",
-          "solidarity",
-          "protest"
-        ],
-        "showInPages": [
-          "works",
-          "archive",
-          "about"
-        ],
-        "archiveCategory": "performance",
-        "sortPriority": 2
-      },
-      {
         "id": "fish-market-solidarity-performance-2019",
         "title": "노량진수산시장 상인 연대 공연",
         "year": 2019,
@@ -673,13 +652,6 @@
         "title": "몸의 중심 발매 기념 콘서트",
         "date": "2019-06-01",
         "location": "라이브클럽 Day",
-        "status": "past"
-      },
-      {
-        "id": "may-day-solidarity-performance-2023",
-        "title": "2023 메이데이 연대 공연",
-        "date": "2023-05-01",
-        "location": "서울 광화문광장",
         "status": "past"
       },
       {
