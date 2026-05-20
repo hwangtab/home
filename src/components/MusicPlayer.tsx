@@ -151,11 +151,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                         <div className="flex items-center justify-between gap-4">
                             {/* Track Info */}
                             <div className="flex items-center space-x-4 flex-1 min-w-0">
-                                <div className="relative group">
+                                <div className="relative group h-14 w-14 flex-shrink-0">
                                     <Image
                                         src={currentTrackCover}
                                         alt={currentTrack.title}
                                         fill
+                                        sizes="56px"
                                         className="rounded object-cover shadow-lg"
                                     />
                                     <div className="absolute inset-0 bg-black/20 rounded opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -318,11 +319,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                                 : 'hover:bg-gray-700/50 border border-transparent'
                                                 }`}
                                         >
-                                            <div className="relative">
+                                            <div className="relative h-10 w-10 flex-shrink-0">
                                                 <Image
                                                     src={getWorkCoverUrl(track.cover, 'music')}
                                                     alt={track.title}
                                                     fill
+                                                    sizes="40px"
                                                     className={`rounded object-cover ${index === currentIndex ? 'opacity-100' : 'opacity-70'}`}
                                                 />
                                                 {index === currentIndex && isPlaying && (

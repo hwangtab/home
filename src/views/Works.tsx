@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import type { FuseResult } from 'fuse.js';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
-import MusicPlayer from '../components/MusicPlayer';
+const MusicPlayer = dynamic(() => import('../components/MusicPlayer'), { ssr: false });
 import CardRenderer from '../components/CardRenderer';
 import type { SearchResultItem } from '../components/SearchBar';
 import WorksHeader from '../components/WorksHeader';

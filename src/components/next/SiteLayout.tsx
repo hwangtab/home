@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
-import { useState, useEffect, useMemo, memo } from 'react';
+import { useState, useEffect, useRef, useMemo, memo } from 'react';
 import { useLanguage } from '../../i18n';
 import LanguageToggle from '../LanguageToggle';
 import { getLocaleFromPathname, stripLocalePrefix, withLocalePrefix } from '../../utils/localePath';
@@ -20,6 +20,8 @@ const SiteLayoutInner: React.FC<SiteLayoutProps> = ({ children }) => {
   const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const tickingRef = useRef(false);
+  const lastScrolledRef = useRef(false);
 
   useEffect(() => {
     setIsOpen(false);
@@ -27,7 +29,16 @@ const SiteLayoutInner: React.FC<SiteLayoutProps> = ({ children }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      if (tickingRef.current) return;
+      tickingRef.current = true;
+      requestAnimationFrame(() => {
+        const next = window.scrollY > 50;
+        if (next !== lastScrolledRef.current) {
+          lastScrolledRef.current = next;
+          setIsScrolled(next);
+        }
+        tickingRef.current = false;
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -56,7 +67,7 @@ const SiteLayoutInner: React.FC<SiteLayoutProps> = ({ children }) => {
   return (
     <div className="bg-gradient-to-b from-gray-950 to-gray-900 min-h-screen flex flex-col font-wanted-sans text-gray-100">
       <header
-        className={`fixed top-0 left-0 right-0 z-50 text-white py-4 sm:py-6 px-2 sm:px-4 md:px-6 transform-gpu transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 text-white py-4 sm:py-6 px-2 sm:px-4 md:px-6 transform-gpu transition-[background-color,border-color] duration-300 ${
           isScrolled
             ? 'bg-gray-950/95 border-b border-brand-primary-500/10'
             : 'bg-transparent border-b border-transparent'

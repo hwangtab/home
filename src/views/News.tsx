@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { Calendar, ShoppingCart } from 'lucide-react';
@@ -11,6 +11,9 @@ import { useNewsPageData } from '../hooks/usePageData';
 import type { Concert, NewsItem } from '../types/data.types';
 import { useLanguage } from '../i18n';
 import { getWorkBySlug, getWorkCoverUrl, type WorkDetail } from '../lib/works';
+
+const FADE_UP_MOTION = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 } } as const;
+const NEWS_CARD_MOTION = { whileHover: { scale: 1.02 }, transition: { type: 'spring', stiffness: 300 } } as const;
 
 interface ConcertSliderProps {
   concerts: Concert[];
@@ -31,7 +34,7 @@ const ConcertSlider: React.FC<ConcertSliderProps> = ({ concerts }) => {
     }, 5000);
 
     return () => window.clearInterval(timer);
-  }, [concerts.length, concerts]);
+  }, [concerts.length]);
 
   if (concerts.length === 0) {
     return (
@@ -50,7 +53,7 @@ const ConcertSlider: React.FC<ConcertSliderProps> = ({ concerts }) => {
   return (
     <UnifiedCard
       padding="lg"
-      motionProps={{ initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 } }}
+      motionProps={FADE_UP_MOTION}
     >
       <AnimatePresence initial={false}>
         <motion.div
@@ -97,7 +100,7 @@ const AlbumPurchase: React.FC<AlbumPurchaseProps> = ({ album }) => {
     <UnifiedCard
       padding="lg"
       className="flex flex-col items-stretch gap-12 md:flex-row"
-      motionProps={{ initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 } }}
+      motionProps={FADE_UP_MOTION}
     >
       <div className="flex flex-col justify-center md:w-1/2">
         <motion.div whileHover={{ scale: 1.05 }} transition={{ type: 'spring', stiffness: 300 }}>
@@ -134,10 +137,10 @@ interface NewsCardProps {
   news: NewsItem;
 }
 
-const NewsCard: React.FC<NewsCardProps> = ({ news }) => (
+const NewsCard = memo<NewsCardProps>(({ news }) => (
   <UnifiedCard
     padding="lg"
-    motionProps={{ whileHover: { scale: 1.02 }, transition: { type: 'spring', stiffness: 300 } }}
+    motionProps={NEWS_CARD_MOTION}
   >
     <div className="mb-4 flex items-start justify-between">
       <h3 className="font-santokki text-xl font-bold text-gray-200">{news.title}</h3>
@@ -148,7 +151,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => (
     <p className="mb-3 font-wanted-sans text-sm text-gray-400">{news.date}</p>
     <p className="font-wanted-sans text-gray-300">{news.content}</p>
   </UnifiedCard>
-);
+));
 
 const News: React.FC = () => {
   const { t, language } = useLanguage();

@@ -2,6 +2,7 @@ import '../globals.css';
 import type { Metadata } from 'next';
 import { SharedLayout } from '../../components/Layout/SharedLayout';
 import { getAlternates } from '../../lib/seo';
+import { bombaram, myungjo, santokki } from '../../fonts';
 
 export const metadata: Metadata = {
   title: {
@@ -27,7 +28,10 @@ export default function KoreanLayout({
   children,
 }: { children: React.ReactNode }) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={`${bombaram.variable} ${myungjo.variable} ${santokki.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://fastly.jsdelivr.net" crossOrigin="anonymous" />
+      </head>
       <body>
         <a
           href="#main-content"

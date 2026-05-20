@@ -40,6 +40,7 @@ const PageHero: React.FC<PageHeroProps> = memo(({
                         src={resolvedImagePath}
                         alt={title}
                         fill
+                        sizes="100vw"
                         className="object-cover"
                         priority
                         quality={85}
@@ -84,6 +85,7 @@ const PageHero: React.FC<PageHeroProps> = memo(({
                     src={resolvedImagePath}
                     alt={title}
                     fill
+                    sizes="100vw"
                     className="object-cover"
                     priority
                     quality={85}

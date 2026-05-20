@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import koTranslations from '../locales/ko.json';
 import enTranslations from '../locales/en.json';
@@ -84,9 +84,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
         }
     }, [language]);
 
-    const changeLanguage = (lang: SupportedLanguage) => {
+    const changeLanguage = useCallback((lang: SupportedLanguage) => {
         setLanguage(lang);
-    };
+    }, []);
 
     const t = useCallback((path: string): string => {
         const keys = path.split('.');
@@ -113,8 +113,13 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
         return result ?? path;
     }, [language]);
 
+    const contextValue = useMemo(
+        () => ({ language, changeLanguage, t }),
+        [language, changeLanguage, t]
+    );
+
     return (
-        <LanguageContext.Provider value={{ language, changeLanguage, t }}>
+        <LanguageContext.Provider value={contextValue}>
             {children}
         </LanguageContext.Provider>
     );

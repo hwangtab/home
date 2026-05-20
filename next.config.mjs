@@ -8,6 +8,7 @@ const nextConfig = {
   reactStrictMode: true,
   outputFileTracingRoot: __dirname,
   images: {
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       { protocol: 'https', hostname: 'image.bugsm.co.kr' },
       { protocol: 'https', hostname: 'koreanmusicawards.com' },

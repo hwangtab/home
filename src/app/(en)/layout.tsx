@@ -2,6 +2,7 @@ import '../globals.css';
 import type { Metadata } from 'next';
 import { SharedLayout } from '../../components/Layout/SharedLayout';
 import { getAlternates } from '../../lib/seo';
+import { bombaram, myungjo, santokki } from '../../fonts';
 
 export const metadata: Metadata = {
   title: 'Hwang Gyeongha Official Web',
@@ -24,7 +25,10 @@ export default function EnglishLayout({
   children,
 }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${bombaram.variable} ${myungjo.variable} ${santokki.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://fastly.jsdelivr.net" crossOrigin="anonymous" />
+      </head>
       <body>
         <a
           href="#main-content"

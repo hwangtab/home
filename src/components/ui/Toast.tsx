@@ -1,5 +1,5 @@
 
-import React, { memo, createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { memo, createContext, useContext, useState, useCallback, useMemo, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, AlertCircle, AlertTriangle, Info, X, LucideIcon } from 'lucide-react';
 
@@ -75,7 +75,10 @@ export const ToastProvider = memo<ToastProviderProps>(({ children }) => {
     const showWarning = useCallback((message: string, options?: ToastOptions) => addToast(message, TOAST_TYPES.WARNING, options), [addToast]);
     const showInfo = useCallback((message: string, options?: ToastOptions) => addToast(message, TOAST_TYPES.INFO, options), [addToast]);
 
-    const value: ToastContextValue = { toasts, addToast, removeToast, clearAllToasts, showSuccess, showError, showWarning, showInfo };
+    const value = useMemo<ToastContextValue>(
+        () => ({ toasts, addToast, removeToast, clearAllToasts, showSuccess, showError, showWarning, showInfo }),
+        [toasts, addToast, removeToast, clearAllToasts, showSuccess, showError, showWarning, showInfo]
+    );
 
     return (
         <ToastContext.Provider value={value}>
