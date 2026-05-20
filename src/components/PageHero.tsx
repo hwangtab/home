@@ -76,9 +76,9 @@ const PageHero: React.FC<PageHeroProps> = memo(({
             {/* Background Image */}
             <motion.div
                 className="absolute inset-0 w-full h-full z-0"
-                initial={{ scale: 1.1 }}
+                initial={{ scale: 1.05 }}
                 animate={{ scale: 1 }}
-                transition={{ duration: 1.5, ease: "easeOut", delay: 0.1 }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
             >
                 <Image
                     src={resolvedImagePath}
@@ -106,10 +106,10 @@ const PageHero: React.FC<PageHeroProps> = memo(({
                     className="flex flex-col items-center"
                 >
                     <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: "80px" }}
-                        transition={{ duration: 0.8, delay: 0.5 }}
-                        className="h-1 bg-brand-primary-500 mb-6 rounded-full"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        transition={{ duration: 0.6, delay: 0.5 }}
+                        className="w-20 h-1 bg-brand-primary-500 mb-6 rounded-full origin-left"
                     />
 
                     <Heading1 className="mb-4 text-white drop-shadow-lg font-myungjo font-bold">

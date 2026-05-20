@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { AnimatePresence } from 'framer-motion';
 import { StaggerContainer, StaggerItem } from './ui/AnimatedComponents';
 import type { Work, WorkCategory } from '../types/data.types';
 import { useLanguage } from '../i18n';
@@ -34,19 +33,16 @@ const WorksGrid: React.FC<WorksGridProps> = memo(
     }
 
   return (
-      <AnimatePresence mode="wait">
-        <StaggerContainer
-          key={activeFilter}
-          className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2 lg:grid-cols-3"
-          staggerDelay={0.03}
-        >
-          {filteredWorks.map((work, index) => (
-            <StaggerItem key={work.id || `${work.type}-${index}`} direction="up">
-              {renderWork(work, index)}
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-      </AnimatePresence>
+      <StaggerContainer
+        className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2 lg:grid-cols-3"
+        staggerDelay={0.03}
+      >
+        {filteredWorks.map((work, index) => (
+          <StaggerItem key={work.id || `${work.type}-${index}`} direction="up">
+            {renderWork(work, index)}
+          </StaggerItem>
+        ))}
+      </StaggerContainer>
     );
   }
 );

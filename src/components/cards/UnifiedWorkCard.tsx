@@ -1,9 +1,9 @@
 import React, { useState, memo, useCallback, ReactNode } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Calendar, ExternalLink, Play, BookOpen, Eye, Mic, Video, LucideIcon } from 'lucide-react';
 import DefaultImageComponent from './DefaultImageComponent';
-import useLazyImage from '../../hooks/useLazyImage';
 import { Work, WorkCategory, PrimaryAction, WritingWork } from '../../types/data.types';
 import { useLanguage } from '../../i18n';
 import { getLocaleFromPathname, withLocalePrefix } from '../../utils/localePath';
@@ -42,13 +42,13 @@ const ACTION_CONFIG: Record<string, LucideIcon> = {
 
 // 스타일 상수
 const STYLES = {
-    cardContainer: "group bg-gray-800 hover:bg-gray-750 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl border border-gray-700 hover:border-gray-600 transition-all duration-300 cursor-pointer h-full flex flex-col backdrop-blur-sm perspective-1000 min-h-touch",
+    cardContainer: "group bg-gray-800 hover:bg-gray-750 rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-gray-600 transition-[background-color,border-color] duration-300 cursor-pointer h-full flex flex-col min-h-touch",
     imageContainer: "relative w-full aspect-square bg-gray-800 rounded-t-lg overflow-hidden",
     image: "w-full h-full object-cover transition-transform duration-500 group-hover:scale-110",
     gradient: "absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent group-hover:from-black/20",
-    badge: "inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium text-white shadow-sm backdrop-blur-sm min-h-touch",
-    actionButton: "inline-flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-brand-primary-600 to-brand-primary-700 hover:from-brand-primary-500 hover:to-brand-primary-600 text-white text-base font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 min-h-touch min-w-touch",
-    tag: "bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-gray-200 px-3 py-1.5 rounded-full text-sm transition-all duration-200 border border-gray-600 hover:border-brand-primary-500/30 min-h-touch"
+    badge: "inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium text-white shadow-sm min-h-touch",
+    actionButton: "inline-flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-brand-primary-600 to-brand-primary-700 hover:from-brand-primary-500 hover:to-brand-primary-600 text-white text-base font-medium rounded-lg transition-[transform,background-image] duration-200 transform hover:scale-105 min-h-touch min-w-touch",
+    tag: "bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-gray-200 px-3 py-1.5 rounded-full text-sm transition-[background-color,border-color,color] duration-200 border border-gray-600 hover:border-brand-primary-500/30 min-h-touch"
 };
 
 // 이미지 폴백 로직 커스텀 훅
@@ -121,7 +121,7 @@ const CardImage: React.FC<{ cover?: string; title: string; category?: string; ty
             : 'music';
     const normalizedCover = cover ? getWorkCoverUrl(cover, normalizedCategory) : undefined;
     const imageProps = useImageFallback(normalizedCover, category, title);
-    const { imgRef, isLoaded, shouldLoad } = useLazyImage(imageProps.src || '');
+    const [isLoaded, setIsLoaded] = useState(false);
     const isVideo = type === 'video' || type === '다큐멘터리';
 
     if (imageProps.type === 'component') {
@@ -129,20 +129,23 @@ const CardImage: React.FC<{ cover?: string; title: string; category?: string; ty
     }
 
     return (
-        <div ref={imgRef} className={STYLES.imageContainer}>
-            {!isLoaded && shouldLoad && (
+        <div className={STYLES.imageContainer}>
+            {!isLoaded && (
                 <div className="absolute inset-0 bg-gray-700 animate-pulse flex items-center justify-center">
                     <div className="w-12 h-12 border-4 border-gray-600 border-t-gray-400 rounded-full animate-spin" />
                 </div>
             )}
 
-            {shouldLoad && imageProps.src && (
-                <img
+            {imageProps.src && (
+                <Image
                     src={imageProps.src}
                     alt={title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className={`${STYLES.image} ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
+                    onLoad={() => setIsLoaded(true)}
                     onError={imageProps.onError}
-                    loading="lazy"
+                    unoptimized={imageProps.src.endsWith('.svg')}
                 />
             )}
 
@@ -218,7 +221,7 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work }) => {
     return (
         <Link
             href={detailHref}
-            className={`${STYLES.cardContainer} transform-gpu hover:-translate-y-2 hover:scale-105 hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-a11y focus:ring-brand-primary-400 focus:ring-offset-a11y focus:ring-offset-gray-900 focus-visible:ring-a11y focus-visible:ring-brand-primary-400`}
+            className={`${STYLES.cardContainer} transform-gpu hover:-translate-y-1 hover:scale-[1.02] transition-transform duration-300 focus:outline-none focus:ring-a11y focus:ring-brand-primary-400 focus:ring-offset-a11y focus:ring-offset-gray-900 focus-visible:ring-a11y focus-visible:ring-brand-primary-400`}
             aria-label={`${title} (${year}${t('common.year')}) - ${category === 'music' ? t('works.music') : category === 'writing' ? t('works.writing') : category === 'visual' ? t('works.visual') : t('works.performance')} ${t('works.detailLabel')}`}
             data-cursor="card"
             data-cursor-text={t('works.clickDetail')}

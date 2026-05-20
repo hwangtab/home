@@ -3,7 +3,6 @@
 import React from 'react';
 import { LanguageProvider } from '../i18n';
 import { ToastProvider } from '../components/ui/Toast';
-import { AnimationProvider } from '../context/AnimationContext';
 import ErrorBoundary from '../components/ErrorBoundary';
 
 interface ProvidersProps {
@@ -14,9 +13,7 @@ const Providers = ({ children }: ProvidersProps) => {
   return (
     <LanguageProvider>
       <ToastProvider>
-        <AnimationProvider>
-          <ErrorBoundary>{children}</ErrorBoundary>
-        </AnimationProvider>
+        <ErrorBoundary>{children}</ErrorBoundary>
       </ToastProvider>
     </LanguageProvider>
   );

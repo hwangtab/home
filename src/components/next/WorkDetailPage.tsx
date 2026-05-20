@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { WorkCategory } from '../../types/data.types';
 import { SupportedLocale, withLocalePrefix } from '../../utils/localePath';
 import { WorkDetail, getWorkCoverUrl } from '../../lib/works';
@@ -73,11 +74,14 @@ const WorkDetailPage = ({ work, locale }: WorkDetailPageProps) => {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          <div className="lg:col-span-2">
-            <img
+          <div className="lg:col-span-2 relative aspect-square">
+            <Image
               src={coverUrl}
               alt={work.title}
-              className="w-full rounded-2xl border border-gray-700 object-cover"
+              fill
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              className="rounded-2xl border border-gray-700 object-cover"
+              unoptimized={coverUrl.endsWith('.svg')}
             />
           </div>
 

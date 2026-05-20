@@ -7,6 +7,7 @@ import { ArrowRight } from 'lucide-react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
 import OptimizedImage from '../components/OptimizedImage';
+import { UnifiedCard } from '../components/ui/Card';
 import { useHomePageData } from '../hooks/usePageData';
 import type { MusicWork } from '../types/data.types';
 import { useLanguage } from '../i18n';
@@ -31,9 +32,10 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ works }) => {
     <Section title={t('home.featuredWorks')} enableScrollAnimation={true} className="mt-16">
       <div className="grid grid-cols-1 gap-8 justify-items-center md:grid-cols-2 lg:grid-cols-3">
         {featuredWorks.map((work) => (
-          <div
+          <UnifiedCard
             key={work.id}
-            className="w-full rounded-lg bg-gray-750 p-6 shadow-lg transition-transform duration-300 hover:scale-105"
+            padding="lg"
+            className="w-full transition-transform duration-300 hover:scale-105"
           >
             <Link href={withLocalePrefix(`/works/${work.id}`, locale)}>
               <OptimizedImage
@@ -47,7 +49,7 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ works }) => {
               </h3>
               <p className="line-clamp-3 text-sm text-gray-300 font-wanted-sans">{work.description}</p>
             </Link>
-          </div>
+          </UnifiedCard>
         ))}
       </div>
       <div className="mt-8 text-center">
@@ -116,7 +118,7 @@ const QuickNavigation: React.FC = () => {
         {quickLinks.map((link) => (
           <div
             key={link.name}
-            className="group relative w-full overflow-hidden rounded-xl border border-gray-700 bg-gray-750 p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:border-gray-600 hover:bg-gray-700 hover:shadow-2xl"
+            className="group relative w-full overflow-hidden rounded-xl border border-gray-700 bg-gray-800 px-6 pb-6 pt-8 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:border-gray-600 hover:bg-gray-700 hover:shadow-2xl"
           >
             <div className={`absolute left-0 top-0 h-1 w-full ${link.classes.line}`} />
 

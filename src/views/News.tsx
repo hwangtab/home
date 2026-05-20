@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Calendar, ShoppingCart } from 'lucide-react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
+import { UnifiedCard } from '../components/ui/Card';
 import { useNewsPageData } from '../hooks/usePageData';
 import type { Concert, NewsItem } from '../types/data.types';
 import { useLanguage } from '../i18n';
@@ -34,7 +35,7 @@ const ConcertSlider: React.FC<ConcertSliderProps> = ({ concerts }) => {
 
   if (concerts.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-gray-700 bg-gray-900/60 p-8 text-center text-gray-400">
+      <div className="rounded-lg border border-dashed border-gray-700 bg-gray-900/60 p-6 text-center text-gray-400">
         {t('news.noConcerts')}
       </div>
     );
@@ -47,11 +48,9 @@ const ConcertSlider: React.FC<ConcertSliderProps> = ({ concerts }) => {
   const key = currentConcert.id;
 
   return (
-    <motion.div
-      className="rounded-lg bg-gray-800 p-8 shadow-lg"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+    <UnifiedCard
+      padding="lg"
+      motionProps={{ initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 } }}
     >
       <AnimatePresence initial={false}>
         <motion.div
@@ -80,7 +79,7 @@ const ConcertSlider: React.FC<ConcertSliderProps> = ({ concerts }) => {
           ) : null}
         </motion.div>
       </AnimatePresence>
-    </motion.div>
+    </UnifiedCard>
   );
 };
 
@@ -95,11 +94,10 @@ const AlbumPurchase: React.FC<AlbumPurchaseProps> = ({ album }) => {
   const actionLabel = album.primaryAction?.label || t('news.purchase');
 
   return (
-    <motion.div
-      className="flex flex-col items-stretch gap-12 rounded-lg bg-gray-800 p-8 shadow-lg md:flex-row"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+    <UnifiedCard
+      padding="lg"
+      className="flex flex-col items-stretch gap-12 md:flex-row"
+      motionProps={{ initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 } }}
     >
       <div className="flex flex-col justify-center md:w-1/2">
         <motion.div whileHover={{ scale: 1.05 }} transition={{ type: 'spring', stiffness: 300 }}>
@@ -128,7 +126,7 @@ const AlbumPurchase: React.FC<AlbumPurchaseProps> = ({ album }) => {
           </motion.button>
         ) : null}
       </div>
-    </motion.div>
+    </UnifiedCard>
   );
 };
 
@@ -137,10 +135,9 @@ interface NewsCardProps {
 }
 
 const NewsCard: React.FC<NewsCardProps> = ({ news }) => (
-  <motion.div
-    className="rounded-lg bg-gray-800 p-6 shadow-lg"
-    whileHover={{ scale: 1.02 }}
-    transition={{ type: 'spring', stiffness: 300 }}
+  <UnifiedCard
+    padding="lg"
+    motionProps={{ whileHover: { scale: 1.02 }, transition: { type: 'spring', stiffness: 300 } }}
   >
     <div className="mb-4 flex items-start justify-between">
       <h3 className="font-santokki text-xl font-bold text-gray-200">{news.title}</h3>
@@ -150,7 +147,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => (
     </div>
     <p className="mb-3 font-wanted-sans text-sm text-gray-400">{news.date}</p>
     <p className="font-wanted-sans text-gray-300">{news.content}</p>
-  </motion.div>
+  </UnifiedCard>
 );
 
 const News: React.FC = () => {
@@ -174,7 +171,7 @@ const News: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="rounded-lg border border-dashed border-gray-700 bg-gray-900/60 p-8 text-center text-gray-400">
+          <div className="rounded-lg border border-dashed border-gray-700 bg-gray-900/60 p-6 text-center text-gray-400">
             {t('news.noNews')}
           </div>
         )}

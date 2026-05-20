@@ -1,5 +1,5 @@
 import React, { memo, ReactNode } from 'react';
-import { motion, Variants } from 'framer-motion';
+import { motion, Variants, type MotionProps } from 'framer-motion';
 import { ExternalLink, Play, Music, Image, FileText, Mic, LucideIcon } from 'lucide-react';
 import { ThumbnailImage } from '../OptimizedImage';
 import { HoverCard } from './AnimatedComponents';
@@ -156,6 +156,7 @@ interface UnifiedCardProps {
     padding?: CardPadding;
     shadow?: CardShadow;
     className?: string;
+    motionProps?: MotionProps;
 }
 
 export const UnifiedCard = memo<UnifiedCardProps>(({
@@ -165,7 +166,8 @@ export const UnifiedCard = memo<UnifiedCardProps>(({
     variant = 'default',
     padding = 'none',
     shadow = 'default',
-    className = ''
+    className = '',
+    motionProps
 }) => {
     // If children are provided, render as a simple container card
     if (children) {
@@ -183,6 +185,7 @@ export const UnifiedCard = memo<UnifiedCardProps>(({
                 initial="initial"
                 animate="animate"
                 className={containerClasses}
+                {...motionProps}
             >
                 {children}
             </motion.div>
@@ -206,7 +209,6 @@ export const UnifiedCard = memo<UnifiedCardProps>(({
         <HoverCard
             className={`h-full ${isClickable ? 'cursor-pointer' : ''}`}
             scale={1.03}
-            shadowIntensity={1.5}
         >
             <motion.div
                 variants={cardVariants}

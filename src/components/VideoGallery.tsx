@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactPlayer from 'react-player';
 import { Play, X, ExternalLink, Calendar, Tag } from 'lucide-react';
@@ -146,11 +147,12 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onClick }) => {
         >
             <div className="relative aspect-video bg-gray-700">
                 {/* Thumbnail */}
-                <img
+                <Image
                     src={video.thumbnail}
                     alt={video.title}
-                    className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'
-                        }`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className={`object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                     onLoad={() => setImageLoaded(true)}
                 />
 

@@ -1,11 +1,11 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, type LucideIcon } from 'lucide-react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
 import ContactForm from '../components/ContactForm';
+import { UnifiedCard } from '../components/ui/Card';
 import { useContactPageData } from '../hooks/usePageData';
 import { useLanguage } from '../i18n';
 
@@ -57,11 +57,9 @@ const Contact: React.FC = () => {
 
       <Section title={t('contact.title')} className="mt-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-          <motion.div
-            className="rounded-lg bg-gray-800 p-8 shadow-lg"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+          <UnifiedCard
+            padding="lg"
+            motionProps={{ initial: { opacity: 0, x: -20 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.5 } }}
           >
             <h3 className="mb-8 font-santokki text-2xl font-bold text-gray-200">{t('contact.info')}</h3>
 
@@ -102,7 +100,7 @@ const Contact: React.FC = () => {
                 ))}
               </ul>
             </div>
-          </motion.div>
+          </UnifiedCard>
 
           <ContactForm
             theme="dark"

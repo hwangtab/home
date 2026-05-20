@@ -58,7 +58,7 @@ const SiteLayoutInner: React.FC<SiteLayoutProps> = ({ children }) => {
       <header
         className={`fixed top-0 left-0 right-0 z-50 text-white py-4 sm:py-6 px-2 sm:px-4 md:px-6 transform-gpu transition-all duration-300 ${
           isScrolled
-            ? 'bg-gray-950/95 border-b border-brand-primary-500/10 backdrop-blur-md'
+            ? 'bg-gray-950/95 border-b border-brand-primary-500/10'
             : 'bg-transparent border-b border-transparent'
         }`}
       >
@@ -97,7 +97,7 @@ const SiteLayoutInner: React.FC<SiteLayoutProps> = ({ children }) => {
           </button>
         </div>
         {isOpen && (
-          <div className={`md:hidden border-t ${isScrolled ? 'border-gray-800 bg-gray-900/95 backdrop-blur-md' : 'border-transparent bg-gray-950/70 backdrop-blur-sm'}`}>
+          <div className={`md:hidden border-t ${isScrolled ? 'border-gray-800 bg-gray-900/98' : 'border-transparent bg-gray-950/90'}`}>
             <div className="container mx-auto px-4 py-3 flex flex-col gap-3">
               {navWithLinks.map((item) => (
                 <Link

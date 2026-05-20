@@ -28,10 +28,10 @@ const SECTION_VARIANTS: Record<string, Variants> = {
         }
     },
     slideUp: {
-        hidden: { opacity: 0, y: 100, filter: 'blur(4px)' },
+        hidden: { opacity: 0, y: 60 },
         visible: {
-            opacity: 1, y: 0, filter: 'blur(0px)',
-            transition: { duration: 0.9, ease: [0.165, 0.84, 0.44, 1], staggerChildren: 0.15 }
+            opacity: 1, y: 0,
+            transition: { duration: 0.7, ease: [0.165, 0.84, 0.44, 1], staggerChildren: 0.1 }
         }
     },
     slideLeft: {
@@ -56,10 +56,10 @@ const SECTION_VARIANTS: Record<string, Variants> = {
         }
     },
     scale: {
-        hidden: { opacity: 0, scale: 0.8, rotateY: -15 },
+        hidden: { opacity: 0, scale: 0.85 },
         visible: {
-            opacity: 1, scale: 1, rotateY: 0,
-            transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], staggerChildren: 0.1 }
+            opacity: 1, scale: 1,
+            transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], staggerChildren: 0.1 }
         }
     }
 };
@@ -77,7 +77,7 @@ const Section: React.FC<SectionProps> = memo(({
     id,
     enableScrollAnimation = true,
 }) => {
-    const [ref, shouldAnimate] = useAnimationTrigger({ once: false });
+    const [ref, shouldAnimate] = useAnimationTrigger({ once: true });
     const controls = useAnimation();
 
     useEffect(() => {
@@ -151,11 +151,11 @@ const Section: React.FC<SectionProps> = memo(({
                                     {title}
                                 </Heading2>
                                 <motion.div
-                                    className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-brand-primary-500 to-brand-solidarity-500 rounded-full"
-                                    initial={{ width: 0 }}
-                                    animate={{ width: '100%' }}
+                                    className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-brand-primary-500 to-brand-solidarity-500 rounded-full origin-left"
+                                    initial={{ scaleX: 0 }}
+                                    animate={{ scaleX: 1 }}
                                     transition={{
-                                        duration: 0.8,
+                                        duration: 0.7,
                                         ease: [0.25, 0.1, 0.25, 1],
                                         delay: 0.3
                                     }}
@@ -222,7 +222,6 @@ interface UseScrollVariantOptions {
     baseScale?: number;
     duration?: number;
     stagger?: number;
-    extra?: { hidden?: Record<string, any>; transition?: Record<string, any> };
 }
 
 const useScrollVariant = (
@@ -235,7 +234,7 @@ const useScrollVariant = (
     variants: Record<string, Variants>;
 } => {
     const controls = useAnimation();
-    const [ref, shouldAnimate] = useAnimationTrigger({ once: false });
+    const [ref, shouldAnimate] = useAnimationTrigger({ once: true });
 
     const variants = useMemo<Record<string, Variants>>(() => ({
         default: {
@@ -243,7 +242,6 @@ const useScrollVariant = (
                 opacity: 0,
                 y: options.baseY ?? 30,
                 scale: options.baseScale ?? 0.98,
-                ...(options.extra?.hidden || {})
             },
             visible: {
                 opacity: 1,
@@ -253,11 +251,10 @@ const useScrollVariant = (
                     duration: options.duration ?? 0.6,
                     ease: [0.25, 0.1, 0.25, 1],
                     delay: delay / 1000,
-                    ...(options.extra?.transition || {})
                 }
             }
         }
-    }), [delay, options.duration, options.baseY, options.baseScale, options.extra]);
+    }), [delay, options.duration, options.baseY, options.baseScale]);
 
     useEffect(() => {
         if (shouldAnimate) {
@@ -273,10 +270,6 @@ export const SubSection: React.FC<SubSectionProps> = memo(({ children, className
         baseY: variant === 'card' ? 40 : 30,
         baseScale: variant === 'card' ? 0.95 : 0.98,
         duration: variant === 'card' ? 0.7 : 0.6,
-        extra: variant === 'card' ? {
-            hidden: { rotateX: 5 },
-            transition: { ease: [0.165, 0.84, 0.44, 1] }
-        } : undefined
     });
 
     const variantMap: Record<string, Variants> = {
@@ -285,9 +278,9 @@ export const SubSection: React.FC<SubSectionProps> = memo(({ children, className
             visible: { opacity: 1, y: 0, scale: 1 }
         },
         card: {
-            hidden: { opacity: 0, y: 40, scale: 0.95, rotateX: 5 },
+            hidden: { opacity: 0, y: 40, scale: 0.95 },
             visible: {
-                opacity: 1, y: 0, scale: 1, rotateX: 0,
+                opacity: 1, y: 0, scale: 1,
                 transition: {
                     duration: 0.7,
                     ease: [0.165, 0.84, 0.44, 1],
@@ -338,13 +331,13 @@ export const Item: React.FC<ItemProps> = memo(({ children, className = '', index
             }
         },
         grid: {
-            hidden: { opacity: 0, y: 30, scale: 0.9, rotateY: 10 },
+            hidden: { opacity: 0, y: 25, scale: 0.92 },
             visible: {
-                opacity: 1, y: 0, scale: 1, rotateY: 0,
+                opacity: 1, y: 0, scale: 1,
                 transition: {
-                    duration: 0.6,
+                    duration: 0.5,
                     ease: [0.165, 0.84, 0.44, 1],
-                    delay: index * 0.08
+                    delay: index * 0.06
                 }
             }
         }

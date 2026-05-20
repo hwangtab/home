@@ -26,7 +26,7 @@ const About: React.FC = () => {
       />
 
       <Section containerSize="default" className="mt-8">
-        <Card variant="default" padding="default" shadow="default">
+        <Card variant="default" padding="lg" shadow="default">
           <DataRenderer
             type={RENDER_TYPES.PROFILE}
             data={[
@@ -43,7 +43,7 @@ const About: React.FC = () => {
       </Section>
 
       <Section title={t('about.philosophy')} containerSize="default">
-        <Card variant="default" padding="default" shadow="default">
+        <Card variant="default" padding="lg" shadow="default">
           <Grid cols={2} gap="lg" responsive={true}>
             <Stack spacing="sm">
               <Heading3 color="primary">{t('about.resistanceTitle')}</Heading3>
@@ -62,7 +62,7 @@ const About: React.FC = () => {
       </Section>
 
       <Section title={t('about.timeline')} containerSize="default">
-        <Card variant="default" padding="default" shadow="default">
+        <Card variant="default" padding="lg" shadow="default">
           <DataRenderer
             type={RENDER_TYPES.TIMELINE}
             data={timelineData}

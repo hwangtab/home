@@ -1,6 +1,6 @@
 
 import React, { memo, useRef, useEffect, useState, ReactNode } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface BaseProps {
     children?: ReactNode;
@@ -53,7 +53,6 @@ export const ScrollReveal = memo<ScrollRevealProps>(({
             initial={{ opacity: 0, ...directions[direction] }}
             animate={isInView ? { opacity: 1, x: 0, y: 0 } : {}}
             transition={{ duration, delay, ease: [0.25, 0.1, 0.25, 1] }}
-            style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
         >
             {children}
         </motion.div>
@@ -94,189 +93,21 @@ export const StaggerItem = memo<StaggerItemProps>(({ children, direction = 'up',
                 hidden: { opacity: 0, ...directions[direction] },
                 visible: { opacity: 1, x: 0, y: 0, scale: 1, transition: { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] } }
             }}
-            style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
         >
             {children}
         </motion.div>
     );
 });
 
-interface ParallaxElementProps extends BaseProps {
-    speed?: number;
-}
-
-export const ParallaxElement = memo<ParallaxElementProps>(({ children, speed = 0.5, className = '' }) => {
-    const ref = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-    const y = useTransform(scrollYProgress, [0, 1], ['0%', `${speed * 100}%`]);
-    const smoothY = useSpring(y, { stiffness: 100, damping: 30 });
-
-    return (
-        <motion.div ref={ref} className={className} style={{ y: smoothY }}>
-            {children}
-        </motion.div>
-    );
-});
-
-interface MouseTrackerProps extends BaseProps {
-    scale?: number;
-    rotate?: number;
-}
-
-export const MouseTracker = memo<MouseTrackerProps>(({ children, scale = 1.05, rotate = 2, className = '' }) => (
-    <motion.div
-        className={className}
-        whileHover={{ scale, rotate, transition: { duration: 0.2, ease: "easeOut" } }}
-        whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-    >
-        {children}
-    </motion.div>
-));
-
-interface FloatingElementProps extends BaseProps {
-    intensity?: number;
-    duration?: number;
-}
-
-export const FloatingElement = memo<FloatingElementProps>(({ children, intensity = 10, duration = 3, className = '' }) => (
-    <motion.div
-        className={className}
-        animate={{ y: [0, -intensity, 0], rotate: [-1, 1, -1] }}
-        transition={{ duration, repeat: Infinity, ease: "easeInOut" }}
-    >
-        {children}
-    </motion.div>
-));
-
-interface TypewriterTextProps {
-    text: string;
-    speed?: number;
-    className?: string;
-    onComplete?: (() => void) | null;
-}
-
-export const TypewriterText = memo<TypewriterTextProps>(({ text, speed = 50, className = '', onComplete = null }) => {
-    const [displayText, setDisplayText] = useState('');
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    useEffect(() => {
-        if (currentIndex < text.length) {
-            const timer = setTimeout(() => {
-                setDisplayText(prev => prev + text[currentIndex]);
-                setCurrentIndex(prev => prev + 1);
-            }, speed);
-            return () => clearTimeout(timer);
-        } else if (onComplete) {
-            onComplete();
-        }
-    }, [currentIndex, text, speed, onComplete]);
-
-    return (
-        <span className={className}>
-            {displayText}
-            <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.8, repeat: Infinity }} className="ml-1">|</motion.span>
-        </span>
-    );
-});
-
-interface AnimatedCounterProps {
-    from?: number;
-    to: number;
-    duration?: number;
-    className?: string;
-}
-
-export const AnimatedCounter = memo<AnimatedCounterProps>(({ from = 0, to, duration = 2, className = '' }) => {
-    const nodeRef = useRef<HTMLSpanElement>(null);
-
-    // Spring animation for smooth counting
-    const springValue = useSpring(from, { duration: duration * 1000, bounce: 0 });
-
-    useEffect(() => {
-        const element = nodeRef.current;
-        if (!element) return;
-
-        const observer = new IntersectionObserver(([entry]) => {
-            if (entry.isIntersecting) {
-                springValue.set(to);
-            }
-        }, { threshold: 0.1 });
-
-        observer.observe(element);
-        return () => observer.disconnect();
-    }, [to, springValue]);
-
-    useEffect(() => {
-        return springValue.on("change", (latest: number) => {
-            if (nodeRef.current) {
-                nodeRef.current.textContent = Math.round(latest).toString();
-            }
-        });
-    }, [springValue]);
-
-    return (
-        <span ref={nodeRef} className={className}>
-            {from}
-        </span>
-    );
-});
-
-interface ModalAnimationProps extends BaseProps {
-    isOpen: boolean;
-    onClose: () => void;
-}
-
-export const ModalAnimation = memo<ModalAnimationProps>(({ children, isOpen, onClose, className = '' }) => (
-    <motion.div
-        className={`fixed inset-0 z-50 flex items-center justify-center ${className}`}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isOpen ? 1 : 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        onClick={onClose}
-    >
-        <motion.div className="absolute inset-0 bg-black" initial={{ opacity: 0 }} animate={{ opacity: isOpen ? 0.5 : 0 }} exit={{ opacity: 0 }} />
-        <motion.div
-            className="relative z-10"
-            initial={{ scale: 0.8, opacity: 0, y: 20 }}
-            animate={{ scale: isOpen ? 1 : 0.8, opacity: isOpen ? 1 : 0, y: isOpen ? 0 : 20 }}
-            exit={{ scale: 0.8, opacity: 0, y: 20 }}
-            transition={{ duration: 0.3, ease: [0.25, 0.25, 0, 1] }}
-            onClick={(e: React.MouseEvent) => e.stopPropagation()}
-        >
-            {children}
-        </motion.div>
-    </motion.div>
-));
-
-interface DropdownAnimationProps extends BaseProps {
-    isOpen: boolean;
-}
-
-export const DropdownAnimation = memo<DropdownAnimationProps>(({ children, isOpen, className = '' }) => (
-    <motion.div
-        className={className}
-        initial={{ opacity: 0, height: 0 }}
-        animate={{ opacity: isOpen ? 1 : 0, height: isOpen ? 'auto' : 0 }}
-        exit={{ opacity: 0, height: 0 }}
-        transition={{ duration: 0.3, ease: [0.25, 0.25, 0, 1] }}
-        style={{ overflow: 'hidden' }}
-    >
-        <motion.div initial={{ y: -10 }} animate={{ y: isOpen ? 0 : -10 }} transition={{ duration: 0.2 }}>
-            {children}
-        </motion.div>
-    </motion.div>
-));
 
 interface HoverCardProps extends BaseProps {
     scale?: number;
-    shadowIntensity?: number;
 }
 
-export const HoverCard = memo<HoverCardProps>(({ children, className = '', scale = 1.02, shadowIntensity = 1 }) => (
+export const HoverCard = memo<HoverCardProps>(({ children, className = '', scale = 1.02 }) => (
     <motion.div
         className={className}
-        whileHover={{ scale, boxShadow: `0 ${10 * shadowIntensity}px ${25 * shadowIntensity}px rgba(0, 0, 0, 0.3)`, transition: { duration: 0.2 } }}
+        whileHover={{ scale, transition: { duration: 0.2 } }}
         whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
     >
         {children}
@@ -287,11 +118,4 @@ PageTransition.displayName = 'PageTransition';
 ScrollReveal.displayName = 'ScrollReveal';
 StaggerContainer.displayName = 'StaggerContainer';
 StaggerItem.displayName = 'StaggerItem';
-ParallaxElement.displayName = 'ParallaxElement';
-MouseTracker.displayName = 'MouseTracker';
-FloatingElement.displayName = 'FloatingElement';
-TypewriterText.displayName = 'TypewriterText';
-AnimatedCounter.displayName = 'AnimatedCounter';
-ModalAnimation.displayName = 'ModalAnimation';
-DropdownAnimation.displayName = 'DropdownAnimation';
 HoverCard.displayName = 'HoverCard';
