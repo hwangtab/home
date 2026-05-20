@@ -2,6 +2,7 @@
 
 import React, { memo, ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import CardRenderer from './CardRenderer';
 import type { Work } from '../types/data.types';
 import { useLanguage } from '../i18n';
@@ -213,14 +214,21 @@ const ProfileRenderer: React.FC<ProfileRendererProps> = memo(({
         <div className={`${className} flex ${isHorizontal ? 'flex-col lg:flex-row' : 'flex-col'} items-start gap-2 sm:gap-4 lg:gap-8`}>
             <div className={`${isHorizontal ? 'w-full lg:max-w-xs lg:flex-shrink-0' : 'w-full'} flex flex-col justify-center`}>
                 {imageSrc && (
-                    <motion.img
-                        src={imageSrc}
-                        alt={imageAlt}
-                        className="w-full h-auto max-w-xs mx-auto lg:mx-0 rounded-lg shadow-lg object-cover"
+                    <motion.div
+                        className="w-full max-w-xs mx-auto lg:mx-0"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5 }}
-                    />
+                    >
+                        <Image
+                            src={imageSrc}
+                            alt={imageAlt}
+                            width={1280}
+                            height={854}
+                            sizes="(max-width: 1024px) 100vw, 320px"
+                            className="w-full h-auto rounded-lg shadow-lg object-cover"
+                        />
+                    </motion.div>
                 )}
             </div>
             <div className={`${isHorizontal ? 'w-full lg:flex-1 min-w-0' : 'w-full'} flex flex-col justify-center`}>
