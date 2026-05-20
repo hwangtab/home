@@ -14,13 +14,13 @@ export const metadata: Metadata = {
     url: toAbsoluteUrl('/en/works'),
     locale: 'en_US',
     type: 'website',
-    images: [{ url: '/images/og/works-og.svg', alt: 'Works by Hwang Gyeongha' }]
+    images: [{ url: '/images/og/works-og.png', alt: 'Works by Hwang Gyeongha', width: 1200, height: 630, type: 'image/png' }]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Works - Hwang Gyeongha',
     description: 'Explore albums, writings, and socially engaged works by Hwang Gyeongha.',
-    images: ['/images/og/works-og.svg']
+    images: ['/images/og/works-og.png']
   }
 };
 

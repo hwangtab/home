@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     url: toAbsoluteUrl('/contact'),
     locale: 'ko_KR',
     type: 'website',
-    images: [{ url: '/images/og/default-og.svg', alt: '황경하 연락처' }]
+    images: [{ url: '/images/og/default-og.png', alt: '황경하 연락처', width: 1200, height: 630, type: 'image/png' }]
   }
 };
 

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     url: toAbsoluteUrl('/works'),
     locale: 'ko_KR',
     type: 'website',
-    images: [{ url: '/images/og/works-og.svg', alt: '황경하 작품' }]
+    images: [{ url: '/images/og/works-og.png', alt: '황경하 작품', width: 1200, height: 630, type: 'image/png' }]
   }
 };
 

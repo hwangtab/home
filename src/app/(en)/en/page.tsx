@@ -14,13 +14,13 @@ export const metadata: Metadata = {
     url: toAbsoluteUrl('/en'),
     locale: 'en_US',
     type: 'website',
-    images: [{ url: '/images/og/default-og.svg', alt: 'Hwang Gyeongha Official Web' }]
+    images: [{ url: '/images/og/default-og.png', alt: 'Hwang Gyeongha Official Web', width: 1200, height: 630, type: 'image/png' }]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Hwang Gyeongha Official Web',
     description: 'Official website of musician, sound engineer, and producer Hwang Gyeongha. Explore socially engaged music and artistic works.',
-    images: ['/images/og/default-og.svg']
+    images: ['/images/og/default-og.png']
   }
 };
 

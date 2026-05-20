@@ -11,12 +11,12 @@ export const metadata: Metadata = {
     title: 'Hwang Gyeongha Official Web',
     description: 'Official website of musician, sound engineer, and producer Hwang Gyeongha.',
     locale: 'en_US',
-    images: [{ url: '/images/og/default-og.svg', alt: 'Hwang Gyeongha Official Web' }],
+    images: [{ url: '/images/og/default-og.png', alt: 'Hwang Gyeongha Official Web', width: 1200, height: 630, type: 'image/png' }],
   },
   twitter: {
     title: 'Hwang Gyeongha Official Web',
     description: 'Official website of musician, sound engineer, and producer Hwang Gyeongha.',
-    images: ['/images/og/default-og.svg'],
+    images: ['/images/og/default-og.png'],
   },
   alternates: getAlternates('/en', 'en'),
 };

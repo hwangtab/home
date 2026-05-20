@@ -14,13 +14,13 @@ export const metadata: Metadata = {
     url: toAbsoluteUrl('/en/contact'),
     locale: 'en_US',
     type: 'website',
-    images: [{ url: '/images/og/default-og.svg', alt: 'Contact Hwang Gyeongha' }]
+    images: [{ url: '/images/og/default-og.png', alt: 'Contact Hwang Gyeongha', width: 1200, height: 630, type: 'image/png' }]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Contact - Hwang Gyeongha',
     description: 'Contact Hwang Gyeongha for inquiries, collaborations, and communication via email and phone.',
-    images: ['/images/og/default-og.svg']
+    images: ['/images/og/default-og.png']
   }
 };
 
