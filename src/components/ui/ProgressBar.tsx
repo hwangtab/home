@@ -83,9 +83,9 @@ const ProgressBar = memo<ProgressBarProps>(({
                     {showPercentage && <span className="text-sm text-gray-400">{Math.round(percentage)}%</span>}
                 </div>
             )}
-            <div className={`w-full ${backgroundClasses[color] || backgroundClasses.gray} rounded-full ${sizeClasses[size] || sizeClasses.medium}`}>
-                <motion.div className={`${sizeClasses[size] || sizeClasses.medium} ${colorClasses[color] || colorClasses.blue} rounded-full relative overflow-hidden`}
-                    initial={{ width: 0 }} animate={{ width: `${percentage}%` }}
+            <div className={`w-full ${backgroundClasses[color] || backgroundClasses.gray} rounded-full ${sizeClasses[size] || sizeClasses.medium} overflow-hidden`}>
+                <motion.div className={`w-full ${sizeClasses[size] || sizeClasses.medium} ${colorClasses[color] || colorClasses.blue} rounded-full relative overflow-hidden`}
+                    initial={{ clipPath: 'inset(0 100% 0 0)' }} animate={{ clipPath: `inset(0 ${100 - percentage}% 0 0)` }}
                     transition={{ duration: animated ? 1 : 0, ease: "easeOut" }}
                 >
                     {animated && percentage > 0 && !shouldReduceMotion && (
@@ -121,8 +121,9 @@ export const MultiProgressBar = memo<MultiProgressBarProps>(({ items = [], showL
                     {items.map((item, index) => {
                         const percentage = total > 0 ? (item.value / total) * 100 : 0;
                         return (
-                            <motion.div key={index} className={item.color}
-                                initial={{ width: 0 }} animate={{ width: `${percentage}%` }}
+                            <motion.div key={index} className={`${item.color} h-full`}
+                                initial={{ clipPath: 'inset(0 100% 0 0)' }} animate={{ clipPath: 'inset(0 0% 0 0)' }}
+                                style={{ width: `${percentage}%` }}
                                 transition={{ duration: 1, delay: index * 0.1 }} title={`${item.label}: ${item.value}`}
                             />
                         );
@@ -164,8 +165,8 @@ export const StepProgress = memo<StepProgressProps>(({ steps = [], currentStep =
                     </div>
                     {index < steps.length - 1 && (
                         <div className="flex-1 mx-4">
-                            <div className="h-0.5 bg-gray-700 relative">
-                                <motion.div className="h-full bg-blue-500" initial={{ width: 0 }} animate={{ width: index < currentStep ? '100%' : '0%' }} transition={{ duration: 0.5, delay: index * 0.1 }} />
+                            <div className="h-0.5 bg-gray-700 relative overflow-hidden">
+                                <motion.div className="h-full w-full bg-blue-500" initial={{ scaleX: 0 }} animate={{ scaleX: index < currentStep ? 1 : 0 }} style={{ transformOrigin: '0%' }} transition={{ duration: 0.5, delay: index * 0.1 }} />
                             </div>
                         </div>
                     )}
