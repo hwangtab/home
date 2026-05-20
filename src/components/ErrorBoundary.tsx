@@ -112,6 +112,11 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     static contextType = LanguageContext;
     declare context: React.ContextType<typeof LanguageContext>;
 
+    // Safe translation helper — falls back to key identity when outside LanguageProvider
+    private getT(): (key: string) => string {
+        return this.context?.t ?? ((key: string) => key);
+    }
+
     constructor(props: ErrorBoundaryProps) {
         super(props);
         this.state = {
@@ -162,7 +167,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     };
 
     render() {
-        const t = (this.context?.t as ((key: string) => string) | undefined) || ((key: string) => key);
+        const t = this.getT();
 
         if (this.state.hasError) {
             return (

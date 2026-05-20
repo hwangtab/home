@@ -119,7 +119,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
 
     if (responsive && sources.length > 0) {
         return (
-            <picture ref={imgRef as React.Ref<HTMLPictureElement>} className={className}>
+            <picture ref={imgRef as React.Ref<HTMLElement>} className={className}>
                 {shouldUseWebP && (
                     <source
                         srcSet={createWebPSrcSet(sources)}

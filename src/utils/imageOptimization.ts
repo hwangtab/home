@@ -41,18 +41,17 @@ export const getWebPUrl = (originalUrl: string | null | undefined): string => {
     return originalUrl;
 };
 
-// Generate responsive image sources
+// Generate responsive image sources.
+// Requires an image-processing CDN (Imgix, Cloudinary, etc.) that supports ?w=&q= params.
+// Without one, srcSet URLs produce 404 requests. Returns empty array so OptimizedImage
+// falls back to a single <img src> element instead of a broken <picture>.
 export const getResponsiveImageSources = (
-    baseUrl: string | null | undefined,
-    sizes: number[] = [400, 800, 1200, 1600]
+    _baseUrl: string | null | undefined,
+    _sizes: number[] = [400, 800, 1200, 1600]
 ): ResponsiveImageSource[] => {
-    if (!baseUrl) return [];
-
-    return sizes.map(size => ({
-        size,
-        url: `${baseUrl}?w=${size}&q=80`,
-        webp: `${baseUrl}?w=${size}&q=80&f=webp`
-    }));
+    // Temporarily disabled: no image-processing pipeline in this project.
+    // Enable when a CDN supporting query-param responsive resizing is configured.
+    return [];
 };
 
 // Create srcSet string for responsive images

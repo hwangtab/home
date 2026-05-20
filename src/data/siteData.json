@@ -192,7 +192,7 @@
         "year": 2023,
         "type": "album",
         "featured": true,
-        "cover": "images/SCR-20250706-bbyq.png",
+        "cover": "/images/SCR-20250706-bbyq.png",
         "description": "쫓겨난 옛 노량진수산시장 상인들에게 연대하는 음악가들이 힘을 합쳐 만든 음반입니다.",
         "shortDescription": "노량진수산시장 상인들과 연대하는 음악가들의 합작 음반",
         "primaryAction": {
