@@ -54,7 +54,7 @@ const SiteLayoutInner: React.FC<SiteLayoutProps> = ({ children }) => {
   })), [nav, locale, basePathname]);
 
   return (
-    <div className="bg-gradient-to-b from-gray-950 to-gray-900 min-h-screen font-wanted-sans text-gray-100">
+    <div className="bg-gradient-to-b from-gray-950 to-gray-900 min-h-screen flex flex-col font-wanted-sans text-gray-100">
       <header
         className={`fixed top-0 left-0 right-0 z-50 text-white py-4 sm:py-6 px-2 sm:px-4 md:px-6 transform-gpu transition-all duration-300 ${
           isScrolled
@@ -115,7 +115,7 @@ const SiteLayoutInner: React.FC<SiteLayoutProps> = ({ children }) => {
         )}
       </header>
 
-      <main>{children}</main>
+      <main className="flex-1">{children}</main>
 
       <footer className="bg-gradient-to-r from-gray-950 to-gray-900 text-gray-400 p-6 mt-12">
         <div className="container mx-auto text-center font-wanted-sans">
