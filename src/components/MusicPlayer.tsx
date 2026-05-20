@@ -141,7 +141,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                             }}
                         >
                             <div
-                                className="bg-brand-primary-500 h-1 rounded-full transition-all duration-300 relative group-hover:h-1.5"
+                                className="bg-brand-primary-500 h-1 rounded-full transition-[height] duration-300 relative group-hover:h-1.5"
                                 style={{ width: `${duration ? (progress / duration) * 100 : 0}%` }}
                             >
                                 <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm" />
@@ -230,7 +230,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                     >
                                         {isMuted || volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
                                     </button>
-                                    <div className="w-0 group-hover:w-24 transition-all duration-300 overflow-hidden">
+                                    <div className="w-0 group-hover:w-24 transition-[width] duration-300 overflow-hidden">
                                         <input
                                             type="range"
                                             min="0"
@@ -313,7 +313,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                         <div
                                             key={track.id}
                                             onClick={() => setCurrentIndex(index)}
-                                            className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-all ${index === currentIndex
+                                            className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-colors ${index === currentIndex
                                                 ? 'bg-brand-primary-500/20 border border-brand-primary-500/30'
                                                 : 'hover:bg-gray-700/50 border border-transparent'
                                                 }`}

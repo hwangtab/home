@@ -136,18 +136,8 @@ export interface PageStateReturn {
 
 // useCardActions Types
 export interface CardActionsOptions {
-    enableLightbox?: boolean;
     enableMusicPlayer?: boolean;
     enableModal?: boolean;
-}
-
-export interface LightboxState {
-    selectedImages: string[];
-    lightboxIndex: number;
-    isLightboxOpen: boolean;
-    openLightbox: (work: Work) => void;
-    closeLightbox: () => void;
-    changeLightboxImage: (index: number) => void;
 }
 
 export interface MusicPlayerState {
@@ -173,7 +163,6 @@ export interface CardActions {
 }
 
 export interface CardActionsReturn {
-    lightbox: LightboxState;
     musicPlayer: MusicPlayerState;
     modal: ModalState;
     actions: CardActions;

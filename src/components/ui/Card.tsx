@@ -1,7 +1,7 @@
 import React, { memo, ReactNode } from 'react';
 import { motion, Variants, type MotionProps } from 'framer-motion';
-import { ExternalLink, Play, Music, Image, FileText, Mic, LucideIcon } from 'lucide-react';
-import { ThumbnailImage } from '../OptimizedImage';
+import { ExternalLink, Play, Music, Image as ImageIcon, FileText, Mic, LucideIcon } from 'lucide-react';
+import NextImage from 'next/image';
 import { HoverCard } from './AnimatedComponents';
 import { Heading4, BodyText, Caption } from './Typography';
 import { Stack, Flex } from './Layout';
@@ -29,7 +29,7 @@ interface CardTypeConfig {
 
 const cardTypeConfig: Record<CardType, CardTypeConfig> = {
     music: { icon: Music, color: 'bg-blue-600' },
-    visual: { icon: Image, color: 'bg-green-600' },
+    visual: { icon: ImageIcon, color: 'bg-green-600' },
     writing: { icon: FileText, color: 'bg-indigo-600' },
     performance: { icon: Mic, color: 'bg-red-600' },
     default: { icon: Music, color: 'bg-gray-600' },
@@ -52,12 +52,16 @@ interface CardPartProps {
 
 const CardHeader = memo<CardPartProps>(({ work, type }) => {
     if (work.cover || (work.images && work.images[0]?.src)) {
+        const imgSrc = work.cover || work.images![0].src;
         return (
-            <div className="relative group">
-                <ThumbnailImage
-                    src={work.cover || work.images![0].src}
+            <div className="relative group h-48">
+                <NextImage
+                    src={imgSrc}
                     alt={work.title}
-                    className="w-full h-48 object-cover rounded-t-lg"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover rounded-t-lg"
+                    unoptimized={imgSrc.endsWith('.svg')}
                 />
                 {type === 'visual' && (
                     <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-lg flex items-center justify-center">

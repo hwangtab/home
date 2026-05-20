@@ -3,7 +3,6 @@
 import React, { lazy, Suspense, memo, useState, useEffect, LazyExoticComponent, ComponentType } from 'react';
 import { PageLoadingSpinner } from './ui/LoadingSpinner';
 
-const LazyLightbox = lazy(() => import('./Lightbox'));
 const LazyMusicPlayer = lazy(() => import('./MusicPlayer'));
 const LazyVideoGallery = lazy(() => import('./VideoGallery'));
 const LazyContactForm = lazy(() => import('./ContactForm'));
@@ -21,7 +20,6 @@ function withSuspense<P extends object>(
 }
 
 // Export optimized components
-export const OptimizedLightbox = withSuspense(LazyLightbox);
 export const OptimizedMusicPlayer = withSuspense(LazyMusicPlayer);
 export const OptimizedVideoGallery = withSuspense(LazyVideoGallery);
 export const OptimizedContactForm = withSuspense(LazyContactForm);

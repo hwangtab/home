@@ -2,18 +2,8 @@ import { useCallback, useState } from 'react';
 import type { Work } from '../types/data.types';
 
 interface CardActionsOptions {
-    enableLightbox?: boolean;
     enableMusicPlayer?: boolean;
     enableModal?: boolean;
-}
-
-interface LightboxState {
-    selectedImages: string[];
-    lightboxIndex: number;
-    isLightboxOpen: boolean;
-    openLightbox: (work: Work) => void;
-    closeLightbox: () => void;
-    changeLightboxImage: (index: number) => void;
 }
 
 interface MusicPlayerState {
@@ -39,7 +29,6 @@ interface CardActions {
 }
 
 interface CardActionsReturn {
-    lightbox: LightboxState;
     musicPlayer: MusicPlayerState;
     modal: ModalState;
     actions: CardActions;
@@ -51,39 +40,14 @@ interface CardActionsReturn {
  */
 export const useCardActions = (options: CardActionsOptions = {}): CardActionsReturn => {
     const {
-        enableLightbox = true,
         enableMusicPlayer = true,
         enableModal = false
     } = options;
 
-    const [selectedImages, setSelectedImages] = useState<string[]>([]);
-    const [lightboxIndex, setLightboxIndex] = useState(0);
-    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
     const [musicPlayerVisible, setMusicPlayerVisible] = useState(false);
     const [playlist, setPlaylist] = useState<Work[]>([]);
     const [selectedItem, setSelectedItem] = useState<Work | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const openLightbox = useCallback((work: Work) => {
-        if (!enableLightbox) return;
-        const images = work.images && work.images.length > 0 ? work.images : work.cover ? [work.cover] : [];
-        if (images.length > 0) {
-            setSelectedImages(images);
-            setLightboxIndex(0);
-            setIsLightboxOpen(true);
-        }
-    }, [enableLightbox]);
-
-    const closeLightbox = useCallback(() => {
-        setIsLightboxOpen(false);
-        setSelectedImages([]);
-        setLightboxIndex(0);
-    }, []);
-
-    const changeLightboxImage = useCallback((index: number, images?: string[]) => {
-        setLightboxIndex(index);
-        if (images) setSelectedImages(images);
-    }, []);
 
     const openMusicPlayer = useCallback((works: Work | Work[]) => {
         if (!enableMusicPlayer) return;
@@ -113,16 +77,12 @@ export const useCardActions = (options: CardActionsOptions = {}): CardActionsRet
 
     const handleCardClick = useCallback((work: Work) => {
         if (!work) return;
-        if ((work.type === 'visual' || work.images) && enableLightbox) {
-            openLightbox(work);
-            return;
-        }
         if ((work.type === 'music' || work.audioUrl || work.links) && enableMusicPlayer) {
             openMusicPlayer(work);
             return;
         }
         if (enableModal) openModal(work);
-    }, [openLightbox, openMusicPlayer, openModal, enableLightbox, enableMusicPlayer, enableModal]);
+    }, [openMusicPlayer, openModal, enableMusicPlayer, enableModal]);
 
     const openExternalLink = useCallback((url: string) => {
         if (url) window.open(url, '_blank', 'noopener,noreferrer');
@@ -165,7 +125,6 @@ export const useCardActions = (options: CardActionsOptions = {}): CardActionsRet
     const isFavorite = useCallback((workId: string) => favorites.includes(workId), [favorites]);
 
     return {
-        lightbox: { selectedImages, lightboxIndex, isLightboxOpen, openLightbox, closeLightbox, changeLightboxImage },
         musicPlayer: { playlist, musicPlayerVisible, openMusicPlayer, closeMusicPlayer },
         modal: { selectedItem, isModalOpen, openModal, closeModal },
         actions: { handleCardClick, openExternalLink, shareWork, toggleFavorite, isFavorite },

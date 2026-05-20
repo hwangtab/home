@@ -1,6 +1,6 @@
 
 import React, { memo } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useLanguage } from '../../i18n';
 
 type SpinnerSize = 'small' | 'medium' | 'large' | 'xlarge';
@@ -36,6 +36,7 @@ const LoadingSpinner = memo<LoadingSpinnerProps>(({
     className = '',
     variant = 'default'
 }) => {
+    const shouldReduceMotion = useReducedMotion();
 
     if (variant === 'dots') {
         return (
@@ -44,8 +45,8 @@ const LoadingSpinner = memo<LoadingSpinnerProps>(({
                     <motion.div
                         key={i}
                         className={`${sizeClasses[size] || sizeClasses.medium} bg-gray-400 rounded-full`}
-                        animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
-                        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.1 }}
+                        animate={shouldReduceMotion ? {} : { scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
+                        transition={shouldReduceMotion ? {} : { duration: 0.6, repeat: Infinity, delay: i * 0.1 }}
                     />
                 ))}
                 {message && <span className="ml-3 text-gray-400 font-wanted-sans text-sm">{message}</span>}
@@ -58,8 +59,8 @@ const LoadingSpinner = memo<LoadingSpinnerProps>(({
             <div className={`flex flex-col items-center justify-center ${className}`}>
                 <motion.div
                     className={`${sizeClasses[size] || sizeClasses.medium} bg-gray-400 rounded-full`}
-                    animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 1, repeat: Infinity }}
+                    animate={shouldReduceMotion ? {} : { scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                    transition={shouldReduceMotion ? {} : { duration: 1, repeat: Infinity }}
                 />
                 {message && <span className="mt-3 text-gray-400 font-wanted-sans text-sm">{message}</span>}
             </div>
@@ -68,11 +69,9 @@ const LoadingSpinner = memo<LoadingSpinnerProps>(({
 
     return (
         <div className={`flex flex-col items-center justify-center ${className}`}>
-            <motion.div
+            <div
                 className={`${sizeClasses[size] || sizeClasses.medium} ${colorClasses[color] || colorClasses.gray} rounded-full animate-spin`}
                 style={{ borderWidth: '2px', borderStyle: 'solid', borderTopColor: 'transparent' }}
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
             />
             {message && <span className="mt-3 text-gray-400 font-wanted-sans text-sm">{message}</span>}
         </div>

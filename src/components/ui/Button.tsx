@@ -1,5 +1,5 @@
 import React, { memo, forwardRef, ReactNode, ReactElement } from 'react';
-import { motion, MotionProps } from 'framer-motion';
+import { motion, MotionProps, useReducedMotion } from 'framer-motion';
 import { ButtonLoadingSpinner } from './LoadingSpinner';
 
 type ButtonVariant = 'primary' | 'solidarity' | 'earth' | 'harmony' | 'secondary' | 'accent' | 'outline' | 'ghost' | 'danger' | 'success';
@@ -53,12 +53,12 @@ const BUTTON_VARIANTS: Record<ButtonVariant, { base: string; disabled: string; l
         loading: 'bg-gradient-to-r from-purple-600 to-purple-700 text-white cursor-wait'
     },
     outline: {
-        base: 'border-2 border-gray-400 hover:border-blue-400 bg-transparent text-gray-300 hover:text-blue-300 hover:bg-blue-500/10 backdrop-blur-sm transition-all duration-300',
+        base: 'border-2 border-gray-400 hover:border-blue-400 bg-transparent text-gray-300 hover:text-blue-300 hover:bg-blue-500/10',
         disabled: 'border-gray-600 text-gray-500 cursor-not-allowed opacity-50',
         loading: 'border-gray-400 text-gray-300 cursor-wait'
     },
     ghost: {
-        base: 'bg-transparent hover:bg-gradient-to-r hover:from-gray-800/50 hover:to-gray-700/50 text-gray-300 hover:text-white backdrop-blur-sm border border-transparent hover:border-gray-600/30',
+        base: 'bg-transparent hover:bg-gradient-to-r hover:from-gray-800/50 hover:to-gray-700/50 text-gray-300 hover:text-white border border-transparent hover:border-gray-600/30',
         disabled: 'text-gray-500 cursor-not-allowed opacity-50',
         loading: 'text-gray-300 cursor-wait'
     },
@@ -84,9 +84,9 @@ const buttonAnimations: Record<ButtonAnimation, MotionProps> = {
     bounce: { whileHover: { scale: 1.05, y: -3 }, whileTap: { scale: 0.95, y: 0 }, transition: { type: "spring", stiffness: 400, damping: 12 } },
     slide: { whileHover: { x: 4, scale: 1.02 }, whileTap: { x: 0, scale: 0.98 }, transition: { duration: 0.2, ease: "easeOut" } },
     pulse: { whileHover: { scale: [1, 1.05, 1] }, transition: { duration: 0.6, repeat: Infinity, ease: "easeInOut" } },
-    subtle: { whileHover: { scale: 1.01, filter: "brightness(1.1)" }, whileTap: { scale: 0.99 }, transition: { duration: 0.2 } },
-    magnetic: { whileHover: { scale: 1.05, y: -2, boxShadow: "0 10px 30px rgba(59, 130, 246, 0.3)" }, whileTap: { scale: 0.95 }, transition: { type: "spring", stiffness: 400, damping: 15 } },
-    glow: { whileHover: { scale: 1.02, boxShadow: ["0 0 20px rgba(59, 130, 246, 0.5)", "0 0 40px rgba(59, 130, 246, 0.3)", "0 0 60px rgba(59, 130, 246, 0.1)"] }, whileTap: { scale: 0.98 }, transition: { duration: 0.3 } }
+    subtle: { whileHover: { scale: 1.01 }, whileTap: { scale: 0.99 }, transition: { duration: 0.2 } },
+    magnetic: { whileHover: { scale: 1.05, y: -2 }, whileTap: { scale: 0.95 }, transition: { type: "spring", stiffness: 400, damping: 15 } },
+    glow: { whileHover: { scale: 1.02 }, whileTap: { scale: 0.98 }, transition: { duration: 0.3 } }
 };
 
 const Button = memo(forwardRef<HTMLButtonElement, ButtonProps>(({
@@ -94,18 +94,19 @@ const Button = memo(forwardRef<HTMLButtonElement, ButtonProps>(({
     fullWidth = false, leftIcon = null, rightIcon = null, loadingText = '', className = '', onClick, type = 'button', ...props
 }, ref) => {
     const isDisabled = disabled || loading;
+    const shouldReduceMotion = useReducedMotion();
     const variantStyles = BUTTON_VARIANTS[variant!] || BUTTON_VARIANTS.primary;
     const sizeStyles = BUTTON_SIZES[size!] || BUTTON_SIZES.md;
     const getStateStyles = () => { if (loading) return variantStyles.loading; if (disabled) return variantStyles.disabled; return variantStyles.base; };
 
     const baseClasses = [
-        'inline-flex items-center justify-center', 'font-wanted-sans font-medium', 'rounded-lg', 'transition-all duration-300 ease-out',
+        'inline-flex items-center justify-center', 'font-wanted-sans font-medium', 'rounded-lg', 'transition-[transform,color,border-color,background-color] duration-200 ease-out',
         'focus:outline-none focus:ring-a11y focus:ring-offset-a11y focus:ring-offset-gray-900', 'focus:ring-brand-primary-400 focus:ring-opacity-80',
-        'transform-gpu', 'backdrop-blur-sm', 'focus-visible:ring-a11y focus-visible:ring-brand-primary-400', 'focus-visible:ring-offset-a11y focus-visible:ring-offset-gray-900',
+        'transform-gpu', 'focus-visible:ring-a11y focus-visible:ring-brand-primary-400', 'focus-visible:ring-offset-a11y focus-visible:ring-offset-gray-900',
         sizeStyles, getStateStyles(), fullWidth ? 'w-full' : '', className
     ].filter(Boolean).join(' ');
 
-    const animationProps = !isDisabled ? buttonAnimations[animation!] || buttonAnimations.default : {};
+    const animationProps = (!isDisabled && !shouldReduceMotion) ? buttonAnimations[animation!] || buttonAnimations.default : {};
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (!isDisabled && onClick) onClick(e);
@@ -134,6 +135,7 @@ export const IconButton = memo(forwardRef<HTMLButtonElement, IconButtonProps>(({
     icon, variant = 'ghost', size = 'md', animation = 'default', loading = false, disabled = false, className = '', 'aria-label': ariaLabel, ...props
 }, ref) => {
     const isDisabled = disabled || loading;
+    const shouldReduceMotion = useReducedMotion();
     const sizeMap: Record<ButtonSize, string> = { xs: 'p-1', sm: 'p-1.5', md: 'p-2', lg: 'p-3', xl: 'p-4' };
     const iconSizeMap: Record<ButtonSize, number> = { xs: 12, sm: 14, md: 16, lg: 20, xl: 24 };
 
@@ -141,13 +143,13 @@ export const IconButton = memo(forwardRef<HTMLButtonElement, IconButtonProps>(({
     const getStateStyles = () => { if (loading) return variantStyles.loading; if (disabled) return variantStyles.disabled; return variantStyles.base; };
 
     const baseClasses = [
-        'inline-flex items-center justify-center', 'rounded-full', 'transition-all duration-200',
+        'inline-flex items-center justify-center', 'rounded-full', 'transition-[transform,color,border-color,background-color] duration-200',
         'focus:outline-none focus:ring-a11y focus:ring-offset-a11y focus:ring-offset-gray-900', 'focus:ring-brand-primary-400 focus:ring-opacity-80',
         'focus-visible:ring-a11y focus-visible:ring-brand-primary-400', 'focus-visible:ring-offset-a11y focus-visible:ring-offset-gray-900',
         sizeMap[size!], getStateStyles(), className
     ].filter(Boolean).join(' ');
 
-    const animationProps = !isDisabled ? buttonAnimations[animation!] || buttonAnimations.default : {};
+    const animationProps = (!isDisabled && !shouldReduceMotion) ? buttonAnimations[animation!] || buttonAnimations.default : {};
 
     return (
         <motion.button
@@ -207,7 +209,7 @@ export const FloatingActionButton = memo(forwardRef<HTMLButtonElement, FloatingA
             initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
         >
-            <IconButton ref={ref} icon={icon} variant={variant} size={size} animation="bounce" className={`shadow-lg hover:shadow-xl ${className}`} onClick={onClick} {...props} />
+            <IconButton ref={ref} icon={icon} variant={variant} size={size} animation="bounce" className={`shadow-lg ${className}`} onClick={onClick} {...props} />
         </motion.div>
     );
 }));

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
-import OptimizedImage from '../components/OptimizedImage';
+import Image from 'next/image';
 import { UnifiedCard } from '../components/ui/Card';
 import { useHomePageData } from '../hooks/usePageData';
 import type { MusicWork } from '../types/data.types';
@@ -38,12 +38,16 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ works }) => {
             className="w-full transition-transform duration-300 hover:scale-105"
           >
             <Link href={withLocalePrefix(`/works/${work.id}`, locale)}>
-              <OptimizedImage
-                src={getWorkCoverUrl(work.cover, 'music')}
-                alt={work.title}
-                className="mb-4 h-48 w-full rounded"
-                lazy
-              />
+              <div className="relative mb-4 aspect-square w-full overflow-hidden rounded">
+                <Image
+                  src={getWorkCoverUrl(work.cover, 'music')}
+                  alt={work.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover"
+                  unoptimized={getWorkCoverUrl(work.cover, 'music').endsWith('.svg')}
+                />
+              </div>
               <h3 className="mb-3 font-santokki text-2xl font-bold text-gray-100">
                 {work.title} ({work.year})
               </h3>
@@ -56,7 +60,7 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ works }) => {
         <div className="transition-transform duration-200 hover:scale-105">
           <Link
             href={withLocalePrefix('/works', locale)}
-            className="inline-flex items-center rounded-full bg-gray-750 px-8 py-4 font-wanted-sans text-white transition-all duration-300 hover:bg-gray-600"
+            className="inline-flex items-center rounded-full bg-gray-750 px-8 py-4 font-wanted-sans text-white transition-colors duration-300 hover:bg-gray-600"
           >
             {t('home.viewAllWorks')}
           </Link>
@@ -118,7 +122,7 @@ const QuickNavigation: React.FC = () => {
         {quickLinks.map((link) => (
           <div
             key={link.name}
-            className="group relative w-full overflow-hidden rounded-xl border border-gray-700 bg-gray-800 px-6 pb-6 pt-8 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:border-gray-600 hover:bg-gray-700 hover:shadow-2xl"
+            className="group relative w-full overflow-hidden rounded-xl border border-gray-700 bg-gray-800 px-6 pb-6 pt-8 shadow-lg transition-[transform,background-color,border-color] duration-300 hover:-translate-y-1 hover:scale-105 hover:border-gray-600 hover:bg-gray-700"
           >
             <div className={`absolute left-0 top-0 h-1 w-full ${link.classes.line}`} />
 

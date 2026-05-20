@@ -299,7 +299,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder 
           onChange={(event) => setQuery(event.target.value)}
           onKeyDown={handleKeyDown}
           onFocus={() => setIsOpen(true)}
-          className="block w-full rounded-lg border border-gray-600 bg-gray-700 py-3 pl-10 pr-10 text-gray-200 placeholder-gray-400 transition-all focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="block w-full rounded-lg border border-gray-600 bg-gray-700 py-3 pl-10 pr-10 text-gray-200 placeholder-gray-400 transition-[border-color,box-shadow] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder={placeholder || t('common.searchPlaceholder')}
         />
 

@@ -97,7 +97,7 @@ export const Input = memo(forwardRef<HTMLInputElement, InputProps>(({
     };
 
     const baseClasses = [
-        'w-full', 'border rounded-lg', 'transition-all duration-200',
+        'w-full', 'border rounded-lg', 'transition-[border-color,box-shadow] duration-200',
         'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50', 'font-wanted-sans',
         sizeClasses[size], variantClasses[variant], getBorderClass(),
         leftIcon ? 'pl-10' : '', rightIcon || (realTimeValidation && isValid !== null) ? 'pr-10' : '', className
@@ -168,7 +168,7 @@ export const Textarea = memo(forwardRef<HTMLTextAreaElement, TextareaProps>(({ r
     const resizeClasses = { none: 'resize-none', vertical: 'resize-y', horizontal: 'resize-x', both: 'resize' };
     const baseClasses = [
         'w-full', 'px-4 py-3', 'bg-gray-700 border border-gray-600', 'text-gray-100 placeholder-gray-400',
-        'rounded-lg', 'transition-all duration-200', 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50',
+        'rounded-lg', 'transition-[border-color,box-shadow] duration-200', 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50',
         'focus:border-blue-500', 'font-wanted-sans', resizeClasses[resize], className
     ].filter(Boolean).join(' ');
 
@@ -194,7 +194,7 @@ export const Select = memo(forwardRef<HTMLSelectElement, SelectProps>(({ options
     const sizeClasses = { sm: 'px-3 py-1.5 text-sm', md: 'px-4 py-2 text-sm', lg: 'px-4 py-3 text-base' };
     const baseClasses = [
         'w-full', 'bg-gray-700 border border-gray-600', 'text-gray-100', 'rounded-lg',
-        'transition-all duration-200', 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50',
+        'transition-[border-color,box-shadow] duration-200', 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50',
         'focus:border-blue-500', 'font-wanted-sans', sizeClasses[size], className
     ].filter(Boolean).join(' ');
 

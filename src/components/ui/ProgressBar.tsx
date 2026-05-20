@@ -1,6 +1,6 @@
 
 import React, { memo, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 type ProgressSize = 'small' | 'medium' | 'large' | 'xlarge';
 type ProgressColor = 'blue' | 'green' | 'red' | 'yellow' | 'purple' | 'gray' | 'gradient';
@@ -39,6 +39,7 @@ const ProgressBar = memo<ProgressBarProps>(({
     showLabel = false, label = '', showPercentage = false,
     className = '', variant = 'default', animated = true
 }) => {
+    const shouldReduceMotion = useReducedMotion();
     const [displayValue, setDisplayValue] = useState(0);
 
     useEffect(() => {
@@ -87,7 +88,7 @@ const ProgressBar = memo<ProgressBarProps>(({
                     initial={{ width: 0 }} animate={{ width: `${percentage}%` }}
                     transition={{ duration: animated ? 1 : 0, ease: "easeOut" }}
                 >
-                    {animated && percentage > 0 && (
+                    {animated && percentage > 0 && !shouldReduceMotion && (
                         <motion.div className="absolute inset-0 bg-white opacity-20"
                             animate={{ x: ['-100%', '100%'] }}
                             transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1 }}
@@ -179,18 +180,26 @@ interface LoadingProgressProps {
     className?: string;
 }
 
-export const LoadingProgress = memo<LoadingProgressProps>(({ message = 'Loading...', className = '' }) => (
-    <div className={`flex flex-col items-center ${className}`}>
-        <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
-            <motion.div className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
-                animate={{ x: ['-100%', '100%'] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                style={{ width: '30%' }}
-            />
+const LoadingProgressBase: React.FC<LoadingProgressProps> = ({ message = 'Loading...', className = '' }) => {
+    const shouldReduceMotion = useReducedMotion();
+    return (
+        <div className={`flex flex-col items-center ${className}`}>
+            <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
+                {shouldReduceMotion ? (
+                    <div className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" style={{ width: '50%' }} />
+                ) : (
+                    <motion.div className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+                        animate={{ x: ['-100%', '100%'] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                        style={{ width: '30%' }}
+                    />
+                )}
+            </div>
+            {message && <span className="text-sm text-gray-400 mt-2 font-wanted-sans">{message}</span>}
         </div>
-        {message && <span className="text-sm text-gray-400 mt-2 font-wanted-sans">{message}</span>}
-    </div>
-));
+    );
+};
+export const LoadingProgress = memo<LoadingProgressProps>(LoadingProgressBase);
 
 ProgressBar.displayName = 'ProgressBar';
 MultiProgressBar.displayName = 'MultiProgressBar';

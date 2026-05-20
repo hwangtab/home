@@ -69,13 +69,6 @@ interface CardAnimationConfig {
     style?: React.CSSProperties;
 }
 
-interface GPUOptimizedStyle {
-    willChange: string;
-    backfaceVisibility: string;
-    WebkitBackfaceVisibility: string;
-    transform: string;
-    WebkitTransform: string;
-}
 
 // 최적화된 애니메이션 타이밍 상수
 export const TIMING: TimingConfig = {
@@ -179,18 +172,13 @@ export const CARD_ANIMATIONS: Record<string, CardAnimationConfig> = {
         whileTap: { scale: 1 }
     },
 
-    // 성능 최적화된 GPU 가속 버전
+    // 성능 최적화된 버전
     optimized: {
         whileHover: {
             scale: 1.02,
             transition: { duration: TIMING.FAST }
         },
-        whileTap: { scale: 0.98 },
-        style: {
-            willChange: 'transform',
-            backfaceVisibility: 'hidden',
-            transform: 'translateZ(0)'
-        }
+        whileTap: { scale: 0.98 }
     }
 };
 
@@ -232,14 +220,6 @@ export const createDelayedAnimation = (delay = 0): AnimationState => ({
     transition: { duration: TIMING.NORMAL, delay, ease: EASING.EASE_OUT }
 });
 
-// GPU 가속 최적화 스타일
-export const GPU_OPTIMIZED_STYLE: GPUOptimizedStyle = {
-    willChange: 'transform, opacity',
-    backfaceVisibility: 'hidden',
-    WebkitBackfaceVisibility: 'hidden',
-    transform: 'translateZ(0)',
-    WebkitTransform: 'translateZ(0)'
-};
 
 // 성능 최적화된 애니메이션 설정
 export const PERFORMANCE_SETTINGS = {

@@ -15,7 +15,10 @@ const nextConfig = {
       { protocol: 'https', hostname: 'archivenew.vop.co.kr' },
       { protocol: 'https', hostname: '*.melon.com' },
       { protocol: 'https', hostname: 'www.youtube.com' },
-      { protocol: 'https', hostname: 'img.youtube.com' }
+      { protocol: 'https', hostname: 'img.youtube.com' },
+      { protocol: 'https', hostname: 'contents.kyobobook.co.kr' },
+      { protocol: 'https', hostname: 'image.aladin.co.kr' },
+      { protocol: 'https', hostname: 'alf.seoul.kr' }
     ]
   }
 };

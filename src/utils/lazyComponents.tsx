@@ -84,10 +84,6 @@ export const LazyVideoGallery = lazy(
     () => import('../components/VideoGallery').then(module => ({ default: module.default }))
 );
 
-export const LazyLightbox = lazy(
-    () => import('../components/Lightbox').then(module => ({ default: module.default }))
-);
-
 export const LazySearchBar = lazy(
     () => import('../components/SearchBar').then(module => ({ default: module.default }))
 );
@@ -112,7 +108,6 @@ export const LazyContact = lazy(
 // Wrapped components with error boundaries
 export const MusicPlayer = withLazyLoading(LazyMusicPlayer, 'Loading music player...');
 export const VideoGallery = withLazyLoading(LazyVideoGallery, 'Loading video gallery...');
-export const Lightbox = withLazyLoading(LazyLightbox, 'Loading image viewer...');
 export const SearchBar = withLazyLoading(LazySearchBar, 'Loading search...');
 
 // Page components with lazy loading

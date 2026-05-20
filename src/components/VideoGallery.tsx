@@ -164,7 +164,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onClick }) => {
                 )}
 
                 {/* Play overlay */}
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-[background-color] duration-300 flex items-center justify-center">
                     <div className="transform scale-75 group-hover:scale-100 transition-transform duration-300">
                         <div className="bg-white bg-opacity-90 rounded-full p-4">
                             <Play className="text-gray-900" size={32} fill="currentColor" />
@@ -281,7 +281,7 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({ videos = [], title }) => {
                             <button
                                 key={type}
                                 onClick={() => setFilter(type)}
-                                className={`px-4 py-2 rounded-full text-sm font-wanted-sans transition-all ${filter === type
+                                className={`px-4 py-2 rounded-full text-sm font-wanted-sans transition-colors ${filter === type
                                     ? 'bg-blue-600 text-white'
                                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                                     }`}

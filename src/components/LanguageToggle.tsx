@@ -27,7 +27,7 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({ className = '' }) => {
         <div className={`relative ${className}`}>
             <motion.button
                 onClick={handleToggleLanguage}
-                className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white transition-all duration-300"
+                className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white transition-colors duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
             >
