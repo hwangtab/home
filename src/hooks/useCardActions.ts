@@ -46,13 +46,6 @@ interface CardActionsReturn {
     favorites: string[];
 }
 
-type WorkWithExtras = Work & {
-    images?: string[];
-    audioUrl?: string;
-    url?: string;
-    // links는 BaseWork에 이미 정의됨
-};
-
 /**
  * 카드 액션들을 위한 재사용 가능한 훅
  */
@@ -73,8 +66,7 @@ export const useCardActions = (options: CardActionsOptions = {}): CardActionsRet
 
     const openLightbox = useCallback((work: Work) => {
         if (!enableLightbox) return;
-        const w = work as WorkWithExtras;
-        const images = w.images && w.images.length > 0 ? w.images : w.cover ? [w.cover] : [];
+        const images = work.images && work.images.length > 0 ? work.images : work.cover ? [work.cover] : [];
         if (images.length > 0) {
             setSelectedImages(images);
             setLightboxIndex(0);
@@ -96,10 +88,7 @@ export const useCardActions = (options: CardActionsOptions = {}): CardActionsRet
     const openMusicPlayer = useCallback((works: Work | Work[]) => {
         if (!enableMusicPlayer) return;
         const workArray = Array.isArray(works) ? works : [works];
-        const playableWorks = workArray.filter(work => {
-            const w = work as WorkWithExtras;
-            return w.audioUrl || w.links;
-        });
+        const playableWorks = workArray.filter(work => work.audioUrl || work.links);
         if (playableWorks.length > 0) {
             setPlaylist(playableWorks);
             setMusicPlayerVisible(true);
@@ -124,12 +113,11 @@ export const useCardActions = (options: CardActionsOptions = {}): CardActionsRet
 
     const handleCardClick = useCallback((work: Work) => {
         if (!work) return;
-        const w = work as WorkWithExtras;
-        if ((work.type === 'visual' || w.images) && enableLightbox) {
+        if ((work.type === 'visual' || work.images) && enableLightbox) {
             openLightbox(work);
             return;
         }
-        if ((work.type === 'music' || w.audioUrl || w.links) && enableMusicPlayer) {
+        if ((work.type === 'music' || work.audioUrl || work.links) && enableMusicPlayer) {
             openMusicPlayer(work);
             return;
         }
@@ -142,16 +130,15 @@ export const useCardActions = (options: CardActionsOptions = {}): CardActionsRet
 
     const shareWork = useCallback(async (work: Work) => {
         if (!work) return;
-        const w = work as WorkWithExtras;
         const shareData = {
             title: work.title,
             text: work.description || '',
-            url: w.url || window.location.href
+            url: work.url || window.location.href
         };
         if (navigator.share && navigator.canShare(shareData)) {
-            try { await navigator.share(shareData); } catch (e) { console.log('Sharing cancelled:', e); }
+            try { await navigator.share(shareData); } catch (_e) { /* share cancelled or failed */ }
         } else {
-            try { await navigator.clipboard.writeText(shareData.url); console.log('URL copied'); } catch (e) { console.error('Copy failed:', e); }
+            try { await navigator.clipboard.writeText(shareData.url); } catch (_e) { /* clipboard unavailable */ }
         }
     }, []);
 
@@ -170,7 +157,7 @@ export const useCardActions = (options: CardActionsOptions = {}): CardActionsRet
             const newFavorites = prev.includes(work.id)
                 ? prev.filter(id => id !== work.id)
                 : [...prev, work.id];
-            try { localStorage.setItem('favorites', JSON.stringify(newFavorites)); } catch (e) { console.error('Save failed:', e); }
+            try { localStorage.setItem('favorites', JSON.stringify(newFavorites)); } catch (_e) { /* storage unavailable */ }
             return newFavorites;
         });
     }, []);

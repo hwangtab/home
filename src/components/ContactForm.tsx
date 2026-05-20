@@ -129,12 +129,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
         try {
             await sendEmail(currentFormData);
-            showSuccess(t('contact.form.success'), {
-                action: {
-                    label: t('common.confirm'),
-                    onClick: () => console.log('Success confirmed')
-                }
-            });
+            showSuccess(t('contact.form.success'));
             setFormData(initialFormData);
             formStartedAt.current = Date.now();
             setErrors({});

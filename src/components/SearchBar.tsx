@@ -184,18 +184,23 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder 
   const searchDataRef = useRef<SearchResultItem[]>(toSearchItems(data));
   const fuseRef = useRef<Fuse<SearchResultItem>>(new Fuse(toSearchItems(data), FUSE_OPTIONS));
 
-  // Compare function: deep-equal fallback when IDs match
+  // Compare all properties of two SearchResultItem arrays for index rebuild detection
   const itemsEqual = (a: SearchResultItem[], b: SearchResultItem[]): boolean => {
     if (a.length !== b.length) return false;
     return a.every((item, i) => {
       const other = b[i];
-      if (item.id !== other?.id) return false;
-      // Same ID but different content — treat as changed
-      return item.title === other.title && item.description === other.description;
+      if (!other) return false;
+      // Compare every field that affects search relevance
+      return item.id === other.id
+        && item.title === other.title
+        && item.year === other.year
+        && item.description === other.description
+        && item.type === other.type
+        && item.archiveCategory === other.archiveCategory;
     });
   };
 
-  // Only rebuild search index when the underlying data actually changes (including title/description updates)
+  // Only rebuild search index when the underlying data actually changes
   useEffect(() => {
     const newData = toSearchItems(data);
     const prevData = searchDataRef.current;

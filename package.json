@@ -21,6 +21,8 @@
     "build": "next build",
     "lint": "eslint .",
     "data:validate": "node scripts/validate-site-data.js",
+    "data:translations": "tsx scripts/check-translations.ts",
+    "build:data": "npm run data:translations && next build",
     "test": "echo \"No tests configured\""
   },
   "browserslist": {

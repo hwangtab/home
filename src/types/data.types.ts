@@ -30,6 +30,12 @@ export interface BaseWork {
     role?: string;
     /** 플랫폼별 외부 링크 (e.g., { spotify: '...', youtube: '...' }) */
     links?: Record<string, string>;
+    /** 오디오 재생 URL (음악 플레이어용) */
+    audioUrl?: string;
+    /** 공유용 URL (external link) */
+    url?: string;
+    /** 사진 모음 (비주얼 작업용) */
+    images?: string[];
 }
 
 export interface MusicWork extends BaseWork {

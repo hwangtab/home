@@ -43,8 +43,9 @@ interface MusicPlayerProps {
 
 const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = false, onClose }) => {
     const { t } = useLanguage();
-    // ReactPlayer ref: HTMLVideoElement + seekTo (hls.js API)
-    const playerRef = useRef<HTMLVideoElement & { seekTo?: (value: number, format?: string) => void }>(null);
+    // ReactPlayer ref — seekTo used for HLS.js audio seeking.
+    // Type is `any` because react-player's internal ref type varies by version.
+    const playerRef = useRef<any>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(0.8);
