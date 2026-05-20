@@ -378,7 +378,7 @@
         "title": "어디에서 희망을 찾을 것인가",
         "year": 2025,
         "type": "칼럼",
-        "cover": "/images/defaults/writing-default.svg",
+        "cover": "https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/3904000516370.jpg",
         "publication": "황해문화 2025년 봄호",
         "description": "계엄과 탄핵, 그 이후의 저항에 대해 논하는 글",
         "shortDescription": "계엄과 탄핵 이후의 저항과 희망에 대한 성찰",
@@ -406,7 +406,7 @@
         "title": "아현포차 요리책",
         "year": 2017,
         "type": "르포",
-        "cover": "/images/defaults/writing-default.svg",
+        "cover": "https://image.aladin.co.kr/product/11879/85/cover500/k422531933_1.jpg",
         "publication": "식소사번",
         "description": "쫓겨난 아현포차 노점상 할머니들의 삶과 요리에 대한 철학을 담은 글",
         "shortDescription": "아현포차 할머니들의 삶과 요리 철학을 담은 르포",
@@ -431,29 +431,10 @@
     ],
     "performance": [
       {
-        "id": "body-center-release-concert-2019",
-        "title": "몸의 중심 발매 기념 콘서트",
-        "year": 2019,
-        "description": "고 김용균 노동자 추모 앨범 '몸의 중심' 발매 공연입니다.",
-        "shortDescription": "'몸의 중심' 발매 공연 (고 김용균 노동자 추모)",
-        "tags": [
-          "concert",
-          "live",
-          "album release",
-          "performance"
-        ],
-        "showInPages": [
-          "works",
-          "archive",
-          "about"
-        ],
-        "archiveCategory": "performance",
-        "sortPriority": 1
-      },
-      {
         "id": "fish-market-solidarity-performance-2024",
         "title": "노량진수산시장 상인 연대 공연",
         "year": 2024,
+        "cover": "https://alf.seoul.kr/images/gallery/%EB%AC%BC%EA%B3%A0%EA%B8%B0%20%EC%B5%9C%EC%A2%85%ED%8C%90.mpeg_20230430_154205.233.webp",
         "description": "쫓겨난 옛 노량진수산시장 상인들과 함께한 연대 공연입니다. 2019년 10월부터 2024년 8월까지 매주 진행되었습니다.",
         "shortDescription": "노량진수산시장 상인들과 함께한 매주 연대 공연 (2019~2024)",
         "location": "옛 노량진수산시장",
@@ -541,12 +522,6 @@
   },
   "events": {
     "concerts": [
-      {
-        "id": "body-center-release-concert-2019",
-        "title": "몸의 중심 발매 기념 콘서트",
-        "date": "2019-06-01",
-        "status": "past"
-      },
       {
         "id": "fish-market-solidarity-performance-2024",
         "title": "노량진수산시장 상인 연대 공연",
