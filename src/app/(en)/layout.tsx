@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     description: 'Official website of musician, sound engineer, and producer Hwang Gyeongha.',
     images: ['/images/og/default-og.png'],
   },
-  alternates: getAlternates('/en', 'en'),
+  alternates: getAlternates('/', 'en'),
 };
 
 export default function EnglishLayout({
