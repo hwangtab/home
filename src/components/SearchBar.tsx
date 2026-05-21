@@ -295,6 +295,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder 
         <input
           ref={inputRef}
           type="text"
+          role="combobox"
+          aria-expanded={isOpen && results.length > 0}
+          aria-autocomplete="list"
+          aria-controls="search-listbox"
+          aria-activedescendant={selectedIndex >= 0 ? `search-option-${selectedIndex}` : undefined}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           onKeyDown={handleKeyDown}
@@ -319,6 +324,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder 
         {isOpen ? (
           <motion.div
             ref={resultsRef}
+            id="search-listbox"
+            role="listbox"
             className="absolute z-50 mt-2 max-h-96 w-full overflow-y-auto rounded-lg border border-gray-600 bg-gray-800 shadow-xl"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -329,6 +336,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder 
                 {results.map((result, index) => (
                   <div
                     key={`${result.item.id ?? result.item.title}-${index}`}
+                    id={`search-option-${index}`}
+                    role="option"
+                    aria-selected={selectedIndex === index}
                     className={selectedIndex === index ? 'rounded-lg bg-gray-700' : ''}
                   >
                     <SearchResult
