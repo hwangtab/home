@@ -165,7 +165,7 @@ const CardImage: React.FC<{ cover?: string; title: string; category?: string; ty
 };
 
 const ActionButton: React.FC<{ action?: PrimaryAction; category?: string }> = ({ action, category }) => {
-    if (!action) return null;
+    if (!action || !action.url) return null;
 
     const IconComponent = ACTION_CONFIG[action.type] || ExternalLink;
     const categoryConfig = CATEGORY_CONFIG[category || 'music'] || CATEGORY_CONFIG.music;
