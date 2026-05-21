@@ -410,74 +410,7 @@
                                 "sortPriority": 1
                         }
                 ],
-                "visual": [
-                        {
-                                "id": "stage-and-solidarity-scenes",
-                                "title": "무대와 연대의 순간들",
-                                "year": 2023,
-                                "type": "사진",
-                                "cover": "/images/hwang/3.png",
-                                "images": [
-                                        "/images/hwang/1.png",
-                                        "/images/hwang/3.png",
-                                        "/images/hwang/6.png"
-                                ],
-                                "description": "황경하가 야외와 현장에서 노래하는 장면들을 담은 공연 사진 모음입니다.",
-                                "shortDescription": "현장 공연과 연대의 장면을 담은 사진 모음",
-                                "tags": [
-                                        "performance",
-                                        "solidarity",
-                                        "live"
-                                ],
-                                "archiveCategory": "visual",
-                                "sortPriority": 1
-                        },
-                        {
-                                "id": "portraits-in-stillness",
-                                "title": "인물과 침묵의 초상",
-                                "year": 2024,
-                                "type": "사진",
-                                "cover": "/images/hwang/4.png",
-                                "images": [
-                                        "/images/hwang/2.png",
-                                        "/images/hwang/4.png",
-                                        "/images/hwang/7.png",
-                                        "/images/hwang/9.png",
-                                        "/images/hwang/10.png",
-                                        "/images/hwang/11.png"
-                                ],
-                                "description": "흑백과 저채도의 프레임으로 황경하의 얼굴과 시선을 기록한 인물 사진 연작입니다.",
-                                "shortDescription": "얼굴과 시선을 중심으로 한 인물 사진 연작",
-                                "tags": [
-                                        "portrait",
-                                        "black and white",
-                                        "documentary"
-                                ],
-                                "archiveCategory": "visual",
-                                "sortPriority": 2
-                        },
-                        {
-                                "id": "studio-and-everyday-scenes",
-                                "title": "작업실과 생활의 장면",
-                                "year": 2024,
-                                "type": "사진",
-                                "cover": "/images/hwang/12.png",
-                                "images": [
-                                        "/images/hwang/5.png",
-                                        "/images/hwang/8.png",
-                                        "/images/hwang/12.png"
-                                ],
-                                "description": "카메라를 들고 현장을 바라보거나 실내에서 준비하는 순간 등 작업 전후의 시간을 담은 사진들입니다.",
-                                "shortDescription": "작업 전후의 준비와 생활 장면을 담은 사진 기록",
-                                "tags": [
-                                        "studio",
-                                        "everyday",
-                                        "behind the scenes"
-                                ],
-                                "archiveCategory": "visual",
-                                "sortPriority": 3
-                        }
-                ],
+                "visual": [],
                 "writing": [
                         {
                                 "id": "hope-2025",
