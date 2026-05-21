@@ -37,7 +37,7 @@ export const ScrollReveal = memo<ScrollRevealProps>(({
         if (!element) return;
         const observer = new IntersectionObserver(([entry]) => {
             if (entry.isIntersecting) setIsInView(true);
-        }, { threshold: 0.1, rootMargin: '-50px' });
+        }, { threshold: 0, rootMargin: '0px' });
         observer.observe(element);
         return () => observer.disconnect();
     }, []);

@@ -88,7 +88,7 @@ export const useAnimationTrigger = (
 ): [RefObject<HTMLElement | null>, boolean] => {
     const [ref, isIntersecting] = useIntersectionObserver({
         rootMargin: '50px',
-        threshold: 0.1,
+        threshold: 0,
         once: true,
         ...options
     });
