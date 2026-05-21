@@ -1,543 +1,744 @@
 {
-  "metadata": {
-    "lastUpdated": "2026-05-08",
-    "version": "3.3.0"
-  },
-  "artist": {
-    "name": "황경하",
-    "bio": "황경하는 음악 제작자이자 예술 기획자, 현장 기반 문화 프로젝트를 운영하는 실무자다. 노컨트롤 기타리스트로 펑크·얼터너티브 록을 시작해, 이후 포크 음악으로 방향을 전환해 서정성과 친밀감을 살린 곡들을 선보여 왔다. 자립음악생산조합과 예술해방전선 활동을 통해 음악인들의 자립·연대와 상업주의에 맞서는 대안적 음악 생태계 구축을 모색해 왔다. 재개발·젠트리피케이션으로 삶의 터전을 잃은 이들과 연대하고, 노량진수산시장·사드 반대·노동자 투쟁 등 현장의 이야기를 음악·전시·축제로 기록하고 전달한다. 2012 다음뮤직 이달의 음반, 2015·2019·2024 레드어워드, 2017 한국대중음악상 선정위원 특별상 수상. 현재 스스로를 '기획자 50% 활동가 50%'로 규정하며 활동 중.",
-    "philosophy": "현장에서 글, 음악, 사진 등의 예술이 힘을 갖는 순간에 주목하여 여러 분야에서 오랫 동안 활동해왔습니다. 세상의 소외된 이들이 필요로 하는 순간 예술을 통해 힘을 보태고자 합니다.",
-    "contact": {
-      "email": "contact@alf.seoul.kr",
-      "phone": "0507-1384-3144",
-      "address": "서울특별시 은평구 대조동 84-3 3층 스튜디오 놀"
-    },
-    "awards": [
-      {
-        "year": 2012,
-        "name": "다음뮤직 이달의 음반",
-        "work": "No Control",
-        "issuer": "다음뮤직"
-      },
-      {
-        "year": 2015,
-        "name": "레드어워드 주목할만한 연대",
-        "work": "테이크아웃드로잉",
-        "issuer": "레드어워드"
-      },
-      {
-        "year": 2017,
-        "name": "레드어워드 현장",
-        "work": "콜트콜텍 투쟁 10주년 기념음반",
-        "issuer": "레드어워드"
-      },
-      {
-        "year": 2017,
-        "name": "한국대중음악상 선정위원 특별상",
-        "work": "젠트리피케이션",
-        "issuer": "한국대중음악상"
-      },
-      {
-        "year": 2019,
-        "name": "레드어워드 주목할만한 연대",
-        "work": "몸의 중심",
-        "issuer": "레드어워드"
-      },
-      {
-        "year": 2024,
-        "name": "레드어워드 주목할만한 연대",
-        "work": "이름을 모르는 먼 곳의 그대에게",
-        "issuer": "레드어워드"
-      }
-    ]
-  },
-  "works": {
-    "music": [
-      {
-        "id": "no-control",
-        "title": "No Control",
-        "year": 2012,
-        "type": "album",
-        "featured": false,
-        "cover": "/images/defaults/music-default.svg",
-        "description": "펑크 밴드 노컨트롤의 앨범. 다음뮤직 이달의 음반 수상.",
-        "shortDescription": "펑크 밴드 노컨트롤의 데뷔 앨범, 다음뮤직 이달의 음반 수상",
-        "primaryAction": {
-          "type": "play",
-          "url": "",
-          "label": "음악 듣기"
+        "metadata": {
+                "lastUpdated": "2026-05-21",
+                "version": "3.4.0"
         },
-        "tags": ["punk", "no control", "debut"],
-        "showInPages": ["archive"],
-        "archiveCategory": "music",
-        "sortPriority": 13
-      },
-      {
-        "id": "gentrification-2016",
-        "title": "젠트리피케이션",
-        "year": 2016,
-        "type": "album",
-        "featured": true,
-        "cover": "https://image.bugsm.co.kr/album/images/1000/200589/20058944.jpg",
-        "description": "옥바라지골목, 요기가갤러리, 통영생선구이, 뽀빠이화원, 나무그늘, 경의선공유지, 테이크아웃드로잉 등 강제로 쫓겨나 사라질 위기에 처한 소중한 공간들과 마주하여 음악가들과 그 곳의 이야기를 담아 음악을 연주하고 기록했습니다. 2017 한국대중음악상 선정위원 특별상 수상.",
-        "shortDescription": "젠트리피케이션으로 사라져가는 소중한 공간들의 이야기를 담은 음반",
-        "primaryAction": {
-          "type": "play",
-          "url": "https://www.melon.com/album/music.htm?albumId=10003221",
-          "label": "음악 듣기"
+        "artist": {
+                "name": "황경하",
+                "bio": "황경하는 음악 제작자이자 예술 기획자, 현장 기반 문화 프로젝트를 운영하는 실무자다. 노컨트롤 기타리스트로 펑크·얼터너티브 록을 시작해, 이후 포크 음악으로 방향을 전환해 서정성과 친밀감을 살린 곡들을 선보여 왔다. 자립음악생산조합과 예술해방전선 활동을 통해 음악인들의 자립·연대와 상업주의에 맞서는 대안적 음악 생태계 구축을 모색해 왔다. 재개발·젠트리피케이션으로 삶의 터전을 잃은 이들과 연대하고, 노량진수산시장·사드 반대·노동자 투쟁 등 현장의 이야기를 음악·전시·축제로 기록하고 전달한다. 2012 다음뮤직 이달의 음반, 2015·2019·2024 레드어워드, 2017 한국대중음악상 선정위원 특별상 수상. 현재 스스로를 '기획자 50% 활동가 50%'로 규정하며 활동 중.",
+                "philosophy": "현장에서 글, 음악, 사진 등의 예술이 힘을 갖는 순간에 주목하여 여러 분야에서 오랫 동안 활동해왔습니다. 세상의 소외된 이들이 필요로 하는 순간 예술을 통해 힘을 보태고자 합니다.",
+                "contact": {
+                        "email": "contact@alf.seoul.kr",
+                        "phone": "0507-1384-3144",
+                        "address": "서울특별시 은평구 대조동 84-3 3층 스튜디오 놀"
+                },
+                "awards": [
+                        {
+                                "year": 2012,
+                                "name": "다음뮤직 이달의 음반",
+                                "work": "No Control",
+                                "issuer": "다음뮤직"
+                        },
+                        {
+                                "year": 2015,
+                                "name": "레드어워드 주목할만한 연대",
+                                "work": "테이크아웃드로잉",
+                                "issuer": "레드어워드"
+                        },
+                        {
+                                "year": 2017,
+                                "name": "레드어워드 현장",
+                                "work": "콜트콜텍 투쟁 10주년 기념음반",
+                                "issuer": "레드어워드"
+                        },
+                        {
+                                "year": 2017,
+                                "name": "한국대중음악상 선정위원 특별상",
+                                "work": "젠트리피케이션",
+                                "issuer": "한국대중음악상"
+                        },
+                        {
+                                "year": 2019,
+                                "name": "레드어워드 주목할만한 연대",
+                                "work": "몸의 중심",
+                                "issuer": "레드어워드"
+                        },
+                        {
+                                "year": 2024,
+                                "name": "레드어워드 주목할만한 연대",
+                                "work": "이름을 모르는 먼 곳의 그대에게",
+                                "issuer": "레드어워드"
+                        }
+                ]
         },
-        "tags": ["gentrification", "solidarity", "urban"],
-        "showInPages": ["works", "archive", "about"],
-        "archiveCategory": "music",
-        "sortPriority": 11
-      },
-      {
-        "id": "takeout-drawing-2015",
-        "title": "테이크아웃드로잉",
-        "year": 2015,
-        "type": "album",
-        "featured": false,
-        "cover": "/images/defaults/music-default.svg",
-        "description": "이태원 갤러리 테이크아웃드로잉 철거를 막기 위해 기획·제작한 옴니버스 앨범. 2015 레드어워드 주목할만한 연대부문 수상.",
-        "shortDescription": "이태원 테이크아웃드로잉 철거 반대 연대 옴니버스 앨범",
-        "primaryAction": {
-          "type": "play",
-          "url": "",
-          "label": "음악 듣기"
+        "works": {
+                "music": [
+                        {
+                                "id": "no-control",
+                                "title": "No Control",
+                                "year": 2012,
+                                "type": "album",
+                                "featured": false,
+                                "cover": "/images/defaults/music-default.svg",
+                                "description": "펑크 밴드 노컨트롤의 앨범. 다음뮤직 이달의 음반 수상.",
+                                "shortDescription": "펑크 밴드 노컨트롤의 데뷔 앨범, 다음뮤직 이달의 음반 수상",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "punk",
+                                        "no control",
+                                        "debut"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 13
+                        },
+                        {
+                                "id": "gentrification-2016",
+                                "title": "젠트리피케이션",
+                                "year": 2016,
+                                "type": "album",
+                                "featured": true,
+                                "cover": "https://image.bugsm.co.kr/album/images/1000/200589/20058944.jpg",
+                                "description": "옥바라지골목, 요기가갤러리, 통영생선구이, 뽀빠이화원, 나무그늘, 경의선공유지, 테이크아웃드로잉 등 강제로 쫓겨나 사라질 위기에 처한 소중한 공간들과 마주하여 음악가들과 그 곳의 이야기를 담아 음악을 연주하고 기록했습니다. 2017 한국대중음악상 선정위원 특별상 수상.",
+                                "shortDescription": "젠트리피케이션으로 사라져가는 소중한 공간들의 이야기를 담은 음반",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "https://www.melon.com/album/music.htm?albumId=10003221",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "gentrification",
+                                        "solidarity",
+                                        "urban"
+                                ],
+                                "showInPages": [
+                                        "works",
+                                        "archive",
+                                        "about"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 11
+                        },
+                        {
+                                "id": "takeout-drawing-2015",
+                                "title": "테이크아웃드로잉",
+                                "year": 2015,
+                                "type": "album",
+                                "featured": false,
+                                "cover": "/images/defaults/music-default.svg",
+                                "description": "이태원 갤러리 테이크아웃드로잉 철거를 막기 위해 기획·제작한 옴니버스 앨범. 2015 레드어워드 주목할만한 연대부문 수상.",
+                                "shortDescription": "이태원 테이크아웃드로잉 철거 반대 연대 옴니버스 앨범",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "solidarity",
+                                        "gentrification",
+                                        "omnibus",
+                                        "takeout drawing"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 12
+                        },
+                        {
+                                "id": "new-minjung-vol1-2017",
+                                "title": "새 민중음악 선곡집 vol.1",
+                                "year": 2017,
+                                "type": "album",
+                                "featured": false,
+                                "cover": "https://image.bugsm.co.kr/album/images/1000/201254/20125481.jpg",
+                                "description": "사드 배치에 반대하는 성주 소성리 주민들과 5박 6일간 함께 머물며 만든 첫 번째 새 민중음악 선곡집 '소성리의 노래들'. 고립된 채 눈물짓는 주민들의 사연을 음악의 힘으로 알리고 위로하고자 했습니다.",
+                                "shortDescription": "사드 배치에 맞선 성주 소성리 주민들과 만든 새 민중음악 선곡집 1집",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "https://music.bugs.co.kr/album/20125481",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "minjung",
+                                        "solidarity",
+                                        "resistance"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 14
+                        },
+                        {
+                                "id": "new-minjung-vol2-2017",
+                                "title": "새 민중음악 선곡집 vol.2",
+                                "year": 2017,
+                                "type": "album",
+                                "featured": false,
+                                "cover": "https://image.bugsm.co.kr/album/images/1000/201346/20134604.jpg",
+                                "description": "사드 배치로 고통받는 성주 소성리에 직접 레코딩 스튜디오를 차리고 녹음한 두 번째 새 민중음악 선곡집 '연대의 노래'. 김동산, 오재환, 예람, 이형주, 정진석, 쓰다와 함께 현장의 고통을 기록했습니다.",
+                                "shortDescription": "성주 소성리 현장에서 녹음한 새 민중음악 선곡집 2집 '연대의 노래'",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "https://music.bugs.co.kr/album/20134604",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "minjung",
+                                        "solidarity",
+                                        "resistance"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 15
+                        },
+                        {
+                                "id": "new-minjung-vol3-2017",
+                                "title": "새 민중음악 선곡집 vol.3",
+                                "year": 2017,
+                                "type": "album",
+                                "featured": true,
+                                "cover": "https://archivenew.vop.co.kr/images/05670d4ecb375286541262cf7e14b0aa/2018-01/24032527_8.jpg",
+                                "description": "3번째 새 민중음악 선곡집은 최근 무리한 강제집행으로 인해 가게주인이 손가락을 부분절단 당한 서촌의 가게 궁중족발을 위해 만들어졌습니다. 우리는 이 음반을 통해 고통받는 사람들을 위로하고 시대의 야만을 기록하기를 바랍니다.",
+                                "shortDescription": "고통받는 사람들을 위로하고 시대의 야만을 기록하는 새 민중음악 선곡집",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "https://www.melon.com/album/music.htm?albumId=10129121",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "minjung",
+                                        "solidarity",
+                                        "resistance"
+                                ],
+                                "showInPages": [
+                                        "works",
+                                        "archive",
+                                        "about"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 9
+                        },
+                        {
+                                "id": "colt-coltex-10th-2017",
+                                "title": "콜트콜텍 투쟁 10주년 기념음반",
+                                "year": 2017,
+                                "type": "album",
+                                "featured": false,
+                                "cover": "https://image.bugsm.co.kr/album/images/1000/201481/20148163.jpg",
+                                "description": "콜트·콜텍에서 기타를 만들다 부당 해고당한 노동자들의 밴드 음반. 10년 넘는 시간 동안 복직투쟁 중인 노동자들과 함께. 2017 레드어워드 현장부문 수상.",
+                                "shortDescription": "콜트·콜텍 해고노동자 밴드의 10주년 기념 투쟁 음반",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "https://music.bugs.co.kr/album/20148163",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "labor",
+                                        "solidarity",
+                                        "resistance",
+                                        "colt coltex"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 10
+                        },
+                        {
+                                "id": "gyeongha-semin-2018",
+                                "title": "볼지어다 내가 세상 끝날까지 너희와 항상 함께 있으리라",
+                                "year": 2018,
+                                "type": "album",
+                                "featured": false,
+                                "cover": "https://image.bugsm.co.kr/album/images/1000/201991/20199128.jpg",
+                                "description": "강제집행 위기의 족발집 '궁중족발'에서 결성된 황경하·세민의 2인조 포크 듀오 '경하와 세민'의 EP. 궁중족발, 장재7구역, 콜트콜텍 등 투쟁 현장에서 만든 6곡을 담았습니다.",
+                                "shortDescription": "궁중족발에서 결성된 포크 듀오 '경하와 세민'의 EP",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "https://music.bugs.co.kr/album/20199128",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "folk",
+                                        "solidarity",
+                                        "resistance"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 16
+                        },
+                        {
+                                "id": "behold-2018",
+                                "title": "볼찌어다 내가 세상 끝날까지 너희와 항상 함께 있으리라",
+                                "year": 2018,
+                                "type": "album",
+                                "featured": true,
+                                "cover": "https://poclanos.com/drmvsn/wp-content/uploads/2018/10/1011-12-02.jpg",
+                                "description": "재개발 철거피해자 조한정 씨가 폭력적인 강제집행에 저항해 높은 교회 철탑에 매달려 계시는 아래에는 [볼찌어다 내가 세상 끝날까지 너희와 항상 함께 있으리라]가 적힌 현판이 붙어 있었습니다. 경하와 세민 공동 작업.",
+                                "shortDescription": "재개발 철거에 저항하는 이들과 함께하는 연대와 희망의 음반",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "https://www.melon.com/album/detail.htm?albumId=10210636",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "solidarity",
+                                        "resistance",
+                                        "faith"
+                                ],
+                                "showInPages": [
+                                        "works",
+                                        "archive",
+                                        "about"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 8
+                        },
+                        {
+                                "id": "body-center-2019",
+                                "title": "몸의 중심",
+                                "year": 2019,
+                                "type": "album",
+                                "featured": true,
+                                "cover": "https://image.bugsm.co.kr/album/images/1000/202450/20245051.jpg",
+                                "description": "김용균 노동자의 죽음을 추모하는 음반. 이 젊은 비정규직 노동자의 죽음이 잊혀지지 않도록, 많은 이들이 오래도록 기억하고 추모하여 결국에는 세상을 위해 움직일 수 있도록 예술가들이 힘을 합쳤습니다. 2019 레드어워드 주목할만한 연대부문 수상.",
+                                "shortDescription": "비정규직 노동자의 죽음을 추모하며 세상의 변화를 꿈꾸는 음반",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "https://www.melon.com/album/detail.htm?albumId=10272293",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "labor",
+                                        "solidarity",
+                                        "memorial"
+                                ],
+                                "showInPages": [
+                                        "works",
+                                        "archive",
+                                        "about"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 7
+                        },
+                        {
+                                "id": "fish-without-water-2023",
+                                "title": "물고기는 물이 없으면 죽어요",
+                                "year": 2023,
+                                "type": "album",
+                                "featured": true,
+                                "cover": "/images/SCR-20250706-bbyq.png",
+                                "description": "쫓겨난 옛 노량진수산시장 상인들에게 연대하는 음악가들이 힘을 합쳐 만든 음반입니다.",
+                                "shortDescription": "노량진수산시장 상인들과 연대하는 음악가들의 합작 음반",
+                                "primaryAction": {
+                                        "type": "link",
+                                        "url": "https://smartstore.naver.com/koreasmartcoop/products/7868449444",
+                                        "label": "구매하기"
+                                },
+                                "tags": [
+                                        "solidarity",
+                                        "fish market",
+                                        "displacement"
+                                ],
+                                "showInPages": [
+                                        "works",
+                                        "archive",
+                                        "about"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 4
+                        },
+                        {
+                                "id": "ganghojung-2022",
+                                "title": "강호중",
+                                "year": 2022,
+                                "type": "album",
+                                "featured": false,
+                                "cover": "https://image.bugsm.co.kr/album/images/1000/204585/20458556.jpg",
+                                "description": "강호중의 앨범. 프로듀서로 참여.",
+                                "shortDescription": "강호중 앨범 프로듀싱",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "https://music.bugs.co.kr/album/20458556",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "producer",
+                                        "ganghojung",
+                                        "2022"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 5
+                        },
+                        {
+                                "id": "eongadeul-2022",
+                                "title": "엉아들",
+                                "year": 2022,
+                                "type": "album",
+                                "featured": false,
+                                "cover": "/images/defaults/music-default.svg",
+                                "description": "엉아들의 앨범. 프로듀서로 참여.",
+                                "shortDescription": "엉아들 앨범 프로듀싱",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "producer",
+                                        "eongadeul",
+                                        "2022"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 6
+                        },
+                        {
+                                "id": "semin-youlin-2024",
+                                "title": "여린잎 (세민)",
+                                "year": 2024,
+                                "type": "single",
+                                "featured": false,
+                                "cover": "/images/defaults/music-default.svg",
+                                "description": "세민의 싱글 앨범. 기획 및 제작.",
+                                "shortDescription": "세민의 싱글 앨범 기획 및 제작",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "producer",
+                                        "semin",
+                                        "2024"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 3
+                        },
+                        {
+                                "id": "anonymous-distance-2024",
+                                "title": "이름을 모르는 먼 곳의 그대에게",
+                                "year": 2024,
+                                "type": "album",
+                                "featured": false,
+                                "cover": "/images/defaults/music-default.svg",
+                                "description": "옴니버스 앨범. 2024 레드어워드 주목할만한 연대부문 수상.",
+                                "shortDescription": "레드어워드 수상작 — 옴니버스 앨범",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "producer",
+                                        "omnibus",
+                                        "solidarity",
+                                        "award"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 2
+                        },
+                        {
+                                "id": "melting-snow-2024",
+                                "title": "눈녹듯",
+                                "year": 2024,
+                                "type": "single",
+                                "featured": true,
+                                "cover": "https://image.bugsm.co.kr/album/images/1000/206620/20662057.jpg",
+                                "description": "한 어머니의 사랑과 고통을 담은 음악입니다. 눈처럼 켜켜이 쌓여가는 슬픔, 그 속에서 다른 사람들은 이런 고통을 겪지않게 하고자 나아가고 있는 한 강인한 어머니의 마음을 느껴보시기 바랍니다.",
+                                "shortDescription": "자식을 잃은 어머니의 사랑과 고통을 담은 간절한 음악",
+                                "primaryAction": {
+                                        "type": "play",
+                                        "url": "https://www.melon.com/album/detail.htm?albumId=11558423",
+                                        "label": "음악 듣기"
+                                },
+                                "tags": [
+                                        "mother",
+                                        "grief",
+                                        "solidarity",
+                                        "latest"
+                                ],
+                                "showInPages": [
+                                        "works",
+                                        "archive",
+                                        "about"
+                                ],
+                                "archiveCategory": "music",
+                                "sortPriority": 1
+                        }
+                ],
+                "visual": [
+                        {
+                                "id": "stage-and-solidarity-scenes",
+                                "title": "무대와 연대의 순간들",
+                                "year": 2023,
+                                "type": "사진",
+                                "cover": "/images/hwang/3.png",
+                                "images": [
+                                        "/images/hwang/1.png",
+                                        "/images/hwang/3.png",
+                                        "/images/hwang/6.png"
+                                ],
+                                "description": "황경하가 야외와 현장에서 노래하는 장면들을 담은 공연 사진 모음입니다.",
+                                "shortDescription": "현장 공연과 연대의 장면을 담은 사진 모음",
+                                "tags": [
+                                        "performance",
+                                        "solidarity",
+                                        "live"
+                                ],
+                                "showInPages": [],
+                                "archiveCategory": "visual",
+                                "sortPriority": 1
+                        },
+                        {
+                                "id": "portraits-in-stillness",
+                                "title": "인물과 침묵의 초상",
+                                "year": 2024,
+                                "type": "사진",
+                                "cover": "/images/hwang/4.png",
+                                "images": [
+                                        "/images/hwang/2.png",
+                                        "/images/hwang/4.png",
+                                        "/images/hwang/7.png",
+                                        "/images/hwang/9.png",
+                                        "/images/hwang/10.png",
+                                        "/images/hwang/11.png"
+                                ],
+                                "description": "흑백과 저채도의 프레임으로 황경하의 얼굴과 시선을 기록한 인물 사진 연작입니다.",
+                                "shortDescription": "얼굴과 시선을 중심으로 한 인물 사진 연작",
+                                "tags": [
+                                        "portrait",
+                                        "black and white",
+                                        "documentary"
+                                ],
+                                "showInPages": [],
+                                "archiveCategory": "visual",
+                                "sortPriority": 2
+                        },
+                        {
+                                "id": "studio-and-everyday-scenes",
+                                "title": "작업실과 생활의 장면",
+                                "year": 2024,
+                                "type": "사진",
+                                "cover": "/images/hwang/12.png",
+                                "images": [
+                                        "/images/hwang/5.png",
+                                        "/images/hwang/8.png",
+                                        "/images/hwang/12.png"
+                                ],
+                                "description": "카메라를 들고 현장을 바라보거나 실내에서 준비하는 순간 등 작업 전후의 시간을 담은 사진들입니다.",
+                                "shortDescription": "작업 전후의 준비와 생활 장면을 담은 사진 기록",
+                                "tags": [
+                                        "studio",
+                                        "everyday",
+                                        "behind the scenes"
+                                ],
+                                "showInPages": [],
+                                "archiveCategory": "visual",
+                                "sortPriority": 3
+                        }
+                ],
+                "writing": [
+                        {
+                                "id": "hope-2025",
+                                "title": "어디에서 희망을 찾을 것인가",
+                                "year": 2025,
+                                "type": "칼럼",
+                                "cover": "https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/3904000516370.jpg",
+                                "publication": "황해문화 2025년 봄호",
+                                "description": "계엄과 탄핵, 그 이후의 저항에 대해 논하는 글",
+                                "shortDescription": "계엄과 탄핵 이후의 저항과 희망에 대한 성찰",
+                                "excerpt": "진정한 예술은 시대의 아픔에 공감하고, 약자와 연대하며, 세상의 부조리에 저항하는 데에서 나온다...",
+                                "tags": [
+                                        "essay",
+                                        "art theory",
+                                        "resistance",
+                                        "social responsibility"
+                                ],
+                                "primaryAction": {
+                                        "type": "read",
+                                        "url": "https://product.kyobobook.co.kr/detail/S000215985312",
+                                        "label": "원문 보기"
+                                },
+                                "showInPages": [
+                                        "works",
+                                        "archive"
+                                ],
+                                "archiveCategory": "writing",
+                                "sortPriority": 1
+                        },
+                        {
+                                "id": "pocha",
+                                "title": "아현포차 요리책",
+                                "year": 2017,
+                                "type": "르포",
+                                "cover": "https://image.aladin.co.kr/product/11879/85/cover500/k422531933_1.jpg",
+                                "publication": "식소사번",
+                                "description": "쫓겨난 아현포차 노점상 할머니들의 삶과 요리에 대한 철학을 담은 글",
+                                "shortDescription": "아현포차 할머니들의 삶과 요리 철학을 담은 르포",
+                                "excerpt": "할머니들의 먹는 이들에 대한 사랑과 긍정, 요리에 대한 자부심들이 자본주의가 설계한 강력한 계산식을 무력화시키는 순간들을 만날 수 있다.",
+                                "tags": [
+                                        "column",
+                                        "gentrification",
+                                        "urban development"
+                                ],
+                                "primaryAction": {
+                                        "type": "read",
+                                        "url": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=118798544&srsltid=AfmBOoqjySBx9sS1oCA9jNohKrVOvHC7xqZPWVjq6jiUDUygYY8jn-NP",
+                                        "label": "도서 보기"
+                                },
+                                "showInPages": [
+                                        "works",
+                                        "archive"
+                                ],
+                                "archiveCategory": "writing",
+                                "sortPriority": 2
+                        }
+                ],
+                "performance": [
+                        {
+                                "id": "fish-market-solidarity-performance-2024",
+                                "title": "노량진수산시장 상인 연대 공연",
+                                "year": 2024,
+                                "cover": "https://alf.seoul.kr/images/gallery/%EB%AC%BC%EA%B3%A0%EA%B8%B0%20%EC%B5%9C%EC%A2%85%ED%8C%90.mpeg_20230430_154205.233.webp",
+                                "description": "쫓겨난 옛 노량진수산시장 상인들과 함께한 연대 공연입니다. 2019년 10월부터 2024년 8월까지 매주 진행되었습니다.",
+                                "shortDescription": "노량진수산시장 상인들과 함께한 매주 연대 공연 (2019~2024)",
+                                "location": "옛 노량진수산시장",
+                                "tags": [
+                                        "fish market",
+                                        "displacement",
+                                        "solidarity",
+                                        "traditional market"
+                                ],
+                                "showInPages": [
+                                        "works",
+                                        "archive",
+                                        "about"
+                                ],
+                                "archiveCategory": "performance",
+                                "sortPriority": 2
+                        },
+                        {
+                                "id": "-51-plus-festival",
+                                "title": "-51플러스 페스티벌",
+                                "year": 2012,
+                                "description": "2012년부터 2015년까지 기획한 페스티벌.",
+                                "shortDescription": "2012-2015년 기획 페스티벌",
+                                "tags": [
+                                        "festival",
+                                        "planning"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "performance",
+                                "sortPriority": 4
+                        },
+                        {
+                                "id": "hannam-self-reliance-festival",
+                                "title": "한남동 자립심 페스티벌",
+                                "year": 2015,
+                                "description": "2015년 기획한 자립심 페스티벌.",
+                                "shortDescription": "한남동 자립심 페스티벌 기획",
+                                "tags": [
+                                        "festival",
+                                        "planning"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "performance",
+                                "sortPriority": 5
+                        },
+                        {
+                                "id": "record-ruin",
+                                "title": "레코드폐허",
+                                "year": 2011,
+                                "description": "2011년부터 2016년까지 기획한 프로젝트. 레코드와 폐허를 연결하는 문화 프로젝트.",
+                                "shortDescription": "2011-2016년 기획 프로젝트",
+                                "tags": [
+                                        "project",
+                                        "planning",
+                                        "record"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "performance",
+                                "sortPriority": 6
+                        },
+                        {
+                                "id": "noryangjin-exhibition",
+                                "title": "전시 <노량진 - 터, 도시, 사람>",
+                                "year": 2020,
+                                "description": "노량진수산시장 관련 전시 기획 및 제작.",
+                                "shortDescription": "노량진 관련 전시 기획",
+                                "tags": [
+                                        "exhibition",
+                                        "noryangjin"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "performance",
+                                "sortPriority": 7
+                        },
+                        {
+                                "id": "seed-festival",
+                                "title": "축제 <씨앗페>",
+                                "year": 2023,
+                                "description": "2023년 공동기획한 축제.",
+                                "shortDescription": "2023년 공동기획 축제",
+                                "tags": [
+                                        "festival",
+                                        "co-planning"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "performance",
+                                "sortPriority": 8
+                        },
+                        {
+                                "id": "gangjeong-peace-festival",
+                                "title": "축제 <강정피스앤뮤직캠프>",
+                                "year": 2023,
+                                "description": "2023년부터 2026년까지 공동기획한 강정 평화 음악 캠프.",
+                                "shortDescription": "2023-2026년 공동기획 평화 음악 캠프",
+                                "tags": [
+                                        "festival",
+                                        "peace",
+                                        "co-planning"
+                                ],
+                                "showInPages": [
+                                        "archive"
+                                ],
+                                "archiveCategory": "performance",
+                                "sortPriority": 9
+                        }
+                ]
         },
-        "tags": ["solidarity", "gentrification", "omnibus", "takeout drawing"],
-        "showInPages": ["archive"],
-        "archiveCategory": "music",
-        "sortPriority": 12
-      },
-      {
-        "id": "new-minjung-vol3-2017",
-        "title": "새 민중음악 선곡집 vol.3",
-        "year": 2017,
-        "type": "album",
-        "featured": true,
-        "cover": "https://archivenew.vop.co.kr/images/05670d4ecb375286541262cf7e14b0aa/2018-01/24032527_8.jpg",
-        "description": "3번째 새 민중음악 선곡집은 최근 무리한 강제집행으로 인해 가게주인이 손가락을 부분절단 당한 서촌의 가게 궁중족발을 위해 만들어졌습니다. 우리는 이 음반을 통해 고통받는 사람들을 위로하고 시대의 야만을 기록하기를 바랍니다.",
-        "shortDescription": "고통받는 사람들을 위로하고 시대의 야만을 기록하는 새 민중음악 선곡집",
-        "primaryAction": {
-          "type": "play",
-          "url": "https://www.melon.com/album/music.htm?albumId=10129121",
-          "label": "음악 듣기"
+        "events": {
+                "concerts": [
+                        {
+                                "id": "fish-market-solidarity-performance-2024",
+                                "title": "노량진수산시장 상인 연대 공연",
+                                "date": "2024-06-01",
+                                "location": "옛 노량진수산시장",
+                                "status": "past"
+                        }
+                ]
         },
-        "tags": ["minjung", "solidarity", "resistance"],
-        "showInPages": ["works", "archive", "about"],
-        "archiveCategory": "music",
-        "sortPriority": 9
-      },
-      {
-        "id": "colt-coltex-10th-2017",
-        "title": "콜트콜텍 투쟁 10주년 기념음반",
-        "year": 2017,
-        "type": "album",
-        "featured": false,
-        "cover": "/images/defaults/music-default.svg",
-        "description": "콜트·콜텍에서 기타를 만들다 부당 해고당한 노동자들의 밴드 음반. 10년 넘는 시간 동안 복직투쟁 중인 노동자들과 함께. 2017 레드어워드 현장부문 수상.",
-        "shortDescription": "콜트·콜텍 해고노동자 밴드의 10주년 기념 투쟁 음반",
-        "primaryAction": {
-          "type": "play",
-          "url": "",
-          "label": "음악 듣기"
-        },
-        "tags": ["labor", "solidarity", "resistance", "colt coltex"],
-        "showInPages": ["archive"],
-        "archiveCategory": "music",
-        "sortPriority": 10
-      },
-      {
-        "id": "behold-2018",
-        "title": "볼찌어다 내가 세상 끝날까지 너희와 항상 함께 있으리라",
-        "year": 2018,
-        "type": "album",
-        "featured": true,
-        "cover": "https://poclanos.com/drmvsn/wp-content/uploads/2018/10/1011-12-02.jpg",
-        "description": "재개발 철거피해자 조한정 씨가 폭력적인 강제집행에 저항해 높은 교회 철탑에 매달려 계시는 아래에는 [볼찌어다 내가 세상 끝날까지 너희와 항상 함께 있으리라]가 적힌 현판이 붙어 있었습니다. 경하와 세민 공동 작업.",
-        "shortDescription": "재개발 철거에 저항하는 이들과 함께하는 연대와 희망의 음반",
-        "primaryAction": {
-          "type": "play",
-          "url": "https://www.melon.com/album/detail.htm?albumId=10210636",
-          "label": "음악 듣기"
-        },
-        "tags": ["solidarity", "resistance", "faith"],
-        "showInPages": ["works", "archive", "about"],
-        "archiveCategory": "music",
-        "sortPriority": 8
-      },
-      {
-        "id": "body-center-2019",
-        "title": "몸의 중심",
-        "year": 2019,
-        "type": "album",
-        "featured": true,
-        "cover": "https://image.bugsm.co.kr/album/images/1000/202450/20245051.jpg",
-        "description": "김용균 노동자의 죽음을 추모하는 음반. 이 젊은 비정규직 노동자의 죽음이 잊혀지지 않도록, 많은 이들이 오래도록 기억하고 추모하여 결국에는 세상을 위해 움직일 수 있도록 예술가들이 힘을 합쳤습니다. 2019 레드어워드 주목할만한 연대부문 수상.",
-        "shortDescription": "비정규직 노동자의 죽음을 추모하며 세상의 변화를 꿈꾸는 음반",
-        "primaryAction": {
-          "type": "play",
-          "url": "https://www.melon.com/album/detail.htm?albumId=10272293",
-          "label": "음악 듣기"
-        },
-        "tags": ["labor", "solidarity", "memorial"],
-        "showInPages": ["works", "archive", "about"],
-        "archiveCategory": "music",
-        "sortPriority": 7
-      },
-      {
-        "id": "fish-without-water-2023",
-        "title": "물고기는 물이 없으면 죽어요",
-        "year": 2023,
-        "type": "album",
-        "featured": true,
-        "cover": "/images/SCR-20250706-bbyq.png",
-        "description": "쫓겨난 옛 노량진수산시장 상인들에게 연대하는 음악가들이 힘을 합쳐 만든 음반입니다.",
-        "shortDescription": "노량진수산시장 상인들과 연대하는 음악가들의 합작 음반",
-        "primaryAction": {
-          "type": "link",
-          "url": "https://smartstore.naver.com/koreasmartcoop/products/7868449444",
-          "label": "구매하기"
-        },
-        "tags": ["solidarity", "fish market", "displacement"],
-        "showInPages": ["works", "archive", "about"],
-        "archiveCategory": "music",
-        "sortPriority": 4
-      },
-      {
-        "id": "ganghojung-2022",
-        "title": "강호중",
-        "year": 2022,
-        "type": "album",
-        "featured": false,
-        "cover": "/images/defaults/music-default.svg",
-        "description": "강호중의 앨범. 프로듀서로 참여.",
-        "shortDescription": "강호중 앨범 프로듀싱",
-        "primaryAction": {
-          "type": "play",
-          "url": "",
-          "label": "음악 듣기"
-        },
-        "tags": ["producer", "ganghojung", "2022"],
-        "showInPages": ["archive"],
-        "archiveCategory": "music",
-        "sortPriority": 5
-      },
-      {
-        "id": "eongadeul-2022",
-        "title": "엉아들",
-        "year": 2022,
-        "type": "album",
-        "featured": false,
-        "cover": "/images/defaults/music-default.svg",
-        "description": "엉아들의 앨범. 프로듀서로 참여.",
-        "shortDescription": "엉아들 앨범 프로듀싱",
-        "primaryAction": {
-          "type": "play",
-          "url": "",
-          "label": "음악 듣기"
-        },
-        "tags": ["producer", "eongadeul", "2022"],
-        "showInPages": ["archive"],
-        "archiveCategory": "music",
-        "sortPriority": 6
-      },
-      {
-        "id": "semin-youlin-2024",
-        "title": "여린잎 (세민)",
-        "year": 2024,
-        "type": "single",
-        "featured": false,
-        "cover": "/images/defaults/music-default.svg",
-        "description": "세민의 싱글 앨범. 기획 및 제작.",
-        "shortDescription": "세민의 싱글 앨범 기획 및 제작",
-        "primaryAction": {
-          "type": "play",
-          "url": "",
-          "label": "음악 듣기"
-        },
-        "tags": ["producer", "semin", "2024"],
-        "showInPages": ["archive"],
-        "archiveCategory": "music",
-        "sortPriority": 3
-      },
-      {
-        "id": "anonymous-distance-2024",
-        "title": "이름을 모르는 먼 곳의 그대에게",
-        "year": 2024,
-        "type": "album",
-        "featured": false,
-        "cover": "/images/defaults/music-default.svg",
-        "description": "옴니버스 앨범. 2024 레드어워드 주목할만한 연대부문 수상.",
-        "shortDescription": "레드어워드 수상작 — 옴니버스 앨범",
-        "primaryAction": {
-          "type": "play",
-          "url": "",
-          "label": "음악 듣기"
-        },
-        "tags": ["producer", "omnibus", "solidarity", "award"],
-        "showInPages": ["archive"],
-        "archiveCategory": "music",
-        "sortPriority": 2
-      },
-      {
-        "id": "melting-snow-2024",
-        "title": "눈녹듯",
-        "year": 2024,
-        "type": "single",
-        "featured": true,
-        "cover": "https://image.bugsm.co.kr/album/images/1000/206620/20662057.jpg",
-        "description": "한 어머니의 사랑과 고통을 담은 음악입니다. 눈처럼 켜켜이 쌓여가는 슬픔, 그 속에서 다른 사람들은 이런 고통을 겪지않게 하고자 나아가고 있는 한 강인한 어머니의 마음을 느껴보시기 바랍니다.",
-        "shortDescription": "자식을 잃은 어머니의 사랑과 고통을 담은 간절한 음악",
-        "primaryAction": {
-          "type": "play",
-          "url": "https://www.melon.com/album/detail.htm?albumId=11558423",
-          "label": "음악 듣기"
-        },
-        "tags": ["mother", "grief", "solidarity", "latest"],
-        "showInPages": ["works", "archive", "about"],
-        "archiveCategory": "music",
-        "sortPriority": 1
-      }
-    ],
-    "visual": [
-      {
-        "id": "stage-and-solidarity-scenes",
-        "title": "무대와 연대의 순간들",
-        "year": 2023,
-        "type": "사진",
-        "cover": "/images/hwang/3.png",
-        "images": [
-          "/images/hwang/1.png",
-          "/images/hwang/3.png",
-          "/images/hwang/6.png"
-        ],
-        "description": "황경하가 야외와 현장에서 노래하는 장면들을 담은 공연 사진 모음입니다.",
-        "shortDescription": "현장 공연과 연대의 장면을 담은 사진 모음",
-        "tags": [
-          "performance",
-          "solidarity",
-          "live"
-        ],
-        "showInPages": [],
-        "archiveCategory": "visual",
-        "sortPriority": 1
-      },
-      {
-        "id": "portraits-in-stillness",
-        "title": "인물과 침묵의 초상",
-        "year": 2024,
-        "type": "사진",
-        "cover": "/images/hwang/4.png",
-        "images": [
-          "/images/hwang/2.png",
-          "/images/hwang/4.png",
-          "/images/hwang/7.png",
-          "/images/hwang/9.png",
-          "/images/hwang/10.png",
-          "/images/hwang/11.png"
-        ],
-        "description": "흑백과 저채도의 프레임으로 황경하의 얼굴과 시선을 기록한 인물 사진 연작입니다.",
-        "shortDescription": "얼굴과 시선을 중심으로 한 인물 사진 연작",
-        "tags": [
-          "portrait",
-          "black and white",
-          "documentary"
-        ],
-        "showInPages": [],
-        "archiveCategory": "visual",
-        "sortPriority": 2
-      },
-      {
-        "id": "studio-and-everyday-scenes",
-        "title": "작업실과 생활의 장면",
-        "year": 2024,
-        "type": "사진",
-        "cover": "/images/hwang/12.png",
-        "images": [
-          "/images/hwang/5.png",
-          "/images/hwang/8.png",
-          "/images/hwang/12.png"
-        ],
-        "description": "카메라를 들고 현장을 바라보거나 실내에서 준비하는 순간 등 작업 전후의 시간을 담은 사진들입니다.",
-        "shortDescription": "작업 전후의 준비와 생활 장면을 담은 사진 기록",
-        "tags": [
-          "studio",
-          "everyday",
-          "behind the scenes"
-        ],
-        "showInPages": [],
-        "archiveCategory": "visual",
-        "sortPriority": 3
-      }
-    ],
-    "writing": [
-      {
-        "id": "hope-2025",
-        "title": "어디에서 희망을 찾을 것인가",
-        "year": 2025,
-        "type": "칼럼",
-        "cover": "https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/3904000516370.jpg",
-        "publication": "황해문화 2025년 봄호",
-        "description": "계엄과 탄핵, 그 이후의 저항에 대해 논하는 글",
-        "shortDescription": "계엄과 탄핵 이후의 저항과 희망에 대한 성찰",
-        "excerpt": "진정한 예술은 시대의 아픔에 공감하고, 약자와 연대하며, 세상의 부조리에 저항하는 데에서 나온다...",
-        "tags": [
-          "essay",
-          "art theory",
-          "resistance",
-          "social responsibility"
-        ],
-        "primaryAction": {
-          "type": "read",
-          "url": "https://product.kyobobook.co.kr/detail/S000215985312",
-          "label": "원문 보기"
-        },
-        "showInPages": [
-          "works",
-          "archive"
-        ],
-        "archiveCategory": "writing",
-        "sortPriority": 1
-      },
-      {
-        "id": "pocha",
-        "title": "아현포차 요리책",
-        "year": 2017,
-        "type": "르포",
-        "cover": "https://image.aladin.co.kr/product/11879/85/cover500/k422531933_1.jpg",
-        "publication": "식소사번",
-        "description": "쫓겨난 아현포차 노점상 할머니들의 삶과 요리에 대한 철학을 담은 글",
-        "shortDescription": "아현포차 할머니들의 삶과 요리 철학을 담은 르포",
-        "excerpt": "할머니들의 먹는 이들에 대한 사랑과 긍정, 요리에 대한 자부심들이 자본주의가 설계한 강력한 계산식을 무력화시키는 순간들을 만날 수 있다.",
-        "tags": [
-          "column",
-          "gentrification",
-          "urban development"
-        ],
-        "primaryAction": {
-          "type": "read",
-          "url": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=118798544&srsltid=AfmBOoqjySBx9sS1oCA9jNohKrVOvHC7xqZPWVjq6jiUDUygYY8jn-NP",
-          "label": "도서 보기"
-        },
-        "showInPages": [
-          "works",
-          "archive"
-        ],
-        "archiveCategory": "writing",
-        "sortPriority": 2
-      }
-    ],
-    "performance": [
-      {
-        "id": "fish-market-solidarity-performance-2024",
-        "title": "노량진수산시장 상인 연대 공연",
-        "year": 2024,
-        "cover": "https://alf.seoul.kr/images/gallery/%EB%AC%BC%EA%B3%A0%EA%B8%B0%20%EC%B5%9C%EC%A2%85%ED%8C%90.mpeg_20230430_154205.233.webp",
-        "description": "쫓겨난 옛 노량진수산시장 상인들과 함께한 연대 공연입니다. 2019년 10월부터 2024년 8월까지 매주 진행되었습니다.",
-        "shortDescription": "노량진수산시장 상인들과 함께한 매주 연대 공연 (2019~2024)",
-        "location": "옛 노량진수산시장",
-        "tags": [
-          "fish market",
-          "displacement",
-          "solidarity",
-          "traditional market"
-        ],
-        "showInPages": [
-          "works",
-          "archive",
-          "about"
-        ],
-        "archiveCategory": "performance",
-        "sortPriority": 2
-      },
-      {
-        "id": "-51-plus-festival",
-        "title": "-51플러스 페스티벌",
-        "year": 2012,
-        "description": "2012년부터 2015년까지 기획한 페스티벌.",
-        "shortDescription": "2012-2015년 기획 페스티벌",
-        "tags": ["festival", "planning"],
-        "showInPages": ["archive"],
-        "archiveCategory": "performance",
-        "sortPriority": 4
-      },
-      {
-        "id": "hannam-self-reliance-festival",
-        "title": "한남동 자립심 페스티벌",
-        "year": 2015,
-        "description": "2015년 기획한 자립심 페스티벌.",
-        "shortDescription": "한남동 자립심 페스티벌 기획",
-        "tags": ["festival", "planning"],
-        "showInPages": ["archive"],
-        "archiveCategory": "performance",
-        "sortPriority": 5
-      },
-      {
-        "id": "record-ruin",
-        "title": "레코드폐허",
-        "year": 2011,
-        "description": "2011년부터 2016년까지 기획한 프로젝트. 레코드와 폐허를 연결하는 문화 프로젝트.",
-        "shortDescription": "2011-2016년 기획 프로젝트",
-        "tags": ["project", "planning", "record"],
-        "showInPages": ["archive"],
-        "archiveCategory": "performance",
-        "sortPriority": 6
-      },
-      {
-        "id": "noryangjin-exhibition",
-        "title": "전시 <노량진 - 터, 도시, 사람>",
-        "year": 2020,
-        "description": "노량진수산시장 관련 전시 기획 및 제작.",
-        "shortDescription": "노량진 관련 전시 기획",
-        "tags": ["exhibition", "noryangjin"],
-        "showInPages": ["archive"],
-        "archiveCategory": "performance",
-        "sortPriority": 7
-      },
-      {
-        "id": "seed-festival",
-        "title": "축제 <씨앗페>",
-        "year": 2023,
-        "description": "2023년 공동기획한 축제.",
-        "shortDescription": "2023년 공동기획 축제",
-        "tags": ["festival", "co-planning"],
-        "showInPages": ["archive"],
-        "archiveCategory": "performance",
-        "sortPriority": 8
-      },
-      {
-        "id": "gangjeong-peace-festival",
-        "title": "축제 <강정피스앤뮤직캠프>",
-        "year": 2023,
-        "description": "2023년부터 2026년까지 공동기획한 강정 평화 음악 캠프.",
-        "shortDescription": "2023-2026년 공동기획 평화 음악 캠프",
-        "tags": ["festival", "peace", "co-planning"],
-        "showInPages": ["archive"],
-        "archiveCategory": "performance",
-        "sortPriority": 9
-      }
-    ]
-  },
-  "events": {
-    "concerts": [
-      {
-        "id": "fish-market-solidarity-performance-2024",
-        "title": "노량진수산시장 상인 연대 공연",
-        "date": "2024-06-01",
-        "location": "옛 노량진수산시장",
-        "status": "past"
-      }
-    ]
-  },
-  "news": [
-    {
-      "id": "new-single-2024",
-      "title": "새 싱글 '눈녹듯' 발매",
-      "date": "2024-07-05",
-      "content": "자식을 잃은 어머니의 가슴 저미는 아픔을 담은 새 싱글 '눈녹듯'을 발매했습니다.",
-      "featured": true
-    }
-  ]
+        "news": [
+                {
+                        "id": "new-single-2024",
+                        "title": "새 싱글 '눈녹듯' 발매",
+                        "date": "2024-07-05",
+                        "content": "자식을 잃은 어머니의 가슴 저미는 아픔을 담은 새 싱글 '눈녹듯'을 발매했습니다.",
+                        "featured": true
+                }
+        ]
 }
