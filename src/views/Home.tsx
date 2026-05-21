@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, User, Music, Phone } from 'lucide-react';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
 import Image from 'next/image';
@@ -79,11 +79,12 @@ const QuickNavigation: React.FC = () => {
       name: t('nav.about'),
       path: '/about',
       description: t('home.quickLinks.aboutDesc'),
-      icon: '👤',
+      icon: User,
       classes: {
         line: 'bg-brand-solidarity-500',
         iconBg: 'bg-brand-solidarity-500/10',
         iconBgHover: 'group-hover:bg-brand-solidarity-500/20',
+        iconColor: 'text-brand-solidarity-400',
         textHover: 'group-hover:text-brand-solidarity-300',
         arrow: 'text-brand-solidarity-400'
       }
@@ -92,11 +93,12 @@ const QuickNavigation: React.FC = () => {
       name: t('nav.works'),
       path: '/works',
       description: t('home.quickLinks.worksDesc'),
-      icon: '🎵',
+      icon: Music,
       classes: {
         line: 'bg-brand-earth-500',
         iconBg: 'bg-brand-earth-500/10',
         iconBgHover: 'group-hover:bg-brand-earth-500/20',
+        iconColor: 'text-brand-earth-400',
         textHover: 'group-hover:text-brand-earth-300',
         arrow: 'text-brand-earth-400'
       }
@@ -105,11 +107,12 @@ const QuickNavigation: React.FC = () => {
       name: t('nav.contact'),
       path: '/contact',
       description: t('home.quickLinks.contactDesc'),
-      icon: '📞',
+      icon: Phone,
       classes: {
         line: 'bg-brand-harmony-500',
         iconBg: 'bg-brand-harmony-500/10',
         iconBgHover: 'group-hover:bg-brand-harmony-500/20',
+        iconColor: 'text-brand-harmony-400',
         textHover: 'group-hover:text-brand-harmony-300',
         arrow: 'text-brand-harmony-400'
       }
@@ -122,16 +125,16 @@ const QuickNavigation: React.FC = () => {
         {quickLinks.map((link) => (
           <div
             key={link.name}
-            className="group relative w-full overflow-hidden rounded-xl border border-gray-700 bg-gray-800 px-6 pb-6 pt-8 shadow-lg transition-[transform,background-color,border-color] duration-300 hover:-translate-y-1 hover:scale-105 hover:border-gray-600 hover:bg-gray-700"
+            className="group relative flex flex-col w-full overflow-hidden rounded-xl border border-gray-700 bg-gray-800 px-6 pb-6 pt-8 shadow-lg transition-[transform,background-color,border-color] duration-300 hover:-translate-y-1 hover:scale-105 hover:border-gray-600 hover:bg-gray-700"
           >
             <div className={`absolute left-0 top-0 h-1 w-full ${link.classes.line}`} />
 
-            <Link href={withLocalePrefix(link.path, locale)} className="block">
+            <Link href={withLocalePrefix(link.path, locale)} className="flex flex-1 flex-col justify-center">
               <div className="mb-4 flex flex-col items-center">
                 <div
                   className={`mb-3 flex h-12 w-12 items-center justify-center rounded-lg transition-colors duration-300 ${link.classes.iconBg} ${link.classes.iconBgHover}`}
                 >
-                  <span className="text-2xl">{link.icon}</span>
+                  <link.icon className={`h-6 w-6 ${link.classes.iconColor}`} />
                 </div>
                 <h3
                   className={`text-center font-santokki text-xl font-bold text-gray-100 transition-colors duration-300 ${link.classes.textHover}`}
