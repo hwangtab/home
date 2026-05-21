@@ -188,15 +188,11 @@ type WorksCollection = Partial<Record<WorkCategory, Work[]>>;
  * 통합 작품 데이터 전용 훅
  * WorksCollection을 Work[]로 평탄화하여 타입 안전하게 처리.
  */
-export const useWorksData = (worksData: WorksCollection | null, pageType: 'works' | 'archive' | 'about' | 'all' = 'all') => {
+export const useWorksData = (worksData: WorksCollection | null) => {
     const allWorks = useMemo(() => {
         if (!worksData) return [];
-        const works: Work[] = WORK_CATEGORIES.flatMap(
-            (category) => worksData[category] || []
-        );
-        if (pageType === 'all') return works;
-        return works.filter((work) => work.showInPages?.includes(pageType));
-    }, [worksData, pageType]);
+        return WORK_CATEGORIES.flatMap((category) => worksData[category] || []) as Work[];
+    }, [worksData]);
 
     const processor = useDataProcessor<Work>(allWorks, {
         filterKey: 'archiveCategory',

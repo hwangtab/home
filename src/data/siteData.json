@@ -1,7 +1,7 @@
 {
         "metadata": {
                 "lastUpdated": "2026-05-21",
-                "version": "3.4.0"
+                "version": "3.5.0"
         },
         "artist": {
                 "name": "황경하",
@@ -72,9 +72,6 @@
                                         "no control",
                                         "debut"
                                 ],
-                                "showInPages": [
-                                        "archive"
-                                ],
                                 "archiveCategory": "music",
                                 "sortPriority": 13
                         },
@@ -96,11 +93,6 @@
                                         "gentrification",
                                         "solidarity",
                                         "urban"
-                                ],
-                                "showInPages": [
-                                        "works",
-                                        "archive",
-                                        "about"
                                 ],
                                 "archiveCategory": "music",
                                 "sortPriority": 11
@@ -125,9 +117,6 @@
                                         "omnibus",
                                         "takeout drawing"
                                 ],
-                                "showInPages": [
-                                        "archive"
-                                ],
                                 "archiveCategory": "music",
                                 "sortPriority": 12
                         },
@@ -149,9 +138,6 @@
                                         "minjung",
                                         "solidarity",
                                         "resistance"
-                                ],
-                                "showInPages": [
-                                        "works"
                                 ],
                                 "archiveCategory": "music",
                                 "sortPriority": 14
@@ -175,9 +161,6 @@
                                         "solidarity",
                                         "resistance"
                                 ],
-                                "showInPages": [
-                                        "works"
-                                ],
                                 "archiveCategory": "music",
                                 "sortPriority": 15
                         },
@@ -199,11 +182,6 @@
                                         "minjung",
                                         "solidarity",
                                         "resistance"
-                                ],
-                                "showInPages": [
-                                        "works",
-                                        "archive",
-                                        "about"
                                 ],
                                 "archiveCategory": "music",
                                 "sortPriority": 9
@@ -228,9 +206,6 @@
                                         "resistance",
                                         "colt coltex"
                                 ],
-                                "showInPages": [
-                                        "archive"
-                                ],
                                 "archiveCategory": "music",
                                 "sortPriority": 10
                         },
@@ -252,9 +227,6 @@
                                         "folk",
                                         "solidarity",
                                         "resistance"
-                                ],
-                                "showInPages": [
-                                        "works"
                                 ],
                                 "archiveCategory": "music",
                                 "sortPriority": 16
@@ -278,11 +250,6 @@
                                         "resistance",
                                         "faith"
                                 ],
-                                "showInPages": [
-                                        "works",
-                                        "archive",
-                                        "about"
-                                ],
                                 "archiveCategory": "music",
                                 "sortPriority": 8
                         },
@@ -304,11 +271,6 @@
                                         "labor",
                                         "solidarity",
                                         "memorial"
-                                ],
-                                "showInPages": [
-                                        "works",
-                                        "archive",
-                                        "about"
                                 ],
                                 "archiveCategory": "music",
                                 "sortPriority": 7
@@ -332,11 +294,6 @@
                                         "fish market",
                                         "displacement"
                                 ],
-                                "showInPages": [
-                                        "works",
-                                        "archive",
-                                        "about"
-                                ],
                                 "archiveCategory": "music",
                                 "sortPriority": 4
                         },
@@ -358,9 +315,6 @@
                                         "producer",
                                         "ganghojung",
                                         "2022"
-                                ],
-                                "showInPages": [
-                                        "archive"
                                 ],
                                 "archiveCategory": "music",
                                 "sortPriority": 5
@@ -384,9 +338,6 @@
                                         "eongadeul",
                                         "2022"
                                 ],
-                                "showInPages": [
-                                        "archive"
-                                ],
                                 "archiveCategory": "music",
                                 "sortPriority": 6
                         },
@@ -408,9 +359,6 @@
                                         "producer",
                                         "semin",
                                         "2024"
-                                ],
-                                "showInPages": [
-                                        "archive"
                                 ],
                                 "archiveCategory": "music",
                                 "sortPriority": 3
@@ -435,9 +383,6 @@
                                         "solidarity",
                                         "award"
                                 ],
-                                "showInPages": [
-                                        "archive"
-                                ],
                                 "archiveCategory": "music",
                                 "sortPriority": 2
                         },
@@ -460,11 +405,6 @@
                                         "grief",
                                         "solidarity",
                                         "latest"
-                                ],
-                                "showInPages": [
-                                        "works",
-                                        "archive",
-                                        "about"
                                 ],
                                 "archiveCategory": "music",
                                 "sortPriority": 1
@@ -489,7 +429,6 @@
                                         "solidarity",
                                         "live"
                                 ],
-                                "showInPages": [],
                                 "archiveCategory": "visual",
                                 "sortPriority": 1
                         },
@@ -514,7 +453,6 @@
                                         "black and white",
                                         "documentary"
                                 ],
-                                "showInPages": [],
                                 "archiveCategory": "visual",
                                 "sortPriority": 2
                         },
@@ -536,7 +474,6 @@
                                         "everyday",
                                         "behind the scenes"
                                 ],
-                                "showInPages": [],
                                 "archiveCategory": "visual",
                                 "sortPriority": 3
                         }
@@ -563,10 +500,6 @@
                                         "url": "https://product.kyobobook.co.kr/detail/S000215985312",
                                         "label": "원문 보기"
                                 },
-                                "showInPages": [
-                                        "works",
-                                        "archive"
-                                ],
                                 "archiveCategory": "writing",
                                 "sortPriority": 1
                         },
@@ -590,10 +523,6 @@
                                         "url": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=118798544&srsltid=AfmBOoqjySBx9sS1oCA9jNohKrVOvHC7xqZPWVjq6jiUDUygYY8jn-NP",
                                         "label": "도서 보기"
                                 },
-                                "showInPages": [
-                                        "works",
-                                        "archive"
-                                ],
                                 "archiveCategory": "writing",
                                 "sortPriority": 2
                         }
@@ -613,11 +542,6 @@
                                         "solidarity",
                                         "traditional market"
                                 ],
-                                "showInPages": [
-                                        "works",
-                                        "archive",
-                                        "about"
-                                ],
                                 "archiveCategory": "performance",
                                 "sortPriority": 2
                         },
@@ -631,9 +555,6 @@
                                         "festival",
                                         "planning"
                                 ],
-                                "showInPages": [
-                                        "archive"
-                                ],
                                 "archiveCategory": "performance",
                                 "sortPriority": 4
                         },
@@ -646,9 +567,6 @@
                                 "tags": [
                                         "festival",
                                         "planning"
-                                ],
-                                "showInPages": [
-                                        "archive"
                                 ],
                                 "archiveCategory": "performance",
                                 "sortPriority": 5
@@ -664,9 +582,6 @@
                                         "planning",
                                         "record"
                                 ],
-                                "showInPages": [
-                                        "archive"
-                                ],
                                 "archiveCategory": "performance",
                                 "sortPriority": 6
                         },
@@ -679,9 +594,6 @@
                                 "tags": [
                                         "exhibition",
                                         "noryangjin"
-                                ],
-                                "showInPages": [
-                                        "archive"
                                 ],
                                 "archiveCategory": "performance",
                                 "sortPriority": 7
@@ -696,9 +608,6 @@
                                         "festival",
                                         "co-planning"
                                 ],
-                                "showInPages": [
-                                        "archive"
-                                ],
                                 "archiveCategory": "performance",
                                 "sortPriority": 8
                         },
@@ -712,9 +621,6 @@
                                         "festival",
                                         "peace",
                                         "co-planning"
-                                ],
-                                "showInPages": [
-                                        "archive"
                                 ],
                                 "archiveCategory": "performance",
                                 "sortPriority": 9

@@ -15,7 +15,7 @@ import { useLanguage } from '../i18n';
 const About: React.FC = () => {
   const { t, language } = useLanguage();
   const { data: aboutPageData } = useAboutPageData(language);
-  const { timelineData } = useWorksData(aboutPageData.works, 'about');
+  const { timelineData } = useWorksData(aboutPageData.works);
 
   return (
     <div>

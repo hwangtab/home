@@ -5,7 +5,6 @@ import type {
   Events,
   MusicWork,
   NewsItem,
-  PageType,
   SiteData,
   SiteMetadata,
   StruggleWork,
@@ -87,17 +86,6 @@ const localizedSiteDataMap: Record<SupportedLocale, NormalizedSiteData> = {
   en: normalizeSiteData(translateSiteData(rawSiteData, 'en'))
 };
 
-const filterWorksByPage = (
-  works: NormalizedWorks,
-  pageType: Exclude<PageType, 'all'>
-): NormalizedWorks => ({
-  music: works.music.filter((work) => work.showInPages?.includes(pageType)),
-  visual: works.visual.filter((work) => work.showInPages?.includes(pageType)),
-  writing: works.writing.filter((work) => work.showInPages?.includes(pageType)),
-  performance: works.performance.filter((work) => work.showInPages?.includes(pageType)),
-  struggle: works.struggle.filter((work) => work.showInPages?.includes(pageType))
-});
-
 const buildPageDataMap = (siteData: NormalizedSiteData): PageDataMap => ({
   home: {
     metadata: siteData.metadata,
@@ -112,7 +100,7 @@ const buildPageDataMap = (siteData: NormalizedSiteData): PageDataMap => ({
   about: {
     metadata: siteData.metadata,
     artist: siteData.artist,
-    works: filterWorksByPage(siteData.works, 'about')
+    works: siteData.works
   },
   works: {
     metadata: siteData.metadata,
@@ -143,19 +131,6 @@ export const getPageData = <K extends SitePageKey>(
   pageKey: K,
   locale: SupportedLocale = 'ko'
 ): PageDataMap[K] => localizedPageDataMap[locale][pageKey];
-
-export const getWorksForPage = (
-  pageType: PageType,
-  locale: SupportedLocale = 'ko'
-): NormalizedWorks => {
-  const siteData = getSiteData(locale);
-
-  if (pageType === 'all') {
-    return siteData.works;
-  }
-
-  return filterWorksByPage(siteData.works, pageType);
-};
 
 export const getAllWorks = (locale: SupportedLocale = 'ko'): WorkDetail[] => {
   const siteData = getSiteData(locale);

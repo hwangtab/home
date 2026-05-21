@@ -53,15 +53,19 @@ const Works: React.FC = () => {
     const element = document.getElementById(`work-${workIdParam}`);
     if (!element) {
       // DOM 렌더링 대기: 필터 변경 직후 element가 아직 없을 수 있음
+      let highlightCleanup: (() => void) | undefined;
       const rafId = requestAnimationFrame(() => {
         const el = document.getElementById(`work-${workIdParam}`);
         if (!el) return;
-        startHighlight(el);
+        highlightCleanup = startHighlight(el);
       });
-      return () => cancelAnimationFrame(rafId);
+      return () => {
+        cancelAnimationFrame(rafId);
+        highlightCleanup?.();
+      };
     }
 
-    startHighlight(element);
+    return startHighlight(element);
 
     function startHighlight(el: HTMLElement) {
       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -87,7 +91,7 @@ const Works: React.FC = () => {
     }
   }, [workIdParam, activeFilter]);
 
-  const { categorizedData, getWorksByCategory } = useWorksData(worksPageData.works, 'works');
+  const { categorizedData, getWorksByCategory } = useWorksData(worksPageData.works);
   const { musicPlayer } = useCardActions({
     enableMusicPlayer: true
   });

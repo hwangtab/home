@@ -5,9 +5,6 @@ export type MusicType = 'album' | 'single';
 export type WritingType = '칼럼' | '르포' | 'essay' | 'report';
 export type ActionType = 'play' | 'read' | 'view' | 'watch' | 'link';
 
-export const PAGE_TYPES = ['works', 'archive', 'about', 'all'] as const;
-export type PageType = (typeof PAGE_TYPES)[number];
-
 export interface PrimaryAction {
     type: ActionType;
     url: string;
@@ -24,7 +21,6 @@ export interface BaseWork {
     shortDescription?: string;
     primaryAction?: PrimaryAction;
     tags?: string[];
-    showInPages?: PageType[];
     archiveCategory?: WorkCategory;
     sortPriority?: number;
     role?: string;
