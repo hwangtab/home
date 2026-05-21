@@ -216,10 +216,8 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work }) => {
     const detailHref = withLocalePrefix(`/works/${work.id}`, locale);
 
     return (
-        <Link
-            href={detailHref}
-            className={`${STYLES.cardContainer} transform-gpu hover:-translate-y-1 hover:scale-[1.02] transition-transform duration-300 focus:outline-none focus:ring-a11y focus:ring-brand-primary-400 focus:ring-offset-a11y focus:ring-offset-gray-900 focus-visible:ring-a11y focus-visible:ring-brand-primary-400`}
-            aria-label={`${title} (${year}${t('common.year')}) - ${category === 'music' ? t('works.music') : category === 'writing' ? t('works.writing') : category === 'visual' ? t('works.visual') : t('works.performance')} ${t('works.detailLabel')}`}
+        <div
+            className={`${STYLES.cardContainer} relative transform-gpu hover:-translate-y-1 hover:scale-[1.02] transition-transform duration-300`}
             data-cursor="card"
             data-cursor-text={t('works.clickDetail')}
         >
@@ -245,7 +243,7 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work }) => {
                 </p>
 
                 <div className="flex justify-end mt-auto pt-2 border-t border-gray-700/50 group-hover:border-brand-primary-500/20 transition-colors duration-300">
-                    <div className="flex items-center gap-2">
+                    <div className="relative z-10 flex items-center gap-2">
                         <Link
                             href={detailHref}
                             className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg border border-gray-600 text-gray-200 hover:border-brand-primary-400 hover:text-brand-primary-300 transition-colors"
@@ -256,7 +254,14 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work }) => {
                     </div>
                 </div>
             </div>
-        </Link>
+            <Link
+                href={detailHref}
+                aria-label={`${title} (${year}${t('common.year')}) - ${category === 'music' ? t('works.music') : category === 'writing' ? t('works.writing') : category === 'visual' ? t('works.visual') : t('works.performance')} ${t('works.detailLabel')}`}
+                className="absolute inset-0 z-0 focus:outline-none focus-visible:ring-a11y focus-visible:ring-brand-primary-400"
+                tabIndex={-1}
+                aria-hidden="true"
+            />
+        </div>
     );
 };
 
