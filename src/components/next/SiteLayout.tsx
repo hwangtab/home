@@ -28,6 +28,11 @@ const SiteLayoutInner: React.FC<SiteLayoutProps> = ({ children }) => {
   }, [pathname]);
 
   useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
+  useEffect(() => {
     const handleScroll = () => {
       if (tickingRef.current) return;
       tickingRef.current = true;

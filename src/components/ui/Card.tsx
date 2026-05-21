@@ -51,8 +51,8 @@ interface CardPartProps {
 }
 
 const CardHeader = memo<CardPartProps>(({ work, type }) => {
-    if (work.cover || (work.images && work.images[0]?.src)) {
-        const imgSrc = work.cover || work.images![0].src;
+    if (work.cover || work.images?.[0]?.src) {
+        const imgSrc = work.cover || work.images?.[0]?.src || '';
         return (
             <div className="relative group h-48">
                 <NextImage
