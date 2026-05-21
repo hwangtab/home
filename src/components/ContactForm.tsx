@@ -47,7 +47,6 @@ const ContactForm: React.FC<ContactFormProps> = ({
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const formStartedAt = useRef<number>(Date.now());
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [retryCount, setRetryCount] = useState(0);
     const [errors, setErrors] = useState<Record<string, string | null>>({});
     const { showSuccess, showError } = useToast();
 
@@ -133,7 +132,6 @@ const ContactForm: React.FC<ContactFormProps> = ({
             setFormData(initialFormData);
             formStartedAt.current = Date.now();
             setErrors({});
-            setRetryCount(0);
         } catch (error) {
             console.error('Failed to send email:', error);
             const currentAttempts = attempts + 1;
@@ -143,9 +141,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     action: {
                         label: t('common.retry'),
                         onClick: () => {
-                            // Ensure clean state before retry
                             setIsSubmitting(false);
-                            setRetryCount(currentAttempts);
                             void submitForm(currentAttempts);
                         }
                     }
@@ -156,7 +152,6 @@ const ContactForm: React.FC<ContactFormProps> = ({
                         label: t('common.retry'),
                         onClick: () => {
                             setIsSubmitting(false);
-                            setRetryCount(0);
                             void submitForm(0);
                         }
                     }

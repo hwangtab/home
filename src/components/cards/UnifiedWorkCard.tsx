@@ -213,9 +213,6 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work }) => {
     const publication = (work.archiveCategory === 'writing') ? (work as WritingWork).publication : undefined;
 
     const displayDescription = shortDescription || description || '';
-    const truncatedDescription = displayDescription.length > 100
-        ? displayDescription.substring(0, 100) + '...'
-        : displayDescription;
     const detailHref = withLocalePrefix(`/works/${work.id}`, locale);
 
     return (
@@ -244,7 +241,7 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work }) => {
                 {publication && <p className="text-gray-400 text-sm mb-2">{publication}</p>}
 
                 <p className="text-gray-300 group-hover:text-gray-200 text-base mb-4 line-clamp-2 leading-[1.6] flex-1 transition-colors duration-300">
-                    {truncatedDescription}
+                    {displayDescription}
                 </p>
 
                 <div className="flex justify-end mt-auto pt-2 border-t border-gray-700/50 group-hover:border-brand-primary-500/20 transition-colors duration-300">

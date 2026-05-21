@@ -31,9 +31,9 @@ const isChunkError = (error: Error): boolean =>
 const clearCacheAndReload = () => {
     const reload = () => window.location.reload();
     if ('caches' in window) {
-        window.caches.keys().then(names => {
-            names.forEach(name => window.caches.delete(name));
-        }).finally(reload);
+        window.caches.keys()
+            .then(names => Promise.all(names.map(name => window.caches.delete(name))))
+            .finally(reload);
     } else {
         reload();
     }

@@ -56,11 +56,10 @@ export const ToastProvider = memo<ToastProviderProps>(({ children }) => {
     const addToast = useCallback((message: string, type: ToastType = TOAST_TYPES.INFO, options: ToastOptions = {}) => {
         const id = Date.now() + Math.random();
         const toast: ToastItem = {
+            duration: 5000,
+            persistent: false,
+            ...options,
             id, message, type,
-            duration: options.duration || 5000,
-            action: options.action,
-            persistent: options.persistent || false,
-            ...options
         };
         setToasts(prev => [...prev, toast]);
         if (!toast.persistent) {

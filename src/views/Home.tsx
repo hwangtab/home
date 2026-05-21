@@ -31,7 +31,9 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ works }) => {
   return (
     <Section title={t('home.featuredWorks')} enableScrollAnimation={true} className="mt-16">
       <div className="grid grid-cols-1 gap-8 justify-items-center md:grid-cols-2 lg:grid-cols-3">
-        {featuredWorks.map((work) => (
+        {featuredWorks.map((work) => {
+          const coverUrl = getWorkCoverUrl(work.cover, 'music');
+          return (
           <UnifiedCard
             key={work.id}
             padding="lg"
@@ -40,12 +42,12 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ works }) => {
             <Link href={withLocalePrefix(`/works/${work.id}`, locale)}>
               <div className="relative mb-4 aspect-square w-full overflow-hidden rounded">
                 <Image
-                  src={getWorkCoverUrl(work.cover, 'music')}
+                  src={coverUrl}
                   alt={work.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover"
-                  unoptimized={getWorkCoverUrl(work.cover, 'music').endsWith('.svg')}
+                  unoptimized={coverUrl.endsWith('.svg')}
                 />
               </div>
               <h3 className="mb-3 font-santokki text-2xl font-bold text-gray-100">
@@ -54,7 +56,8 @@ const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ works }) => {
               <p className="line-clamp-3 text-sm text-gray-300 font-wanted-sans">{work.description}</p>
             </Link>
           </UnifiedCard>
-        ))}
+          );
+        })}
       </div>
       <div className="mt-8 text-center">
         <div className="transition-transform duration-200 hover:scale-105">

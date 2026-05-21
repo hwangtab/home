@@ -15,10 +15,6 @@ export const loadMusicData = () => siteData.works.music;
 
 export const loadWorksData = () => siteData.works;
 
-export const loadTimelineData = () => {
-  console.warn('loadTimelineData is deprecated. Use loadWorksData instead.');
-  return [];
-};
 
 export const loadNewsData = () => siteData.news;
 

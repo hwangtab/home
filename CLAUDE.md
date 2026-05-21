@@ -99,9 +99,9 @@ The application has evolved from a single-page to a multi-page React application
   - `GENERATE_SOURCEMAP=false` for production builds
 
 ### EmailJS Integration
-- Service ID: service_lop4659
-- Template ID: template_wxwj093
-- Public Key: E5wHxyFgSkrjQhYVG
+- Service ID: `$NEXT_PUBLIC_EMAILJS_SERVICE_ID` (환경 변수로 관리)
+- Template ID: `$NEXT_PUBLIC_EMAILJS_TEMPLATE_ID` (환경 변수로 관리)
+- Public Key: `$NEXT_PUBLIC_EMAILJS_PUBLIC_KEY` (환경 변수로 관리)
 - Contact form implemented in both standalone component and Contact page
 
 ### Deployment Architecture

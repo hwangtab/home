@@ -181,8 +181,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder 
   const resultsRef = useRef<HTMLDivElement>(null);
 
   // Cache search data using ref to prevent Fuse.js rebuild on every render
-  const searchDataRef = useRef<SearchResultItem[]>(toSearchItems(data));
-  const fuseRef = useRef<Fuse<SearchResultItem>>(new Fuse(toSearchItems(data), FUSE_OPTIONS));
+  const initialItems = toSearchItems(data);
+  const searchDataRef = useRef<SearchResultItem[]>(initialItems);
+  const fuseRef = useRef<Fuse<SearchResultItem>>(new Fuse(initialItems, FUSE_OPTIONS));
 
   // Compare all properties of two SearchResultItem arrays for index rebuild detection
   const itemsEqual = (a: SearchResultItem[], b: SearchResultItem[]): boolean => {

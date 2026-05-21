@@ -226,9 +226,9 @@ const OptimizedImage = ({ src, alt, fallback, ...props }) => {
 // src/config/index.js
 export const CONFIG = {
   emailjs: {
-    serviceId: 'service_lop4659',
-    templateId: 'template_wxwj093',
-    publicKey: 'E5wHxyFgSkrjQhYVG'
+    serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+    templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+    publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
   },
   animations: {
     fadeInUp: {
