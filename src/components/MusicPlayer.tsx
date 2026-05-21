@@ -287,7 +287,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 width={0}
                                 height={0}
                                 style={{ display: 'none' }}
-                                {...{ onDuration: setDuration, onEnded: handleEnded } as Record<string, unknown>}
+                                {...{ onDuration: setDuration, onEnded: handleEnded, onProgress: ({ playedSeconds }: { playedSeconds: number }) => setProgress(playedSeconds) } as Record<string, unknown>}
                             />
                         )}
                     </div>
