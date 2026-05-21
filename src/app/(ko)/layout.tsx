@@ -1,10 +1,11 @@
 import '../globals.css';
 import type { Metadata } from 'next';
 import { SharedLayout } from '../../components/Layout/SharedLayout';
-import { getAlternates } from '../../lib/seo';
+import { getAlternates, SITE_URL } from '../../lib/seo';
 import { bombaram, myungjo, santokki } from '../../fonts';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: '황경하 공식 웹사이트',
     template: '%s | 황경하',

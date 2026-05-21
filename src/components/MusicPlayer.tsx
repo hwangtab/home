@@ -11,7 +11,6 @@ import {
     VolumeX,
     Shuffle,
     Repeat,
-    Heart,
     ExternalLink,
     List,
     X
@@ -169,9 +168,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                         {currentTrack.year}
                                     </p>
                                 </div>
-                                <button className="text-gray-400 hover:text-brand-solidarity-500 transition-colors hidden sm:block">
-                                    <Heart size={20} />
-                                </button>
                             </div>
 
                             {/* Controls */}
