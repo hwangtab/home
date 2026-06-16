@@ -129,7 +129,12 @@ export const PasswordInput = memo(forwardRef<HTMLInputElement, InputProps>((prop
         <Input
             ref={ref} type={showPassword ? 'text' : 'password'}
             rightIcon={
-                <button type="button" onClick={togglePasswordVisibility} className="text-gray-400 hover:text-gray-200 transition-colors">
+                <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    className="text-gray-400 hover:text-gray-200 transition-colors"
+                >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
             }
@@ -280,7 +285,19 @@ interface SwitchProps extends Omit<InputHTMLAttributes<HTMLButtonElement>, 'onCh
     onChange?: (checked: boolean) => void;
 }
 
-export const Switch = memo(forwardRef<HTMLButtonElement, SwitchProps>(({ label, description, size = 'md', color = 'blue', className = '', ...props }, ref) => {
+export const Switch = memo(forwardRef<HTMLButtonElement, SwitchProps>(({
+    label,
+    description,
+    size = 'md',
+    color = 'blue',
+    className = '',
+    checked = false,
+    onChange,
+    disabled,
+    id,
+    'aria-label': ariaLabel,
+    ...props
+}, ref) => {
     const sizeClasses = {
         sm: { container: 'h-5 w-9', toggle: 'h-4 w-4' }, md: { container: 'h-6 w-11', toggle: 'h-5 w-5' }, lg: { container: 'h-7 w-14', toggle: 'h-6 w-6' }
     };
@@ -290,14 +307,27 @@ export const Switch = memo(forwardRef<HTMLButtonElement, SwitchProps>(({ label, 
     return (
         <div className={`flex items-center justify-between ${className}`}>
             <div className="flex-1">
-                {label && <label htmlFor={props.id} className="text-sm font-medium text-gray-200 font-wanted-sans cursor-pointer">{label}</label>}
+                {label && <label htmlFor={id} className="text-sm font-medium text-gray-200 font-wanted-sans cursor-pointer">{label}</label>}
                 {description && <p className="text-sm text-gray-400 font-wanted-sans">{description}</p>}
             </div>
             <button
-                ref={ref} type="button" role="switch" aria-checked={props.checked} onClick={() => props.onChange && props.onChange(!props.checked)}
-                className={`relative inline-flex flex-shrink-0 ${container} border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${props.checked ? colorClasses[color] : 'bg-gray-600'}`}
+                {...props}
+                id={id}
+                ref={ref}
+                type="button"
+                role="switch"
+                aria-checked={checked}
+                aria-label={ariaLabel ?? label}
+                disabled={disabled}
+                onClick={(event) => {
+                    props.onClick?.(event);
+                    if (!event.defaultPrevented) {
+                        onChange?.(!checked);
+                    }
+                }}
+                className={`relative inline-flex flex-shrink-0 ${container} border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-60 ${checked ? colorClasses[color] : 'bg-gray-600'}`}
             >
-                <span className={`${toggle} inline-block bg-white rounded-full shadow transform ring-0 transition ease-in-out duration-200 ${props.checked ? 'translate-x-5' : 'translate-x-0'}`} />
+                <span className={`${toggle} inline-block bg-white rounded-full shadow transform ring-0 transition ease-in-out duration-200 ${checked ? 'translate-x-5' : 'translate-x-0'}`} />
             </button>
         </div>
     );

@@ -1,4 +1,5 @@
 import type { ContactFormData } from '../types/component.types';
+import type { EmailJSResponseStatus } from 'emailjs-com';
 
 interface EmailJSConfig {
     serviceId: string;
@@ -10,6 +11,21 @@ interface SendResult {
     status: number;
     text: string;
 }
+
+interface EmailJsClient {
+    init: (publicKey: string) => void;
+    send: (
+        serviceId: string,
+        templateId: string,
+        formData: Record<string, unknown>
+    ) => Promise<EmailJSResponseStatus>;
+}
+
+const EMAILJS_ENV_KEYS = [
+    'NEXT_PUBLIC_EMAILJS_SERVICE_ID',
+    'NEXT_PUBLIC_EMAILJS_TEMPLATE_ID',
+    'NEXT_PUBLIC_EMAILJS_PUBLIC_KEY'
+] as const;
 
 const getEmailJsConfig = (): EmailJSConfig => {
     const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
@@ -25,6 +41,13 @@ const getEmailJsConfig = (): EmailJSConfig => {
     }
 
     return { serviceId, templateId, publicKey };
+};
+
+export const isEmailJsConfigured = (): boolean => {
+    return EMAILJS_ENV_KEYS.every((key) => {
+        const value = process.env[key];
+        return typeof value === 'string' && value.trim().length > 0;
+    });
 };
 
 // EmailJS 설정 중앙화 — 환경변수 필수
@@ -55,11 +78,11 @@ export const EMAILJS_CONFIG: EmailJSConfig = new Proxy({} as EmailJSConfig, {
 // EmailJS 초기화 함수
 export const initEmailJS = async (): Promise<{
     init: (publicKey: string) => void;
-    send: (serviceId: string, templateId: string, formData: ContactFormData) => Promise<{ status: number; text: string }>;
+    send: (serviceId: string, templateId: string, formData: Record<string, unknown>) => Promise<EmailJSResponseStatus>;
 }> => {
     try {
         const emailjs = await import('emailjs-com');
-        const { default: emailjsDefault } = emailjs as unknown as { default: { init: (publicKey: string) => void; send: (serviceId: string, templateId: string, formData: ContactFormData) => Promise<{ status: number; text: string }> } };
+        const emailjsDefault: EmailJsClient = emailjs.default;
         emailjsDefault.init(getEmailJsPublicKey());
         return emailjsDefault;
     } catch (error) {
@@ -75,7 +98,7 @@ export const sendEmail = async (formData: ContactFormData): Promise<SendResult> 
         const result = await emailjs.send(
             getEmailJsServiceId(),
             getEmailJsTemplateId(),
-            formData
+            { ...formData }
         );
         return result;
     } catch (error) {

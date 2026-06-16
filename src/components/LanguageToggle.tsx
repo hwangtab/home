@@ -10,12 +10,13 @@ interface LanguageToggleProps {
 }
 
 const LanguageToggle: React.FC<LanguageToggleProps> = ({ className = '' }) => {
-    const { language, changeLanguage } = useLanguage();
+    const { language, changeLanguage, t } = useLanguage();
     const pathname = usePathname();
     const router = useRouter();
+    const nextLanguage = language === 'ko' ? 'en' : 'ko';
+    const label = nextLanguage === 'ko' ? t('common.switchToKorean') : t('common.switchToEnglish');
 
     const handleToggleLanguage = () => {
-        const nextLanguage = language === 'ko' ? 'en' : 'ko';
         const basePath = stripLocalePrefix(pathname);
         const targetPath = withLocalePrefix(basePath, nextLanguage);
 
@@ -26,6 +27,8 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({ className = '' }) => {
     return (
         <div className={`relative ${className}`}>
             <motion.button
+                type="button"
+                aria-label={label}
                 onClick={handleToggleLanguage}
                 className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white transition-colors duration-300"
                 whileHover={{ scale: 1.05 }}

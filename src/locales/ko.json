@@ -6,7 +6,8 @@
         "archive": "아카이브",
         "news": "소식",
         "contact": "연락처",
-        "openMenu": "메뉴 열기"
+        "openMenu": "메뉴 열기",
+        "closeMenu": "메뉴 닫기"
     },
     "common": {
         "year": "년",
@@ -31,7 +32,9 @@
         "previous": "이전",
         "confirm": "확인",
         "retry": "다시 시도",
-        "refresh": "새로고침"
+        "refresh": "새로고침",
+        "switchToKorean": "한국어로 전환",
+        "switchToEnglish": "영어로 전환"
     },
     "loading": {
         "default": "로딩 중...",
@@ -151,6 +154,7 @@
             "sending": "전송 중...",
             "success": "메시지가 성공적으로 전송되었습니다!",
             "error": "메시지 전송에 실패했습니다. 다시 시도해주세요.",
+            "unavailable": "문의 폼 설정이 아직 완료되지 않았습니다. 이메일로 직접 연락해주세요.",
             "errors": {
                 "nameMin": "이름은 최소 2글자 이상이어야 합니다.",
                 "emailInvalid": "올바른 이메일 형식을 입력해주세요.",
@@ -178,6 +182,7 @@
         "previousTrack": "이전 곡",
         "nextTrack": "다음 곡",
         "repeat": "반복",
+        "progress": "재생 위치",
         "volume": "볼륨",
         "mute": "음소거",
         "unmute": "음소거 해제",

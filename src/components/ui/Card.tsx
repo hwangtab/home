@@ -103,7 +103,8 @@ interface CardFooterProps {
 const CardFooter = memo<CardFooterProps>(({ work }) => {
     const { t } = useLanguage();
     const hasTags = work.tags && work.tags.length > 0;
-    const hasLinks = work.links && Object.keys(work.links).length > 0;
+    const primaryLink = Object.values(work.links || {}).find(link => typeof link === 'string' && link.trim().length > 0);
+    const hasLinks = Boolean(primaryLink);
 
     if (!hasTags && !hasLinks) return null;
 
@@ -118,7 +119,7 @@ const CardFooter = memo<CardFooterProps>(({ work }) => {
             </Flex>
             {hasLinks && (
                 <a
-                    href={Object.values(work.links || {})[0]}
+                    href={primaryLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors text-sm"

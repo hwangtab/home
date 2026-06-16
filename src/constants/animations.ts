@@ -225,13 +225,14 @@ export const createDelayedAnimation = (delay = 0): AnimationState => ({
 export const PERFORMANCE_SETTINGS = {
     // 모바일에서 애니메이션 감소
     shouldReduceMotion: (): boolean => {
+        if (typeof window === 'undefined') return true;
         return window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
             window.innerWidth < 768;
     },
 
     // 배터리 수준이 낮을 때 애니메이션 감소
     shouldReduceForBattery: (): Promise<boolean> | boolean => {
-        if ('getBattery' in navigator) {
+        if (typeof navigator !== 'undefined' && 'getBattery' in navigator) {
             return (navigator as Navigator & { getBattery: () => Promise<{ level: number }> })
                 .getBattery()
                 .then(battery => battery.level < 0.2);

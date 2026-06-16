@@ -2,7 +2,7 @@ import React, { useState, memo, useCallback, ReactNode } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Calendar, ExternalLink, Play, BookOpen, Eye, Mic, Video, LucideIcon } from 'lucide-react';
+import { Calendar, ExternalLink, Play, BookOpen, Eye, Mic, Video, Flame, LucideIcon } from 'lucide-react';
 import DefaultImageComponent from './DefaultImageComponent';
 import { Work, WorkCategory, PrimaryAction, WritingWork } from '../../types/data.types';
 import { useLanguage } from '../../i18n';
@@ -25,11 +25,22 @@ interface CategoryConfigItem {
     defaultSvg: string;
 }
 
-const CATEGORY_CONFIG: Record<string, CategoryConfigItem> = {
+const CATEGORY_CONFIG: Record<WorkCategory, CategoryConfigItem> = {
     music: { icon: Play, color: 'bg-brand-primary-600', defaultSvg: getAssetPath('/images/defaults/music-default.svg') },
     writing: { icon: BookOpen, color: 'bg-brand-earth-600', defaultSvg: getAssetPath('/images/defaults/writing-default.svg') },
     visual: { icon: Eye, color: 'bg-brand-harmony-600', defaultSvg: getAssetPath('/images/defaults/visual-default.svg') },
-    performance: { icon: Mic, color: 'bg-brand-solidarity-600', defaultSvg: getAssetPath('/images/defaults/performance-default.svg') }
+    performance: { icon: Mic, color: 'bg-brand-solidarity-600', defaultSvg: getAssetPath('/images/defaults/performance-default.svg') },
+    struggle: { icon: Flame, color: 'bg-brand-solidarity-700', defaultSvg: getAssetPath('/images/defaults/performance-default.svg') }
+};
+
+const toWorkCategory = (category: string | undefined): WorkCategory => {
+    return category === 'music' ||
+        category === 'visual' ||
+        category === 'writing' ||
+        category === 'performance' ||
+        category === 'struggle'
+        ? category
+        : 'music';
 };
 
 const ACTION_CONFIG: Record<string, LucideIcon> = {
@@ -63,7 +74,7 @@ const useImageFallback = (cover: string | undefined, category: WorkCategory | st
     const [imageError, setImageError] = useState(false);
     const [svgError, setSvgError] = useState(false);
 
-    const config = CATEGORY_CONFIG[category] || CATEGORY_CONFIG.music;
+    const config = CATEGORY_CONFIG[toWorkCategory(category)];
     const defaultSvg = config.defaultSvg;
 
     // 폴백 우선순위: cover → SVG → CSS 컴포넌트
@@ -89,18 +100,24 @@ const useImageFallback = (cover: string | undefined, category: WorkCategory | st
     };
 };
 
+const getCategoryLabel = (category: WorkCategory, t: (key: string) => string): string => {
+    if (category === 'music') return '';
+    return t(`works.${category}`);
+};
+
 const TypeBadge: React.FC<{ type: string; category?: string }> = ({ type, category = 'music' }) => {
     const { t } = useLanguage();
-    const config = CATEGORY_CONFIG[category] || { icon: null, color: 'bg-gray-600' };
+    const normalizedCategory = toWorkCategory(category);
+    const config = CATEGORY_CONFIG[normalizedCategory];
 
     // visual 카테고리에서 video 타입 처리
-    const IconComponent = (category === 'visual' && (type === 'video' || type === '다큐멘터리'))
+    const IconComponent = (normalizedCategory === 'visual' && (type === 'video' || type === '다큐멘터리'))
         ? Video
         : config.icon;
 
-    const label = category === 'music' ? (type === 'album' ? t('works.album') : t('works.single'))
-        : category === 'performance' ? t('works.performance')
-            : type;
+    const label = normalizedCategory === 'music'
+        ? (type === 'album' ? t('works.album') : t('works.single'))
+        : getCategoryLabel(normalizedCategory, t);
 
     return (
         <div className={`${STYLES.badge} ${config.color}`}>
@@ -168,7 +185,8 @@ const ActionButton: React.FC<{ action?: PrimaryAction; category?: string }> = ({
     if (!action || !action.url) return null;
 
     const IconComponent = ACTION_CONFIG[action.type] || ExternalLink;
-    const categoryConfig = CATEGORY_CONFIG[category || 'music'] || CATEGORY_CONFIG.music;
+    const normalizedCategory = toWorkCategory(category);
+    const categoryConfig = CATEGORY_CONFIG[normalizedCategory];
     const primaryColor = categoryConfig.color;
 
     const getHoverColor = (cat?: string) => {
@@ -177,11 +195,12 @@ const ActionButton: React.FC<{ action?: PrimaryAction; category?: string }> = ({
             case 'writing': return 'hover:bg-brand-earth-500';
             case 'visual': return 'hover:bg-brand-harmony-500';
             case 'performance': return 'hover:bg-brand-solidarity-500';
+            case 'struggle': return 'hover:bg-brand-solidarity-600';
             default: return 'hover:bg-brand-primary-500';
         }
     };
 
-    const buttonClasses = `inline-flex items-center gap-2 px-3 py-2 text-white text-sm font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg ${primaryColor} ${getHoverColor(category)} hover:scale-105`;
+    const buttonClasses = `inline-flex items-center gap-2 px-3 py-2 text-white text-sm font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg ${primaryColor} ${getHoverColor(normalizedCategory)} hover:scale-105`;
 
     return (
         <a href={action.url} target="_blank" rel="noopener noreferrer" className={buttonClasses}>
@@ -256,10 +275,9 @@ const UnifiedWorkCard: React.FC<UnifiedWorkCardProps> = ({ work }) => {
             </div>
             <Link
                 href={detailHref}
-                aria-label={`${title} (${year}${t('common.year')}) - ${category === 'music' ? t('works.music') : category === 'writing' ? t('works.writing') : category === 'visual' ? t('works.visual') : t('works.performance')} ${t('works.detailLabel')}`}
+                aria-label={`${title} (${year}${t('common.year')}) - ${category === 'music' ? t('works.music') : category === 'writing' ? t('works.writing') : category === 'visual' ? t('works.visual') : category === 'struggle' ? t('works.struggle') : t('works.performance')} ${t('works.detailLabel')}`}
                 className="absolute inset-0 z-0 focus:outline-none focus-visible:ring-a11y focus-visible:ring-brand-primary-400"
                 tabIndex={-1}
-                aria-hidden="true"
             />
         </div>
     );

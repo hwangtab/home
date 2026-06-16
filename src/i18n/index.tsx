@@ -1,8 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode, useRef } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+'use client';
+
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import koTranslations from '../locales/ko.json';
 import enTranslations from '../locales/en.json';
-import { getLocaleFromPathname, withLocalePrefix } from '../utils/localePath';
+import { getLocaleFromPathname } from '../utils/localePath';
 
 type SupportedLanguage = 'ko' | 'en';
 
@@ -28,55 +30,36 @@ const translations: TranslationsMap = {
     en: enTranslations as TranslationValue
 };
 
+const isTranslationObject = (value: string | string[] | TranslationValue): value is TranslationValue => {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
+};
+
 interface LanguageProviderProps {
     children: ReactNode;
 }
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
     const pathname = usePathname();
-    const router = useRouter();
     const routeLanguage = getLocaleFromPathname(pathname);
-    const isRouterSyncingRef = useRef(false);
 
-    // Resolve initial language: prefer localStorage, then route, then default 'ko'
-    const getInitialLanguage = (): SupportedLanguage => {
-        if (typeof window !== 'undefined') {
-            const stored = localStorage.getItem('language');
-            if (stored === 'ko' || stored === 'en') return stored;
-        }
-        return routeLanguage === 'ko' || routeLanguage === 'en' ? routeLanguage : 'ko';
-    };
-
-    const [language, setLanguage] = useState<SupportedLanguage>(getInitialLanguage());
+    const [language, setLanguage] = useState<SupportedLanguage>(routeLanguage);
 
    // Sync: store language preference when changed
     useEffect(() => {
         if (language !== 'ko' && language !== 'en') return;
-        localStorage.setItem('language', language);
+        try {
+            localStorage.setItem('language', language);
+        } catch (error) {
+            console.warn('Unable to persist language preference:', error);
+        }
     }, [language]);
 
-    // Sync: navigate to locale-matching route when language changes
-    // Use pathname-based detection for guard reset — more reliable than rAF
+    // The URL locale is authoritative for direct links, refreshes, and search traffic.
     useEffect(() => {
-        if (typeof window === 'undefined') return;
-        if (isRouterSyncingRef.current) return;
-
-        const currentLocale = getLocaleFromPathname(window.location.pathname);
-        if (language !== currentLocale) {
-            const targetPath = withLocalePrefix(window.location.pathname, language);
-            // Prevent redundant push when already at the target path
-            if (window.location.pathname === targetPath) return;
-            isRouterSyncingRef.current = true;
-            router.push(targetPath);
+        if (language !== routeLanguage) {
+            setLanguage(routeLanguage);
         }
-    }, [language, router]);
-
-    // Guard 해제: pathname이 변경되었을 때 (네비게이션 완료 감지)
-    useEffect(() => {
-        if (isRouterSyncingRef.current && getLocaleFromPathname(pathname) === language) {
-            isRouterSyncingRef.current = false;
-        }
-    }, [pathname, language]);
+    }, [routeLanguage, language]);
 
     useEffect(() => {
         if (typeof document !== 'undefined') {
@@ -92,10 +75,10 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
         const keys = path.split('.');
 
         // Traverse translation object by keys
-        const resolve = (obj: any): string | null => {
-            let current = obj;
+        const resolve = (obj: TranslationValue): string | null => {
+            let current: string | string[] | TranslationValue = obj;
             for (const key of keys) {
-                if (current && typeof current === 'object' && key in current) {
+                if (isTranslationObject(current) && key in current) {
                     current = current[key];
                 } else {
                     return null;

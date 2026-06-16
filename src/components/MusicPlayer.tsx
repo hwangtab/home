@@ -42,9 +42,7 @@ interface MusicPlayerProps {
 
 const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = false, onClose }) => {
     const { t } = useLanguage();
-    // ReactPlayer ref — seekTo used for HLS.js audio seeking.
-    // Type is `any` because react-player's internal ref type varies by version.
-    const playerRef = useRef<any>(null);
+    const playerRef = useRef<HTMLVideoElement | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(0.8);
@@ -55,6 +53,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
     const [shuffle, setShuffle] = useState(false);
     const [repeat, setRepeat] = useState(false);
 
+    const playlistLength = playlist.length;
     const currentTrack = playlist[currentIndex];
     const currentTrackCover = currentTrack ? getWorkCoverUrl(currentTrack.cover, 'music') : '/images/defaults/music-default.svg';
 
@@ -72,9 +71,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
     }, [currentTrack]);
 
     const playPrevious = useCallback(() => {
-        if (playlist.length <= 1) return;
-        setCurrentIndex((prev) => (prev - 1 + playlist.length) % playlist.length);
-    }, [playlist.length]);
+        if (playlistLength <= 1) return;
+        setCurrentIndex((prev) => (prev - 1 + playlistLength) % playlistLength);
+    }, [playlistLength]);
 
     // repeat/shuffle 상태를 ref로 추적하여 stale closure 방지
     const repeatRef = useRef(repeat);
@@ -89,14 +88,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
     }, [shuffle]);
 
     const playNext = useCallback(() => {
-        if (playlist.length <= 1) return;
+        if (playlistLength <= 1) return;
         if (shuffleRef.current) {
-            const nextIndex = Math.floor(Math.random() * playlist.length);
+            const nextIndex = Math.floor(Math.random() * playlistLength);
             setCurrentIndex(nextIndex);
         } else {
-            setCurrentIndex((prev) => (prev + 1) % playlist.length);
+            setCurrentIndex((prev) => (prev + 1) % playlistLength);
         }
-    }, [playlist.length]);
+    }, [playlistLength]);
 
     const handleEnded = useCallback(() => {
         if (repeatRef.current) {
@@ -106,6 +105,44 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
             playNext();
         }
     }, [playNext]);
+
+    const seekToRatio = useCallback((ratio: number) => {
+        if (!duration || !playerRef.current) return;
+        const clampedRatio = Math.min(Math.max(ratio, 0), 1);
+        const nextProgress = clampedRatio * duration;
+        playerRef.current.currentTime = nextProgress;
+        setProgress(nextProgress);
+    }, [duration]);
+
+    const handleProgressKeyDown = useCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (!duration) return;
+
+        const currentRatio = progress / duration;
+        const step = 5 / duration;
+
+        switch (event.key) {
+            case 'ArrowLeft':
+            case 'ArrowDown':
+                event.preventDefault();
+                seekToRatio(currentRatio - step);
+                break;
+            case 'ArrowRight':
+            case 'ArrowUp':
+                event.preventDefault();
+                seekToRatio(currentRatio + step);
+                break;
+            case 'Home':
+                event.preventDefault();
+                seekToRatio(0);
+                break;
+            case 'End':
+                event.preventDefault();
+                seekToRatio(1);
+                break;
+            default:
+                break;
+        }
+    }, [duration, progress, seekToRatio]);
 
     const formatTime = (seconds: number) => {
         if (!seconds || isNaN(seconds)) return "0:00";
@@ -129,15 +166,21 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                     <div className="container mx-auto">
                         {/* Progress Bar */}
                         <div
+                            role="slider"
+                            tabIndex={0}
+                            aria-label={`${currentTrack.title} ${t('player.progress')}`}
+                            aria-valuemin={0}
+                            aria-valuemax={Math.max(0, Math.round(duration))}
+                            aria-valuenow={Math.min(Math.round(progress), Math.max(0, Math.round(duration)))}
+                            aria-valuetext={`${formatTime(progress)} / ${formatTime(duration)}`}
                             className="w-full bg-gray-700 rounded-full h-1 mb-4 cursor-pointer group"
                             onClick={(e) => {
                                 if (!duration || !playerRef.current) return;
                                 const rect = e.currentTarget.getBoundingClientRect();
                                 const ratio = (e.clientX - rect.left) / rect.width;
-                                const clampedRatio = Math.min(Math.max(ratio, 0), 1);
-                                playerRef.current.seekTo?.(clampedRatio, 'fraction');
-                                setProgress(clampedRatio * duration);
+                                seekToRatio(ratio);
                             }}
+                            onKeyDown={handleProgressKeyDown}
                         >
                             <div
                                 className="bg-brand-primary-500 h-1 rounded-full transition-[height] duration-300 relative group-hover:h-1.5"
@@ -173,41 +216,53 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                             {/* Controls */}
                             <div className="flex items-center space-x-2 sm:space-x-4">
                                 <button
+                                    type="button"
                                     onClick={() => setShuffle(!shuffle)}
                                     className={`transition-colors p-2 rounded-full hover:bg-gray-800 hidden sm:block ${shuffle ? 'text-brand-primary-400' : 'text-gray-400 hover:text-white'}`}
                                     title={t('player.shuffle')}
+                                    aria-label={t('player.shuffle')}
+                                    aria-pressed={shuffle}
                                 >
                                     <Shuffle size={20} />
                                 </button>
 
                                 <button
+                                    type="button"
                                     onClick={playPrevious}
                                     className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800"
                                     title={t('player.previousTrack')}
+                                    aria-label={t('player.previousTrack')}
                                 >
                                     <SkipBack size={24} />
                                 </button>
 
                                 <button
+                                    type="button"
                                     onClick={() => setIsPlaying(!isPlaying)}
                                     className="bg-brand-primary-500 hover:bg-brand-primary-600 text-white rounded-full p-3 transition-colors shadow-lg hover:shadow-brand-primary-500/30 hover:scale-105 transform active:scale-95"
                                     title={isPlaying ? t('player.pause') : t('player.play')}
+                                    aria-label={isPlaying ? t('player.pause') : t('player.play')}
                                 >
                                     {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" className="ml-1" />}
                                 </button>
 
                                 <button
+                                    type="button"
                                     onClick={playNext}
                                     className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800"
                                     title={t('player.nextTrack')}
+                                    aria-label={t('player.nextTrack')}
                                 >
                                     <SkipForward size={24} />
                                 </button>
 
                                 <button
+                                    type="button"
                                     onClick={() => setRepeat(!repeat)}
                                     className={`transition-colors p-2 rounded-full hover:bg-gray-800 hidden sm:block ${repeat ? 'text-brand-primary-400' : 'text-gray-400 hover:text-white'}`}
                                     title={t('player.repeat')}
+                                    aria-label={t('player.repeat')}
+                                    aria-pressed={repeat}
                                 >
                                     <Repeat size={20} />
                                 </button>
@@ -221,9 +276,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
 
                                 <div className="hidden lg:flex items-center space-x-2 group">
                                     <button
+                                        type="button"
                                         onClick={() => setIsMuted(!isMuted)}
                                         className="text-gray-400 hover:text-white transition-colors p-1"
                                         title={isMuted ? t('player.unmute') : t('player.mute')}
+                                        aria-label={isMuted ? t('player.unmute') : t('player.mute')}
                                     >
                                         {isMuted || volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
                                     </button>
@@ -234,6 +291,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                             max="1"
                                             step="0.05"
                                             value={isMuted ? 0 : volume}
+                                            aria-label={t('player.volume')}
                                             onChange={(e) => setVolume(parseFloat(e.target.value))}
                                             className="w-20 h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-brand-primary-500"
                                         />
@@ -241,24 +299,31 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 </div>
 
                                 <button
+                                    type="button"
                                     onClick={() => setShowPlaylist(!showPlaylist)}
                                     className={`transition-colors p-2 rounded-full hover:bg-gray-800 ${showPlaylist ? 'text-brand-primary-400' : 'text-gray-400 hover:text-white'}`}
                                     title={t('player.playlist')}
+                                    aria-label={t('player.playlist')}
+                                    aria-expanded={showPlaylist}
                                 >
                                     <List size={20} />
                                 </button>
 
                                 {/* External Links - using proper typing */}
-                                {currentTrack.links && typeof currentTrack.links === 'object' && Object.keys(currentTrack.links).length > 0 && (
+                                {currentTrack.links && typeof currentTrack.links === 'object' && Object.values(currentTrack.links).some(url => typeof url === 'string' && url.trim().length > 0) && (
                                     <div className="hidden xl:flex space-x-1">
-                                        {Object.entries(currentTrack.links).slice(0, 2).map(([platform, url]) => (
+                                        {Object.entries(currentTrack.links)
+                                            .filter(([, url]) => typeof url === 'string' && url.trim().length > 0)
+                                            .slice(0, 2)
+                                            .map(([platform, url]) => (
                                             <a
                                                 key={platform}
-                                                href={url as string}
+                                                href={url}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="text-gray-400 hover:text-white transition-colors p-2 hover:bg-gray-800 rounded-full"
                                                 title={`${platform} ${t('player.listenOn')}`}
+                                                aria-label={`${platform} ${t('player.listenOn')}`}
                                             >
                                                 <ExternalLink size={16} />
                                             </a>
@@ -267,9 +332,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 )}
 
                                 <button
+                                    type="button"
                                     onClick={onClose}
                                     className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800 ml-2"
                                     title={t('common.close')}
+                                    aria-label={t('common.close')}
                                 >
                                     <X size={16} />
                                 </button>
@@ -287,7 +354,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 width={0}
                                 height={0}
                                 style={{ display: 'none' }}
-                                {...{ onDuration: setDuration, onEnded: handleEnded, onProgress: ({ playedSeconds }: { playedSeconds: number }) => setProgress(playedSeconds) } as Record<string, unknown>}
+                                onDurationChange={(event) => setDuration(event.currentTarget.duration || 0)}
+                                onTimeUpdate={(event) => setProgress(event.currentTarget.currentTime)}
+                                onEnded={handleEnded}
                             />
                         )}
                     </div>
@@ -307,10 +376,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                 </div>
                                 <div className="overflow-y-auto p-2 space-y-1">
                                     {playlist.map((track, index) => (
-                                        <div
+                                        <button
                                             key={track.id}
+                                            type="button"
                                             onClick={() => setCurrentIndex(index)}
-                                            className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-colors ${index === currentIndex
+                                            aria-current={index === currentIndex ? 'true' : undefined}
+                                            className={`flex w-full items-center space-x-3 p-3 rounded-lg text-left cursor-pointer transition-colors ${index === currentIndex
                                                 ? 'bg-brand-primary-500/20 border border-brand-primary-500/30'
                                                 : 'hover:bg-gray-700/50 border border-transparent'
                                                 }`}
@@ -337,7 +408,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ playlist = [], isVisible = fa
                                                     {track.year}
                                                 </p>
                                             </div>
-                                        </div>
+                                        </button>
                                     ))}
                                 </div>
                             </motion.div>

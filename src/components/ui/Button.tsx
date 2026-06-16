@@ -132,7 +132,7 @@ interface IconButtonProps extends ButtonProps {
 }
 
 export const IconButton = memo(forwardRef<HTMLButtonElement, IconButtonProps>(({
-    icon, variant = 'ghost', size = 'md', animation = 'default', loading = false, disabled = false, className = '', 'aria-label': ariaLabel, ...props
+    icon, variant = 'ghost', size = 'md', animation = 'default', loading = false, disabled = false, className = '', 'aria-label': ariaLabel, type = 'button', ...props
 }, ref) => {
     const isDisabled = disabled || loading;
     const shouldReduceMotion = useReducedMotion();
@@ -153,7 +153,7 @@ export const IconButton = memo(forwardRef<HTMLButtonElement, IconButtonProps>(({
 
     return (
         <motion.button
-            ref={ref} className={baseClasses} disabled={isDisabled} aria-label={ariaLabel}
+            ref={ref} type={type} className={baseClasses} disabled={isDisabled} aria-label={ariaLabel}
             {...animationProps}
             {...(props as React.ComponentPropsWithoutRef<'button'> as Record<string, unknown>)}
         >

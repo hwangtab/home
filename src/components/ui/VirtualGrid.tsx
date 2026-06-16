@@ -32,18 +32,23 @@ const VirtualGrid = memo(<T extends VirtualGridItem>({
     const containerRef = useRef<HTMLDivElement>(null);
 
     const { rowHeight, totalHeight, visibleStart, visibleItems } = useMemo(() => {
-        const rowHeight = itemHeight + gap;
-        const totalRows = Math.ceil(items.length / columns);
-        const totalHeight = totalRows * rowHeight - gap;
+        const safeColumns = Math.max(1, Math.floor(columns));
+        const safeItemHeight = Math.max(1, itemHeight);
+        const safeGap = Math.max(0, gap);
+        const safeContainerHeight = Math.max(1, containerHeight);
+        const safeOverscan = Math.max(0, overscan);
+        const rowHeight = safeItemHeight + safeGap;
+        const totalRows = Math.ceil(items.length / safeColumns);
+        const totalHeight = totalRows > 0 ? (totalRows * rowHeight) - safeGap : 0;
 
         const visibleRowStart = Math.floor(scrollTop / rowHeight);
-        const visibleRowEnd = Math.min(totalRows, Math.ceil((scrollTop + containerHeight) / rowHeight));
+        const visibleRowEnd = Math.min(totalRows, Math.ceil((scrollTop + safeContainerHeight) / rowHeight));
 
-        const startRow = Math.max(0, visibleRowStart - overscan);
-        const endRow = Math.min(totalRows, visibleRowEnd + overscan);
+        const startRow = Math.max(0, visibleRowStart - safeOverscan);
+        const endRow = Math.min(totalRows, visibleRowEnd + safeOverscan);
 
-        const startIndex = startRow * columns;
-        const endIndex = Math.min(items.length, endRow * columns);
+        const startIndex = startRow * safeColumns;
+        const endIndex = Math.min(items.length, endRow * safeColumns);
 
         return {
             rowHeight,
@@ -59,12 +64,13 @@ const VirtualGrid = memo(<T extends VirtualGridItem>({
     }, [onScroll]);
 
     const getItemPosition = useCallback((index: number) => {
-        const row = Math.floor(index / columns);
-        const col = index % columns;
+        const safeColumns = Math.max(1, Math.floor(columns));
+        const row = Math.floor(index / safeColumns);
+        const col = index % safeColumns;
         return {
             top: row * rowHeight,
-            left: `${(col / columns) * 100}%`,
-            width: `${(1 / columns) * 100}%`
+            left: `${(col / safeColumns) * 100}%`,
+            width: `${(1 / safeColumns) * 100}%`
         };
     }, [columns, rowHeight]);
 

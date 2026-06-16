@@ -1,18 +1,13 @@
 import type { MetadataRoute } from 'next';
 import { getSiteData } from '../data/siteContent';
 import { getAllWorkSlugs } from '../lib/works';
-import { SITE_URL } from '../lib/seo';
+import { toAbsoluteUrl } from '../lib/seo';
 
 type SitemapEntry = MetadataRoute.Sitemap[number];
 
 type EntryOptions = {
   changeFrequency: SitemapEntry['changeFrequency'];
   priority: number;
-};
-
-const toAbsoluteUrl = (path: string): string => {
-  const normalized = path.startsWith('/') ? path : `/${path}`;
-  return new URL(normalized, SITE_URL).toString();
 };
 
 const toEnglishPath = (basePath: string): string => {

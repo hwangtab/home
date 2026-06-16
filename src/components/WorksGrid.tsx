@@ -17,7 +17,8 @@ const WorksGrid: React.FC<WorksGridProps> = memo(
     renderWork,
     emptyMessage,
   }) => {
-    const { t } = useLanguage();
+      const { t } = useLanguage();
+      const categoryLabel = activeFilter === 'all' ? '' : t(`works.${activeFilter}`);
 
     if (filteredWorks.length === 0) {
       return (
@@ -26,7 +27,7 @@ const WorksGrid: React.FC<WorksGridProps> = memo(
             {emptyMessage ||
               (activeFilter === 'all'
                 ? t('works.noWorks')
-                : t('works.noWorksByCategory').replace('{category}', activeFilter))}
+                : t('works.noWorksByCategory').replace('{category}', categoryLabel))}
           </p>
         </div>
       );

@@ -34,6 +34,14 @@ const backgroundClasses: Record<ProgressColor, string> = {
     yellow: 'bg-yellow-900', purple: 'bg-purple-900', gray: 'bg-gray-700', gradient: 'bg-gray-700'
 };
 
+const getProgressPercentage = (value: number, max: number): number => {
+    if (!Number.isFinite(value) || !Number.isFinite(max) || max <= 0) {
+        return 0;
+    }
+
+    return Math.min(Math.max((value / max) * 100, 0), 100);
+};
+
 const ProgressBar = memo<ProgressBarProps>(({
     value = 0, max = 100, size = 'medium', color = 'blue',
     showLabel = false, label = '', showPercentage = false,
@@ -51,7 +59,9 @@ const ProgressBar = memo<ProgressBarProps>(({
         }
     }, [value, animated]);
 
-    const percentage = Math.min(Math.max((displayValue / max) * 100, 0), 100);
+    const percentage = getProgressPercentage(displayValue, max);
+    const safeMax = Number.isFinite(max) && max > 0 ? max : 100;
+    const safeValue = Number.isFinite(displayValue) ? Math.min(Math.max(displayValue, 0), safeMax) : 0;
 
     if (variant === 'circular') {
         const radius = 45;
@@ -83,7 +93,14 @@ const ProgressBar = memo<ProgressBarProps>(({
                     {showPercentage && <span className="text-sm text-gray-400">{Math.round(percentage)}%</span>}
                 </div>
             )}
-            <div className={`w-full ${backgroundClasses[color] || backgroundClasses.gray} rounded-full ${sizeClasses[size] || sizeClasses.medium} overflow-hidden`}>
+            <div
+                role="progressbar"
+                aria-valuemin={0}
+                aria-valuemax={safeMax}
+                aria-valuenow={safeValue}
+                aria-label={label || 'Progress'}
+                className={`w-full ${backgroundClasses[color] || backgroundClasses.gray} rounded-full ${sizeClasses[size] || sizeClasses.medium} overflow-hidden`}
+            >
                 <motion.div className={`w-full ${sizeClasses[size] || sizeClasses.medium} ${colorClasses[color] || colorClasses.blue} rounded-full relative overflow-hidden`}
                     initial={{ clipPath: 'inset(0 100% 0 0)' }} animate={{ clipPath: `inset(0 ${100 - percentage}% 0 0)` }}
                     transition={{ duration: animated ? 1 : 0, ease: "easeOut" }}

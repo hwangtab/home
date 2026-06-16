@@ -33,11 +33,13 @@ const isWorkFilter = (value: string | null): value is WorkCategory | 'all' => {
 const Works: React.FC = () => {
   const { t, language } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<WorkCategory | 'all'>('all');
+  const [highlightedWorkId, setHighlightedWorkId] = useState<string | null>(null);
   const searchParams = useSearchParams();
 
   // searchParams에서 추출한 값들을 상수로 분리 — 의존성 안정화
   const categoryParam = searchParams?.get('category');
   const workIdParam = searchParams?.get('id');
+  const targetWorkId = workIdParam || highlightedWorkId;
 
   const { data: worksPageData } = useWorksPageData(language);
 
@@ -48,14 +50,14 @@ const Works: React.FC = () => {
   }, [categoryParam]);
 
   useLayoutEffect(() => {
-    if (!workIdParam) return;
+    if (!targetWorkId) return;
 
-    const element = document.getElementById(`work-${workIdParam}`);
+    const element = document.getElementById(`work-${targetWorkId}`);
     if (!element) {
       // DOM 렌더링 대기: 필터 변경 직후 element가 아직 없을 수 있음
       let highlightCleanup: (() => void) | undefined;
       const rafId = requestAnimationFrame(() => {
-        const el = document.getElementById(`work-${workIdParam}`);
+        const el = document.getElementById(`work-${targetWorkId}`);
         if (!el) return;
         highlightCleanup = startHighlight(el);
       });
@@ -89,7 +91,7 @@ const Works: React.FC = () => {
 
       return () => clearTimeout(cleanupTimer);
     }
-  }, [workIdParam, activeFilter]);
+  }, [targetWorkId, activeFilter]);
 
   const { categorizedData, getWorksByCategory } = useWorksData(worksPageData.works);
   const { musicPlayer } = useCardActions({
@@ -102,6 +104,8 @@ const Works: React.FC = () => {
     if (category && WORK_FILTER_SET.has(category)) {
       setActiveFilter(category as WorkCategory);
     }
+
+    setHighlightedWorkId(result.item.id ?? null);
   }, []);
 
   const renderWork = useCallback(

@@ -1,13 +1,14 @@
-import React, { useState, useRef, memo, useMemo, useLayoutEffect } from 'react';
+import React, { useState, useRef, memo, useMemo, useLayoutEffect, useEffect } from 'react';
 import { motion, HTMLMotionProps } from 'framer-motion';
 import { Send } from 'lucide-react';
-import { sendEmail } from '../config/emailjs';
+import { isEmailJsConfigured, sendEmail } from '../config/emailjs';
 import { COMMON_ANIMATIONS } from '../constants/animations';
 import { THEME_STYLES } from '../constants/styles';
 import { useToast } from './ui/Toast';
 import { Input, Textarea } from './ui/FormElements';
 import Button from './ui/Button';
 import { useLanguage } from '../i18n';
+import type { ContactFormData } from '../types/component.types';
 
 interface FormData {
     name: string;
@@ -46,15 +47,25 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const formStartedAt = useRef<number>(Date.now());
+    const focusErrorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState<Record<string, string | null>>({});
     const { showSuccess, showError } = useToast();
+    const canSendEmail = isEmailJsConfigured();
 
     // includeSubject 변경 시 formData를 초기값으로 리셋 (useLayoutEffect로 레이아웃 계산 전 적용)
     useLayoutEffect(() => {
         setFormData(initialFormData);
         setErrors({});
     }, [initialFormData]);
+
+    useEffect(() => {
+        return () => {
+            if (focusErrorTimerRef.current) {
+                clearTimeout(focusErrorTimerRef.current);
+            }
+        };
+    }, []);
 
     const validateField = (name: string, value: string) => {
         switch (name) {
@@ -93,6 +104,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
         // Capture current state to avoid stale closure issues
         const currentFormData = formData;
 
+        if (!canSendEmail) {
+            showError(t('contact.form.unavailable'));
+            return;
+        }
+
         // Basic bot mitigation: hidden honeypot field + too-fast submit guard.
         if ((currentFormData.website || '').trim().length > 0) {
             setFormData(initialFormData);
@@ -117,9 +133,13 @@ const ContactForm: React.FC<ContactFormProps> = ({
             showError(t('contact.form.errors.checkInput'));
             // Scroll to first invalid field
             const firstErrorId = Object.keys(newErrors)[0];
-            setTimeout(() => {
+            if (focusErrorTimerRef.current) {
+                clearTimeout(focusErrorTimerRef.current);
+            }
+            focusErrorTimerRef.current = setTimeout(() => {
                 document.getElementById(firstErrorId)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 document.getElementById(firstErrorId)?.focus();
+                focusErrorTimerRef.current = null;
             }, 100);
             return;
         }
@@ -127,7 +147,13 @@ const ContactForm: React.FC<ContactFormProps> = ({
         setIsSubmitting(true);
 
         try {
-            await sendEmail(currentFormData);
+            const emailPayload: ContactFormData = {
+                name: currentFormData.name.trim(),
+                email: currentFormData.email.trim(),
+                message: currentFormData.message.trim(),
+                ...(includeSubject ? { subject: (currentFormData.subject || '').trim() } : {})
+            };
+            await sendEmail(emailPayload);
             showSuccess(t('contact.form.success'));
             setFormData(initialFormData);
             formStartedAt.current = Date.now();
@@ -200,6 +226,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     placeholder={t('contact.form.namePlaceholder')}
                     realTimeValidation={true}
                     validation={(value) => !validateField('name', value)}
+                    disabled={!canSendEmail || isSubmitting}
                 />
 
                 <Input
@@ -214,6 +241,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     placeholder={t('contact.form.emailPlaceholder')}
                     realTimeValidation={true}
                     validation={(value) => !validateField('email', value)}
+                    disabled={!canSendEmail || isSubmitting}
                 />
 
                 {includeSubject && (
@@ -229,6 +257,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                         placeholder={t('contact.form.subjectPlaceholder')}
                         realTimeValidation={true}
                         validation={(value) => !validateField('subject', value)}
+                        disabled={!canSendEmail || isSubmitting}
                     />
                 )}
 
@@ -244,6 +273,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                         onChange={handleChange}
                         placeholder={t('contact.form.messagePlaceholder')}
                         className={errors.message ? 'border-red-500' : ''}
+                        disabled={!canSendEmail || isSubmitting}
                     />
                     {errors.message && (
                         <div className="mt-2">
@@ -254,6 +284,12 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     )}
                 </div>
 
+                {!canSendEmail && (
+                    <div className="rounded-lg border border-yellow-600/50 bg-yellow-900/30 px-4 py-3 text-sm text-yellow-100 font-wanted-sans">
+                        {t('contact.form.unavailable')}
+                    </div>
+                )}
+
                 <Button
                     type="submit"
                     variant="primary"
@@ -263,6 +299,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     loadingText={t('contact.form.sending')}
                     leftIcon={!isSubmitting ? <Send size={20} /> : null}
                     animation="default"
+                    disabled={!canSendEmail}
                 >
                     {t('contact.form.send')}
                 </Button>

@@ -38,7 +38,6 @@ export type SearchSource =
 
 interface SearchResultProps {
   result: FuseResult<SearchResultItem>;
-  onClick: (result: FuseResult<SearchResultItem>) => void;
   type: string;
 }
 
@@ -142,15 +141,14 @@ const toSearchItems = (data: SearchSource): SearchResultItem[] => {
   return items;
 };
 
-const SearchResult: React.FC<SearchResultProps> = ({ result, onClick, type }) => {
+const SearchResult: React.FC<SearchResultProps> = ({ result, type }) => {
   const { t } = useLanguage();
   const titleMatches = getMatchedIndices(result.matches, 'title');
 
   return (
     <motion.div
-      className="flex cursor-pointer items-start space-x-3 rounded-lg p-3 transition-colors hover:bg-gray-700"
+      className="flex items-start space-x-3 rounded-lg p-3 transition-colors"
       whileHover={{ scale: 1.01 }}
-      onClick={() => onClick(result)}
     >
       <div className="mt-1 text-gray-400">{getIcon(type)}</div>
 
@@ -297,6 +295,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder 
           ref={inputRef}
           type="text"
           role="combobox"
+          aria-label={t('common.searchPlaceholder')}
           aria-expanded={isOpen && results.length > 0}
           aria-autocomplete="list"
           aria-controls="search-listbox"
@@ -304,7 +303,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder 
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           onKeyDown={handleKeyDown}
-          onFocus={() => setIsOpen(true)}
+          onFocus={() => setIsOpen(query.trim().length >= 2)}
           className="block w-full rounded-lg border border-gray-600 bg-gray-700 py-3 pl-10 pr-10 text-gray-200 placeholder-gray-400 transition-[border-color,box-shadow] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder={placeholder || t('common.searchPlaceholder')}
         />
@@ -340,11 +339,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResultClick, placeholder 
                     id={`search-option-${index}`}
                     role="option"
                     aria-selected={selectedIndex === index}
-                    className={selectedIndex === index ? 'rounded-lg bg-gray-700' : ''}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => handleResultClick(result)}
+                    onMouseEnter={() => setSelectedIndex(index)}
+                    className={`cursor-pointer rounded-lg transition-colors hover:bg-gray-700 ${selectedIndex === index ? 'bg-gray-700' : ''}`}
                   >
                     <SearchResult
                       result={result}
-                      onClick={handleResultClick}
                       type={result.item.type ?? 'unknown'}
                     />
                   </div>

@@ -6,7 +6,8 @@
         "archive": "Archive",
         "news": "News",
         "contact": "Contact",
-        "openMenu": "Open menu"
+        "openMenu": "Open menu",
+        "closeMenu": "Close menu"
     },
     "common": {
         "year": "Year",
@@ -31,7 +32,9 @@
         "previous": "Previous",
         "confirm": "Confirm",
         "retry": "Retry",
-        "refresh": "Refresh"
+        "refresh": "Refresh",
+        "switchToKorean": "Switch to Korean",
+        "switchToEnglish": "Switch to English"
     },
     "loading": {
         "default": "Loading...",
@@ -151,6 +154,7 @@
             "sending": "Sending...",
             "success": "Message sent successfully!",
             "error": "Failed to send message. Please try again.",
+            "unavailable": "The contact form is not configured yet. Please contact us by email directly.",
             "errors": {
                 "nameMin": "Name must be at least 2 characters.",
                 "emailInvalid": "Please enter a valid email address.",
@@ -178,6 +182,7 @@
         "previousTrack": "Previous Track",
         "nextTrack": "Next Track",
         "repeat": "Repeat",
+        "progress": "progress",
         "volume": "Volume",
         "mute": "Mute",
         "unmute": "Unmute",

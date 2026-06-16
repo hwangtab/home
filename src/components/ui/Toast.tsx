@@ -1,5 +1,5 @@
 
-import React, { memo, createContext, useContext, useState, useCallback, useMemo, ReactNode } from 'react';
+import React, { memo, createContext, useContext, useState, useCallback, useMemo, useEffect, useRef, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, AlertCircle, AlertTriangle, Info, X, LucideIcon } from 'lucide-react';
 
@@ -48,8 +48,14 @@ interface ToastProviderProps {
 
 export const ToastProvider = memo<ToastProviderProps>(({ children }) => {
     const [toasts, setToasts] = useState<ToastItem[]>([]);
+    const timersRef = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map());
 
     const removeToast = useCallback((id: number) => {
+        const timer = timersRef.current.get(id);
+        if (timer) {
+            clearTimeout(timer);
+            timersRef.current.delete(id);
+        }
         setToasts(prev => prev.filter(toast => toast.id !== id));
     }, []);
 
@@ -63,12 +69,25 @@ export const ToastProvider = memo<ToastProviderProps>(({ children }) => {
         };
         setToasts(prev => [...prev, toast]);
         if (!toast.persistent) {
-            setTimeout(() => removeToast(id), toast.duration);
+            const timer = setTimeout(() => removeToast(id), toast.duration);
+            timersRef.current.set(id, timer);
         }
         return id;
     }, [removeToast]);
 
-    const clearAllToasts = useCallback(() => setToasts([]), []);
+    const clearAllToasts = useCallback(() => {
+        timersRef.current.forEach(timer => clearTimeout(timer));
+        timersRef.current.clear();
+        setToasts([]);
+    }, []);
+
+    useEffect(() => {
+        const timers = timersRef.current;
+        return () => {
+            timers.forEach(timer => clearTimeout(timer));
+            timers.clear();
+        };
+    }, []);
     const showSuccess = useCallback((message: string, options?: ToastOptions) => addToast(message, TOAST_TYPES.SUCCESS, options), [addToast]);
     const showError = useCallback((message: string, options?: ToastOptions) => addToast(message, TOAST_TYPES.ERROR, { duration: 7000, ...options }), [addToast]);
     const showWarning = useCallback((message: string, options?: ToastOptions) => addToast(message, TOAST_TYPES.WARNING, options), [addToast]);
@@ -130,10 +149,10 @@ const Toast = memo<ToastProps>(({ toast, onRemove }) => {
                 <div className="flex-1">
                     <p className={`${colorClasses.text} font-wanted-sans text-sm leading-relaxed`}>{message}</p>
                     {action && (
-                        <button onClick={action.onClick} className={`mt-2 text-xs font-medium ${colorClasses.text} hover:underline`}>{action.label}</button>
+                        <button type="button" onClick={action.onClick} className={`mt-2 text-xs font-medium ${colorClasses.text} hover:underline`}>{action.label}</button>
                     )}
                 </div>
-                <button onClick={() => onRemove(id)} className={`${colorClasses.text} hover:opacity-75 transition-opacity flex-shrink-0`}><X size={16} /></button>
+                <button type="button" onClick={() => onRemove(id)} aria-label="Close notification" className={`${colorClasses.text} hover:opacity-75 transition-opacity flex-shrink-0`}><X size={16} /></button>
             </div>
         </motion.div>
     );
@@ -174,8 +193,8 @@ export const NotificationBanner = memo<NotificationBannerProps>(({ message, type
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3"><IconComponent size={20} /><span className="font-wanted-sans text-sm">{message}</span></div>
                 <div className="flex items-center space-x-2">
-                    {action && <button onClick={action.onClick} className="text-sm font-medium hover:underline">{action.label}</button>}
-                    {onClose && <button onClick={onClose} className="hover:opacity-75 transition-opacity"><X size={16} /></button>}
+                    {action && <button type="button" onClick={action.onClick} className="text-sm font-medium hover:underline">{action.label}</button>}
+                    {onClose && <button type="button" onClick={onClose} aria-label="Close notification" className="hover:opacity-75 transition-opacity"><X size={16} /></button>}
                 </div>
             </div>
         </motion.div>

@@ -105,7 +105,8 @@ const SiteLayoutInner: React.FC<SiteLayoutProps> = ({ children }) => {
           </nav>
           <button
             type="button"
-            aria-label={t('nav.openMenu')}
+            aria-label={isOpen ? t('nav.closeMenu') : t('nav.openMenu')}
+            aria-expanded={isOpen}
             onClick={() => setIsOpen((prev) => !prev)}
             className="md:hidden p-2 rounded-lg border border-brand-primary-500/20 text-brand-primary-400"
           >

@@ -95,6 +95,15 @@ const AlbumPurchase: React.FC<AlbumPurchaseProps> = ({ album }) => {
   const imageUrl = getWorkCoverUrl(album.cover, album.category);
   const actionUrl = album.primaryAction?.url;
   const actionLabel = album.primaryAction?.label || t('news.purchase');
+  const albumImage = (
+    <Image
+      src={imageUrl}
+      alt={album.title}
+      width={960}
+      height={960}
+      className={`h-auto w-full rounded object-cover ${actionUrl ? 'cursor-pointer' : ''}`}
+    />
+  );
 
   return (
     <UnifiedCard
@@ -103,30 +112,38 @@ const AlbumPurchase: React.FC<AlbumPurchaseProps> = ({ album }) => {
       motionProps={FADE_UP_MOTION}
     >
       <div className="flex flex-col justify-center md:w-1/2">
-        <motion.div whileHover={{ scale: 1.05 }} transition={{ type: 'spring', stiffness: 300 }}>
-          <Image
-            src={imageUrl}
-            alt={album.title}
-            width={960}
-            height={960}
-            className={`h-auto w-full rounded object-cover ${actionUrl ? 'cursor-pointer' : ''}`}
-            onClick={() => actionUrl && window.open(actionUrl, '_blank', 'noopener,noreferrer')}
-          />
-        </motion.div>
+        {actionUrl ? (
+          <motion.a
+            href={actionUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${actionLabel}: ${album.title}`}
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            {albumImage}
+          </motion.a>
+        ) : (
+          <motion.div transition={{ type: 'spring', stiffness: 300 }}>
+            {albumImage}
+          </motion.div>
+        )}
       </div>
       <div className="flex flex-col justify-center md:w-1/2">
         <h3 className="mb-6 font-santokki text-3xl font-bold leading-tight text-gray-200">{album.title}</h3>
         <p className="mb-6 font-wanted-sans text-gray-400">{album.description}</p>
         {actionUrl ? (
-          <motion.button
+          <motion.a
+            href={actionUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex self-start rounded-full bg-gray-700 px-8 py-4 font-wanted-sans text-white transition duration-300 hover:bg-gray-600"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => window.open(actionUrl, '_blank', 'noopener,noreferrer')}
           >
             <ShoppingCart className="mr-3" size={24} />
             {actionLabel}
-          </motion.button>
+          </motion.a>
         ) : null}
       </div>
     </UnifiedCard>

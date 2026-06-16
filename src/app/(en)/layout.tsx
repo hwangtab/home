@@ -6,6 +6,16 @@ import { bombaram, myungjo, santokki } from '../../fonts';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/logo192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/logo512.png', sizes: '512x512', type: 'image/png' }
+    ],
+    apple: [{ url: '/logo192.png', sizes: '192x192', type: 'image/png' }]
+  },
   title: 'Hwang Gyeongha Official Web',
   description: 'Official website of musician, sound engineer, and producer Hwang Gyeongha.',
   openGraph: {

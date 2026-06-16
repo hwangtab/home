@@ -228,7 +228,7 @@ const useScrollVariant = (
     delay: number = 0,
     options: UseScrollVariantOptions = {}
 ): {
-    ref: React.RefObject<any>;
+    ref: React.RefObject<HTMLElement | null>;
     shouldAnimate: boolean;
     controls: ReturnType<typeof useAnimation>;
     variants: Record<string, Variants>;
@@ -364,7 +364,7 @@ export const AboutSection = (props: SectionProps) => <Section variant="slideLeft
 export const ContactSection = (props: SectionProps) => <Section variant="scale" {...props} />;
 
 // 고성능 스크롤 애니메이션을 위한 추가 유틸리티
-export const useScrollAnimation = (): [any, ReturnType<typeof useAnimation>] => {
+export const useScrollAnimation = (): [React.RefObject<HTMLElement | null>, ReturnType<typeof useAnimation>] => {
     const controls = useAnimation();
     const [ref, inView] = useAnimationTrigger();
 

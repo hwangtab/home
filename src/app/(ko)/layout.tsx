@@ -6,9 +6,19 @@ import { bombaram, myungjo, santokki } from '../../fonts';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  manifest: '/manifest.json',
   title: {
     default: '황경하 공식 웹사이트',
     template: '%s | 황경하',
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/logo192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/logo512.png', sizes: '512x512', type: 'image/png' }
+    ],
+    apple: [{ url: '/logo192.png', sizes: '192x192', type: 'image/png' }]
   },
   description: '황경하의 공식 웹사이트입니다. 음악, 저술, 공연, 소식을 확인할 수 있습니다.',
   openGraph: {

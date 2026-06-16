@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 interface PageStateOptions {
     initialLoading?: boolean;
@@ -71,12 +71,14 @@ export const usePageState = (options: PageStateOptions = {}): PageStateReturn =>
     const [pageDescription, setPageDescription] = useState('');
     const [breadcrumb, setBreadcrumb] = useState<Breadcrumb[]>([]);
     const [pageHistory, setPageHistory] = useState<HistoryEntry[]>([]);
+    const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [storageState, setStorageState] = useState<unknown>(() => {
-        if (!storageKey) return null;
+        if (!storageKey || typeof window === 'undefined') return null;
         try {
             const saved = localStorage.getItem(storageKey);
             return saved ? JSON.parse(saved) : null;
-        } catch {
+        } catch (err) {
+            console.warn('Failed to load localStorage state:', err);
             return null;
         }
     });
@@ -105,13 +107,25 @@ export const usePageState = (options: PageStateOptions = {}): PageStateReturn =>
     }, []);
 
     const showSuccess = useCallback((message: string, duration = 3000) => {
+        if (successTimerRef.current) {
+            clearTimeout(successTimerRef.current);
+            successTimerRef.current = null;
+        }
+
         setSuccessMessage(message);
         if (duration > 0) {
-            setTimeout(() => setSuccessMessage(''), duration);
+            successTimerRef.current = setTimeout(() => {
+                setSuccessMessage('');
+                successTimerRef.current = null;
+            }, duration);
         }
     }, []);
 
     const clearSuccess = useCallback(() => {
+        if (successTimerRef.current) {
+            clearTimeout(successTimerRef.current);
+            successTimerRef.current = null;
+        }
         setSuccessMessage('');
     }, []);
 
@@ -174,7 +188,9 @@ export const usePageState = (options: PageStateOptions = {}): PageStateReturn =>
 
     useEffect(() => {
         return () => {
-            setSuccessMessage('');
+            if (successTimerRef.current) {
+                clearTimeout(successTimerRef.current);
+            }
         };
     }, []);
 

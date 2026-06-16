@@ -62,11 +62,6 @@
                                 "cover": "/images/defaults/music-default.svg",
                                 "description": "펑크 밴드 노컨트롤의 앨범. 다음뮤직 이달의 음반 수상.",
                                 "shortDescription": "펑크 밴드 노컨트롤의 데뷔 앨범, 다음뮤직 이달의 음반 수상",
-                                "primaryAction": {
-                                        "type": "play",
-                                        "url": "",
-                                        "label": "음악 듣기"
-                                },
                                 "tags": [
                                         "punk",
                                         "no control",
@@ -106,11 +101,6 @@
                                 "cover": "/images/defaults/music-default.svg",
                                 "description": "이태원 갤러리 테이크아웃드로잉 철거를 막기 위해 기획·제작한 옴니버스 앨범. 2015 레드어워드 주목할만한 연대부문 수상.",
                                 "shortDescription": "이태원 테이크아웃드로잉 철거 반대 연대 옴니버스 앨범",
-                                "primaryAction": {
-                                        "type": "play",
-                                        "url": "",
-                                        "label": "음악 듣기"
-                                },
                                 "tags": [
                                         "solidarity",
                                         "gentrification",
@@ -328,11 +318,6 @@
                                 "cover": "/images/defaults/music-default.svg",
                                 "description": "엉아들의 앨범. 프로듀서로 참여.",
                                 "shortDescription": "엉아들 앨범 프로듀싱",
-                                "primaryAction": {
-                                        "type": "play",
-                                        "url": "",
-                                        "label": "음악 듣기"
-                                },
                                 "tags": [
                                         "producer",
                                         "eongadeul",
@@ -350,11 +335,6 @@
                                 "cover": "/images/defaults/music-default.svg",
                                 "description": "세민의 싱글 앨범. 기획 및 제작.",
                                 "shortDescription": "세민의 싱글 앨범 기획 및 제작",
-                                "primaryAction": {
-                                        "type": "play",
-                                        "url": "",
-                                        "label": "음악 듣기"
-                                },
                                 "tags": [
                                         "producer",
                                         "semin",
@@ -372,11 +352,6 @@
                                 "cover": "/images/defaults/music-default.svg",
                                 "description": "옴니버스 앨범. 2024 레드어워드 주목할만한 연대부문 수상.",
                                 "shortDescription": "레드어워드 수상작 — 옴니버스 앨범",
-                                "primaryAction": {
-                                        "type": "play",
-                                        "url": "",
-                                        "label": "음악 듣기"
-                                },
                                 "tags": [
                                         "producer",
                                         "omnibus",

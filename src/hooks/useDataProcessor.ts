@@ -12,12 +12,12 @@ interface DataProcessorOptions<T extends object> {
     enableSort?: boolean;
 }
 
-interface DataStats {
+interface DataStats<T> {
     total: number;
     byType: Record<string, number>;
     byYear: Record<number, number>;
-    latest: Work | null;
-    oldest: Work | null;
+    latest: T | null;
+    oldest: T | null;
 }
 
 interface PaginationResult<T> {
@@ -112,22 +112,27 @@ export const useDataProcessor = <T extends object>(
         return Array.from(values).sort();
     }, [sortedData, filterKey, enableFilter]);
 
-    const dataStats = useMemo((): DataStats => {
+    const dataStats = useMemo((): DataStats<T> => {
         if (!sortedData || !Array.isArray(sortedData)) {
             return { total: 0, byType: {}, byYear: {}, latest: null, oldest: null };
         }
-        const stats: DataStats = { total: sortedData.length, byType: {}, byYear: {}, latest: null, oldest: null };
+        const stats: DataStats<T> = { total: sortedData.length, byType: {}, byYear: {}, latest: null, oldest: null };
+        let latestYear = Number.NEGATIVE_INFINITY;
+        let oldestYear = Number.POSITIVE_INFINITY;
+
         sortedData.forEach(item => {
             const type = String(item[filterKey] || 'unknown');
             stats.byType[type] = (stats.byType[type] || 0) + 1;
             const year = item['year' as keyof T];
             if (typeof year === 'number') {
                 stats.byYear[year] = (stats.byYear[year] || 0) + 1;
-                if (!stats.latest || year > stats.latest.year) {
-                    stats.latest = item as unknown as Work;
+                if (year > latestYear) {
+                    latestYear = year;
+                    stats.latest = item;
                 }
-                if (!stats.oldest || year < stats.oldest.year) {
-                    stats.oldest = item as unknown as Work;
+                if (year < oldestYear) {
+                    oldestYear = year;
+                    stats.oldest = item;
                 }
             }
         });
@@ -136,13 +141,16 @@ export const useDataProcessor = <T extends object>(
 
     const paginateData = useCallback(<U>(targetData: U[], page = 1, itemsPerPage = 10): PaginationResult<U> => {
         if (!targetData || !Array.isArray(targetData)) return { data: [], totalPages: 0, currentPage: 1, totalItems: 0, hasNext: false, hasPrev: false };
-        const startIndex = (page - 1) * itemsPerPage;
         const totalItems = targetData.length;
+        const safeItemsPerPage = Number.isFinite(itemsPerPage) && itemsPerPage > 0 ? Math.floor(itemsPerPage) : 10;
+        const totalPages = Math.ceil(totalItems / safeItemsPerPage);
+        const safePage = Number.isFinite(page) && page > 0 ? Math.min(Math.floor(page), Math.max(totalPages, 1)) : 1;
+        const startIndex = (safePage - 1) * safeItemsPerPage;
         return {
-            data: targetData.slice(startIndex, startIndex + itemsPerPage),
-            totalPages: Math.ceil(totalItems / itemsPerPage),
-            currentPage: page, totalItems,
-            hasNext: startIndex + itemsPerPage < totalItems, hasPrev: page > 1
+            data: targetData.slice(startIndex, startIndex + safeItemsPerPage),
+            totalPages,
+            currentPage: safePage, totalItems,
+            hasNext: safePage < totalPages, hasPrev: safePage > 1
         };
     }, []);
 
@@ -152,7 +160,9 @@ export const useDataProcessor = <T extends object>(
         if (filterValue) processed = filterData(filterValue);
         if (searchTerm) processed = searchData(searchTerm, processed);
         if (customFilter && typeof customFilter === 'function') processed = processed.filter(customFilter);
-        if (page && itemsPerPage) return paginateData(processed, page, itemsPerPage);
+        if (page !== undefined || itemsPerPage !== undefined) {
+            return paginateData(processed, page, itemsPerPage);
+        }
         return processed;
     }, [sortedData, filterData, searchData, paginateData]);
 

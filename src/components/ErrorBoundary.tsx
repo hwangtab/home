@@ -33,6 +33,7 @@ const clearCacheAndReload = () => {
     if ('caches' in window) {
         window.caches.keys()
             .then(names => Promise.all(names.map(name => window.caches.delete(name))))
+            .catch(error => console.warn('Unable to clear browser cache before reload:', error))
             .finally(reload);
     } else {
         reload();
@@ -66,6 +67,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({
                     <div className="flex gap-4 justify-center">
                         {retryCount < 3 && (
                             <button
+                                type="button"
                                 onClick={onRetry}
                                 className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition-colors font-wanted-sans"
                             >
@@ -73,6 +75,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({
                             </button>
                         )}
                         <button
+                            type="button"
                             onClick={onReload}
                             className="px-6 py-3 bg-brand-primary-600 text-white rounded-lg hover:bg-brand-primary-700 transition-colors font-wanted-sans"
                         >
@@ -94,10 +97,8 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({
                 <p className="text-gray-300 font-wanted-sans">
                     {t('errorBoundary.unexpectedDesc')}
                 </p>
-                <p className="text-gray-400 text-sm font-wanted-sans break-words">
-                    {error.toString()}
-                </p>
                 <button
+                    type="button"
                     onClick={onReload}
                     className="px-6 py-3 bg-brand-primary-600 text-white rounded-lg hover:bg-brand-primary-700 transition-colors font-wanted-sans"
                 >

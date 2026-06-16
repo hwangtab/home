@@ -12,12 +12,12 @@ export interface DataProcessorOptions<T> {
     enableSort?: boolean;
 }
 
-export interface DataStats {
+export interface DataStats<T = Work> {
     total: number;
     byType: Record<string, number>;
     byYear: Record<number, number>;
-    latest: Work | null;
-    oldest: Work | null;
+    latest: T | null;
+    oldest: T | null;
 }
 
 export interface PaginationResult<T> {
@@ -45,7 +45,7 @@ export interface DataProcessorReturn<T> {
     paginateData: (targetData: T[], page?: number, itemsPerPage?: number) => PaginationResult<T>;
     processData: (filters?: ProcessFilters<T>) => T[] | PaginationResult<T>;
     uniqueFilterValues: string[];
-    dataStats: DataStats;
+    dataStats: DataStats<T>;
     options: DataProcessorOptions<T>;
 }
 

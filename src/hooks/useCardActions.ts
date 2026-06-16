@@ -35,6 +35,10 @@ interface CardActionsReturn {
     favorites: string[];
 }
 
+const isAbortError = (error: unknown): boolean => {
+    return error instanceof DOMException && error.name === 'AbortError';
+};
+
 /**
  * 카드 액션들을 위한 재사용 가능한 훅
  */
@@ -95,10 +99,27 @@ export const useCardActions = (options: CardActionsOptions = {}): CardActionsRet
             text: work.description || '',
             url: work.url || window.location.href
         };
-        if (navigator.share && navigator.canShare(shareData)) {
-            try { await navigator.share(shareData); } catch (_e) { /* share cancelled or failed */ }
+        const canUseNativeShare =
+            typeof navigator.share === 'function' &&
+            (typeof navigator.canShare !== 'function' || navigator.canShare(shareData));
+
+        if (canUseNativeShare) {
+            try {
+                await navigator.share(shareData);
+            } catch (error) {
+                if (!isAbortError(error)) {
+                    console.warn('Failed to share work:', error);
+                }
+            }
         } else {
-            try { await navigator.clipboard.writeText(shareData.url); } catch (_e) { /* clipboard unavailable */ }
+            try {
+                if (!navigator.clipboard?.writeText) {
+                    throw new Error('Clipboard API is not available');
+                }
+                await navigator.clipboard.writeText(shareData.url);
+            } catch (error) {
+                console.warn('Failed to copy share URL:', error);
+            }
         }
     }, []);
 
@@ -108,7 +129,10 @@ export const useCardActions = (options: CardActionsOptions = {}): CardActionsRet
         try {
             const saved = localStorage.getItem('favorites');
             return saved ? JSON.parse(saved) : [];
-        } catch { return []; }
+        } catch (error) {
+            console.warn('Failed to load favorites:', error);
+            return [];
+        }
     });
 
     const toggleFavorite = useCallback((work: Work) => {
@@ -117,7 +141,11 @@ export const useCardActions = (options: CardActionsOptions = {}): CardActionsRet
             const newFavorites = prev.includes(work.id)
                 ? prev.filter(id => id !== work.id)
                 : [...prev, work.id];
-            try { localStorage.setItem('favorites', JSON.stringify(newFavorites)); } catch (_e) { /* storage unavailable */ }
+            try {
+                localStorage.setItem('favorites', JSON.stringify(newFavorites));
+            } catch (error) {
+                console.warn('Failed to save favorites:', error);
+            }
             return newFavorites;
         });
     }, []);
