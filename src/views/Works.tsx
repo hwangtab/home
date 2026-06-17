@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { useSearchParams } from 'next/navigation';
 import type { FuseResult } from 'fuse.js';
 import Section from '../components/Section';
 import PageHero from '../components/PageHero';
 const MusicPlayer = dynamic(() => import('../components/MusicPlayer'), { ssr: false });
 import CardRenderer from '../components/CardRenderer';
+import WorksQuerySync from '../components/WorksQuerySync';
 import type { SearchResultItem } from '../components/SearchBar';
 import WorksHeader from '../components/WorksHeader';
 import WorksGrid from '../components/WorksGrid';
@@ -26,28 +26,22 @@ interface PlayableMusicWork extends MusicWork {
   audioUrl?: string;
 }
 
-const isWorkFilter = (value: string | null): value is WorkCategory | 'all' => {
-  return value !== null && WORK_FILTER_SET.has(value);
-};
-
 const Works: React.FC = () => {
   const { t, language } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<WorkCategory | 'all'>('all');
   const [highlightedWorkId, setHighlightedWorkId] = useState<string | null>(null);
-  const searchParams = useSearchParams();
-
-  // searchParams에서 추출한 값들을 상수로 분리 — 의존성 안정화
-  const categoryParam = searchParams?.get('category');
-  const workIdParam = searchParams?.get('id');
-  const targetWorkId = workIdParam || highlightedWorkId;
+  const [queryWorkId, setQueryWorkId] = useState<string | null>(null);
+  const targetWorkId = queryWorkId || highlightedWorkId;
 
   const { data: worksPageData } = useWorksPageData(language);
 
-  useEffect(() => {
-    if (isWorkFilter(categoryParam)) {
-      setActiveFilter(categoryParam);
-    }
-  }, [categoryParam]);
+  const handleQueryCategoryChange = useCallback((category: WorkCategory | 'all') => {
+    setActiveFilter(category);
+  }, []);
+
+  const handleQueryWorkIdChange = useCallback((workId: string | null) => {
+    setQueryWorkId(workId);
+  }, []);
 
   useLayoutEffect(() => {
     if (!targetWorkId) return;
@@ -130,6 +124,13 @@ const Works: React.FC = () => {
 
   return (
     <>
+      <Suspense fallback={null}>
+        <WorksQuerySync
+          onCategoryChange={handleQueryCategoryChange}
+          onWorkIdChange={handleQueryWorkIdChange}
+        />
+      </Suspense>
+
       <PageHero
         title={t('works.title')}
         subtitle={t('works.heroSubtitle')}

@@ -20,6 +20,8 @@ interface TranslationValue {
     [key: string]: string | string[] | TranslationValue;
 }
 
+type ResolvedTranslationValue = string | string[] | TranslationValue;
+
 interface TranslationsMap {
     ko: TranslationValue;
     en: TranslationValue;
@@ -32,6 +34,19 @@ const translations: TranslationsMap = {
 
 const isTranslationObject = (value: string | string[] | TranslationValue): value is TranslationValue => {
     return typeof value === 'object' && value !== null && !Array.isArray(value);
+};
+
+const getTranslationChild = (value: ResolvedTranslationValue, key: string): ResolvedTranslationValue | null => {
+    if (Array.isArray(value)) {
+        const index = Number(key);
+        return Number.isInteger(index) && index >= 0 && index < value.length ? value[index] : null;
+    }
+
+    if (isTranslationObject(value) && key in value) {
+        return value[key];
+    }
+
+    return null;
 };
 
 interface LanguageProviderProps {
@@ -76,13 +91,13 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
         // Traverse translation object by keys
         const resolve = (obj: TranslationValue): string | null => {
-            let current: string | string[] | TranslationValue = obj;
+            let current: ResolvedTranslationValue = obj;
             for (const key of keys) {
-                if (isTranslationObject(current) && key in current) {
-                    current = current[key];
-                } else {
+                const child = getTranslationChild(current, key);
+                if (child === null) {
                     return null;
                 }
+                current = child;
             }
             return typeof current === 'string' ? current : null;
         };

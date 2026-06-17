@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Works from '../../../views/Works';
 import { getAlternates, toAbsoluteUrl } from '../../../lib/seo';
-import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: '작품',
@@ -18,18 +17,6 @@ export const metadata: Metadata = {
   }
 };
 
-function WorksLoader() {
-  return (
-    <div className="flex min-h-[400px] items-center justify-center">
-      <p className="text-gray-400">작품 로딩 중...</p>
-    </div>
-  );
-}
-
 export default function WorksPage() {
-  return (
-    <Suspense fallback={<WorksLoader />}>
-      <Works />
-    </Suspense>
-  );
+  return <Works />;
 }
