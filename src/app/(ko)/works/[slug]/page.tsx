@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: WorkDetailRouteProps): Promis
   if (!work) {
     return {
       title: '작품을 찾을 수 없습니다',
-      description: '요청하신 작품 정보를 찾을 수 없습니다.',
+      description: '요청하신 작품 정보가 없습니다.',
       robots: {
         index: false,
         follow: false

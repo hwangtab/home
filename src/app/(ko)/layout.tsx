@@ -20,16 +20,16 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: '/logo192.png', sizes: '192x192', type: 'image/png' }]
   },
-  description: '황경하의 공식 웹사이트입니다. 음악, 저술, 공연, 소식을 확인할 수 있습니다.',
+  description: '황경하의 공식 웹사이트입니다. 음악, 저술, 공연, 소식을 살펴볼 수 있습니다.',
   openGraph: {
     title: '황경하 공식 웹사이트',
-    description: '황경하의 공식 웹사이트입니다. 음악, 저술, 공연, 소식을 확인할 수 있습니다.',
+    description: '황경하의 공식 웹사이트입니다. 음악, 저술, 공연, 소식을 살펴볼 수 있습니다.',
     locale: 'ko_KR',
     images: [{ url: '/images/og/default-og.png', alt: '황경하 공식 웹사이트', width: 1200, height: 630, type: 'image/png' }],
   },
   twitter: {
     title: '황경하 공식 웹사이트',
-    description: '황경하의 공식 웹사이트입니다. 음악, 저술, 공연, 소식을 확인할 수 있습니다.',
+    description: '황경하의 공식 웹사이트입니다. 음악, 저술, 공연, 소식을 살펴볼 수 있습니다.',
     images: ['/images/og/default-og.png'],
   },
   alternates: getAlternates('/', 'ko'),

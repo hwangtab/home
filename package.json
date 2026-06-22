@@ -22,7 +22,8 @@
     "data:translations": "tsx scripts/check-translations.ts",
     "build:data": "npm run data:translations && next build",
     "test": "npm run data:validate && npm run data:translations && tsx scripts/test-invariants.ts",
-    "test:prerender": "tsx scripts/check-prerender-output.ts"
+    "test:prerender": "tsx scripts/check-prerender-output.ts",
+    "test:browser": "npm run build && tsx scripts/browser-smoke.ts"
   },
   "browserslist": {
     "production": [

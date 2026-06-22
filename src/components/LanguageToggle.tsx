@@ -18,7 +18,9 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({ className = '' }) => {
 
     const handleToggleLanguage = () => {
         const basePath = stripLocalePrefix(pathname);
-        const targetPath = withLocalePrefix(basePath, nextLanguage);
+        const currentSearch = typeof window !== 'undefined' ? window.location.search : '';
+        const currentHash = typeof window !== 'undefined' ? window.location.hash : '';
+        const targetPath = `${withLocalePrefix(basePath, nextLanguage)}${currentSearch}${currentHash}`;
 
         changeLanguage(nextLanguage);
         router.push(targetPath);

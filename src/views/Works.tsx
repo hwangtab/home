@@ -20,6 +20,13 @@ import { WORK_CATEGORIES, type MusicWork, type Work, type WorkCategory } from '.
 
 const WORK_FILTER_SET = new Set<string>(['all', ...WORK_CATEGORIES]);
 const RING_HIGHLIGHT_DURATION_MS = 2000;
+const HIGHLIGHT_CLASSES = [
+  'ring-2',
+  'ring-brand-primary-400',
+  'ring-offset-2',
+  'ring-offset-gray-900',
+  'rounded-lg'
+] as const;
 
 // MusicWork 확장: audioUrl 필드 추가 (플레이어에서 사용)
 interface PlayableMusicWork extends MusicWork {
@@ -65,25 +72,20 @@ const Works: React.FC = () => {
 
     function startHighlight(el: HTMLElement) {
       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      el.classList.add(
-        'ring-2',
-        'ring-brand-primary-400',
-        'ring-offset-2',
-        'ring-offset-gray-900',
-        'rounded-lg'
-      );
+      el.classList.add(...HIGHLIGHT_CLASSES);
+
+      const removeHighlight = () => {
+        el.classList.remove(...HIGHLIGHT_CLASSES);
+      };
 
       const cleanupTimer = setTimeout(() => {
-        el.classList.remove(
-          'ring-2',
-          'ring-brand-primary-400',
-          'ring-offset-2',
-          'ring-offset-gray-900',
-          'rounded-lg'
-        );
+        removeHighlight();
       }, RING_HIGHLIGHT_DURATION_MS);
 
-      return () => clearTimeout(cleanupTimer);
+      return () => {
+        clearTimeout(cleanupTimer);
+        removeHighlight();
+      };
     }
   }, [targetWorkId, activeFilter]);
 

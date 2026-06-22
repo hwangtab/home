@@ -14,13 +14,13 @@
         "results": "개 결과",
         "siteTitle": "황경하",
         "error": "오류",
-        "loadingError": "데이터를 불러오는 중 오류가 발생했습니다.",
+        "loadingError": "데이터를 불러오지 못했습니다.",
         "loading": "로딩 중...",
         "search": "검색",
         "searchPlaceholder": "작품, 연도, 태그로 검색...",
         "noResults": "검색 결과가 없습니다.",
         "noData": "표시할 데이터가 없습니다.",
-        "unknownRenderType": "알 수 없는 렌더링 타입입니다.",
+        "unknownRenderType": "알 수 없는 렌더링 유형입니다.",
         "imageLoadFailed": "이미지 로드 실패",
         "readMore": "더 보기",
         "view": "보기",
@@ -42,17 +42,17 @@
         "processing": "처리 중..."
     },
     "errorBoundary": {
-        "chunkTitle": "페이지 로딩 중 문제가 발생했습니다",
+        "chunkTitle": "페이지를 불러오는 중 문제가 발생했습니다",
         "chunkDesc": "새로운 업데이트가 있을 수 있습니다. 페이지를 새로고침해 주세요.",
         "retryCount": "재시도 횟수",
         "unexpectedTitle": "예기치 않은 오류가 발생했습니다",
-        "unexpectedDesc": "페이지를 로드하는 중 문제가 발생했습니다.",
+        "unexpectedDesc": "페이지를 불러오는 중 문제가 발생했습니다.",
         "refreshPage": "페이지 새로고침"
     },
     "home": {
         "hero": {
             "title": "황경하",
-            "subtitle": "한국의 음악가, 사운드 엔지니어, 프로듀서, 그리고 연대자입니다.",
+            "subtitle": "한국의 음악가, 사운드 엔지니어, 프로듀서이자 연대자입니다.",
             "role": "음악가 · 사운드 엔지니어 · 프로듀서",
             "viewWorks": "작품 보기"
         },
@@ -74,19 +74,19 @@
     },
     "about": {
         "title": "소개",
-        "heroSubtitle": "음악 제작자이자 예술 기획자, 현장 기반 문화 프로젝트를 운영하는 연대자입니다.",
-        "profileParagraph1": "그의 작업은 사회에 대한 날카로운 시선과 따뜻한 연대의 메시지를 담고 있습니다. 음악 활동 외에도 황경하는 다양한 투쟁에 참여하며, 음악을 통한 사회 변화를 추구하고 있습니다.",
-        "profileParagraph2": "명성과 부를 좇기보다 시대의 아픔에 공감하고 약자와 연대하는 예술, 세상의 부조리에 저항하고 변화의 메시지를 전하는 예술의 길을 개척하고 있습니다. 비록 험난한 여정이겠지만 노래하는 자의 가녀린 어깨가 세상을 변화시키리라 믿습니다.",
+        "heroSubtitle": "음악 제작자이자 예술 기획자, 현장 기반 문화 프로젝트를 꾸리는 연대자입니다.",
+        "profileParagraph1": "그의 작업에는 사회를 바라보는 날카로운 시선과 따뜻한 연대의 메시지가 함께 담겨 있습니다. 황경하는 음악 활동에 머무르지 않고 여러 투쟁의 현장에 참여하며, 음악이 사회를 바꾸는 힘이 될 수 있다고 믿습니다.",
+        "profileParagraph2": "명성과 부를 좇기보다 시대의 아픔에 공감하고 약자와 연대하는 예술, 세상의 부조리에 맞서 변화의 메시지를 전하는 예술의 길을 걷고 있습니다. 험난한 여정일지라도, 노래하는 자의 가녀린 어깨가 세상을 변화시키리라 믿습니다.",
         "philosophy": "예술 철학",
         "timeline": "활동 연혁",
         "resistanceTitle": "연대와 저항",
         "resistanceText": "예술은 세상의 소외된 이들과 함께할 때 진정한 힘을 발휘합니다.",
         "memoryTitle": "기록과 기억",
-        "memoryText": "사라져가는 것들, 잊혀져가는 것들을 예술로 기록하고 보존합니다."
+        "memoryText": "사라져 가는 것들, 잊혀 가는 것들을 예술로 기록하고 보존합니다."
     },
     "works": {
         "title": "작품",
-        "heroSubtitle": "황경하의 음악, 저술, 그리고 활동들",
+        "heroSubtitle": "황경하의 음악, 저술, 활동 기록",
         "all": "전체",
         "music": "음악",
         "visual": "영상",
@@ -97,7 +97,7 @@
         "album": "앨범",
         "single": "싱글",
         "detailLabel": "작품 상세보기",
-        "clickDetail": "클릭하여 상세보기",
+        "clickDetail": "클릭해 상세보기",
         "videos": "비디오 작품",
         "photography": "사진",
         "essays": "에세이",
@@ -111,12 +111,12 @@
         "watchOriginal": "원본 보기",
         "readArticle": "읽기",
         "noWorksByCategory": "'{category}' 카테고리의 작품이 없습니다.",
-        "loadingMore": "더 많은 작품 로딩 중...",
+        "loadingMore": "더 많은 작품을 불러오는 중...",
         "loadMore": "더 많은 작품 보기"
     },
     "archive": {
         "title": "아카이브",
-        "subtitle": "2004년부터 현재까지, 20년간의 예술 활동을 기록합니다.",
+        "subtitle": "2004년부터 현재까지 이어진 20년의 예술 활동을 기록합니다.",
         "yearlyView": "연도별 보기",
         "timelineView": "타임라인 보기",
         "activities": "개의 주요 활동",
@@ -124,7 +124,7 @@
     },
     "news": {
         "pageTitle": "소식",
-        "pageSubtitle": "새로운 활동과 공지사항",
+        "pageSubtitle": "새 활동과 공지사항",
         "title": "최신 소식",
         "concerts": "공연 일정",
         "noConcerts": "현재 등록된 공연 일정이 없습니다.",
@@ -143,24 +143,24 @@
         "form": {
             "title": "문의하기",
             "name": "이름",
-            "namePlaceholder": "성함을 입력해주세요",
+            "namePlaceholder": "성함을 입력해 주세요",
             "email": "이메일",
-            "emailPlaceholder": "이메일 주소를 입력해주세요",
+            "emailPlaceholder": "이메일 주소를 입력해 주세요",
             "subject": "제목",
-            "subjectPlaceholder": "문의 제목을 입력해주세요",
+            "subjectPlaceholder": "문의 제목을 입력해 주세요",
             "message": "메시지",
-            "messagePlaceholder": "문의 내용을 자세히 입력해주세요",
+            "messagePlaceholder": "문의 내용을 자세히 입력해 주세요",
             "send": "메시지 보내기",
             "sending": "전송 중...",
             "success": "메시지가 성공적으로 전송되었습니다!",
-            "error": "메시지 전송에 실패했습니다. 다시 시도해주세요.",
-            "unavailable": "문의 폼 설정이 아직 완료되지 않았습니다. 이메일로 직접 연락해주세요.",
+            "error": "메시지를 보내지 못했습니다. 다시 시도해 주세요.",
+            "unavailable": "문의 폼 설정이 아직 완료되지 않았습니다. 이메일로 직접 연락해 주세요.",
             "errors": {
                 "nameMin": "이름은 최소 2글자 이상이어야 합니다.",
-                "emailInvalid": "올바른 이메일 형식을 입력해주세요.",
+                "emailInvalid": "올바른 이메일 형식을 입력해 주세요.",
                 "subjectMin": "제목은 최소 3글자 이상이어야 합니다.",
                 "messageMin": "메시지는 최소 10글자 이상이어야 합니다.",
-                "checkInput": "입력 정보를 확인해주세요."
+                "checkInput": "입력 정보를 확인해 주세요."
             }
         },
         "businessHours": "업무 시간",
