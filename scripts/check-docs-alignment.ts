@@ -25,6 +25,8 @@ const forbiddenPatterns: Array<{ pattern: RegExp; reason: string }> = [
   { pattern: /build\//i, reason: 'Do not describe Next.js build output as build/.' }
 ];
 
+const staleKoreanRoutePattern = /\/ko\//;
+
 const requiredPhrasesByFile: Record<string, string[]> = {
   'AGENTS.md': ['Next.js App Router', 'src/app/(ko)', 'src/app/(en)', 'src/views', 'src/data/siteData.json', 'npm test'],
   'CLAUDE.md': ['Next.js App Router', 'src/app/(ko)', 'src/app/(en)', 'src/views', 'src/data/siteData.json', 'npm test'],
@@ -42,6 +44,11 @@ for (const file of primaryGuidanceFiles) {
   for (const { pattern, reason } of forbiddenPatterns) {
     assert.ok(!pattern.test(content), `${file} contains stale guidance matching ${pattern}: ${reason}`);
   }
+
+  assert.ok(
+    !staleKoreanRoutePattern.test(content),
+    `${file} contains stale Korean route guidance using /ko/; Korean routes should be unprefixed and English should live under /en/*`
+  );
 
   for (const phrase of requiredPhrasesByFile[file]) {
     assert.ok(content.includes(phrase), `${file} must mention current architecture phrase: ${phrase}`);

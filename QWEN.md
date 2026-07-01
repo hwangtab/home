@@ -5,7 +5,7 @@
 **황경하 (Hwang Gyeongha)** — 음악 제작자·예술 기획자의 다국어 포트폴리오 웹사이트.
 Next.js App Router 기반, 한국어/영어双语 지원, Tailwind CSS + Framer Motion 애니메이션.
 
-라우트는 `src/app/(ko)`와 `src/app/(en)` route group에서 다국어를 분기하고, 페이지 뷰는 `src/views`에서 조합한다.
+라우트는 `src/app/(ko)`와 `src/app/(en)` route group에서 다국어를 분기하고, 한국어는 `/`, `/about`, `/works`, `/news`, `/contact` 같은 unprefixed 경로를, 영어는 `/en/*` 경로를 사용하며, 페이지 뷰는 `src/views`에서 조합한다.
 
 - **이름:** `hwangtab` (v0.1.0)
 - **버킷:** Vercel/Next.js 정적 생성 배포
@@ -15,7 +15,7 @@ Next.js App Router 기반, 한국어/영어双语 지원, Tailwind CSS + Framer 
 
 | 영역 | 기술 |
 |---|---|
-| 프레임워크 | Next.js 16 (~16.1.6), App Router, `src/app/(ko)` / `src/app/(en)` route groups |
+| 프레임워크 | Next.js 16 (~16.1.6), App Router, 한국어 unprefixed + 영어 `/en/*`, `src/app/(ko)` / `src/app/(en)` route groups |
 | UI | React 19, TypeScript 5.9, Tailwind CSS 3.3 |
 | 애니메이션 | Framer Motion 12 |
 | 국제화 | `src/i18n/` — `LanguageProvider` + `useLanguage()`, localStorage 기반 언어 선호 저장 |
@@ -28,8 +28,8 @@ Next.js App Router 기반, 한국어/영어双语 지원, Tailwind CSS + Framer 
 ```
 src/
 ├── app/                    # Next.js App Router 라우트
-│   ├── (ko)/               # 한국어 페이지: /(about, works, news, contact)
-│   ├── (en)/               # 영어 페이지 (동일 구조)
+│   ├── (ko)/               # 한국어 페이지: /, /about, /works, /news, /contact
+│   ├── (en)/               # 영어 페이지: /en/, /en/about, /en/works, /en/news, /en/contact
 │   ├── globals.css
 │   ├── providers.tsx
 │   ├── robots.ts / sitemap.ts
@@ -88,7 +88,7 @@ src/
 
 ## 다국어 (i18n)
 
-- 라우트: `/ko/*` vs `/en/*` 분리 (`src/app/(ko)`, `src/app/(en)` route group)
+- 라우트: 한국어는 `/`, `/about`, `/works`, `/news`, `/contact` 같은 unprefixed 경로, 영어는 `/en/*` 분리 (`src/app/(ko)`, `src/app/(en)` route group)
 - 언어 전환: `LanguageToggle` 컴포넌트 + `useLanguage()` 훅
 - 번역 키: `.t('path.to.key')` 형식, 영어 폴백 지원
 - 언어 선호: localStorage에 `'language'` 키로 저장
