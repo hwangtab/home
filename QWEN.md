@@ -17,7 +17,7 @@ Next.js App Router 기반, 한국어/영어双语 지원, Tailwind CSS + Framer 
 | UI | React 19, TypeScript 5.9, Tailwind CSS 3.3 |
 | 애니메이션 | Framer Motion 12 |
 | 국제화 | `src/i18n/` — `LanguageProvider` + `useLanguage()`, localStorage 기반 언어 선호 저장 |
-| 데이터 | `siteData.json` (metadata 버전 3.3.0, 마지막 업데이트 2026-05-08) |
+| 데이터 | `siteData.json` (`metadata`는 `src/data/siteData.json` 기준, 현재 `version 3.5.0`, `lastUpdated 2026-05-21`) |
 | 빌드/배포 | Vercel (`vercel.json` 정적 캐시 설정), `next build` |
 | 폰트 | Wanted Sans Variable (CDN), HSBombaram3, BookkMyungjo, HSSanTokki20 (Project Noonnu CDN) |
 
