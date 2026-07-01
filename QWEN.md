@@ -13,7 +13,7 @@ Next.js App Router 기반, 한국어/영어双语 지원, Tailwind CSS + Framer 
 
 | 영역 | 기술 |
 |---|---|
-| 프레임워크 | Next.js 16 (~16.1.6), App Router, `(ko)`/(en) route groups |
+| 프레임워크 | Next.js 16 (~16.1.6), App Router, `src/app/(ko)` / `src/app/(en)` route groups |
 | UI | React 19, TypeScript 5.9, Tailwind CSS 3.3 |
 | 애니메이션 | Framer Motion 12 |
 | 국제화 | `src/i18n/` — `LanguageProvider` + `useLanguage()`, localStorage 기반 언어 선호 저장 |
@@ -26,8 +26,8 @@ Next.js App Router 기반, 한국어/영어双语 지원, Tailwind CSS + Framer 
 ```
 src/
 ├── app/                    # Next.js App Router 라우트
-│   ├── (ko)/               # 한국어 페이지: /(about, works, news, contact)
-│   ├── (en)/               # 영어 페이지 (동일 구조)
+│   ├── src/app/(ko)/       # 한국어 페이지: /(about, works, news, contact)
+│   ├── src/app/(en)/       # 영어 페이지 (동일 구조)
 │   ├── globals.css
 │   ├── providers.tsx
 │   ├── robots.ts / sitemap.ts
@@ -39,7 +39,7 @@ src/
 │   ├── MusicPlayer.tsx     # 음악 플레이어
 │   ├── Lightbox.tsx        # 이미지 라이트박스
 │   └── ...
-├── views/                  # 페이지 뷰 컴포넌트 (Home, About, Works, News, Contact)
+├── src/views/              # 페이지 뷰 컴포넌트 (Home, About, Works, News, Contact)
 ├── data/
 │   ├── siteData.json       # 🔑 단일 진실 저장소 — 작품·이력·공연·뉴스 데이터
 │   ├── siteContent.ts      # 페이지별 콘텐츠 렌더링 로직
@@ -86,7 +86,7 @@ src/
 
 ## 다국어 (i18n)
 
-- 라우트: `/ko/*` vs `/en/*` 분리 (`(ko)`, `(en)` route group)
+- 라우트: `/ko/*` vs `/en/*` 분리 (`src/app/(ko)`, `src/app/(en)` route group)
 - 언어 전환: `LanguageToggle` 컴포넌트 + `useLanguage()` 훅
 - 번역 키: `.t('path.to.key')` 형식, 영어 폴백 지원
 - 언어 선호: localStorage에 `'language'` 키로 저장
