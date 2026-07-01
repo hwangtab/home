@@ -15,11 +15,11 @@ Next.js App Router 기반, 한국어/영어双语 지원, Tailwind CSS + Framer 
 
 | 영역 | 기술 |
 |---|---|
-| 프레임워크 | Next.js 16 (~16.1.6), App Router, 한국어 unprefixed + 영어 `/en/*`, `src/app/(ko)` / `src/app/(en)` route groups |
+| 프레임워크 | Next.js 16 App Router, 한국어 unprefixed + 영어 `/en/*`, `src/app/(ko)` / `src/app/(en)` route groups |
 | UI | React 19, TypeScript 5.9, Tailwind CSS 3.3 |
 | 애니메이션 | Framer Motion 12 |
 | 국제화 | `src/i18n/` — `LanguageProvider` + `useLanguage()`, localStorage 기반 언어 선호 저장 |
-| 데이터 | `siteData.json` (`metadata`는 `src/data/siteData.json` 기준, 현재 `version 3.5.0`, `lastUpdated 2026-05-21`) |
+| 데이터 | `siteData.json` (`metadata.version`, `metadata.lastUpdated`는 `src/data/siteData.json` 원본 기준) |
 | 빌드/배포 | Vercel (`vercel.json` 정적 캐시 설정), `next build` |
 | 폰트 | Wanted Sans Variable (CDN), HSBombaram3, BookkMyungjo, HSSanTokki20 (Project Noonnu CDN) |
 

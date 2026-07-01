@@ -22,10 +22,12 @@ const forbiddenPatterns: Array<{ pattern: RegExp; reason: string }> = [
   { pattern: /\bpredeploy\b/i, reason: 'Package scripts do not define predeploy.' },
   { pattern: /\bReact 18\.2\b/i, reason: 'package.json uses React 19.' },
   { pattern: /\bSPA\b/i, reason: 'Do not describe the current App Router site as an SPA.' },
-  { pattern: /build\//i, reason: 'Do not describe Next.js build output as build/.' }
+  { pattern: /build\//i, reason: 'Do not describe Next.js build output as build/.' },
+  { pattern: /version\s+\d+\.\d+\.\d+/i, reason: 'Do not hard-code siteData metadata version values in guidance.' },
+  { pattern: /lastUpdated\s+\d{4}-\d{2}-\d{2}/i, reason: 'Do not hard-code siteData metadata dates in guidance.' }
 ];
 
-const staleKoreanRoutePattern = /\/ko\//;
+const staleKoreanRoutePattern = /\/ko(?:\/|\*|\b)/;
 
 const requiredPhrasesByFile: Record<string, string[]> = {
   'AGENTS.md': ['Next.js App Router', 'src/app/(ko)', 'src/app/(en)', 'src/views', 'src/data/siteData.json', 'npm test'],
@@ -69,5 +71,8 @@ const buildPattern = forbiddenPatterns.find((entry) => entry.reason === 'Do not 
 assert.ok(buildPattern, 'Build output forbidden-pattern is required for docs alignment checks.');
 assert.ok(buildPattern.pattern.test('build/'), 'build/ should be treated as forbidden architecture text.');
 assert.ok(!buildPattern.pattern.test('prebuild'), 'Regex should not produce accidental broad-match without path separator.');
+assert.ok(staleKoreanRoutePattern.test('/ko'), '/ko should be treated as stale Korean route guidance.');
+assert.ok(staleKoreanRoutePattern.test('/ko/*'), '/ko/* should be treated as stale Korean route guidance.');
+assert.ok(!staleKoreanRoutePattern.test('src/app/(ko)'), 'Route-group labels such as src/app/(ko) should remain allowed.');
 
 console.log(`Documentation alignment checked: ${primaryGuidanceFiles.length} primary guidance files.`);
