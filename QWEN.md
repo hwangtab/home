@@ -5,6 +5,8 @@
 **황경하 (Hwang Gyeongha)** — 음악 제작자·예술 기획자의 다국어 포트폴리오 웹사이트.
 Next.js App Router 기반, 한국어/영어双语 지원, Tailwind CSS + Framer Motion 애니메이션.
 
+라우트는 `src/app/(ko)`와 `src/app/(en)` route group에서 다국어를 분기하고, 페이지 뷰는 `src/views`에서 조합한다.
+
 - **이름:** `hwangtab` (v0.1.0)
 - **버킷:** Vercel/Next.js 정적 생성 배포
 - **데이터 중심 아키텍처:** `src/data/siteData.json`에 아티스트 이력·작품·공연·뉴스 전량 중앙 관리
@@ -26,8 +28,8 @@ Next.js App Router 기반, 한국어/영어双语 지원, Tailwind CSS + Framer 
 ```
 src/
 ├── app/                    # Next.js App Router 라우트
-│   ├── src/app/(ko)/       # 한국어 페이지: /(about, works, news, contact)
-│   ├── src/app/(en)/       # 영어 페이지 (동일 구조)
+│   ├── (ko)/               # 한국어 페이지: /(about, works, news, contact)
+│   ├── (en)/               # 영어 페이지 (동일 구조)
 │   ├── globals.css
 │   ├── providers.tsx
 │   ├── robots.ts / sitemap.ts
@@ -39,7 +41,7 @@ src/
 │   ├── MusicPlayer.tsx     # 음악 플레이어
 │   ├── Lightbox.tsx        # 이미지 라이트박스
 │   └── ...
-├── src/views/              # 페이지 뷰 컴포넌트 (Home, About, Works, News, Contact)
+├── views/                 # 페이지 뷰 컴포넌트 (Home, About, Works, News, Contact)
 ├── data/
 │   ├── siteData.json       # 🔑 단일 진실 저장소 — 작품·이력·공연·뉴스 데이터
 │   ├── siteContent.ts      # 페이지별 콘텐츠 렌더링 로직

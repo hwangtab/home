@@ -15,7 +15,7 @@ const forbiddenPatterns: Array<{ pattern: RegExp; reason: string }> = [
   { pattern: /\bpredeploy\b/i, reason: 'Package scripts do not define predeploy.' },
   { pattern: /\bReact 18\.2\b/i, reason: 'package.json uses React 19.' },
   { pattern: /\bSPA\b/i, reason: 'Do not describe the current App Router site as an SPA.' },
-  { pattern: /\bbuild\/\b/i, reason: 'Do not describe Next.js build output as build/.' }
+  { pattern: /build\//i, reason: 'Do not describe Next.js build output as build/.' }
 ];
 
 const requiredPhrasesByFile: Record<string, string[]> = {
@@ -39,5 +39,10 @@ for (const file of primaryGuidanceFiles) {
     assert.ok(content.includes(phrase), `${file} must mention current architecture phrase: ${phrase}`);
   }
 }
+
+const buildPattern = forbiddenPatterns.find((entry) => entry.reason === 'Do not describe Next.js build output as build/.');
+assert.ok(buildPattern, 'Build output forbidden-pattern is required for docs alignment checks.');
+assert.ok(buildPattern.pattern.test('build/'), 'build/ should be treated as forbidden architecture text.');
+assert.ok(!buildPattern.pattern.test('prebuild'), 'Regex should not produce accidental broad-match without path separator.');
 
 console.log(`Documentation alignment checked: ${primaryGuidanceFiles.length} primary guidance files.`);
