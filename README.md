@@ -1,37 +1,15 @@
 # Hwang Gyeongha Official Web
 
-Korean/English portfolio website for musician Hwang Gyeongha. The app uses Next.js App Router, React, TypeScript, Tailwind CSS, and Framer Motion.
+Official Korean/English portfolio website for musician Hwang Gyeongha. The app uses Next.js App Router, React, TypeScript, Tailwind CSS, Framer Motion, and centralized site data.
 
 ## Commands
 
 - `npm run dev` - Start the development server.
-- `npm run start` - Start the production server after `npm run build`.
+- `npm start` - Start the production server after `npm run build`.
 - `npm run build` - Build the production Next.js app.
 - `npm run lint` - Run ESLint.
-- `npm run data:validate` - Validate `src/data/siteData.json` structure, assets, URLs, and data invariants.
-- `npm run data:translations` - Validate locale parity and Korean-to-English site data translation coverage.
-- `npm test` - Run data validation, translation checks, and project invariant tests.
-
-## Data
-
-Primary site content lives in `src/data/siteData.json`.
-
-When editing content, keep these invariants true:
-
-- Work IDs are unique URL-safe kebab-case slugs.
-- Korean and English generated work IDs stay identical.
-- External image hosts used by work covers must be allowed in `next.config.mjs`.
-- Local image paths must exist under `public/`.
-- `archiveCategory` must match the containing work category.
-- Translation mappings in `src/utils/translateSiteData.ts` must cover all Korean strings in site data.
-
-## Verification
-
-Before deployment or handoff, run:
-
-```bash
-npm test
-npm run lint
-npx tsc --noEmit
-npm run build
-```
+- `npx tsc --noEmit` - Run TypeScript type checking.
+- `npm run data:validate` - Validate `src/data/siteData.json`.
+- `npm run data:translations` - Validate locale parity and Korean-to-English site data coverage.
+- `npm test` - Run documentation, data, translation, and invariant checks.
+- `npm run test:browser` - Build and run browser smoke checks.

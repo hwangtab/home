@@ -6,7 +6,7 @@
 Next.js App Router 기반, 한국어/영어双语 지원, Tailwind CSS + Framer Motion 애니메이션.
 
 - **이름:** `hwangtab` (v0.1.0)
-- **버킷:** GitHub Pages / Vercel 배포
+- **버킷:** Vercel/Next.js 정적 생성 배포
 - **데이터 중심 아키텍처:** `src/data/siteData.json`에 아티스트 이력·작품·공연·뉴스 전량 중앙 관리
 
 ## 기술 스택
@@ -18,7 +18,7 @@ Next.js App Router 기반, 한국어/영어双语 지원, Tailwind CSS + Framer 
 | 애니메이션 | Framer Motion 12 |
 | 국제화 | `src/i18n/` — `LanguageProvider` + `useLanguage()`, localStorage 기반 언어 선호 저장 |
 | 데이터 | `siteData.json` (metadata 버전 3.3.0, 마지막 업데이트 2026-05-08) |
-| 빌드/배포 | Vercel (`vercel.json` 정적 캐시 설정), `next build` → `build/` |
+| 빌드/배포 | Vercel (`vercel.json` 정적 캐시 설정), `next build` |
 | 폰트 | Wanted Sans Variable (CDN), HSBombaram3, BookkMyungjo, HSSanTokki20 (Project Noonnu CDN) |
 
 ## 프로젝트 구조 (핵심)
@@ -60,10 +60,11 @@ src/
 |---|---|
 | `npm run dev` | 개발 서버 (http://localhost:3000) |
 | `npm start` | 프로덕션 서버 시작 |
-| `npm run build` | 프로덕션 빌드 → `build/` |
+| `npm run build` | 프로덕션 Next.js 빌드 |
 | `npm run lint` | ESLint 실행 |
 | `npm run data:validate` | `siteData.json` 데이터 무결성 검증 스크립트 |
 | `npx tsc --noEmit` | 타입 체크 |
+| `npm test` | 문서/데이터/번역/불변조건 검증 |
 
 ## 데이터 관리 핵심 규칙
 
